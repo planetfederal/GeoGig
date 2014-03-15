@@ -23,6 +23,7 @@ import org.geogit.rest.repository.FixedEncoder;
 import org.geogit.rest.repository.RepositoryProvider;
 import org.geogit.rest.repository.RepositoryRouter;
 import org.geogit.storage.bdbje.JEStorageModule;
+import org.geogit.web.console.ConsoleResourceResource;
 import org.restlet.Application;
 import org.restlet.Component;
 import org.restlet.Restlet;
@@ -98,7 +99,11 @@ public class Main extends Application {
                 request.getAttributes().put(RepositoryProvider.KEY, repoProvider);
             }
         };
-        router.attach("/repo", new RepositoryRouter());
+        RepositoryRouter root = new RepositoryRouter();
+        root.attach("/console", ConsoleResourceResource.class);
+        root.attach("/console/{resource}", ConsoleResourceResource.class);
+        
+        router.attach("/repo", root);
         router.attach("/{command}.{extension}", CommandResource.class);
         router.attach("/{command}", CommandResource.class);
 

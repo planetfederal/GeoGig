@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>geogit console emulator</title>
+    <script src="./jquery-1.7.1.min.js"></script>
+    <script src="./jquery.mousewheel-min.js"></script>
+    <script src="./jquery.terminal-min.js"></script>
+    <link href="./jquery.terminal.css" rel="stylesheet"/>
+    <script>
+    jQuery(document).ready(function($) {
+        $('body').terminal("run-command", {
+            //login: true,
+            greetings: "Welcome to geogit web console.\nType help for a list of commands. <command> --help for command specific usage info.",
+            prompt: "geogit$ ",
+            onBlur: function() {
+                // the height of the body is only 2 lines initialy
+                return false;
+            }
+        });
+    });
+    </script>
+  </head>
+<body>
+    <!--
+    Example copied from http://terminal.jcubic.pl/
+    -->
+</body>
+</html>
