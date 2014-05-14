@@ -29,6 +29,7 @@ import org.geogit.storage.ObjectWriter;
 import org.geogit.storage.datastream.DataStreamSerializationFactory;
 
 import com.google.common.base.Functions;
+import com.google.common.base.Throwables;
 import com.google.common.collect.AbstractIterator;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
@@ -41,6 +42,8 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.WriteResult;
+import com.ning.compress.lzf.LZFInputStream;
+import com.ning.compress.lzf.LZFOutputStream;
 
 /**
  * An Object database that uses a MongoDB server for persistence.
@@ -75,17 +78,28 @@ public class MongoObjectDatabase implements ObjectDatabase {
 
     private RevObject fromBytes(ObjectId id, byte[] buffer) {
         ByteArrayInputStream byteStream = new ByteArrayInputStream(buffer);
-        RevObject result = serializers.createObjectReader().read(id, byteStream);
+        RevObject result;
+        try {
+            result = serializers.createObjectReader().read(id, new LZFInputStream(byteStream));
+        } catch (Exception e) {
+            throw Throwables.propagate(e);
+        }
         return result;
     }
 
     private byte[] toBytes(RevObject object) {
         ObjectWriter<RevObject> writer = serializers.createObjectWriter(object.getType());
         ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+        LZFOutputStream cOut = new LZFOutputStream(byteStream);
         try {
-            writer.write(object, byteStream);
+            writer.write(object, cOut);
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }
+        try {
+            cOut.close();
+        } catch (IOException e) {
+            throw Throwables.propagate(e);
         }
         return byteStream.toByteArray();
     }
