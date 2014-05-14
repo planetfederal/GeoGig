@@ -6,6 +6,7 @@ package org.geogit.storage.mongo;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
 
 import javax.annotation.Nullable;
 
@@ -36,9 +37,9 @@ public class MongoStagingDatabase extends AbstractStagingDatabase implements Sta
 
     @Inject
     public MongoStagingDatabase(final ConfigDatabase config, final MongoConnectionManager manager,
-            final ObjectDatabase repositoryDb) {
+            final ObjectDatabase repositoryDb, ExecutorService executor) {
         super(Suppliers.ofInstance(repositoryDb), Suppliers.ofInstance(new MongoObjectDatabase(
-                config, manager, "staging")));
+                config, manager, "staging", executor)));
         this.config = config;
     }
 

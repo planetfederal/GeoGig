@@ -11,7 +11,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.geogit.api.ObjectId;
 import org.geogit.api.RevCommit;
@@ -30,6 +33,7 @@ import org.geogit.storage.ObjectWriter;
 import org.geogit.storage.datastream.DataStreamSerializationFactory;
 
 import com.google.common.base.Functions;
+import com.google.common.base.Preconditions;
 import com.google.common.base.Throwables;
 import com.google.common.collect.AbstractIterator;
 import com.google.common.collect.Iterators;
@@ -75,13 +79,14 @@ public class MongoObjectDatabase implements ObjectDatabase {
     @Inject
     public MongoObjectDatabase(ConfigDatabase config, MongoConnectionManager manager,
             ExecutorService executor) {
-        this(config, manager, "objects");
-        this.executor = executor;
+        this(config, manager, "objects", executor);
     }
 
-    MongoObjectDatabase(ConfigDatabase config, MongoConnectionManager manager, String collectionName) {
+    MongoObjectDatabase(ConfigDatabase config, MongoConnectionManager manager,
+            String collectionName, ExecutorService executor) {
         this.config = config;
         this.manager = manager;
+        this.executor = executor;
         this.collectionName = collectionName;
     }
 
@@ -298,43 +303,105 @@ public class MongoObjectDatabase implements ObjectDatabase {
 
     @Override
     public void putAll(Iterator<? extends RevObject> objects, BulkOpListener listener) {
+        Preconditions.checkNotNull(executor, "executor service not set");
         if (!objects.hasNext()) {
             return;
         }
 
         final int bulkSize = 1000;
+        final int maxRunningTasks = 10;
+
+        final AtomicBoolean cancelCondition = new AtomicBoolean();
 
         List<ObjectId> ids = Lists.newArrayListWithCapacity(bulkSize);
+        List<Future<?>> runningTasks = new ArrayList<Future<?>>(maxRunningTasks);
 
         BulkWriteOperation bulkOperation = collection.initializeOrderedBulkOperation();
-        while (objects.hasNext()) {
-            RevObject object = objects.next();
-            bulkOperation.insert(toDocument(object));
+        try {
+            while (objects.hasNext()) {
+                RevObject object = objects.next();
+                bulkOperation.insert(toDocument(object));
 
-            ids.add(object.getId());
+                ids.add(object.getId());
 
-            if (ids.size() == bulkSize || !objects.hasNext()) {
+                if (ids.size() == bulkSize || !objects.hasNext()) {
+                    InsertTask task = new InsertTask(bulkOperation, listener, ids, cancelCondition);
+                    runningTasks.add(executor.submit(task));
 
-                BulkWriteResult bulkResult = bulkOperation.execute(WriteConcern.ACKNOWLEDGED);
-                List<BulkWriteUpsert> upserts = bulkResult.getUpserts();
-                for (BulkWriteUpsert upsert : upserts) {
-                    int index = upsert.getIndex();
-                    ObjectId existing = ids.set(index, null);
-                    listener.found(existing, null);
-                }
-                for (ObjectId inserted : ids) {
-                    if (inserted != null) {
-                        listener.inserted(inserted, null);
+                    if (objects.hasNext()) {
+                        bulkOperation = collection.initializeOrderedBulkOperation();
+                        ids = Lists.newArrayListWithCapacity(bulkSize);
                     }
                 }
-
-                ids.clear();
-
-                if (objects.hasNext()) {
-                    bulkOperation = collection.initializeOrderedBulkOperation();
+                if (runningTasks.size() == maxRunningTasks) {
+                    waitForTasks(runningTasks);
                 }
             }
+            waitForTasks(runningTasks);
+        } catch (RuntimeException e) {
+            cancelCondition.set(true);
+            throw e;
         }
+    }
+
+    private void waitForTasks(List<Future<?>> runningTasks) {
+        // wait...
+        for (Future<?> f : runningTasks) {
+            try {
+                f.get();
+            } catch (Exception e) {
+                throw Throwables.propagate(e);
+            }
+        }
+        runningTasks.clear();
+    }
+
+    private static class InsertTask implements Runnable {
+
+        private BulkWriteOperation bulkOperation;
+
+        private BulkOpListener listener;
+
+        private List<ObjectId> ids;
+
+        private AtomicBoolean cancelCondition;
+
+        public InsertTask(BulkWriteOperation bulkOperation, BulkOpListener listener,
+                List<ObjectId> ids, AtomicBoolean cancelCondition) {
+            this.bulkOperation = bulkOperation;
+            this.listener = listener;
+            this.ids = ids;
+            this.cancelCondition = cancelCondition;
+        }
+
+        @Override
+        public void run() {
+            if (cancelCondition.get()) {
+                return;
+            }
+            BulkWriteResult bulkResult = bulkOperation.execute(WriteConcern.ACKNOWLEDGED);
+            List<BulkWriteUpsert> upserts = bulkResult.getUpserts();
+
+            for (BulkWriteUpsert upsert : upserts) {
+                if (cancelCondition.get()) {
+                    return;
+                }
+                int index = upsert.getIndex();
+                ObjectId existing = ids.set(index, null);
+                listener.found(existing, null);
+            }
+            for (ObjectId inserted : ids) {
+                if (cancelCondition.get()) {
+                    return;
+                }
+                if (inserted != null) {
+                    listener.inserted(inserted, null);
+                }
+            }
+
+            ids.clear();
+        }
+
     }
 
     @Override
