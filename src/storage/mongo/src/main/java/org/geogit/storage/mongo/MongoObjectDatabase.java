@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.concurrent.ExecutorService;
 
 import org.geogit.api.ObjectId;
 import org.geogit.api.RevCommit;
@@ -36,11 +37,15 @@ import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import com.mongodb.BasicDBObject;
 import com.mongodb.BasicDBObjectBuilder;
+import com.mongodb.BulkWriteOperation;
+import com.mongodb.BulkWriteResult;
+import com.mongodb.BulkWriteUpsert;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
+import com.mongodb.WriteConcern;
 import com.mongodb.WriteResult;
 import com.ning.compress.lzf.LZFInputStream;
 import com.ning.compress.lzf.LZFOutputStream;
@@ -65,9 +70,13 @@ public class MongoObjectDatabase implements ObjectDatabase {
 
     private String collectionName;
 
+    private ExecutorService executor;
+
     @Inject
-    public MongoObjectDatabase(ConfigDatabase config, MongoConnectionManager manager) {
+    public MongoObjectDatabase(ConfigDatabase config, MongoConnectionManager manager,
+            ExecutorService executor) {
         this(config, manager, "objects");
+        this.executor = executor;
     }
 
     MongoObjectDatabase(ConfigDatabase config, MongoConnectionManager manager, String collectionName) {
@@ -271,10 +280,15 @@ public class MongoObjectDatabase implements ObjectDatabase {
     public boolean put(final RevObject object) {
         DBObject query = new BasicDBObject();
         query.put("oid", object.getId().toString());
+        DBObject record = toDocument(object);
+        return collection.update(query, record, true, false).getLastError().ok();
+    }
+
+    private DBObject toDocument(final RevObject object) {
         DBObject record = new BasicDBObject();
         record.put("oid", object.getId().toString());
         record.put("serialized_object", toBytes(object));
-        return collection.update(query, record, true, false).getLastError().ok();
+        return record;
     }
 
     @Override
@@ -284,13 +298,41 @@ public class MongoObjectDatabase implements ObjectDatabase {
 
     @Override
     public void putAll(Iterator<? extends RevObject> objects, BulkOpListener listener) {
+        if (!objects.hasNext()) {
+            return;
+        }
+
+        final int bulkSize = 1000;
+
+        List<ObjectId> ids = Lists.newArrayListWithCapacity(bulkSize);
+
+        BulkWriteOperation bulkOperation = collection.initializeOrderedBulkOperation();
         while (objects.hasNext()) {
             RevObject object = objects.next();
-            boolean put = put(object);
-            if (put) {
-                listener.inserted(object.getId(), null);
-            } else {
-                listener.found(object.getId(), null);
+            bulkOperation.insert(toDocument(object));
+
+            ids.add(object.getId());
+
+            if (ids.size() == bulkSize || !objects.hasNext()) {
+
+                BulkWriteResult bulkResult = bulkOperation.execute(WriteConcern.ACKNOWLEDGED);
+                List<BulkWriteUpsert> upserts = bulkResult.getUpserts();
+                for (BulkWriteUpsert upsert : upserts) {
+                    int index = upsert.getIndex();
+                    ObjectId existing = ids.set(index, null);
+                    listener.found(existing, null);
+                }
+                for (ObjectId inserted : ids) {
+                    if (inserted != null) {
+                        listener.inserted(inserted, null);
+                    }
+                }
+
+                ids.clear();
+
+                if (objects.hasNext()) {
+                    bulkOperation = collection.initializeOrderedBulkOperation();
+                }
             }
         }
     }

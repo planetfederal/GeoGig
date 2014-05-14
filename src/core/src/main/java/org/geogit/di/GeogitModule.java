@@ -4,6 +4,9 @@
  */
 package org.geogit.di;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import org.geogit.api.DefaultPlatform;
 import org.geogit.api.Context;
 import org.geogit.api.Platform;
@@ -30,6 +33,7 @@ import org.geogit.storage.memory.HeapStagingDatabase;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Binder;
+import com.google.inject.Provider;
 import com.google.inject.Scopes;
 import com.google.inject.multibindings.Multibinder;
 
@@ -58,6 +62,16 @@ public class GeogitModule extends AbstractModule {
      */
     @Override
     protected void configure() {
+
+        Provider<ExecutorService> fineGrainedExecutor = new Provider<ExecutorService>() {
+            @Override
+            public ExecutorService get() {
+                int availableProcessors = Runtime.getRuntime().availableProcessors();
+                return Executors.newFixedThreadPool(availableProcessors);
+            }
+        };
+
+        bind(ExecutorService.class).toProvider(fineGrainedExecutor).in(Scopes.SINGLETON);
 
         bind(Context.class).to(GuiceInjector.class).in(Scopes.SINGLETON);
 
