@@ -22,7 +22,10 @@ import java.util.concurrent.TimeUnit;
 import javax.xml.stream.XMLStreamException;
 
 import com.google.common.base.Optional;
+import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
 import com.google.common.base.Supplier;
+import com.google.common.base.Suppliers;
 import com.google.common.base.Throwables;
 import com.google.common.collect.AbstractIterator;
 import com.google.common.collect.Iterators;
@@ -45,6 +48,8 @@ public class HistoryDownloader {
 
     private final boolean preserveFiles;
 
+    private Predicate<Changeset> filter = Predicates.alwaysTrue();
+
     /**
      * @param osmAPIUrl api url, e.g. {@code http://api.openstreetmap.org/api/0.6},
      *        {@code file:/path/to/downloaded/changesets}
@@ -65,45 +70,16 @@ public class HistoryDownloader {
         currChangeset = this.initialChangeset;
     }
 
-    private BlockingQueue<Supplier<Optional<Changeset>>> changesetsQueue = new ArrayBlockingQueue<Supplier<Optional<Changeset>>>(
-            100);
-
-    /**
-    *
-    */
-    private class ChangeSetSupplier implements Supplier<Optional<Changeset>> {
-
-        private Supplier<Optional<File>> changesetFile;
-
-        private Supplier<Optional<File>> changesFile;
-
-        /**
-         * @param changesetFile
-         * @param changesFile
-         */
-        public ChangeSetSupplier(Supplier<Optional<File>> changesetFile,
-                Supplier<Optional<File>> changesFile) {
-            this.changesetFile = changesetFile;
-            this.changesFile = changesFile;
-        }
-
-        @Override
-        public Optional<Changeset> get() {
-            Optional<Changeset> changeset = parseChangeset(changesetFile);
-
-            if (changeset.isPresent()) {
-                Changeset actual = changeset.get();
-                Supplier<Iterator<Change>> changes = new ChangesSupplier(changesFile);
-                actual.setChanges(changes);
-            }
-            return changeset;
-        }
+    public void setFilter(Predicate<Changeset> filter) {
+        this.filter = filter;
     }
 
+    private BlockingQueue<Changeset> changesetsQueue = new ArrayBlockingQueue<Changeset>(100);
+
     /**
     *
     */
-    private class ChangesSupplier implements Supplier<Iterator<Change>> {
+    private class ChangesSupplier implements Supplier<Optional<Iterator<Change>>> {
 
         private Supplier<Optional<File>> changesFile;
 
@@ -115,7 +91,7 @@ public class HistoryDownloader {
         }
 
         @Override
-        public Iterator<Change> get() {
+        public Optional<Iterator<Change>> get() {
             return parseChanges(changesFile);
         }
 
@@ -133,21 +109,31 @@ public class HistoryDownloader {
                 @Override
                 public void run() {
                     for (long changeset = initialChangeset; changeset <= finalChangeset; changeset++) {
-                        Supplier<Optional<File>> changesetFile = downloader
-                                .fetchChangeset(changeset);
-                        Supplier<Optional<File>> changesFile = downloader.fetchChanges(changeset);
+                        Supplier<Optional<File>> changesetFile;
+                        changesetFile = downloader.fetchChangeset(changeset);
 
-                        Supplier<Optional<Changeset>> supplier;
-                        supplier = new ChangeSetSupplier(changesetFile, changesFile);
+                        Optional<Changeset> set = parseChangeset(changesetFile);
+
+                        Changeset changeSet = set.get();
+
+                        if (filter.apply(changeSet)) {
+                            Supplier<Optional<File>> changesFile;
+                            changesFile = downloader.fetchChanges(changeset);
+                            Supplier<Optional<Iterator<Change>>> changes = new ChangesSupplier(
+                                    changesFile);
+                            changeSet.setChanges(changes);
+                        }
+
                         try {
-                            // put the element on the queue, blocking until space is available if
-                            // necessary
-                            changesetsQueue.put(supplier);
+                            // put the element on the queue, blocking until space is available
+                            // if necessary
+                            changesetsQueue.put(changeSet);
                         } catch (InterruptedException e) {
                             System.out.println(Thread.currentThread().getName()
                                     + " interrupted. Exiting gracefully. "
                                     + "No more changes will be queued.");
                         }
+
                     }
                 }
             };
@@ -156,10 +142,10 @@ public class HistoryDownloader {
             runner.start();
         }
 
-        Optional<Changeset> next = Optional.absent();
+        Changeset next = null;
 
-        while (currChangeset <= finalChangeset && !next.isPresent()) {
-            Supplier<Optional<Changeset>> cs;
+        while (currChangeset <= finalChangeset && next == null) {
+            Changeset cs;
             try {
                 cs = changesetsQueue.poll(30, TimeUnit.SECONDS);
                 if (cs == null) {
@@ -172,7 +158,7 @@ public class HistoryDownloader {
             }
             currChangeset++;
             try {
-                next = cs.get();
+                next = cs;
             } catch (RuntimeException e) {
                 if (e.getCause() instanceof FileNotFoundException) {
                     continue;
@@ -181,7 +167,7 @@ public class HistoryDownloader {
             }
         }
 
-        return next;
+        return Optional.fromNullable(next);
     }
 
     private Optional<Changeset> parseChangeset(Supplier<Optional<File>> file) {
@@ -226,9 +212,7 @@ public class HistoryDownloader {
         return Optional.fromNullable(changeset);
     }
 
-    private Iterator<Change> parseChanges(Supplier<Optional<File>> file) {
-
-        ChangesetContentsScanner scanner = new ChangesetContentsScanner();
+    private Optional<Iterator<Change>> parseChanges(Supplier<Optional<File>> file) {
 
         final Optional<File> changesFile;
         try {
@@ -236,23 +220,24 @@ public class HistoryDownloader {
         } catch (RuntimeException e) {
             Throwable cause = e.getCause();
             if (cause instanceof FileNotFoundException) {
-                return Iterators.emptyIterator();
+                return Optional.absent();
             }
             throw Throwables.propagate(e);
         }
         if (!changesFile.isPresent()) {
-            return Iterators.emptyIterator();
+            return Optional.absent();
         }
         final File actualFile = changesFile.get();
         final InputStream stream = openStream(actualFile);
         final Iterator<Change> changes;
+        ChangesetContentsScanner scanner = new ChangesetContentsScanner();
         try {
             changes = scanner.parse(stream);
         } catch (XMLStreamException e) {
             throw Throwables.propagate(e);
         }
 
-        return new AbstractIterator<Change>() {
+        Iterator<Change> iterator = new AbstractIterator<Change>() {
             @Override
             protected Change computeNext() {
                 if (!changes.hasNext()) {
@@ -266,6 +251,7 @@ public class HistoryDownloader {
                 return changes.next();
             }
         };
+        return Optional.of(iterator);
     }
 
     private InputStream openStream(File file) {

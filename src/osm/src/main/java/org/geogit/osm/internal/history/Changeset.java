@@ -11,7 +11,6 @@ import java.util.Map;
 import com.google.common.base.Optional;
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
-import com.google.common.collect.Iterators;
 import com.google.common.collect.Maps;
 import com.vividsolutions.jts.geom.Envelope;
 
@@ -38,7 +37,7 @@ public class Changeset {
 
     private Map<String, String> tags;
 
-    private Supplier<Iterator<Change>> changes;
+    private Supplier<Optional<Iterator<Change>>> changes;
 
     public Changeset() {
         tags = Maps.newHashMap();
@@ -77,15 +76,14 @@ public class Changeset {
         return Optional.fromNullable(comment);
     }
 
-    public Supplier<Iterator<Change>> getChanges() {
+    public Supplier<Optional<Iterator<Change>>> getChanges() {
         if (changes == null) {
-            Iterator<Change> it = Iterators.emptyIterator();
-            return Suppliers.ofInstance(it);
+            return Suppliers.ofInstance(Optional.<Iterator<Change>> absent());
         }
         return changes;
     }
 
-    void setChanges(Supplier<Iterator<Change>> changes) {
+    void setChanges(Supplier<Optional<Iterator<Change>>> changes) {
         this.changes = changes;
     }
 

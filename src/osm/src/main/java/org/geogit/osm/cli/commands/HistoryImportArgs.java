@@ -40,6 +40,9 @@ public class HistoryImportArgs {
     @Parameter(names = "--dev", description = "Use the development test api endpoint <http://api06.dev.openstreetmap.org/api/0.6>. NOTE: this is not the real osm history, but just for testing purposes. ")
     public boolean useTestApiEndpoint = false;
 
+    @Parameter(names = "--bbox", description = "Filter by bounding box <min lon,min lat, max lon, max lat>")
+    public String bbox;
+
     public static final String DEVELOPMENT_API_ENDPOINT = "http://api06.dev.openstreetmap.org/api/0.6";
 
     public static final String DEFAULT_API_ENDPOINT = "http://api.openstreetmap.org/api/0.6";

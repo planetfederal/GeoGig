@@ -83,7 +83,7 @@ public class HistoryDownloaderTest extends Assert {
         ArrayList<Changeset> changesets = Lists.newArrayList(changesetsIterator);
         assertEquals(10, changesets.size());
 
-        changes = changesets.get(0).getChanges().get();
+        changes = changesets.get(0).getChanges().get().get();
         list = Lists.newArrayList(changes);
         assertEquals(3, list.size());// see 01_10/1/download.xml
         assertTrue(list.get(0).getNode().isPresent());
@@ -91,11 +91,11 @@ public class HistoryDownloaderTest extends Assert {
         assertTrue(list.get(2).getWay().isPresent());
 
         // 01_10/10/download.xml is empty
-        changes = changesets.get(9).getChanges().get();
+        changes = changesets.get(9).getChanges().get().get();
         assertFalse(changes.hasNext());
 
         // 01_10/5/download.xml
-        changes = changesets.get(4).getChanges().get();
+        changes = changesets.get(4).getChanges().get().get();
         list = Lists.newArrayList(changes);
         assertEquals(4, list.size());// see 01_10/1/download.xml
         assertTrue(list.get(0).getNode().isPresent());
@@ -121,7 +121,7 @@ public class HistoryDownloaderTest extends Assert {
         assertEquals(749, changeset.getId());
 
         Iterator<Change> changes;
-        changes = changeset.getChanges().get();
+        changes = changeset.getChanges().get().get();
         assertNotNull(changes);
         assertFalse(changes.hasNext());
 
@@ -130,7 +130,7 @@ public class HistoryDownloaderTest extends Assert {
         changeset = next.get();
         assertEquals(750, changeset.getId());
 
-        changes = changeset.getChanges().get();
+        changes = changeset.getChanges().get().get();
         assertNotNull(changes);
         assertTrue(changes.hasNext());
     }
@@ -153,7 +153,7 @@ public class HistoryDownloaderTest extends Assert {
         while ((next = onlineDownloader.fetchNextChangeset()).isPresent()) {
             Changeset changeset = next.get();
             changesets.add(changeset);
-            Iterator<Change> iterator = changeset.getChanges().get();
+            Iterator<Change> iterator = changeset.getChanges().get().get();
             changes.put(Long.valueOf(changeset.getId()), Lists.newArrayList(iterator));
         }
 

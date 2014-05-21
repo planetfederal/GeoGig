@@ -55,6 +55,7 @@ import org.geogit.cli.AbstractCommand;
 import org.geogit.cli.CLICommand;
 import org.geogit.cli.CommandFailedException;
 import org.geogit.cli.GeogitCLI;
+import org.geogit.cli.InvalidParameterException;
 import org.geogit.osm.internal.history.Change;
 import org.geogit.osm.internal.history.Changeset;
 import org.geogit.osm.internal.history.HistoryDownloader;
@@ -74,6 +75,8 @@ import com.beust.jcommander.ParametersDelegate;
 import com.beust.jcommander.internal.Lists;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
+import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
 import com.google.common.base.Throwables;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableList;
@@ -82,6 +85,7 @@ import com.google.common.collect.Sets;
 import com.google.common.io.Files;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
@@ -133,6 +137,8 @@ public class OSMHistoryImport extends AbstractCommand implements CLICommand {
         HistoryDownloader downloader;
         downloader = new HistoryDownloader(osmAPIUrl, targetDir, startIndex, endIndex, executor,
                 args.keepFiles);
+        Predicate<Changeset> filter = parseFilter();
+        downloader.setFilter(filter);
         try {
             importOsmHistory(cli, console, downloader);
         } finally {
@@ -143,6 +149,46 @@ public class OSMHistoryImport extends AbstractCommand implements CLICommand {
                 throw new CommandFailedException(e);
             }
         }
+    }
+
+    private Predicate<Changeset> parseFilter() {
+        Predicate<Changeset> filter = Predicates.alwaysTrue();
+        final String bbox = args.bbox;
+        if (bbox != null) {
+            String[] split = bbox.split(",");
+            checkParameter(split.length == 4,
+                    String.format("Invalid bbox format: '%s'. Expected minx,miny,maxx,maxy", bbox));
+            try {
+                double x1 = Double.parseDouble(split[0]);
+                double y1 = Double.parseDouble(split[1]);
+                double x2 = Double.parseDouble(split[2]);
+                double y2 = Double.parseDouble(split[3]);
+                Envelope envelope = new Envelope(x1, x2, y1, y2);
+                checkParameter(!envelope.isNull(), "Provided envelope is nil");
+                filter = new BBoxFiler(envelope);
+            } catch (NumberFormatException e) {
+                String message = String.format(
+                        "One or more bbox coordinate can't be parsed to double: '%s'", bbox);
+                throw new InvalidParameterException(message, e);
+            }
+        }
+        return filter;
+    }
+
+    private static class BBoxFiler implements Predicate<Changeset> {
+
+        private Envelope envelope;
+
+        public BBoxFiler(Envelope envelope) {
+            this.envelope = envelope;
+        }
+
+        @Override
+        public boolean apply(Changeset input) {
+            Optional<Envelope> wgs84Bounds = input.getWgs84Bounds();
+            return wgs84Bounds.isPresent() && envelope.intersects(wgs84Bounds.get());
+        }
+
     }
 
     private File resolveTargetDir() throws IOException {
@@ -195,7 +241,14 @@ public class OSMHistoryImport extends AbstractCommand implements CLICommand {
             // listener.setDescription(desc);
             // listener.started();
 
-            Iterator<Change> changes = changeset.getChanges().get();
+            Optional<Iterator<Change>> opchanges = changeset.getChanges().get();
+            if (!opchanges.isPresent()) {
+                updateBranchChangeset(cli.getGeogit(), changeset.getId());
+                console.println(" does not apply.");
+                console.flush();
+                continue;
+            }
+            Iterator<Change> changes = opchanges.get();
             console.print("applying...");
             console.flush();
             insertAndAddChanges(cli, changes);
