@@ -21,11 +21,17 @@ class ParsingUtils {
      * @return
      */
     public static long parseDateTime(String xmlDateTime) {
-        Calendar cal = DatatypeConverter.parseDateTime(xmlDateTime);
-        cal.set(Calendar.MILLISECOND, 0);
-        long timestamp = cal.getTimeInMillis();
+        try {
+            Calendar cal = DatatypeConverter.parseDateTime(xmlDateTime);
+            cal.set(Calendar.MILLISECOND, 0);
+            long timestamp = cal.getTimeInMillis();
 
-        return timestamp;
+            return timestamp;
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            throw new RuntimeException(
+                    String.format("Unable to parse timestamp '%s'", xmlDateTime), e);
+        }
     }
 
     public static Envelope parseWGS84Bounds(String minLat, String minLon, String maxLat,

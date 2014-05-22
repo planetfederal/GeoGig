@@ -15,8 +15,8 @@ import javax.xml.stream.XMLStreamException;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.io.Closeables;
 import com.vividsolutions.jts.geom.Envelope;
 
 /**
@@ -42,17 +42,15 @@ public class ChangesetScannerTest extends Assert {
      * @throws XMLStreamException
      */
     @Test
-    public void testParseChangeset() throws XMLStreamException {
-        Optional<Changeset> cs = parse("1100.xml");
-        assertNotNull(cs);
-        assertTrue(cs.isPresent());
-
-        Changeset changeset = cs.get();
+    public void testParseChangeset() throws Exception {
+        Changeset changeset = parse("1100.xml");
+        assertNotNull(changeset);
 
         assertFalse(changeset.isOpen());
         assertEquals(1100L, changeset.getId());
         assertEquals(parseDateTime("2009-10-10T20:02:09Z"), changeset.getCreated());
-        assertEquals(parseDateTime("2009-10-10T20:02:21Z"), changeset.getClosed());
+        assertTrue(changeset.getClosed().isPresent());
+        assertEquals(parseDateTime("2009-10-10T20:02:21Z"), changeset.getClosed().get().longValue());
         assertEquals(26L, changeset.getUserId());
         assertEquals("BMO_2009", changeset.getUserName());
         assertTrue(changeset.getComment().isPresent());
@@ -66,10 +64,15 @@ public class ChangesetScannerTest extends Assert {
         assertEquals(bounds, changeset.getWgs84Bounds().get());
     }
 
-    private Optional<Changeset> parse(String resource) throws XMLStreamException {
+    private Changeset parse(String resource) throws Exception {
         InputStream in = getClass().getResourceAsStream(resource);
         assertNotNull(in);
-        return new ChangesetScanner().parse(in);
+        try {
+            Changeset changeset = new ChangesetScanner(in).parseNext();
+            return changeset;
+        } finally {
+            Closeables.close(in, false);
+        }
     }
 
 }

@@ -20,8 +20,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
-import com.google.common.base.Optional;
-import com.google.common.collect.AbstractIterator;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
@@ -49,18 +47,13 @@ public class HistoryDownloaderTest extends Assert {
 
         executor = Executors.newFixedThreadPool(6);
         localResourcesDownloader = new HistoryDownloader(osmAPIUrl, downloadFolder,
-                initialChangeset, finalChangeset, executor, false);
+                initialChangeset, finalChangeset, executor);
     }
 
     @Test
     public void testFetchChangesets() throws Exception {
-        List<Changeset> changesets = Lists.newArrayList();
-        Optional<Changeset> next;
-        while ((next = localResourcesDownloader.fetchNextChangeset()).isPresent()) {
-            Changeset changeset = next.get();
-            changesets.add(changeset);
-        }
-
+        Iterator<Changeset> iterator = localResourcesDownloader.fetchChangesets();
+        List<Changeset> changesets = Lists.newArrayList(iterator);
         assertEquals(10, changesets.size());
     }
 
@@ -69,16 +62,7 @@ public class HistoryDownloaderTest extends Assert {
         Iterator<Change> changes;
         List<Change> list;
 
-        Iterator<Changeset> changesetsIterator = new AbstractIterator<Changeset>() {
-            @Override
-            protected Changeset computeNext() {
-                Optional<Changeset> next = localResourcesDownloader.fetchNextChangeset();
-                if (next.isPresent()) {
-                    return next.get();
-                }
-                return super.endOfData();
-            }
-        };
+        Iterator<Changeset> changesetsIterator = localResourcesDownloader.fetchChangesets();
 
         ArrayList<Changeset> changesets = Lists.newArrayList(changesetsIterator);
         assertEquals(10, changesets.size());
@@ -113,11 +97,11 @@ public class HistoryDownloaderTest extends Assert {
         long finalChangeset = 750;
 
         HistoryDownloader onlineDownloader = new HistoryDownloader(osmAPIUrl, downloadFolder,
-                initialChangeset, finalChangeset, executor, false);
+                initialChangeset, finalChangeset, executor);
 
-        Optional<Changeset> next = onlineDownloader.fetchNextChangeset();
-        assertTrue(next.isPresent());
-        Changeset changeset = next.get();
+        Iterator<Changeset> iterator = onlineDownloader.fetchChangesets();
+        assertTrue(iterator.hasNext());
+        Changeset changeset = iterator.next();
         assertEquals(749, changeset.getId());
 
         Iterator<Change> changes;
@@ -125,9 +109,8 @@ public class HistoryDownloaderTest extends Assert {
         assertNotNull(changes);
         assertFalse(changes.hasNext());
 
-        next = onlineDownloader.fetchNextChangeset();
-        assertTrue(next.isPresent());
-        changeset = next.get();
+        assertTrue(iterator.hasNext());
+        changeset = iterator.next();
         assertEquals(750, changeset.getId());
 
         changes = changeset.getChanges().get().get();
@@ -144,14 +127,14 @@ public class HistoryDownloaderTest extends Assert {
         long finalChangeset = 30;
 
         HistoryDownloader onlineDownloader = new HistoryDownloader(osmAPIUrl, downloadFolder,
-                initialChangeset, finalChangeset, executor, false);
+                initialChangeset, finalChangeset, executor);
 
-        Optional<Changeset> next;
         List<Changeset> changesets = Lists.newArrayList();
         Map<Long, List<Change>> changes = Maps.newTreeMap();
 
-        while ((next = onlineDownloader.fetchNextChangeset()).isPresent()) {
-            Changeset changeset = next.get();
+        Iterator<Changeset> it = onlineDownloader.fetchChangesets();
+        while (it.hasNext()) {
+            Changeset changeset = it.next();
             changesets.add(changeset);
             Iterator<Change> iterator = changeset.getChanges().get().get();
             changes.put(Long.valueOf(changeset.getId()), Lists.newArrayList(iterator));

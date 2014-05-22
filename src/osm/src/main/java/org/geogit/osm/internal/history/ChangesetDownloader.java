@@ -8,6 +8,7 @@ package org.geogit.osm.internal.history;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -18,6 +19,10 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -28,8 +33,11 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.InflaterInputStream;
 
 import javax.annotation.Nullable;
+import javax.xml.stream.XMLStreamException;
 
 import org.geogit.api.ProgressListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Supplier;
@@ -45,6 +53,8 @@ import com.google.common.io.Files;
  * @see ChangesetContentsScanner
  */
 class ChangesetDownloader {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ChangesetDownloader.class);
 
     private final String osmAPIUrl;
 
@@ -69,38 +79,6 @@ class ChangesetDownloader {
 
         this.osmAPIUrl = osmAPIUrl;
         this.executor = executor;
-    }
-
-    private class FetchChangeset implements Callable<Optional<File>> {
-        private long changeSetId;
-
-        /**
-         * @param changeSetId
-         */
-        public FetchChangeset(long changeSetId) {
-            this.changeSetId = changeSetId;
-        }
-
-        @Override
-        public Optional<File> call() throws Exception {
-            File changesetFile = changesetFile(changeSetId);
-            synchronized (changesetFile.getAbsolutePath().intern()) {
-                if (!changesetFile.exists()) {
-                    final String changesetUrl = changesetUrl(changeSetId);
-                    InputStream urlStream = null;
-                    try {
-                        urlStream = openStream(changesetUrl, null);
-                        copy(urlStream, changesetFile);
-                    } catch (FileNotFoundException e) {
-                        return Optional.absent();
-                    } finally {
-                        Closeables.closeQuietly(urlStream);
-                    }
-                }
-            }
-            return Optional.of(changesetFile);
-        }
-
     }
 
     private static class FutureSupplier<T> implements Supplier<T> {
@@ -130,25 +108,37 @@ class ChangesetDownloader {
 
     }
 
-    /**
-     * @param changeSetId
-     * @return
-     * @throws IOException
-     */
-    public Supplier<Optional<File>> fetchChangeset(long changeSetId) {
-        File changesetFile = changesetFile(changeSetId);
-        synchronized (changesetFile.getAbsolutePath().intern()) {
-            if (changesetFile.exists()) {
-                return Suppliers.ofInstance(Optional.of(changesetFile));
-            }
-        }
-        final Future<Optional<File>> future = executor.submit(new FetchChangeset(changeSetId));
-        Supplier<Optional<File>> supplier = new FutureSupplier<Optional<File>>(future);
-        return supplier;
-    }
+    public List<Changeset> fetchChangesets(List<Long> batchIds) {
 
-    private File changesetFile(long changeSetId) {
-        return new File(downloadFolder, changeSetId + ".xml");
+        final String url = changesetsUrl(batchIds);
+        LOGGER.debug("Fetching " + url);
+
+        InputStream stream;
+        try {
+            stream = openStream(url, null);
+        } catch (FileNotFoundException e) {
+            throw Throwables.propagate(e);
+        }
+
+        List<Changeset> changesets = new ArrayList<Changeset>(batchIds.size());
+
+        try {
+            stream = new BufferedInputStream(stream, 4096);
+            try {
+                ChangesetScanner changesetScanner = new ChangesetScanner(stream);
+                Changeset changeset = null;
+                while ((changeset = changesetScanner.parseNext()) != null) {
+                    changesets.add(changeset);
+                }
+            } catch (XMLStreamException e) {
+                throw Throwables.propagate(e);
+            }
+        } finally {
+            Closeables.closeQuietly(stream);
+        }
+
+        Collections.sort(changesets);
+        return changesets;
     }
 
     private class FetchChanges implements Callable<Optional<File>> {
@@ -275,9 +265,18 @@ class ChangesetDownloader {
         }
     }
 
-    private String changesetUrl(long changesetId) {
-        String url = canonicalChangesetUrl(changesetId);
-        url += ".xml";
+    private String changesetsUrl(List<Long> ids) {
+        String url = osmAPIUrl + (osmAPIUrl.endsWith("/") ? "" : "/") + "changesets?changesets=";
+        StringBuilder sb = new StringBuilder(url);
+        Long id;
+        for (Iterator<Long> it = ids.iterator(); it.hasNext();) {
+            id = it.next();
+            sb.append(id);
+            if (it.hasNext()) {
+                sb.append(',');
+            }
+        }
+        url = sb.toString();
         return url;
     }
 

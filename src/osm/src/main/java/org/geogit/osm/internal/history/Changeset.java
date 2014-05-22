@@ -12,12 +12,13 @@ import com.google.common.base.Optional;
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 import com.google.common.collect.Maps;
+import com.google.common.primitives.Longs;
 import com.vividsolutions.jts.geom.Envelope;
 
 /**
  *
  */
-public class Changeset {
+public class Changeset implements Comparable<Changeset> {
 
     private long id;
 
@@ -27,7 +28,7 @@ public class Changeset {
 
     private long created;
 
-    private long closed;
+    private Optional<Long> closed;
 
     private boolean open;
 
@@ -60,7 +61,7 @@ public class Changeset {
         return created;
     }
 
-    public long getClosed() {
+    public Optional<Long> getClosed() {
         return closed;
     }
 
@@ -108,7 +109,7 @@ public class Changeset {
     }
 
     void setClosed(long closed) {
-        this.closed = closed;
+        this.closed = Optional.of(Long.valueOf(closed));
     }
 
     void setOpen(boolean open) {
@@ -125,6 +126,11 @@ public class Changeset {
 
     void setTags(Map<String, String> tags) {
         this.tags = tags;
+    }
+
+    @Override
+    public int compareTo(Changeset o) {
+        return Longs.compare(this.id, o.getId());
     }
 
 }

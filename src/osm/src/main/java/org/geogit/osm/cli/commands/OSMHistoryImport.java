@@ -39,16 +39,19 @@ import org.geogit.api.NodeRef;
 import org.geogit.api.ObjectId;
 import org.geogit.api.ProgressListener;
 import org.geogit.api.Ref;
+import org.geogit.api.RevCommit;
 import org.geogit.api.RevFeature;
 import org.geogit.api.RevFeatureType;
 import org.geogit.api.RevFeatureTypeImpl;
 import org.geogit.api.RevTree;
 import org.geogit.api.SymRef;
+import org.geogit.api.plumbing.DiffCount;
 import org.geogit.api.plumbing.FindTreeChild;
 import org.geogit.api.plumbing.RefParse;
 import org.geogit.api.plumbing.ResolveGeogitDir;
 import org.geogit.api.plumbing.ResolveTreeish;
 import org.geogit.api.plumbing.RevObjectParse;
+import org.geogit.api.plumbing.diff.DiffObjectCount;
 import org.geogit.api.porcelain.AddOp;
 import org.geogit.api.porcelain.CommitOp;
 import org.geogit.cli.AbstractCommand;
@@ -90,8 +93,6 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
 
-//import org.geogit.api.Node;
-
 /**
  *
  */
@@ -121,8 +122,8 @@ public class OSMHistoryImport extends AbstractCommand implements CLICommand {
         } else {
             startIndex = args.startIndex;
         }
-        console.println("Obtaining OSM changesets " + startIndex + " to " + args.endIndex
-                + " from " + osmAPIUrl);
+        console.println(String.format("Obtaining OSM changesets %,d to %,d from %s", startIndex,
+                args.endIndex, osmAPIUrl));
 
         final ThreadFactory threadFactory = new ThreadFactoryBuilder().setDaemon(true)
                 .setNameFormat("osm-history-fetch-thread-%d").build();
@@ -130,17 +131,16 @@ public class OSMHistoryImport extends AbstractCommand implements CLICommand {
                 threadFactory);
         final File targetDir = resolveTargetDir();
         console.println("Downloading to " + targetDir.getAbsolutePath());
-        console.println("Files will " + (args.keepFiles ? "" : " not ")
-                + "be kept on the download directory.");
         console.flush();
 
         HistoryDownloader downloader;
-        downloader = new HistoryDownloader(osmAPIUrl, targetDir, startIndex, endIndex, executor,
-                args.keepFiles);
-        Predicate<Changeset> filter = parseFilter();
-        downloader.setFilter(filter);
+        downloader = new HistoryDownloader(osmAPIUrl, targetDir, startIndex, endIndex, executor);
+
+        Envelope env = parseBbox();
+        Predicate<Changeset> filter = parseFilter(env);
+        downloader.setChangesetFilter(filter);
         try {
-            importOsmHistory(cli, console, downloader);
+            importOsmHistory(cli, console, downloader, env);
         } finally {
             executor.shutdownNow();
             try {
@@ -151,8 +151,15 @@ public class OSMHistoryImport extends AbstractCommand implements CLICommand {
         }
     }
 
-    private Predicate<Changeset> parseFilter() {
-        Predicate<Changeset> filter = Predicates.alwaysTrue();
+    private Predicate<Changeset> parseFilter(Envelope env) {
+        if (env == null) {
+            return Predicates.alwaysTrue();
+        }
+        BBoxFiler filter = new BBoxFiler(env);
+        return filter;
+    }
+
+    private Envelope parseBbox() {
         final String bbox = args.bbox;
         if (bbox != null) {
             String[] split = bbox.split(",");
@@ -165,14 +172,14 @@ public class OSMHistoryImport extends AbstractCommand implements CLICommand {
                 double y2 = Double.parseDouble(split[3]);
                 Envelope envelope = new Envelope(x1, x2, y1, y2);
                 checkParameter(!envelope.isNull(), "Provided envelope is nil");
-                filter = new BBoxFiler(envelope);
+                return envelope;
             } catch (NumberFormatException e) {
                 String message = String.format(
                         "One or more bbox coordinate can't be parsed to double: '%s'", bbox);
                 throw new InvalidParameterException(message, e);
             }
         }
-        return filter;
+        return null;
     }
 
     private static class BBoxFiler implements Predicate<Changeset> {
@@ -223,27 +230,27 @@ public class OSMHistoryImport extends AbstractCommand implements CLICommand {
         return osmAPIUrl;
     }
 
-    private void importOsmHistory(GeogitCLI cli, ConsoleReader console, HistoryDownloader downloader)
-            throws IOException {
-        Optional<Changeset> set;
+    private void importOsmHistory(GeogitCLI cli, ConsoleReader console,
+            HistoryDownloader downloader, @Nullable Envelope featureFilter) throws IOException {
 
-        while ((set = downloader.fetchNextChangeset()).isPresent()) {
-            Changeset changeset = set.get();
+        Iterator<Changeset> changesets = downloader.fetchChangesets();
 
-            String desc = "obtaining osm changeset " + changeset.getId() + "...";
+        GeoGIT geogit = cli.getGeogit();
+        WorkingTree workingTree = geogit.getContext().workingTree();
+
+        while (changesets.hasNext()) {
+            Changeset changeset = changesets.next();
+            if (changeset.isOpen()) {
+                throw new CommandFailedException("Can't import past changeset " + changeset.getId()
+                        + " as it is still open.");
+            }
+            String desc = String.format("obtaining osm changeset %,d...", changeset.getId());
             console.print(desc);
             console.flush();
 
-            // ProgressListener listener = cli.getProgressListener();
-            // listener.dispose();
-            // listener.setCanceled(false);
-            // listener.progress(0f);
-            // listener.setDescription(desc);
-            // listener.started();
-
             Optional<Iterator<Change>> opchanges = changeset.getChanges().get();
             if (!opchanges.isPresent()) {
-                updateBranchChangeset(cli.getGeogit(), changeset.getId());
+                updateBranchChangeset(geogit, changeset.getId());
                 console.println(" does not apply.");
                 console.flush();
                 continue;
@@ -251,9 +258,21 @@ public class OSMHistoryImport extends AbstractCommand implements CLICommand {
             Iterator<Change> changes = opchanges.get();
             console.print("applying...");
             console.flush();
-            insertAndAddChanges(cli, changes);
-            // listener.progress(100f);
-            // listener.complete();
+
+            ObjectId workTreeId = workingTree.getTree().getId();
+            long changeCount = insertChanges(cli, changes, featureFilter);
+            console.print(String.format("Applied %,d changes, staging...", changeCount));
+            console.flush();
+            ObjectId afterTreeId = workingTree.getTree().getId();
+
+            DiffObjectCount diffCount = geogit.command(DiffCount.class)
+                    .setOldVersion(workTreeId.toString()).setNewVersion(afterTreeId.toString())
+                    .call();
+
+            geogit.command(AddOp.class).call();
+            console.println(String.format("done. %,d changes actually applied.",
+                    diffCount.featureCount()));
+            console.flush();
 
             commit(cli, changeset);
         }
@@ -265,6 +284,7 @@ public class OSMHistoryImport extends AbstractCommand implements CLICommand {
      * @throws IOException
      */
     private void commit(GeogitCLI cli, Changeset changeset) throws IOException {
+        Preconditions.checkArgument(!changeset.isOpen());
         ConsoleReader console = cli.getConsole();
         console.print("Committing changeset " + changeset.getId() + "...");
         console.flush();
@@ -287,7 +307,7 @@ public class OSMHistoryImport extends AbstractCommand implements CLICommand {
         if (userName != null) {
             command.setCommitter(userName, null);
         }
-        command.setCommitterTimestamp(changeset.getClosed());
+        command.setCommitterTimestamp(changeset.getClosed().get());
         command.setCommitterTimeZoneOffset(0);// osm timestamps are in GMT
 
         ProgressListener listener = cli.getProgressListener();
@@ -295,10 +315,12 @@ public class OSMHistoryImport extends AbstractCommand implements CLICommand {
         listener.started();
         command.setProgressListener(listener);
         try {
-            command.call();
+            RevCommit commit = command.call();
+            Ref head = geogit.command(RefParse.class).setName(Ref.HEAD).call().get();
+            Preconditions.checkState(commit.getId().equals(head.getObjectId()));
             updateBranchChangeset(geogit, changeset.getId());
             listener.complete();
-            console.println("done.");
+            console.println("Commit " + commit.getId().toString());
             console.flush();
         } catch (Exception e) {
             throw Throwables.propagate(e);
@@ -356,13 +378,12 @@ public class OSMHistoryImport extends AbstractCommand implements CLICommand {
     /**
      * @param cli
      * @param changes
+     * @param featureFilter
      * @throws IOException
      */
-    private void insertAndAddChanges(GeogitCLI cli, final Iterator<Change> changes)
-            throws IOException {
-        if (!changes.hasNext()) {
-            return;
-        }
+    private long insertChanges(GeogitCLI cli, final Iterator<Change> changes,
+            @Nullable Envelope featureFilter) throws IOException {
+
         final GeoGIT geogit = cli.getGeogit();
         final Repository repository = geogit.getRepository();
         final WorkingTree workTree = repository.workingTree();
@@ -377,7 +398,7 @@ public class OSMHistoryImport extends AbstractCommand implements CLICommand {
             }
         };
 
-        int cnt = 0;
+        long cnt = 0;
 
         Set<String> deletes = Sets.newHashSet();
         Multimap<String, SimpleFeature> insertsByParent = HashMultimap.create();
@@ -388,9 +409,9 @@ public class OSMHistoryImport extends AbstractCommand implements CLICommand {
             if (featurePath == null) {
                 continue;// ignores relations
             }
-            cnt++;
             final String parentPath = NodeRef.parentPath(featurePath);
             if (Change.Type.delete.equals(change.getType())) {
+                cnt++;
                 deletes.add(featurePath);
             } else {
                 final Primitive primitive = change.getNode().isPresent() ? change.getNode().get()
@@ -402,7 +423,12 @@ public class OSMHistoryImport extends AbstractCommand implements CLICommand {
                 }
 
                 SimpleFeature feature = toFeature(primitive, geom);
-                insertsByParent.put(parentPath, feature);
+
+                if (featureFilter == null
+                        || featureFilter.intersects((Envelope) feature.getBounds())) {
+                    insertsByParent.put(parentPath, feature);
+                    cnt++;
+                }
             }
         }
 
@@ -421,14 +447,7 @@ public class OSMHistoryImport extends AbstractCommand implements CLICommand {
         if (!deletes.isEmpty()) {
             workTree.delete(deletes.iterator());
         }
-        ConsoleReader console = cli.getConsole();
-        console.print("Applied " + cnt + " changes, staging...");
-        console.flush();
-
-        geogit.command(AddOp.class).call();
-
-        console.println("done.");
-        console.flush();
+        return cnt;
     }
 
     /**

@@ -12,11 +12,11 @@ import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
 import java.io.InputStream;
 
 import javax.annotation.Nullable;
+import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-import com.google.common.base.Optional;
 import com.vividsolutions.jts.geom.Envelope;
 
 /**
@@ -36,15 +36,26 @@ import com.vividsolutions.jts.geom.Envelope;
  */
 class ChangesetScanner {
 
-    public Optional<Changeset> parse(InputStream changesetStream) throws XMLStreamException {
+    private XMLStreamReader reader;
 
-        XMLStreamReader reader;
+    public ChangesetScanner(InputStream changesetStream) throws XMLStreamException,
+            FactoryConfigurationError {
 
-        reader = XMLInputFactory.newFactory().createXMLStreamReader(changesetStream, "UTF-8");
+        this.reader = XMLInputFactory.newFactory().createXMLStreamReader(changesetStream, "UTF-8");
 
+        reader.nextTag();
+        reader.require(START_ELEMENT, null, "osm");
+        reader.nextTag();
+    }
+
+    @Nullable
+    public Changeset parseNext() throws XMLStreamException {
+        if (reader.getEventType() == END_ELEMENT && reader.getLocalName().equals("osm")) {
+            return null;
+        }
         Changeset changeset = parse(reader);
 
-        return Optional.fromNullable(changeset);
+        return changeset;
     }
 
     /**
@@ -63,9 +74,6 @@ class ChangesetScanner {
      * </pre>
      */
     private Changeset parse(XMLStreamReader reader) throws XMLStreamException {
-        reader.nextTag();
-        reader.require(START_ELEMENT, null, "osm");
-        reader.nextTag();
         reader.require(START_ELEMENT, null, "changeset");
 
         Changeset changeset = new Changeset();
@@ -77,11 +85,14 @@ class ChangesetScanner {
             changeset.setUserId(Long.valueOf(uid));
         }
 
+        changeset.setOpen(Boolean.valueOf(reader.getAttributeValue(null, "open")));
+
         changeset.setCreated(ParsingUtils.parseDateTime(reader
                 .getAttributeValue(null, "created_at")));
-        changeset
-                .setClosed(ParsingUtils.parseDateTime(reader.getAttributeValue(null, "closed_at")));
-        changeset.setOpen(Boolean.valueOf(reader.getAttributeValue(null, "open")));
+        if (!changeset.isOpen()) {
+            changeset.setClosed(ParsingUtils.parseDateTime(reader.getAttributeValue(null,
+                    "closed_at")));
+        }
         changeset.setWgs84Bounds(parseWGS84Bounds(reader));
 
         while (true) {
@@ -110,8 +121,6 @@ class ChangesetScanner {
 
         reader.require(END_ELEMENT, null, "changeset");
         reader.nextTag();
-        reader.require(END_ELEMENT, null, "osm");
-
         return changeset;
     }
 

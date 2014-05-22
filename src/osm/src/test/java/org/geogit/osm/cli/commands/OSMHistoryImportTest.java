@@ -73,11 +73,11 @@ public class OSMHistoryImportTest extends Assert {
     public void test() throws Exception {
         cli.execute("config", "user.name", "Gabriel Roldan");
         cli.execute("config", "user.email", "groldan@opengeo.org");
-        cli.execute("osm", "import-history", fakeOsmApiUrl, "--to", "9");
+        cli.execute("osm", "import-history", fakeOsmApiUrl, "--to", "10");
 
         GeoGIT geogit = cli.getGeogit();
         List<DiffEntry> changes = ImmutableList.copyOf(geogit.command(DiffOp.class)
-                .setOldVersion("HEAD^").setNewVersion("HEAD").call());
+                .setOldVersion("HEAD~2").setNewVersion("HEAD~1").call());
         assertEquals(1, changes.size());
         DiffEntry entry = changes.get(0);
         assertEquals(ChangeType.MODIFIED, entry.changeType());

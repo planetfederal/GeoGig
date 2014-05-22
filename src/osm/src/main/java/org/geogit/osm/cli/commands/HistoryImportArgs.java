@@ -31,16 +31,13 @@ public class HistoryImportArgs {
     @Parameter(names = "--saveto", description = "Directory where to save the changesets. Defaults to $TMP/changesets.osm")
     public File saveFolder;
 
-    @Parameter(names = { "--keep-files", "-k" }, description = "If specified, downloaded changeset files are kept in the --saveto folder")
-    public boolean keepFiles = false;
-
     @Parameter(names = { "--numthreads", "-t" }, description = "Number of threads to use to fetch changesets. Must be between 1 and 6")
     public int numThreads = 4;
 
     @Parameter(names = "--dev", description = "Use the development test api endpoint <http://api06.dev.openstreetmap.org/api/0.6>. NOTE: this is not the real osm history, but just for testing purposes. ")
     public boolean useTestApiEndpoint = false;
 
-    @Parameter(names = "--bbox", description = "Filter by bounding box <min lon,min lat, max lon, max lat>")
+    @Parameter(hidden = true, names = "--bbox", description = "Filter by bounding box <min lon,min lat, max lon, max lat>")
     public String bbox;
 
     public static final String DEVELOPMENT_API_ENDPOINT = "http://api06.dev.openstreetmap.org/api/0.6";
