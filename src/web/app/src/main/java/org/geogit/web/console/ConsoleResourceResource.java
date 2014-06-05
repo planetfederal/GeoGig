@@ -83,8 +83,8 @@ public class ConsoleResourceResource extends Resource {
             throw Throwables.propagate(e);
         }
         Preconditions.checkArgument("2.0".equals(json.get("jsonrpc").getAsString()));
-        Optional<GeoGIT> geogit = RESTUtils.getGeogit(request);
-        checkArgument(geogit.isPresent());
+        Optional<GeoGIT> providedGeogit = RESTUtils.getGeogit(request);
+        checkArgument(providedGeogit.isPresent());
         final String command = json.get("method").getAsString();
         final String queryId = json.get("id").getAsString();
         JsonArray paramsArray = json.get("params").getAsJsonArray();
@@ -110,8 +110,9 @@ public class ConsoleResourceResource extends Resource {
             throw Throwables.propagate(e);
         }
 
-        GeogitCLI geogitCLI = new GeogitCLI(consoleReader);
-        Platform platform = geogit.get().getPlatform();
+        GeoGIT geogit = providedGeogit.get();
+        GeogitCLI geogitCLI = new GeogitCLI(geogit, consoleReader);
+        Platform platform = geogit.getPlatform();
         geogitCLI.setPlatform(platform);
 
         String[] args = cmdAndArgs.toArray(new String[cmdAndArgs.size()]);
@@ -124,12 +125,10 @@ public class ConsoleResourceResource extends Resource {
             response.addProperty("result", output);
             response.addProperty("error", (String) null);
         } else {
-            response.addProperty("result", geogitCLI.exception.getMessage());
             JsonObject error = new JsonObject();
             error.addProperty("code", Integer.valueOf(exitCode));
-            error.addProperty("message",
-                    geogitCLI.exception == null ? "" : geogitCLI.exception.getMessage());
-            error.addProperty("data", "asfasdfqhldfhasldfhaslfhaldsf");
+            Exception exception = geogitCLI.exception;
+            error.addProperty("message", geogitCLI.exception == null ? "" : exception.getMessage());
             response.add("error", error);
         }
 
