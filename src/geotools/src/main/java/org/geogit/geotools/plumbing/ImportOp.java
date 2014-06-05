@@ -43,6 +43,7 @@ import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.type.AttributeDescriptorImpl;
 import org.geotools.filter.identity.FeatureIdImpl;
+import org.geotools.jdbc.JDBCFeatureSource;
 import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -192,9 +193,9 @@ public class ImportOp extends AbstractGeoGitOp<RevTree> {
 
             featureSource = new ForceTypeAndFidFeatureSource<FeatureType, Feature>(featureSource,
                     featureType, fidPrefix);
-            if (!usePaging) {
-                ((ForceTypeAndFidFeatureSource) featureSource).setForbidSorting(true);
-            }
+            boolean hasPrimaryKey = hasPrimaryKey(typeName);
+            boolean forbidSorting = !usePaging || !hasPrimaryKey;
+            ((ForceTypeAndFidFeatureSource) featureSource).setForbidSorting(forbidSorting);
 
             if (destPathFeatureType != null && adaptToDefaultFeatureType && !alter) {
                 featureSource = new FeatureTypeAdapterFeatureSource<FeatureType, Feature>(
@@ -235,6 +236,19 @@ public class ImportOp extends AbstractGeoGitOp<RevTree> {
         progressListener.setProgress(100.f);
         progressListener.complete();
         return workTree.getTree();
+    }
+
+    private boolean hasPrimaryKey(String typeName) {
+        FeatureSource featureSource;
+        try {
+            featureSource = dataStore.getFeatureSource(typeName);
+        } catch (Exception e) {
+            throw new GeoToolsOpException(StatusCode.UNABLE_TO_GET_FEATURES);
+        }
+        if (featureSource instanceof JDBCFeatureSource) {
+            return ((JDBCFeatureSource) featureSource).getPrimaryKey().getColumns().size() != 0;
+        }
+        return false;
     }
 
     private SimpleFeatureType overrideGeometryName(SimpleFeatureType featureType) {
