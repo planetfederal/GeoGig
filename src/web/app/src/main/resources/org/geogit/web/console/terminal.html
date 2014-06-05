@@ -4,26 +4,59 @@
     <meta charset="utf-8" />
     <title>geogit console emulator</title>
     <script src="./jquery-1.7.1.min.js"></script>
-    <script src="./jquery.mousewheel-min.js"></script>
-    <script src="./jquery.terminal-min.js"></script>
-    <link href="./jquery.terminal.css" rel="stylesheet"/>
+    <script src="./jqconsole.min.js"></script>
+    <link href="./jqconsole.css" rel="stylesheet"/>
     <script>
-    jQuery(document).ready(function($) {
-        $('body').terminal("run-command", {
-            //login: true,
-            greetings: "Welcome to geogit web console.\nType help for a list of commands. <command> --help for command specific usage info.",
-            prompt: "geogit$ ",
-            onBlur: function() {
-                // the height of the body is only 2 lines initialy
-                return false;
-            }
+        jQuery(document).ready(function($) {
+            var nextId = (function() {
+                var id = 0;
+                return function() { return ++id; };
+            })();
+
+            var welcomeText = 'Welcome to GeoGit Console. Enter a command, or type \'help\' for assistance.\n';
+            var promptText = 'geogit $ ';
+            var jqconsole = $('#console').jqconsole(welcomeText, promptText);
+            var startPrompt = function () {
+                // Start the prompt with history enabled.
+                jqconsole.Prompt(true, function (input) {
+                    // Output input with the class jqconsole-output.
+                    var request = {
+                        'jsonrpc' : '2.0',
+                        'method' : input,
+                        'params' : [],
+                        'id' : nextId()
+                    };
+                    $.ajax({
+                        type: "POST",
+                        "url": "run-command",
+                        "data": JSON.stringify(request),
+                        "contentType" : "application/json; charset=UTF-8",
+                        "dataType": "json",
+                        "success" : function(data) {
+                            if (data.error == null) {
+                                data.result && jqconsole.Write(data.result + '\n', 'jqconsole-output');
+                                console.log(data);
+                            } else {
+                                jqconsole.Write("Failed.\n", 'jqconsole-output');
+                            }
+                            startPrompt();
+                        },
+                        "failure" : function(err) {
+                            jqconsole.Write("Server communication failed.");
+                            console && console.log(err);
+                            startPrompt();
+                        }
+                    });
+                    // jqconsole.Write(input + '\n', 'jqconsole-output');
+                    // Restart the prompt.
+                    // startPrompt();
+                });
+            };
+            startPrompt();
         });
-    });
     </script>
   </head>
 <body>
-    <!--
-    Example copied from http://terminal.jcubic.pl/
-    -->
+    <div id="console"></div>
 </body>
 </html>
