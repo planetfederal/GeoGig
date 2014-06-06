@@ -26,6 +26,7 @@ import org.geogit.storage.bdbje.JEStorageModule;
 import org.geogit.web.console.ConsoleResourceResource;
 import org.restlet.Application;
 import org.restlet.Component;
+import org.restlet.Redirector;
 import org.restlet.Restlet;
 import org.restlet.Router;
 import org.restlet.data.Protocol;
@@ -100,8 +101,10 @@ public class Main extends Application {
             }
         };
         RepositoryRouter root = new RepositoryRouter();
-        root.attach("/console", ConsoleResourceResource.class);
+        Redirector redirector = new Redirector(getContext(), "console/", Redirector.MODE_CLIENT_PERMANENT);
         root.attach("/console/{resource}", ConsoleResourceResource.class);
+        root.attach("/console/", ConsoleResourceResource.class);
+        root.attach("/console", redirector);
         
         router.attach("/repo", root);
         router.attach("/{command}.{extension}", CommandResource.class);
