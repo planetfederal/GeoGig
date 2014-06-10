@@ -24,6 +24,11 @@
                         startPrompt();
                         return;
                     }
+                    if(input.trim() == 'clear'){
+                    	jqconsole.Reset();
+                        startPrompt();
+                        return;
+                    }
                     var request = {
                         'jsonrpc' : '2.0',
                         'method' : input,
