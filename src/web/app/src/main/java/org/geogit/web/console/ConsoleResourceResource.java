@@ -14,7 +14,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.Reader;
 
 import jline.UnsupportedTerminal;
 import jline.console.ConsoleReader;
@@ -43,7 +42,20 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 /**
- *
+ * The main entry point for the web console.
+ * <p>
+ * For the console to process commands, the {@code web.console.enabled} config option must be set to
+ * {@code true}.
+ * <p>
+ * Commands come in as <a href="http://json-rpc.org/wiki/specification">JSON RPC 2.0</a> messages
+ * using POST method to the {@code /console/run-command} end point.
+ * <p>
+ * Example request body content:
+ * <ul>
+ * <li> <code>{"jsonrpc":"2.0","method":"status","params":["--help"],"id":3}</code>
+ * <li>
+ * <code>{"jsonrpc":"2.0","method":"commit","params":["roads","-m","deleted one road"],"id":8}</code>
+ * </ul>
  */
 public class ConsoleResourceResource extends Resource {
 
@@ -60,15 +72,6 @@ public class ConsoleResourceResource extends Resource {
     /**
      * Handles JSON RPC 2.0 (http://json-rpc.org/wiki/specification) calls to the
      * <code>/console/run-command end point</code>.
-     * 
-     * <p>
-     * Example request body content:
-     * <ul>
-     * <li> <code>{"jsonrpc":"2.0","method":"status","params":["--help"],"id":3}</code>
-     * <li>
-     * <code>{"jsonrpc":"2.0","method":"commit","params":["roads","-m","deleted one road"],"id":8}</code>
-     * </ul>
-     * 
      */
     @Override
     public void handlePost() {
@@ -88,6 +91,18 @@ public class ConsoleResourceResource extends Resource {
         Preconditions.checkArgument("2.0".equals(json.get("jsonrpc").getAsString()));
         Optional<GeoGIT> providedGeogit = RESTUtils.getGeogit(request);
         checkArgument(providedGeogit.isPresent());
+        final GeoGIT geogit = providedGeogit.get();
+        JsonObject response;
+        if (!checkConsoleEnabled(geogit.getContext())) {
+            response = serviceDisabled(json);
+        } else {
+            response = processRequest(json, geogit);
+        }
+        getResponse().setEntity(response.toString(), MediaType.APPLICATION_JSON);
+    }
+
+    private JsonObject processRequest(JsonObject json, final GeoGIT geogit) {
+        JsonObject response;
         final String command = json.get("method").getAsString();
         final String queryId = json.get("id").getAsString();
         // not used, we're getting the whole command and args in the "method" object
@@ -97,7 +112,6 @@ public class ConsoleResourceResource extends Resource {
         // dumps output to a temp file if > threshold
         FileBackedOutputStream out = new FileBackedOutputStream(4096);
         try {
-            GeoGIT geogit = providedGeogit.get();
             // pass it a BufferedOutputStream 'cause it doesn't buffer the internal FileOutputStream
             ConsoleReader console = new ConsoleReader(in, new BufferedOutputStream(out),
                     new UnsupportedTerminal());
@@ -109,7 +123,7 @@ public class ConsoleResourceResource extends Resource {
 
             String[] args = ArgumentTokenizer.tokenize(command);
             final int exitCode = geogitCLI.execute(args);
-            JsonObject response = new JsonObject();
+            response = new JsonObject();
             response.addProperty("id", queryId);
 
             final int charCountLimit = getOutputLimit(geogit.getContext());
@@ -123,8 +137,7 @@ public class ConsoleResourceResource extends Resource {
                 JsonObject error = buildError(exitCode, output, exception);
                 response.add("error", error);
             }
-
-            getResponse().setEntity(response.toString(), MediaType.APPLICATION_JSON);
+            return response;
         } catch (IOException e) {
             throw Throwables.propagate(e);
         } finally {
@@ -135,6 +148,29 @@ public class ConsoleResourceResource extends Resource {
                 ignore.printStackTrace();
             }
         }
+    }
+
+    private JsonObject serviceDisabled(JsonObject request) {
+        final String queryId = request.get("id").getAsString();
+        JsonObject response = new JsonObject();
+        response.addProperty("id", queryId);
+
+        JsonObject error = new JsonObject();
+        error.addProperty("code", "-1");
+        String message = "Web-console service is disabled. Run 'geogit config web.console.enabled true' on a real terminal to enable it.";
+        error.addProperty("message", message);
+
+        response.add("error", error);
+
+        return response;
+    }
+
+    private boolean checkConsoleEnabled(Context ctx) {
+        Optional<String> configOption = ctx.command(ConfigGet.class).setName("web.console.enabled")
+                .call();
+
+        boolean enabled = configOption.isPresent() && Boolean.parseBoolean(configOption.get());
+        return enabled;
     }
 
     private int getOutputLimit(Context ctx) {
