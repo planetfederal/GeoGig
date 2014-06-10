@@ -7,21 +7,23 @@ package org.geogit.web.console;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.io.Reader;
 
 import jline.UnsupportedTerminal;
 import jline.console.ConsoleReader;
 
+import org.geogit.api.Context;
 import org.geogit.api.GeoGIT;
 import org.geogit.api.Platform;
+import org.geogit.api.porcelain.ConfigGet;
+import org.geogit.cli.ArgumentTokenizer;
 import org.geogit.cli.GeogitCLI;
 import org.geogit.rest.repository.RESTUtils;
 import org.restlet.data.MediaType;
@@ -30,12 +32,13 @@ import org.restlet.resource.InputRepresentation;
 import org.restlet.resource.Resource;
 import org.restlet.resource.StreamRepresentation;
 
+import com.google.common.base.Charsets;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Throwables;
 import com.google.common.io.ByteStreams;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
+import com.google.common.io.CharSource;
+import com.google.common.io.FileBackedOutputStream;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -71,7 +74,7 @@ public class ConsoleResourceResource extends Resource {
     public void handlePost() {
         final Request request = getRequest();
         final String resource = RESTUtils.getStringAttribute(getRequest(), "resource");
-        checkArgument("run-command".equals(resource), "naaaahhh");
+        checkArgument("run-command".equals(resource), "Invalid entry point. Expected: run-command.");
         JsonParser parser = new JsonParser();
         InputRepresentation entityAsObject = (InputRepresentation) request.getEntity();
         JsonObject json;
@@ -87,52 +90,107 @@ public class ConsoleResourceResource extends Resource {
         checkArgument(providedGeogit.isPresent());
         final String command = json.get("method").getAsString();
         final String queryId = json.get("id").getAsString();
-        JsonArray paramsArray = json.get("params").getAsJsonArray();
-
-        List<String> cmdAndArgs = new ArrayList<String>(1 + paramsArray.size());
-        cmdAndArgs.add(command);
-        for (Iterator<JsonElement> i = paramsArray.iterator(); i.hasNext();) {
-            JsonElement argElem = i.next();
-            if (argElem.isJsonNull()
-                    || ((argElem instanceof JsonObject) && ((JsonObject) argElem).entrySet()
-                            .isEmpty())) {
-                continue;
-            }
-            cmdAndArgs.add(argElem.getAsString());
-        }
+        // not used, we're getting the whole command and args in the "method" object
+        // JsonArray paramsArray = json.get("params").getAsJsonArray();
 
         InputStream in = new ByteArrayInputStream(new byte[0]);
-        OutputStream out = new ByteArrayOutputStream();
-        ConsoleReader consoleReader;
+        // dumps output to a temp file if > threshold
+        FileBackedOutputStream out = new FileBackedOutputStream(4096);
         try {
-            consoleReader = new ConsoleReader(in, out, new UnsupportedTerminal());
+            GeoGIT geogit = providedGeogit.get();
+            // pass it a BufferedOutputStream 'cause it doesn't buffer the internal FileOutputStream
+            ConsoleReader console = new ConsoleReader(in, new BufferedOutputStream(out),
+                    new UnsupportedTerminal());
+            Platform platform = geogit.getPlatform();
+
+            GeogitCLI geogitCLI = new GeogitCLI(geogit, console);
+            geogitCLI.setPlatform(platform);
+            geogitCLI.disableProgressListener();
+
+            String[] args = ArgumentTokenizer.tokenize(command);
+            final int exitCode = geogitCLI.execute(args);
+            JsonObject response = new JsonObject();
+            response.addProperty("id", queryId);
+
+            final int charCountLimit = getOutputLimit(geogit.getContext());
+            final StringBuilder output = getLimitedOutput(out, charCountLimit);
+
+            if (exitCode == 0) {
+                response.addProperty("result", output.toString());
+                response.addProperty("error", (String) null);
+            } else {
+                Exception exception = geogitCLI.exception;
+                JsonObject error = buildError(exitCode, output, exception);
+                response.add("error", error);
+            }
+
+            getResponse().setEntity(response.toString(), MediaType.APPLICATION_JSON);
         } catch (IOException e) {
             throw Throwables.propagate(e);
+        } finally {
+            // delete temp file
+            try {
+                out.reset();
+            } catch (IOException ignore) {
+                ignore.printStackTrace();
+            }
         }
+    }
 
-        GeoGIT geogit = providedGeogit.get();
-        GeogitCLI geogitCLI = new GeogitCLI(geogit, consoleReader);
-        Platform platform = geogit.getPlatform();
-        geogitCLI.setPlatform(platform);
+    private int getOutputLimit(Context ctx) {
+        final int defaultLimit = 1024 * 16;
 
-        String[] args = cmdAndArgs.toArray(new String[cmdAndArgs.size()]);
-        final int exitCode = geogitCLI.execute(args);
-        JsonObject response = new JsonObject();
-        response.addProperty("id", queryId);
-        if (exitCode == 0) {
-            final String output = out.toString();
-            // w.print("{\"result\": \"Hello JSON-RPC\", \"error\": null, \"id\": 1}");
-            response.addProperty("result", output);
-            response.addProperty("error", (String) null);
-        } else {
-            JsonObject error = new JsonObject();
-            error.addProperty("code", Integer.valueOf(exitCode));
-            Exception exception = geogitCLI.exception;
-            error.addProperty("message", geogitCLI.exception == null ? "" : exception.getMessage());
-            response.add("error", error);
+        Optional<String> configuredLimit = ctx.command(ConfigGet.class)
+                .setName("web.console.limit").call();
+        int limit = defaultLimit;
+        if (configuredLimit.isPresent()) {
+            try {
+                limit = Integer.parseInt(configuredLimit.get());
+            } catch (NumberFormatException ignore) {
+                //
+                limit = defaultLimit;
+            }
+            if (limit < 1024) {
+                limit = 1024;
+            }
         }
+        return limit;
+    }
 
-        getResponse().setEntity(response.toString(), MediaType.APPLICATION_JSON);
+    private StringBuilder getLimitedOutput(FileBackedOutputStream out, final int limit)
+            throws IOException {
+
+        CharSource charSource = out.asByteSource().asCharSource(Charsets.UTF_8);
+        BufferedReader reader = charSource.openBufferedStream();
+        final StringBuilder output = new StringBuilder();
+        int count = 0;
+        String line;
+        while ((line = reader.readLine()) != null) {
+            output.append(line).append('\n');
+            count += line.length();
+            if (count >= limit) {
+                output.append("\nNote: output limited to ")
+                        .append(count)
+                        .append(" characters. Run config web.console.limit <newlimit> to change the current ")
+                        .append(limit).append(" soft limit.");
+                break;
+            }
+        }
+        return output;
+    }
+
+    private JsonObject buildError(final int exitCode, final StringBuilder output,
+            Exception exception) {
+
+        JsonObject error = new JsonObject();
+        error.addProperty("code", Integer.valueOf(exitCode));
+
+        if (output.length() == 0 && exception != null && exception.getMessage() != null) {
+            output.append(exception.getMessage());
+        }
+        String message = output.toString();
+        error.addProperty("message", message);
+        return error;
     }
 
     @Override
