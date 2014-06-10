@@ -16,13 +16,11 @@ import org.geogit.api.GeoGIT;
 import org.geogit.api.GlobalContextBuilder;
 import org.geogit.api.Platform;
 import org.geogit.api.plumbing.ResolveGeogitDir;
-import org.geogit.di.GeogitModule;
-import org.geogit.repository.Hints;
+import org.geogit.cli.CLIContextBuilder;
 import org.geogit.rest.repository.CommandResource;
 import org.geogit.rest.repository.FixedEncoder;
 import org.geogit.rest.repository.RepositoryProvider;
 import org.geogit.rest.repository.RepositoryRouter;
-import org.geogit.storage.bdbje.JEStorageModule;
 import org.geogit.web.console.ConsoleResourceResource;
 import org.restlet.Application;
 import org.restlet.Component;
@@ -33,8 +31,6 @@ import org.restlet.data.Protocol;
 import org.restlet.data.Request;
 import org.restlet.data.Response;
 
-import com.google.inject.Guice;
-import com.google.inject.util.Modules;
 import com.noelios.restlet.application.Decoder;
 
 /**
@@ -101,11 +97,12 @@ public class Main extends Application {
             }
         };
         RepositoryRouter root = new RepositoryRouter();
-        Redirector redirector = new Redirector(getContext(), "console/", Redirector.MODE_CLIENT_PERMANENT);
+        Redirector redirector = new Redirector(getContext(), "console/",
+                Redirector.MODE_CLIENT_PERMANENT);
         root.attach("/console/{resource}", ConsoleResourceResource.class);
         root.attach("/console/", ConsoleResourceResource.class);
         root.attach("/console", redirector);
-        
+
         router.attach("/repo", root);
         router.attach("/{command}.{extension}", CommandResource.class);
         router.attach("/{command}", CommandResource.class);
@@ -156,15 +153,7 @@ public class Main extends Application {
     }
 
     static void setup() {
-        GlobalContextBuilder.builder = new ContextBuilder() {
-            @Override
-            public Context build(Hints hints) {
-                return Guice.createInjector(
-                        Modules.override(new GeogitModule()).with(new JEStorageModule(),
-                                new HintsModule(hints))).getInstance(
-                        Context.class);
-            }
-        };
+        GlobalContextBuilder.builder = new CLIContextBuilder();
     }
 
     public static void main(String[] args) throws Exception {
