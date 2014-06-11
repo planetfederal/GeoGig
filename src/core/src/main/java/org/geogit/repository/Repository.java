@@ -8,6 +8,7 @@ import java.io.Closeable;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
 
 import org.geogit.api.AbstractGeoGitOp;
 import org.geogit.api.Context;
@@ -74,9 +75,12 @@ public class Repository implements Context {
 
     public static final String DEPTH_CONFIG_KEY = "core.depth";
 
+    private ExecutorService executor;
+
     @Inject
-    public Repository(Context injector) {
+    public Repository(Context injector, ExecutorService executor) {
         this.injector = injector;
+        this.executor = executor;
     }
 
     public void addListener(RepositoryListener listener) {
@@ -120,6 +124,7 @@ public class Repository implements Context {
         for (RepositoryListener l : listeners) {
             l.closed();
         }
+        executor.shutdownNow();
     }
 
     private void close(Closeable db) {
