@@ -410,7 +410,11 @@ public class JEGraphDatabase extends SynchronizedGraphDatabase {
 
         @Override
         public void map(ObjectId mapped, ObjectId original) {
-            NodeData node = getNodeInternal(mapped, true);
+            NodeData node = getNodeInternal(mapped, false);
+            if (node == null) {
+                // didn't exist
+                node = new NodeData(mapped);
+            }
             node.mappedTo = original;
             final Transaction transaction = newTransaction();
             try {
@@ -577,7 +581,7 @@ public class JEGraphDatabase extends SynchronizedGraphDatabase {
                 public ObjectId entryToObject(TupleInput input) {
                     int size = input.read();
                     if (size == 0) {
-                        return null;
+                        return ObjectId.NULL;
                     }
                     Preconditions.checkState(ObjectId.NUM_BYTES == size);
                     byte[] hash = new byte[size];
