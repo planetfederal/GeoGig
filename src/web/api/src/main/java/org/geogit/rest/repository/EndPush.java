@@ -24,14 +24,19 @@ import org.restlet.data.Request;
 import org.restlet.data.Response;
 import org.restlet.resource.Resource;
 import org.restlet.resource.Variant;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
+import com.google.common.base.Throwables;
 
 /**
  *
  */
 public class EndPush extends Resource {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(EndPush.class);
 
     @Override
     public void init(Context context, Request request, Response response) {
@@ -47,36 +52,45 @@ public class EndPush extends Resource {
 
         @Override
         public void write(Writer w) throws IOException {
-            ClientInfo info = getRequest().getClientInfo();
             Request request = getRequest();
-            Optional<GeoGIT> ggit = getGeogit(request);
-            Preconditions.checkState(ggit.isPresent());
-            Form options = getRequest().getResourceRef().getQueryAsForm();
+            try {
+                ClientInfo info = request.getClientInfo();
+                Optional<GeoGIT> ggit = getGeogit(request);
+                Preconditions.checkState(ggit.isPresent());
+                Form options = request.getResourceRef().getQueryAsForm();
 
-            // make a combined ip address to handle requests from multiple machines in the same
-            // external network.
-            // e.g.: ext.ern.al.IP.int.ern.al.IP
-            String ipAddress = info.getAddress() + "." + options.getFirstValue("internalIp", "");
+                final GeoGIT geogit = ggit.get();
 
-            String refspec = options.getFirstValue("refspec", null);
-            ObjectId oid = ObjectId.valueOf(options.getFirstValue("objectId",
-                    ObjectId.NULL.toString()));
-            ObjectId originalRefValue = ObjectId.valueOf(options.getFirstValue("originalRefValue",
-                    ObjectId.NULL.toString()));
+                // make a combined ip address to handle requests from multiple machines in the same
+                // external network.
+                // e.g.: ext.ern.al.IP.int.ern.al.IP
+                String ipAddress = info.getAddress() + "."
+                        + options.getFirstValue("internalIp", "");
+                LOGGER.debug("Initiating EndPush for '{}'", ipAddress);
 
-            Optional<Ref> currentRef = ggit.get().command(RefParse.class).setName(refspec).call();
+                String refspec = options.getFirstValue("refspec", null);
+                final ObjectId oid = ObjectId.valueOf(options.getFirstValue("objectId",
+                        ObjectId.NULL.toString()));
+                final ObjectId originalRefValue = ObjectId.valueOf(options.getFirstValue(
+                        "originalRefValue", ObjectId.NULL.toString()));
 
-            if (currentRef.isPresent() && !currentRef.get().getObjectId().equals(ObjectId.NULL)
-                    && !currentRef.get().getObjectId().equals(originalRefValue)) {
-                // Abort push
-                w.write("Push aborted for address: " + ipAddress
-                        + ". The ref was changed during push.");
-                w.flush();
-            } else {
-                PushManager pushManager = PushManager.get();
-                pushManager.connectionSucceeded(ggit.get(), ipAddress, refspec, oid);
-                w.write("Push succeeded for address: " + ipAddress);
-                w.flush();
+                Optional<Ref> currentRef = geogit.command(RefParse.class).setName(refspec).call();
+                ObjectId currentRefId = currentRef.isPresent() ? currentRef.get().getObjectId()
+                        : ObjectId.NULL;
+                if (!currentRefId.isNull() && !currentRefId.equals(originalRefValue)) {
+                    // Abort push
+                    w.write("Push aborted for address: " + ipAddress
+                            + ". The ref was changed during push.");
+                    w.flush();
+                } else {
+                    PushManager pushManager = PushManager.get();
+                    pushManager.connectionSucceeded(geogit, ipAddress, refspec, oid);
+                    w.write("Push succeeded for address: " + ipAddress);
+                    w.flush();
+                }
+            } catch (Exception e) {
+                Throwables.propagateIfInstanceOf(e, IOException.class);
+                throw Throwables.propagate(e);
             }
         }
     }

@@ -20,6 +20,11 @@
       <artifactId>org.restlet</artifactId>
     </dependency>
     <dependency>
+      <groupId>com.noelios.restlet</groupId>
+      <artifactId>com.noelios.restlet</artifactId>
+      <version>${restlet.version}</version>
+    </dependency>
+    <dependency>
       <groupId>org.geogit</groupId>
       <artifactId>geogit-core</artifactId>
       <version>${project.version}</version>

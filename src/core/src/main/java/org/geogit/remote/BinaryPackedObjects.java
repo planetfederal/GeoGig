@@ -4,6 +4,8 @@
  */
 package org.geogit.remote;
 
+import static java.lang.String.format;
+
 import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,6 +24,7 @@ import org.geogit.api.RevCommit;
 import org.geogit.api.RevObject;
 import org.geogit.repository.PostOrderIterator;
 import org.geogit.storage.BulkOpListener;
+import org.geogit.storage.BulkOpListener.CountingListener;
 import org.geogit.storage.Deduplicator;
 import org.geogit.storage.ObjectDatabase;
 import org.geogit.storage.ObjectReader;
@@ -31,6 +34,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Function;
+import com.google.common.base.Stopwatch;
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 import com.google.common.base.Throwables;
@@ -42,7 +46,7 @@ import com.google.common.collect.Iterators;
 public final class BinaryPackedObjects {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BinaryPackedObjects.class);
-    
+
     private final ObjectSerializingFactory factory;
 
     private final ObjectReader<RevObject> objectReader;
@@ -61,53 +65,72 @@ public final class BinaryPackedObjects {
         this.objectReader = factory.createObjectReader();
     }
 
-    public void write(OutputStream out, List<ObjectId> want, List<ObjectId> have,
+    /**
+     * @return the number of objects written
+     */
+    public long write(OutputStream out, List<ObjectId> want, List<ObjectId> have,
             boolean traverseCommits, Deduplicator deduplicator) throws IOException {
-        write(Suppliers.ofInstance(out), want, have, new HashSet<ObjectId>(), DEFAULT_CALLBACK, traverseCommits, deduplicator);
+        return write(Suppliers.ofInstance(out), want, have, new HashSet<ObjectId>(),
+                DEFAULT_CALLBACK, traverseCommits, deduplicator);
     }
 
-    public void write(Supplier<OutputStream> outputSupplier, List<ObjectId> want, List<ObjectId> have,
-            Set<ObjectId> sent, Callback callback, boolean traverseCommits, Deduplicator deduplicator) throws IOException {
-        LOGGER.info("checking the {} wanted ids exist...", want.size());
+    /**
+     * @return the number of objects written
+     */
+    public long write(Supplier<? extends OutputStream> outputSupplier, List<ObjectId> want,
+            List<ObjectId> have, Set<ObjectId> sent, Callback callback, boolean traverseCommits,
+            Deduplicator deduplicator) throws IOException {
+
         for (ObjectId i : want) {
             if (!database.exists(i)) {
-                throw new NoSuchElementException("Wanted id: " + i + " is not known");
+                throw new NoSuchElementException(format("Wanted commit: '%s' is not known", i));
             }
         }
 
         LOGGER.info("scanning for previsit list...");
+        Stopwatch sw = Stopwatch.createStarted();
+        ImmutableList<ObjectId> needsPrevisit = traverseCommits ? scanForPrevisitList(want, have,
+                deduplicator) : ImmutableList.copyOf(have);
+        LOGGER.info(String.format(
+                "Previsit list built in %s for %,d ids: %s. Calculating reachable content ids...",
+                sw.stop(), needsPrevisit.size(), needsPrevisit));
 
-        ImmutableList<ObjectId> needsPrevisit = traverseCommits ? scanForPrevisitList(want, have, deduplicator)
-                : ImmutableList.copyOf(have);
         deduplicator.reset();
+
+        sw.reset().start();
         ImmutableList<ObjectId> previsitResults = reachableContentIds(needsPrevisit, deduplicator);
+        LOGGER.info(String.format("reachableContentIds took %s for %,d ids", sw.stop(),
+                previsitResults.size()));
+
         deduplicator.reset();
 
         LOGGER.info("obtaining post order iterator on range...");
-
+        sw.reset().start();
         int commitsSent = 0;
         Iterator<RevObject> objects = PostOrderIterator.range(want, new ArrayList<ObjectId>(
                 previsitResults), database, traverseCommits, deduplicator);
-        int count = 0;
-        
-        
-        try{
+        long objectCount = 0;
+        LOGGER.info("PostOrderIterator.range took {}", sw.stop());
+
+        try {
             OutputStream out = outputSupplier.get();
             LOGGER.info("writing objects to remote...");
             while (objects.hasNext() && commitsSent < CAP) {
                 RevObject object = objects.next();
 
                 out.write(object.getId().getRawValue());
-                count++;
+                objectCount++;
                 factory.createObjectWriter(object.getType()).write(object, out);
                 out.flush();
                 callback.callback(Suppliers.ofInstance(object));
             }
-        }catch(IOException e){
-            LOGGER.warn(String.format("writing of objects failed after %,d objects", count));
+        } catch (IOException e) {
+            String causeMessage = Throwables.getRootCause(e).getMessage();
+            LOGGER.info(String.format("writing of objects failed after %,d objects. Cause: '%s'",
+                    objectCount, causeMessage));
             throw e;
         }
-        LOGGER.info(String.format("WRITTEN %,d objects", count));
+        return objectCount;
     }
 
     /**
@@ -119,7 +142,8 @@ public final class BinaryPackedObjects {
      * </ul>
      * 
      */
-    private ImmutableList<ObjectId> scanForPrevisitList(List<ObjectId> want, List<ObjectId> have, Deduplicator deduplicator) {
+    private ImmutableList<ObjectId> scanForPrevisitList(List<ObjectId> want, List<ObjectId> have,
+            Deduplicator deduplicator) {
         /*
          * @note Implementation note: To find the previsit list, we just iterate over all the
          * commits that will be visited according to our want and have lists. Any parents of commits
@@ -140,7 +164,8 @@ public final class BinaryPackedObjects {
         return ImmutableList.copyOf(builder.build());
     }
 
-    private ImmutableList<ObjectId> reachableContentIds(ImmutableList<ObjectId> needsPrevisit, Deduplicator deduplicator) {
+    private ImmutableList<ObjectId> reachableContentIds(ImmutableList<ObjectId> needsPrevisit,
+            Deduplicator deduplicator) {
         Function<RevObject, ObjectId> getIdTransformer = new Function<RevObject, ObjectId>() {
             @Override
             @Nullable
@@ -155,11 +180,47 @@ public final class BinaryPackedObjects {
         return ImmutableList.copyOf(reachable);
     }
 
-    public void ingest(final InputStream in) {
-        ingest(in, DEFAULT_CALLBACK);
+    public static class IngestResults {
+        private long inserted;
+
+        private long existing;
+
+        private IngestResults(long inserted, long existing) {
+            this.inserted = inserted;
+            this.existing = existing;
+
+        }
+
+        /**
+         * @return the number of objects inserted (i.e. didn't already exist)
+         */
+        public long getInserted() {
+            return inserted;
+        }
+
+        /**
+         * @return the number of objects that already existed in the objects database
+         */
+        public long getExisting() {
+            return existing;
+        }
+
+        public long total() {
+            return inserted + existing;
+        }
     }
 
-    public void ingest(final InputStream in, final Callback callback) {
+    /**
+     * @return the number of objects parsed from the input stream
+     */
+    public IngestResults ingest(final InputStream in) {
+        return ingest(in, DEFAULT_CALLBACK);
+    }
+
+    /**
+     * @return the number of objects parsed from the input stream
+     */
+    public IngestResults ingest(final InputStream in, final Callback callback) {
         Iterator<RevObject> objects = streamToObjects(in);
 
         BulkOpListener listener = new BulkOpListener() {
@@ -173,11 +234,13 @@ public final class BinaryPackedObjects {
                 });
             }
         };
-        
+
+        CountingListener countingListener = BulkOpListener.newCountingListener();
+        listener = BulkOpListener.composite(countingListener, listener);
         database.putAll(objects, listener);
+        return new IngestResults(countingListener.inserted(), countingListener.found());
     }
 
-    
     private Iterator<RevObject> streamToObjects(final InputStream in) {
         return new AbstractIterator<RevObject>() {
             @Override
