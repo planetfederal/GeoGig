@@ -245,17 +245,17 @@ public final class CommitBuilder {
         final ObjectId treeId = this.treeId;
         final ImmutableList<ObjectId> parentIds = ImmutableList.copyOf(this.parentIds);
 
-        final RevPerson author = new RevPerson(this.author, authorEmail, getAuthorTimestamp(),
+        final RevPerson author = new RevPersonImpl(this.author, authorEmail, getAuthorTimestamp(),
                 getAuthorTimeZoneOffset());
-        final RevPerson committer = new RevPerson(this.committer, committerEmail,
+        final RevPerson committer = new RevPersonImpl(this.committer, committerEmail,
                 getCommitterTimestamp(), getCommitterTimeZoneOffset());
 
         final String commitMessage = this.message == null ? "" : this.message;
 
-        RevCommit unnnamedCommit = new RevCommit(ObjectId.NULL, treeId, parentIds, author,
+        RevCommit unnnamedCommit = new RevCommitImpl(ObjectId.NULL, treeId, parentIds, author,
                 committer, commitMessage);
         ObjectId commitId = new HashObject().setObject(unnnamedCommit).call();
 
-        return new RevCommit(commitId, treeId, parentIds, author, committer, commitMessage);
+        return new RevCommitImpl(commitId, treeId, parentIds, author, committer, commitMessage);
     }
 }

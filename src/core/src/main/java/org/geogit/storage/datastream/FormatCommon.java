@@ -21,11 +21,16 @@ import org.geogit.api.Node;
 import org.geogit.api.NodeRef;
 import org.geogit.api.ObjectId;
 import org.geogit.api.RevCommit;
+import org.geogit.api.RevCommitImpl;
 import org.geogit.api.RevFeature;
+import org.geogit.api.RevFeatureImpl;
 import org.geogit.api.RevFeatureType;
+import org.geogit.api.RevFeatureTypeImpl;
 import org.geogit.api.RevObject;
 import org.geogit.api.RevPerson;
+import org.geogit.api.RevPersonImpl;
 import org.geogit.api.RevTag;
+import org.geogit.api.RevTagImpl;
 import org.geogit.api.RevTree;
 import org.geogit.api.RevTreeImpl;
 import org.geogit.api.plumbing.diff.DiffEntry;
@@ -114,7 +119,7 @@ public class FormatCommon {
         final String message = in.readUTF();
         final RevPerson tagger = readRevPerson(in);
 
-        return new RevTag(id, name, commitId, message, tagger);
+        return new RevTagImpl(id, name, commitId, message, tagger);
     }
 
     public static void writeTag(RevTag tag, DataOutput out) throws IOException {
@@ -163,7 +168,7 @@ public class FormatCommon {
 
         final String message = in.readUTF();
 
-        return new RevCommit(id, treeId, parentListBuilder.build(), author, committer, message);
+        return new RevCommitImpl(id, treeId, parentListBuilder.build(), author, committer, message);
     }
 
     public static final RevPerson readRevPerson(DataInput in) throws IOException {
@@ -171,8 +176,8 @@ public class FormatCommon {
         final String email = in.readUTF();
         final long timestamp = in.readLong();
         final int tzOffset = in.readInt();
-        return new RevPerson(name.length() == 0 ? null : name, email.length() == 0 ? null : email,
-                timestamp, tzOffset);
+        return new RevPersonImpl(name.length() == 0 ? null : name, email.length() == 0 ? null
+                : email, timestamp, tzOffset);
     }
 
     public static final void writePerson(RevPerson person, DataOutput data) throws IOException {
@@ -296,7 +301,7 @@ public class FormatCommon {
             builder.add(Optional.fromNullable(value));
         }
 
-        return new RevFeature(id, builder.build());
+        return new RevFeatureImpl(id, builder.build());
     }
 
     public static RevFeatureType readFeatureType(ObjectId id, DataInput in) throws IOException {
@@ -313,7 +318,7 @@ public class FormatCommon {
         }
         SimpleFeatureType ftype = typeFactory.createSimpleFeatureType(name, attributes, null,
                 false, Collections.<Filter> emptyList(), BasicFeatureTypes.FEATURE, null);
-        return new RevFeatureType(id, ftype);
+        return new RevFeatureTypeImpl(id, ftype);
     }
 
     private static Name readName(DataInput in) throws IOException {
@@ -329,7 +334,8 @@ public class FormatCommon {
         final byte typeTag = in.readByte();
         final FieldType type = FieldType.valueOf(typeTag);
         if (Geometry.class.isAssignableFrom(type.getBinding())) {
-            final boolean isCRSCode = in.readBoolean(); // as opposed to a raw WKT string
+            final boolean isCRSCode = in.readBoolean(); // as opposed to a raw
+                                                        // WKT string
             final String crsText = in.readUTF();
             final CoordinateReferenceSystem crs;
             try {

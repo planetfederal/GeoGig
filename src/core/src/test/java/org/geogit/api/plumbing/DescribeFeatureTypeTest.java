@@ -5,6 +5,7 @@
 package org.geogit.api.plumbing;
 
 import org.geogit.api.RevFeatureType;
+import org.geogit.api.RevFeatureTypeImpl;
 import org.geogit.test.integration.RepositoryTestCase;
 import org.junit.Test;
 import org.opengis.feature.type.PropertyDescriptor;
@@ -17,7 +18,7 @@ public class DescribeFeatureTypeTest extends RepositoryTestCase {
 
     @Override
     protected void setUpInternal() throws Exception {
-        featureType = RevFeatureType.build(pointsType);
+        featureType = RevFeatureTypeImpl.build(pointsType);
     }
 
     @Test

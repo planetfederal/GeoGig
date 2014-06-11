@@ -21,6 +21,7 @@ import org.geogit.api.ObjectId;
 import org.geogit.api.Platform;
 import org.geogit.api.ProgressListener;
 import org.geogit.api.RevFeatureType;
+import org.geogit.api.RevFeatureTypeImpl;
 import org.geogit.api.RevTree;
 import org.geogit.api.TestPlatform;
 import org.geogit.api.data.ForwardingFeatureSource;
@@ -648,7 +649,7 @@ public class WorkingTreeTest extends RepositoryTestCase {
         RevTree root = repo.workingTree().getTree();
         assertNotNull(root);
         Optional<Node> typeTreeId = findTreeChild(root, pointsName);
-        assertEquals(typeTreeId.get().getMetadataId().get(), RevFeatureType.build(pointsType)
+        assertEquals(typeTreeId.get().getMetadataId().get(), RevFeatureTypeImpl.build(pointsType)
                 .getId());
         RevTree typeTree = repo.getTree(typeTreeId.get().getObjectId());
         assertNotNull(typeTree);
@@ -656,7 +657,7 @@ public class WorkingTreeTest extends RepositoryTestCase {
         Optional<NodeRef> featureBlobId = geogit.command(FindTreeChild.class).setParent(root)
                 .setChildPath(path).setIndex(true).call();
         assertTrue(featureBlobId.isPresent());
-        assertEquals(RevFeatureType.build(modifiedPointsType).getId(), featureBlobId.get()
+        assertEquals(RevFeatureTypeImpl.build(modifiedPointsType).getId(), featureBlobId.get()
                 .getMetadataId());
         path = NodeRef.appendChild(pointsName, points3.getIdentifier().getID());
     }
@@ -668,14 +669,14 @@ public class WorkingTreeTest extends RepositoryTestCase {
         RevTree root = repo.workingTree().getTree();
         assertNotNull(root);
         Optional<Node> typeTreeId = findTreeChild(root, pointsName);
-        assertEquals(typeTreeId.get().getMetadataId().get(), RevFeatureType.build(pointsType)
+        assertEquals(typeTreeId.get().getMetadataId().get(), RevFeatureTypeImpl.build(pointsType)
                 .getId());
         RevTree typeTree = repo.getTree(typeTreeId.get().getObjectId());
         assertNotNull(typeTree);
         String path = NodeRef.appendChild(pointsName, points1.getIdentifier().getID());
         Optional<Node> featureBlobId = findTreeChild(root, path);
         assertTrue(featureBlobId.isPresent());
-        assertEquals(RevFeatureType.build(modifiedPointsType).getId(), featureBlobId.get()
+        assertEquals(RevFeatureTypeImpl.build(modifiedPointsType).getId(), featureBlobId.get()
                 .getMetadataId().orNull());
         path = NodeRef.appendChild(pointsName, points3.getIdentifier().getID());
         featureBlobId = findTreeChild(root, path);
@@ -685,7 +686,7 @@ public class WorkingTreeTest extends RepositoryTestCase {
         root = repo.workingTree().getTree();
         typeTreeId = findTreeChild(root, pointsName);
         assertEquals(typeTreeId.get().getMetadataId().get(),
-                RevFeatureType.build(modifiedPointsType).getId());
+                RevFeatureTypeImpl.build(modifiedPointsType).getId());
         typeTree = repo.getTree(typeTreeId.get().getObjectId());
         assertNotNull(typeTree);
         path = NodeRef.appendChild(pointsName, points1.getIdentifier().getID());
@@ -694,7 +695,7 @@ public class WorkingTreeTest extends RepositoryTestCase {
         assertEquals(null, featureBlobId.get().getMetadataId().orNull());
         path = NodeRef.appendChild(pointsName, points3.getIdentifier().getID());
         featureBlobId = findTreeChild(root, path);
-        assertEquals(RevFeatureType.build(pointsType).getId(), featureBlobId.get().getMetadataId()
+        assertEquals(RevFeatureTypeImpl.build(pointsType).getId(), featureBlobId.get().getMetadataId()
                 .orNull());
 
     }

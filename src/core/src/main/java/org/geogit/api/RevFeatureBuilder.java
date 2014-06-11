@@ -39,6 +39,6 @@ public final class RevFeatureBuilder {
             valuesBuilder.add(Optional.fromNullable(prop.getValue()));
         }
 
-        return RevFeature.build(valuesBuilder.build());
+        return RevFeatureImpl.build(valuesBuilder.build());
     }
 }

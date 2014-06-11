@@ -16,7 +16,7 @@ import org.geogit.api.FeatureBuilder;
 import org.geogit.api.NodeRef;
 import org.geogit.api.ObjectId;
 import org.geogit.api.RevFeature;
-import org.geogit.api.RevFeatureType;
+import org.geogit.api.RevFeatureTypeImpl;
 import org.geogit.api.RevTree;
 import org.geogit.api.plumbing.LsTreeOp;
 import org.geogit.api.plumbing.LsTreeOp.Strategy;
@@ -145,9 +145,9 @@ public class OSMMapOp extends AbstractGeoGitOp<RevTree> {
             private final Map<String, FeatureBuilder> builders = //
             ImmutableMap.<String, FeatureBuilder> of(//
                     OSMUtils.NODE_TYPE_NAME, //
-                    new FeatureBuilder(RevFeatureType.build(OSMUtils.nodeType())), //
+                    new FeatureBuilder(RevFeatureTypeImpl.build(OSMUtils.nodeType())), //
                     OSMUtils.WAY_TYPE_NAME,//
-                    new FeatureBuilder(RevFeatureType.build(OSMUtils.wayType())));
+                    new FeatureBuilder(RevFeatureTypeImpl.build(OSMUtils.wayType())));
 
             private final RevObjectParse parseCommand = command(RevObjectParse.class);
 

@@ -20,7 +20,9 @@ import org.geogit.api.NodeRef;
 import org.geogit.api.ProgressListener;
 import org.geogit.api.Ref;
 import org.geogit.api.RevFeature;
+import org.geogit.api.RevFeatureImpl;
 import org.geogit.api.RevFeatureType;
+import org.geogit.api.RevFeatureTypeImpl;
 import org.geogit.api.RevTree;
 import org.geogit.api.data.ForwardingFeatureCollection;
 import org.geogit.api.data.ForwardingFeatureIterator;
@@ -287,7 +289,7 @@ public class ImportOp extends AbstractGeoGitOp<RevTree> {
         Iterator<NodeRef> oldFeatures = command(LsTreeOp.class).setReference(refspec)
                 .setStrategy(Strategy.FEATURES_ONLY).call();
 
-        RevFeatureType revFeatureType = RevFeatureType.build(featureType);
+        RevFeatureType revFeatureType = RevFeatureTypeImpl.build(featureType);
         Iterator<Feature> transformedIterator = transformIterator(oldFeatures, revFeatureType);
         return transformedIterator;
     }
@@ -485,7 +487,7 @@ public class ImportOp extends AbstractGeoGitOp<RevTree> {
                 newValues.add(Optional.absent());
             }
         }
-        RevFeature newFeature = RevFeature.build(ImmutableList.copyOf(newValues));
+        RevFeature newFeature = RevFeatureImpl.build(ImmutableList.copyOf(newValues));
         FeatureBuilder featureBuilder = new FeatureBuilder(featureType);
         Feature feature = featureBuilder.build(node.name(), newFeature);
         return feature;

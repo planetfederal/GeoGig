@@ -16,6 +16,7 @@ import org.geogit.api.Node;
 import org.geogit.api.NodeRef;
 import org.geogit.api.ObjectId;
 import org.geogit.api.RevFeatureType;
+import org.geogit.api.RevFeatureTypeImpl;
 import org.geogit.api.RevObject;
 import org.geogit.api.RevObject.TYPE;
 import org.geogit.api.RevTree;
@@ -99,7 +100,7 @@ class WorkingTreeInsertHelper {
 
         ObjectId metadataId = ObjectId.NULL;
         if (type != null) {
-            RevFeatureType revFeatureType = RevFeatureType.build(type);
+            RevFeatureType revFeatureType = RevFeatureTypeImpl.build(type);
             if (tree.isEmpty()) {
                 indexDatabase.put(revFeatureType);
             }

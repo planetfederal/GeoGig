@@ -17,10 +17,12 @@ import javax.annotation.Nullable;
 import org.geogit.api.Node;
 import org.geogit.api.NodeRef;
 import org.geogit.api.ObjectId;
+import org.geogit.api.ProgressListener;
 import org.geogit.api.Ref;
 import org.geogit.api.RevCommit;
 import org.geogit.api.RevFeature;
 import org.geogit.api.RevFeatureType;
+import org.geogit.api.RevFeatureTypeImpl;
 import org.geogit.api.RevTree;
 import org.geogit.api.plumbing.FindTreeChild;
 import org.geogit.api.plumbing.RevObjectParse;
@@ -35,7 +37,6 @@ import org.geogit.repository.WorkingTree;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.geogit.api.ProgressListener;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
@@ -108,7 +109,7 @@ public class CommitOpTest extends RepositoryTestCase {
     @Test
     public void testCommitAddsFeatureTypeToObjectDatabase() throws Exception {
         insertAndAdd(points1);
-        ObjectId id = RevFeatureType.build(pointsType).getId();
+        ObjectId id = RevFeatureTypeImpl.build(pointsType).getId();
         geogit.command(AddOp.class).addPattern(".").call();
         RevCommit commit = geogit.command(CommitOp.class).call();
         assertNotNull(commit);

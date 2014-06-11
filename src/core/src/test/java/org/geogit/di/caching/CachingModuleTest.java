@@ -22,6 +22,7 @@ import org.geogit.api.ObjectId;
 import org.geogit.api.Platform;
 import org.geogit.api.RevCommit;
 import org.geogit.api.RevFeatureType;
+import org.geogit.api.RevFeatureTypeImpl;
 import org.geogit.api.RevObject;
 import org.geogit.api.TestPlatform;
 import org.geogit.di.Decorator;
@@ -137,7 +138,7 @@ public class CachingModuleTest {
         } catch (SchemaException e) {
             throw Throwables.propagate(e);
         }
-        RevFeatureType rft = RevFeatureType.build(type);
+        RevFeatureType rft = RevFeatureTypeImpl.build(type);
         return rft;
     }
 

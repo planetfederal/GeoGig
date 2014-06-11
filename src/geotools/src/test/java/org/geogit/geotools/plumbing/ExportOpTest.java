@@ -9,7 +9,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import org.geogit.api.ObjectId;
-import org.geogit.api.RevFeatureType;
+import org.geogit.api.RevFeatureTypeImpl;
 import org.geogit.api.porcelain.AddOp;
 import org.geogit.api.porcelain.CommitOp;
 import org.geogit.geotools.plumbing.GeoToolsOpException.StatusCode;
@@ -250,7 +250,7 @@ public class ExportOpTest extends RepositoryTestCase {
         SimpleFeatureStore featureStore = (SimpleFeatureStore) featureSource;
         geogit.command(ExportOp.class).setFeatureStore(featureStore).setPath(pointsName)
                 .setAlter(true)
-                .setFilterFeatureTypeId(RevFeatureType.build(modifiedPointsType).getId()).call();
+                .setFilterFeatureTypeId(RevFeatureTypeImpl.build(modifiedPointsType).getId()).call();
         featureSource = dataStore.getFeatureSource(typeName);
         featureStore = (SimpleFeatureStore) featureSource;
         SimpleFeatureCollection featureCollection = featureStore.getFeatures();
@@ -275,7 +275,7 @@ public class ExportOpTest extends RepositoryTestCase {
         SimpleFeatureSource featureSource = dataStore.getFeatureSource(typeName);
         SimpleFeatureStore featureStore = (SimpleFeatureStore) featureSource;
         geogit.command(ExportOp.class).setFeatureStore(featureStore).setPath(pointsName)
-                .setFilterFeatureTypeId(RevFeatureType.build(modifiedPointsType).getId()).call();
+                .setFilterFeatureTypeId(RevFeatureTypeImpl.build(modifiedPointsType).getId()).call();
         featureSource = dataStore.getFeatureSource(typeName);
         featureStore = (SimpleFeatureStore) featureSource;
         SimpleFeatureCollection featureCollection = featureStore.getFeatures();

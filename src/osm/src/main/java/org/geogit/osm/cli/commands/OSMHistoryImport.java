@@ -41,6 +41,7 @@ import org.geogit.api.ProgressListener;
 import org.geogit.api.Ref;
 import org.geogit.api.RevFeature;
 import org.geogit.api.RevFeatureType;
+import org.geogit.api.RevFeatureTypeImpl;
 import org.geogit.api.RevTree;
 import org.geogit.api.SymRef;
 import org.geogit.api.plumbing.FindTreeChild;
@@ -464,9 +465,9 @@ public class OSMHistoryImport extends AbstractCommand implements CLICommand {
         return NodeRef.appendChild(WAY_TYPE_NAME, fid);
     }
 
-    private static final RevFeatureType NODE_REV_TYPE = RevFeatureType.build(nodeType());
+    private static final RevFeatureType NODE_REV_TYPE = RevFeatureTypeImpl.build(nodeType());
 
-    private static final RevFeatureType WAY_REV_TYPE = RevFeatureType.build(wayType());
+    private static final RevFeatureType WAY_REV_TYPE = RevFeatureTypeImpl.build(wayType());
 
     private static SimpleFeature toFeature(Primitive feature, Geometry geom) {
 

@@ -20,7 +20,7 @@ public class RevFeatureTest {
                 Optional.of((Object) "StringProp1_1"), Optional.of((Object) new Integer(1000)),
                 Optional.of((Object) "POINT(1 1)"));
 
-        RevFeature feature = RevFeature.build(values);
+        RevFeature feature = RevFeatureImpl.build(values);
 
         assertEquals(TYPE.FEATURE, feature.getType());
 
@@ -33,7 +33,7 @@ public class RevFeatureTest {
                 Optional.of((Object) "StringProp1_1"), Optional.of((Object) new Integer(1000)),
                 Optional.of((Object) "POINT(1 1)"));
 
-        RevFeature feature = RevFeature.build(values);
+        RevFeature feature = RevFeatureImpl.build(values);
 
         String featureString = feature.toString();
 

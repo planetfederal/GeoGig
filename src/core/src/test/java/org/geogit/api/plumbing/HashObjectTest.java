@@ -20,8 +20,11 @@ import org.geogit.api.RevCommit;
 import org.geogit.api.RevFeature;
 import org.geogit.api.RevFeatureBuilder;
 import org.geogit.api.RevFeatureType;
+import org.geogit.api.RevFeatureTypeImpl;
 import org.geogit.api.RevPerson;
+import org.geogit.api.RevPersonImpl;
 import org.geogit.api.RevTag;
+import org.geogit.api.RevTagImpl;
 import org.geogit.test.integration.RepositoryTestCase;
 import org.geotools.data.DataUtilities;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -67,14 +70,13 @@ public class HashObjectTest extends RepositoryTestCase {
 
     @Override
     protected void setUpInternal() throws Exception {
-        featureType1 = RevFeatureType.build(pointsType);
-        featureType2 = RevFeatureType.build(linesType);
-        featureType1Duplicate = RevFeatureType.build(pointsType);
+        featureType1 = RevFeatureTypeImpl.build(pointsType);
+        featureType2 = RevFeatureTypeImpl.build(linesType);
+        featureType1Duplicate = RevFeatureTypeImpl.build(pointsType);
 
-        RevFeatureBuilder featureBuilder = new RevFeatureBuilder();
-        pointFeature1 = featureBuilder.build(points1);
-        pointFeature2 = featureBuilder.build(points2);
-        pointFeature1Duplicate = featureBuilder.build(points1);
+        pointFeature1 = RevFeatureBuilder.build(points1);
+        pointFeature2 = RevFeatureBuilder.build(points2);
+        pointFeature1Duplicate = RevFeatureBuilder.build(points1);
 
         CommitBuilder b = new CommitBuilder();
         b.setAuthor("groldan");
@@ -128,7 +130,7 @@ public class HashObjectTest extends RepositoryTestCase {
                         + "serialized:java.io.Serializable," + "randomClass:java.lang.Object,"
                         + "pp:Point:srid=4326," + "lng:java.lang.Long," + "uuid:java.util.UUID");
 
-        coverageRevFeatureType = RevFeatureType.build(coverageFeatureType);
+        coverageRevFeatureType = RevFeatureTypeImpl.build(coverageFeatureType);
 
         Feature coverageFeature = feature(coverageFeatureType, "TestType.Coverage.1",
                 "StringProp1_1", null, Boolean.TRUE, Byte.valueOf("18"), new Double(100.01),
@@ -137,7 +139,7 @@ public class HashObjectTest extends RepositoryTestCase {
                 intArray, longArray, serializableObject, new SomeRandomClass(), "POINT(1 1)",
                 new Long(800000), UUID.fromString("bd882d24-0fe9-11e1-a736-03b3c0d0d06d"));
 
-        coverageRevFeature = featureBuilder.build(coverageFeature);
+        coverageRevFeature = RevFeatureBuilder.build(coverageFeature);
 
         hashCommand = new HashObject();
 
@@ -216,11 +218,11 @@ public class HashObjectTest extends RepositoryTestCase {
     @Test
     public void testHashTags() throws Exception {
 
-        RevPerson tagger = new RevPerson("volaya", "volaya@opengeo.org", -1000, -1);
-        RevPerson tagger2 = new RevPerson("groldan", "groldan@opengeo.org", 10000, 0);
-        RevTag tag = new RevTag(null, "tag1", ObjectId.forString("fake commit id"), "message",
+        RevPerson tagger = new RevPersonImpl("volaya", "volaya@opengeo.org", -1000, -1);
+        RevPerson tagger2 = new RevPersonImpl("groldan", "groldan@opengeo.org", 10000, 0);
+        RevTag tag = new RevTagImpl(null, "tag1", ObjectId.forString("fake commit id"), "message",
                 tagger);
-        RevTag tag2 = new RevTag(null, "tag2", ObjectId.forString("another fake commit id"),
+        RevTag tag2 = new RevTagImpl(null, "tag2", ObjectId.forString("another fake commit id"),
                 "another message", tagger2);
         ObjectId tagId = hashCommand.setObject(tag).call();
         ObjectId tagId2 = hashCommand.setObject(tag2).call();

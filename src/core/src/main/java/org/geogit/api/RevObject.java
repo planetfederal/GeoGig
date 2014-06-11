@@ -14,6 +14,7 @@ import com.google.common.collect.Ordering;
  * @see RevCommit
  * @see RevTree
  * @see RevFeature
+ * @see RevFeature
  * @see RevTag
  */
 public interface RevObject {

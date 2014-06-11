@@ -21,6 +21,7 @@ import org.geogit.api.NodeRef;
 import org.geogit.api.ObjectId;
 import org.geogit.api.ProgressListener;
 import org.geogit.api.RevFeature;
+import org.geogit.api.RevFeatureImpl;
 import org.geogit.api.RevFeatureType;
 import org.geogit.api.RevObject;
 import org.geogit.api.RevObject.TYPE;
@@ -337,7 +338,7 @@ public class ExportOp extends AbstractGeoGitOp<SimpleFeatureStore> {
                         newValues.add(Optional.absent());
                     }
                 }
-                RevFeature newFeature = RevFeature.build(ImmutableList.copyOf(newValues));
+                RevFeature newFeature = RevFeatureImpl.build(ImmutableList.copyOf(newValues));
                 FeatureBuilder featureBuilder = new FeatureBuilder(targetType);
                 SimpleFeature feature = (SimpleFeature) featureBuilder.build(input.getID(),
                         newFeature);

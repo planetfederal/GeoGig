@@ -59,7 +59,7 @@ public class FeatureBuilder {
      * @param type the feature type of the features that will be built
      */
     public FeatureBuilder(SimpleFeatureType type) {
-        this(RevFeatureType.build(type));
+        this(RevFeatureTypeImpl.build(type));
     }
 
     /**

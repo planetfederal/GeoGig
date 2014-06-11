@@ -21,6 +21,7 @@ import org.geogit.api.RevCommit;
 import org.geogit.api.RevFeature;
 import org.geogit.api.RevFeatureBuilder;
 import org.geogit.api.RevFeatureType;
+import org.geogit.api.RevFeatureTypeImpl;
 import org.geogit.api.RevObject.TYPE;
 import org.geogit.api.RevTree;
 import org.geogit.api.RevTreeBuilder;
@@ -695,7 +696,7 @@ public class WriteTree2Test extends RepositoryTestCase {
             db.put(fakenId);
         }
         if (!metadataId.isNull()) {
-            RevFeatureType fakeType = new RevFeatureType(metadataId, pointsType);
+            RevFeatureType fakeType = new RevFeatureTypeImpl(metadataId, pointsType);
             if (!db.exists(fakeType.getId())) {
                 db.put(fakeType);
             }

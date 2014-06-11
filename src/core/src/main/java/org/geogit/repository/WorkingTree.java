@@ -30,6 +30,7 @@ import org.geogit.api.Ref;
 import org.geogit.api.RevFeature;
 import org.geogit.api.RevFeatureBuilder;
 import org.geogit.api.RevFeatureType;
+import org.geogit.api.RevFeatureTypeImpl;
 import org.geogit.api.RevObject;
 import org.geogit.api.RevObject.TYPE;
 import org.geogit.api.RevTree;
@@ -366,7 +367,7 @@ public class WorkingTree {
         Optional<NodeRef> typeTreeRef = context.command(FindTreeChild.class).setIndex(true)
                 .setParent(workHead).setChildPath(treePath).call();
 
-        final RevFeatureType revType = RevFeatureType.build(featureType);
+        final RevFeatureType revType = RevFeatureTypeImpl.build(featureType);
         if (typeTreeRef.isPresent()) {
             throw new IllegalArgumentException("Tree already exists at " + treePath);
         }
@@ -401,7 +402,7 @@ public class WorkingTree {
         ObjectId metadataId;
         if (typeTreeRef.isPresent()) {
             treeRef = typeTreeRef.get();
-            RevFeatureType newFeatureType = RevFeatureType.build(featureType);
+            RevFeatureType newFeatureType = RevFeatureTypeImpl.build(featureType);
             metadataId = newFeatureType.getId().equals(treeRef.getMetadataId()) ? ObjectId.NULL
                     : newFeatureType.getId();
             if (!newFeatureType.getId().equals(treeRef.getMetadataId())) {
@@ -892,7 +893,7 @@ public class WorkingTree {
         Iterator<NodeRef> iter = context.command(LsTreeOp.class).setReference(treePath)
                 .setStrategy(Strategy.DEPTHFIRST_ONLY_FEATURES).call();
 
-        final RevFeatureType revType = RevFeatureType.build(featureType);
+        final RevFeatureType revType = RevFeatureTypeImpl.build(featureType);
         indexDatabase.put(revType);
 
         final ObjectId metadataId = revType.getId();

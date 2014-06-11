@@ -28,11 +28,15 @@ import org.geogit.api.Node;
 import org.geogit.api.ObjectId;
 import org.geogit.api.RevCommit;
 import org.geogit.api.RevFeature;
+import org.geogit.api.RevFeatureImpl;
 import org.geogit.api.RevFeatureType;
+import org.geogit.api.RevFeatureTypeImpl;
 import org.geogit.api.RevObject;
 import org.geogit.api.RevObject.TYPE;
 import org.geogit.api.RevPerson;
+import org.geogit.api.RevPersonImpl;
 import org.geogit.api.RevTag;
+import org.geogit.api.RevTagImpl;
 import org.geogit.api.RevTree;
 import org.geogit.api.RevTreeImpl;
 import org.geogit.storage.FieldType;
@@ -669,7 +673,7 @@ public class TextSerializationFactory implements ObjectSerializingFactory {
             String email = tokens[2].trim().isEmpty() ? null : tokens[2];
             long timestamp = Long.parseLong(tokens[3]);
             int offset = Integer.parseInt(tokens[4]);
-            return new RevPerson(name, email, timestamp, offset);
+            return new RevPersonImpl(name, email, timestamp, offset);
         }
 
         private String parseMessage(BufferedReader reader) throws IOException {
@@ -714,7 +718,7 @@ public class TextSerializationFactory implements ObjectSerializingFactory {
             for (Object value : values) {
                 valuesBuilder.add(Optional.fromNullable(value));
             }
-            return RevFeature.build(valuesBuilder.build());
+            return RevFeatureImpl.build(valuesBuilder.build());
         }
 
         private Object parseAttribute(String line) {
@@ -780,7 +784,7 @@ public class TextSerializationFactory implements ObjectSerializingFactory {
                 builder.add(parseAttributeDescriptor(line));
             }
             SimpleFeatureType sft = builder.buildFeatureType();
-            return RevFeatureType.build(sft);
+            return RevFeatureTypeImpl.build(sft);
 
         }
 
@@ -931,7 +935,7 @@ public class TextSerializationFactory implements ObjectSerializingFactory {
             String message = parseLine(requireLine(reader), "message");
             String commitId = parseLine(requireLine(reader), "commitid");
             RevPerson tagger = parsePerson(requireLine(reader));
-            RevTag tag = new RevTag(id, name, ObjectId.valueOf(commitId), message, tagger);
+            RevTag tag = new RevTagImpl(id, name, ObjectId.valueOf(commitId), message, tagger);
             return tag;
         }
 
@@ -944,7 +948,7 @@ public class TextSerializationFactory implements ObjectSerializingFactory {
             String email = tokens[2].trim().isEmpty() ? null : tokens[2];
             long timestamp = Long.parseLong(tokens[3]);
             int offset = Integer.parseInt(tokens[4]);
-            return new RevPerson(name, email, timestamp, offset);
+            return new RevPersonImpl(name, email, timestamp, offset);
         }
 
     };

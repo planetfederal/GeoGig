@@ -16,6 +16,7 @@ import org.geogit.api.NodeRef;
 import org.geogit.api.ObjectId;
 import org.geogit.api.RevFeature;
 import org.geogit.api.RevFeatureType;
+import org.geogit.api.RevFeatureTypeImpl;
 import org.geogit.api.RevTree;
 import org.geogit.api.plumbing.DiffTree;
 import org.geogit.api.plumbing.LsTreeOp;
@@ -57,9 +58,9 @@ public class OSMUnmapOp extends AbstractGeoGitOp<RevTree> {
      * corresponding to the "way" and "node" types
      */
 
-    private static final RevFeatureType nodeType = RevFeatureType.build(OSMUtils.nodeType());
+    private static final RevFeatureType nodeType = RevFeatureTypeImpl.build(OSMUtils.nodeType());
 
-    private static final RevFeatureType wayType = RevFeatureType.build(OSMUtils.wayType());
+    private static final RevFeatureType wayType = RevFeatureTypeImpl.build(OSMUtils.wayType());
 
     private static final int NODE_TAGS_FIELD_INDEX = getPropertyIndex(nodeType, "tags");
 

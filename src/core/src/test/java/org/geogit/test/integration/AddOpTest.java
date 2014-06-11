@@ -11,6 +11,7 @@ import org.geogit.api.NodeRef;
 import org.geogit.api.ObjectId;
 import org.geogit.api.Ref;
 import org.geogit.api.RevFeatureType;
+import org.geogit.api.RevFeatureTypeImpl;
 import org.geogit.api.RevObject;
 import org.geogit.api.RevObject.TYPE;
 import org.geogit.api.plumbing.FindTreeChild;
@@ -85,7 +86,7 @@ public class AddOpTest extends RepositoryTestCase {
         assertEquals(ChangeType.ADDED, unstaged.get(0).changeType());
         assertEquals(RevObject.TYPE.TREE, unstaged.get(0).getNewObject().getType());
         assertEquals("Points", unstaged.get(0).newName());
-        RevFeatureType ft = RevFeatureType.build(pointsType);
+        RevFeatureType ft = RevFeatureTypeImpl.build(pointsType);
         ObjectId expectedTreeMdId = ft.getId();
         assertEquals(expectedTreeMdId, unstaged.get(0).getNewObject().getMetadataId());
 

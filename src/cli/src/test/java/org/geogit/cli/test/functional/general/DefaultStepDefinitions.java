@@ -46,7 +46,7 @@ import org.geogit.api.GeoGIT;
 import org.geogit.api.NodeRef;
 import org.geogit.api.ObjectId;
 import org.geogit.api.Ref;
-import org.geogit.api.RevFeatureType;
+import org.geogit.api.RevFeatureTypeImpl;
 import org.geogit.api.plumbing.RefParse;
 import org.geogit.api.plumbing.UpdateRef;
 import org.geogit.api.plumbing.diff.AttributeDiff;
@@ -512,8 +512,8 @@ public class DefaultStepDefinitions {
         Optional<?> oldValue = Optional.fromNullable(points1.getProperty("sp").getValue());
         GenericAttributeDiffImpl diff = new GenericAttributeDiffImpl(oldValue, Optional.of("new"));
         map.put(pointsType.getDescriptor("sp"), diff);
-        FeatureDiff feaureDiff = new FeatureDiff(path, map, RevFeatureType.build(pointsType),
-                RevFeatureType.build(pointsType));
+        FeatureDiff feaureDiff = new FeatureDiff(path, map, RevFeatureTypeImpl.build(pointsType),
+                RevFeatureTypeImpl.build(pointsType));
         patch.addModifiedFeature(feaureDiff);
         File file = new File(platform.pwd(), "test.patch");
         BufferedWriter writer = Files.newWriter(file, Charsets.UTF_8);

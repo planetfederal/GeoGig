@@ -22,7 +22,7 @@ public class RevFeatureTypeTest extends RepositoryTestCase {
 
     @Test
     public void testConstructorAndAccessors() {
-        RevFeatureType featureType = RevFeatureType.build(linesType);
+        RevFeatureType featureType = RevFeatureTypeImpl.build(linesType);
 
         assertEquals(RevObject.TYPE.FEATURETYPE, featureType.getType());
 
@@ -37,7 +37,7 @@ public class RevFeatureTypeTest extends RepositoryTestCase {
 
     @Test
     public void testToString() {
-        RevFeatureType featureType = RevFeatureType.build(linesType);
+        RevFeatureType featureType = RevFeatureTypeImpl.build(linesType);
 
         String featureTypeString = featureType.toString();
 

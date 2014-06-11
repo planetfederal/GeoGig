@@ -12,7 +12,9 @@ import org.geogit.api.ObjectId;
 import org.geogit.api.Platform;
 import org.geogit.api.Ref;
 import org.geogit.api.RevPerson;
+import org.geogit.api.RevPersonImpl;
 import org.geogit.api.RevTag;
+import org.geogit.api.RevTagImpl;
 import org.geogit.api.plumbing.HashObject;
 import org.geogit.api.plumbing.RefParse;
 import org.geogit.api.plumbing.UpdateRef;
@@ -52,9 +54,9 @@ public class TagCreateOp extends AbstractGeoGitOp<RevTag> {
         }
         RevPerson tagger = resolveTagger();
         message = message == null ? "" : message;
-        RevTag tag = new RevTag(ObjectId.NULL, name, commitId, message, tagger);
+        RevTag tag = new RevTagImpl(ObjectId.NULL, name, commitId, message, tagger);
         ObjectId id = command(HashObject.class).setObject(tag).call();
-        tag = new RevTag(id, name, commitId, message, tagger);
+        tag = new RevTagImpl(id, name, commitId, message, tagger);
         objectDatabase().put(tag);
         Optional<Ref> branchRef = command(UpdateRef.class).setName(tagRefPath)
                 .setNewValue(tag.getId()).call();
@@ -101,7 +103,7 @@ public class TagCreateOp extends AbstractGeoGitOp<RevTag> {
         Platform platform = platform();
         long taggerTimeStamp = platform.currentTimeMillis();
         int taggerTimeZoneOffset = platform.timeZoneOffset(taggerTimeStamp);
-        return new RevPerson(taggerName, taggerEmail, taggerTimeStamp, taggerTimeZoneOffset);
+        return new RevPersonImpl(taggerName, taggerEmail, taggerTimeStamp, taggerTimeZoneOffset);
     }
 
 }

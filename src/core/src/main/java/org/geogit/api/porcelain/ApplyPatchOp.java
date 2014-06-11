@@ -16,6 +16,7 @@ import org.geogit.api.NodeRef;
 import org.geogit.api.Ref;
 import org.geogit.api.RevFeature;
 import org.geogit.api.RevFeatureType;
+import org.geogit.api.RevFeatureTypeImpl;
 import org.geogit.api.plumbing.RevObjectParse;
 import org.geogit.api.plumbing.diff.AttributeDiff;
 import org.geogit.api.plumbing.diff.AttributeDiff.TYPE;
@@ -246,7 +247,7 @@ public class ApplyPatchOp extends AbstractGeoGitOp<Patch> {
         }
         SimpleFeatureType featureType = featureTypeBuilder.buildFeatureType();
 
-        return RevFeatureType.build(featureType);
+        return RevFeatureTypeImpl.build(featureType);
     }
 
 }

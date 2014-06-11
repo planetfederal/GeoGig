@@ -19,6 +19,7 @@ import org.geogit.api.NodeRef;
 import org.geogit.api.ObjectId;
 import org.geogit.api.RevFeature;
 import org.geogit.api.RevFeatureType;
+import org.geogit.api.RevFeatureTypeImpl;
 import org.geogit.api.plumbing.LsTreeOp;
 import org.geogit.api.plumbing.LsTreeOp.Strategy;
 import org.geogit.api.plumbing.ResolveTreeish;
@@ -168,7 +169,7 @@ public class OSMExport extends AbstractCommand implements CLICommand {
                     featureType = OSMUtils.wayType();
                 }
                 SimpleFeatureBuilder featureBuilder = new SimpleFeatureBuilder(featureType);
-                RevFeatureType revFeatureType = RevFeatureType.build(featureType);
+                RevFeatureType revFeatureType = RevFeatureTypeImpl.build(featureType);
                 List<PropertyDescriptor> descriptors = revFeatureType.sortedDescriptors();
                 ImmutableList<Optional<Object>> values = revFeature.getValues();
                 for (int i = 0; i < descriptors.size(); i++) {

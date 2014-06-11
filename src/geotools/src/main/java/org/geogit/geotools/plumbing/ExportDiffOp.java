@@ -18,6 +18,7 @@ import org.geogit.api.ObjectId;
 import org.geogit.api.ProgressListener;
 import org.geogit.api.RevFeature;
 import org.geogit.api.RevFeatureType;
+import org.geogit.api.RevFeatureTypeImpl;
 import org.geogit.api.RevObject.TYPE;
 import org.geogit.api.RevTree;
 import org.geogit.api.plumbing.FindTreeChild;
@@ -164,7 +165,7 @@ public class ExportDiffOp extends AbstractGeoGitOp<SimpleFeatureStore> {
             final ProgressListener progressListener) {
 
         final SimpleFeatureType featureType = addFidAttribute(database.getFeatureType(metadataId));
-        final RevFeatureType revFeatureType = RevFeatureType.build(featureType);
+        final RevFeatureType revFeatureType = RevFeatureTypeImpl.build(featureType);
         final SimpleFeatureBuilder featureBuilder = new SimpleFeatureBuilder(featureType);
 
         Function<DiffEntry, SimpleFeature> asFeature = new Function<DiffEntry, SimpleFeature>() {

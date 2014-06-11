@@ -15,6 +15,7 @@ import javax.annotation.Nullable;
 import org.geogit.api.Node;
 import org.geogit.api.ObjectId;
 import org.geogit.api.RevFeatureType;
+import org.geogit.api.RevFeatureTypeImpl;
 import org.geogit.api.RevObject.TYPE;
 import org.geogit.api.RevTree;
 import org.geogit.api.RevTreeBuilder;
@@ -147,7 +148,7 @@ class RevTreeBuilder2 {
         }
         RevFeatureType revFeatureType = revFeatureTypes.get(type.getName());
         if (null == revFeatureType) {
-            revFeatureType = RevFeatureType.build(type);
+            revFeatureType = RevFeatureTypeImpl.build(type);
             revFeatureTypes.put(type.getName(), revFeatureType);
         }
         ObjectId metadataId = revFeatureType.getId().equals(defaultMetadataId) ? ObjectId.NULL

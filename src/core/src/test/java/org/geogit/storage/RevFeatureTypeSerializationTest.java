@@ -8,6 +8,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
 import org.geogit.api.RevFeatureType;
+import org.geogit.api.RevFeatureTypeImpl;
 import org.geogit.api.RevObject.TYPE;
 import org.geotools.data.DataUtilities;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -44,7 +45,7 @@ public abstract class RevFeatureTypeSerializationTest extends Assert {
 
     @Test
     public void testSerialization() throws Exception {
-        RevFeatureType revFeatureType = RevFeatureType.build(featureType);
+        RevFeatureType revFeatureType = RevFeatureTypeImpl.build(featureType);
         ObjectWriter<RevFeatureType> writer = factory.createObjectWriter(TYPE.FEATURETYPE);
 
         ByteArrayOutputStream output = new ByteArrayOutputStream();
@@ -78,7 +79,7 @@ public abstract class RevFeatureTypeSerializationTest extends Assert {
         ftb.add("geom", Polygon.class, DefaultGeographicCRS.WGS84);
         ftb.setName("type");
         SimpleFeatureType ftype = ftb.buildFeatureType();
-        RevFeatureType revFeatureType = RevFeatureType.build(ftype);
+        RevFeatureType revFeatureType = RevFeatureTypeImpl.build(ftype);
         ObjectWriter<RevFeatureType> writer = factory.createObjectWriter(TYPE.FEATURETYPE);
 
         ByteArrayOutputStream output = new ByteArrayOutputStream();
