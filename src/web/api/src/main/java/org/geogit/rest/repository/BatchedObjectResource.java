@@ -29,8 +29,11 @@ import org.restlet.data.Response;
 import org.restlet.resource.OutputRepresentation;
 import org.restlet.resource.Representation;
 import org.restlet.resource.Resource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Throwables;
+import com.google.common.io.CountingOutputStream;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -40,6 +43,8 @@ import com.google.gson.JsonParser;
  * Takes a set of commit Ids and packs up their contents into a binary stream to send to the client.
  */
 public class BatchedObjectResource extends Finder {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(BatchedObjectResource.class);
 
     @Override
     public Resource findTarget(Request request, Response response) {
@@ -62,17 +67,16 @@ public class BatchedObjectResource extends Finder {
 
         @Override
         public void post(Representation entity) {
-            final InputStream inStream;
+            InputStream inStream;
             try {
                 inStream = entity.getStream();
             } catch (IOException e) {
                 throw Throwables.propagate(e);
             }
-
             final Reader body = new InputStreamReader(inStream);
             final JsonParser parser = new JsonParser();
             final JsonElement messageJson = parser.parse(body);
-
+            LOGGER.info("Serving request to send objects based on message {}", messageJson);
             final List<ObjectId> want = new ArrayList<ObjectId>();
             final List<ObjectId> have = new ArrayList<ObjectId>();
 
@@ -102,12 +106,15 @@ public class BatchedObjectResource extends Finder {
                 }
             }
 
-            final GeoGIT ggit = getGeogit(getRequest()).get();
+            Request request = getRequest();
+            final GeoGIT ggit = getGeogit(request).get();
             final Repository repository = ggit.getRepository();
             final Deduplicator deduplicator = ggit.command(CreateDeduplicator.class).call();
 
             BinaryPackedObjects packer = new BinaryPackedObjects(repository.stagingDatabase());
-            getResponse().setEntity(new RevObjectBinaryRepresentation(packer, want, have, deduplicator));
+            Representation rep = new RevObjectBinaryRepresentation(packer, want, have, deduplicator);
+            Response response = getResponse();
+            response.setEntity(rep);
         }
     }
 
@@ -118,7 +125,7 @@ public class BatchedObjectResource extends Finder {
 
         private final List<ObjectId> have;
 
-		private Deduplicator deduplicator;
+        private Deduplicator deduplicator;
 
         public RevObjectBinaryRepresentation( //
                 BinaryPackedObjects packer, //
@@ -134,19 +141,20 @@ public class BatchedObjectResource extends Finder {
         }
 
         @Override
-        public void write(OutputStream out) throws IOException {
-        	try {
-        		packer.write(out, want, have, false, deduplicator);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    throw e;
-                } catch (RuntimeException e) {
-                    e.printStackTrace();
-                    throw e;
-        	} finally {
-        		deduplicator.release();
-        	}
+        public void write(final OutputStream out) throws IOException {
+            CountingOutputStream counting = new CountingOutputStream(out);
+            OutputStream output = counting;
+            try {
+                packer.write(output, want, have, false, deduplicator);
+            } catch (IOException e) {
+                e.printStackTrace();
+                throw e;
+            } catch (RuntimeException e) {
+                e.printStackTrace();
+                throw e;
+            } finally {
+                deduplicator.release();
+            }
         }
     }
-
 }

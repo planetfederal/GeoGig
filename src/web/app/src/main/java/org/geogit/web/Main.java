@@ -9,22 +9,24 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Map;
 
+import org.geogit.api.Context;
+import org.geogit.api.ContextBuilder;
 import org.geogit.api.DefaultPlatform;
 import org.geogit.api.GeoGIT;
 import org.geogit.api.GlobalContextBuilder;
-import org.geogit.api.Context;
-import org.geogit.api.ContextBuilder;
 import org.geogit.api.Platform;
 import org.geogit.api.plumbing.ResolveGeogitDir;
 import org.geogit.di.GeogitModule;
 import org.geogit.repository.Hints;
 import org.geogit.rest.repository.CommandResource;
+import org.geogit.rest.repository.FixedEncoder;
 import org.geogit.rest.repository.RepositoryProvider;
 import org.geogit.rest.repository.RepositoryRouter;
 import org.geogit.storage.bdbje.JEStorageModule;
 import org.geogit.storage.blueprints.BlueprintsGraphModule;
 import org.restlet.Application;
 import org.restlet.Component;
+import org.restlet.Restlet;
 import org.restlet.Router;
 import org.restlet.data.Protocol;
 import org.restlet.data.Request;
@@ -32,6 +34,7 @@ import org.restlet.data.Response;
 
 import com.google.inject.Guice;
 import com.google.inject.util.Modules;
+import com.noelios.restlet.application.Decoder;
 
 /**
  * Both an embedded jetty launcher
@@ -83,7 +86,7 @@ public class Main extends Application {
     }
 
     @Override
-    public Router createRoot() {
+    public Restlet createRoot() {
 
         Router router = new Router() {
 
@@ -99,7 +102,25 @@ public class Main extends Application {
         router.attach("/repo", new RepositoryRouter());
         router.attach("/{command}.{extension}", CommandResource.class);
         router.attach("/{command}", CommandResource.class);
-        return router;
+
+        org.restlet.Context context = getContext();
+        // enable support for compressing responses if the client supports it.
+        // NOTE: restlet 1.0.8 leaves a dangling thread on each request (see
+        // EncodeRepresentation.getStream()
+        // This problem is fixed in latest versions (2.x) of restlet. See the javadocs for
+        // FixedEncoder for further detail
+        // Encoder responseEncoder = new com.noelios.restlet.application.Encoder(context);
+        FixedEncoder encoder = new FixedEncoder(context);
+        encoder.setEncodeRequest(false);
+        encoder.setEncodeResponse(true);
+        encoder.setNext(router);
+
+        Decoder decoder = new Decoder(context);
+        decoder.setDecodeRequest(true);
+        decoder.setDecodeResponse(false);
+        decoder.setNext(encoder);
+
+        return decoder;
     }
 
     static GeoGIT loadGeoGIT(String repo) {

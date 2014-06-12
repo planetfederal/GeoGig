@@ -26,12 +26,17 @@ import org.geogit.api.RevCommit;
 import org.geogit.api.RevObject;
 import org.geogit.api.RevTag;
 import org.geogit.api.porcelain.SynchronizationException;
+import org.geogit.remote.BinaryPackedObjects.IngestResults;
+import org.geogit.remote.HttpUtils.ReportingOutputStream;
 import org.geogit.repository.Repository;
 import org.geogit.storage.DeduplicationService;
 import org.geogit.storage.Deduplicator;
 import org.geogit.storage.ObjectDatabase;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Optional;
+import com.google.common.base.Stopwatch;
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 import com.google.common.base.Throwables;
@@ -49,6 +54,8 @@ import com.google.gson.JsonPrimitive;
  * @see AbstractRemoteRepo
  */
 class HttpRemoteRepo extends AbstractRemoteRepo {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(HttpRemoteRepo.class);
 
     private URL repositoryURL;
 
@@ -103,15 +110,10 @@ class HttpRemoteRepo extends AbstractRemoteRepo {
         Ref headRef = null;
         try {
             String expanded = repositoryURL.toString() + "/repo/manifest";
-
-            connection = (HttpURLConnection) new URL(expanded).openConnection();
-            connection.setRequestMethod("GET");
-
-            connection.setUseCaches(false);
-            connection.connect();
+            connection = HttpUtils.connect(expanded);
 
             // Get Response
-            InputStream is = connection.getInputStream();
+            InputStream is = HttpUtils.getResponseStream(connection);
             try {
                 BufferedReader rd = new BufferedReader(new InputStreamReader(is));
                 String line;
@@ -149,15 +151,10 @@ class HttpRemoteRepo extends AbstractRemoteRepo {
         ImmutableSet.Builder<Ref> builder = new ImmutableSet.Builder<Ref>();
         try {
             String expanded = repositoryURL.toString() + "/repo/manifest";
-
-            connection = (HttpURLConnection) new URL(expanded).openConnection();
-            connection.setRequestMethod("GET");
-
-            connection.setUseCaches(false);
-            connection.connect();
+            connection = HttpUtils.connect(expanded);
 
             // Get Response
-            InputStream is = connection.getInputStream();
+            InputStream is = HttpUtils.getResponseStream(connection);
             BufferedReader rd = new BufferedReader(new InputStreamReader(is));
             String line;
             try {
@@ -263,44 +260,54 @@ class HttpRemoteRepo extends AbstractRemoteRepo {
 
                 ImmutableList<ObjectId> have = ImmutableList.copyOf(roots);
                 final boolean traverseCommits = false;
-                
-                Supplier<OutputStream> outputSupplier = getMemoizedOutputSupplier();
-                packer.write(outputSupplier, toSend, have, sent, callback, traverseCommits,
-                        deduplicator);
-                OutputStream out = outputSupplier.get();
+
+                Supplier<ReportingOutputStream> outputSupplier = getMemoizedOutputSupplier();
+                Stopwatch sw = Stopwatch.createStarted();
+                long writtenObjectsCount = packer.write(outputSupplier, toSend, have, sent,
+                        callback, traverseCommits, deduplicator);
+                sw.stop();
+                ReportingOutputStream out = outputSupplier.get();
                 out.flush();
                 out.close();
+
+                LOGGER.info(String.format("HttpRemoteRepo: Written %,d objects.\n"
+                        + "Time to process: %s.\n"
+                        + "Compressed size: %,d bytes.\nUncompressed size: %,d bytes.\n",
+                        writtenObjectsCount, sw, out.compressedSize(), out.unCompressedSize()));
             } catch (IOException e) {
                 Throwables.propagate(e);
             }
         }
     }
 
-    private Supplier<OutputStream> getMemoizedOutputSupplier() {
-        Supplier<OutputStream> outputSupplier = Suppliers.memoize(new Supplier<OutputStream>() {
+    private Supplier<ReportingOutputStream> getMemoizedOutputSupplier() {
+        Supplier<ReportingOutputStream> outputSupplier = Suppliers
+                .memoize(new Supplier<ReportingOutputStream>() {
 
-            @Override
-            public OutputStream get() {
-                String expanded = repositoryURL.toString() + "/repo/sendobject";
-                System.err.println("connecting to " + expanded);
-                try {
-                    HttpURLConnection connection = (HttpURLConnection) new URL(expanded)
-                            .openConnection();
-                    connection.setDoOutput(true);
-                    connection.setDoInput(false);
-                    connection.setUseCaches(false);
-                    connection.setRequestMethod("POST");
-                    connection.setChunkedStreamingMode(4096);
-                    connection.setRequestProperty("content-length", "-1");
-
-                    OutputStream out = connection.getOutputStream();
-                    System.err.println("connected.");
-                    return out;
-                } catch (Exception e) {
-                    throw Throwables.propagate(e);
-                }
-            }
-        });
+                    @Override
+                    public ReportingOutputStream get() {
+                        String expanded = repositoryURL.toString() + "/repo/sendobject";
+                        System.err.println("connecting to " + expanded);
+                        try {
+                            HttpURLConnection connection = (HttpURLConnection) new URL(expanded)
+                                    .openConnection();
+                            connection.setDoOutput(true);
+                            connection.setDoInput(false);
+                            connection.setUseCaches(false);
+                            connection.setRequestMethod("POST");
+                            connection.setChunkedStreamingMode(4096);
+                            connection.setRequestProperty("content-length", "-1");
+                            connection.setRequestProperty("content-encoding", "gzip");
+                            OutputStream out = connection.getOutputStream();
+                            ReportingOutputStream rout = HttpUtils.newReportingOutputStream(out,
+                                    true);
+                            System.err.println("Connected.");
+                            return rout;
+                        } catch (Exception e) {
+                            throw Throwables.propagate(e);
+                        }
+                    }
+                });
         return outputSupplier;
     }
 
@@ -341,28 +348,28 @@ class HttpRemoteRepo extends AbstractRemoteRepo {
             throw Throwables.propagate(e);
         }
 
-        final Gson gson = new Gson();
+        System.err.println("Fetching from " + resourceURL.toExternalForm());
         final HttpURLConnection connection;
-        final OutputStream out;
-        final Writer writer;
         try {
+            final Gson gson = new Gson();
+            OutputStream out;
+            final Writer writer;
             connection = (HttpURLConnection) resourceURL.openConnection();
             connection.setDoOutput(true);
             connection.setDoInput(true);
+            connection.addRequestProperty("Accept-Encoding", "gzip");
             out = connection.getOutputStream();
             writer = new OutputStreamWriter(out);
             gson.toJson(message, writer);
             writer.flush();
+            out.flush();
         } catch (IOException e) {
             throw Throwables.propagate(e);
         }
 
-        final InputStream in;
-        try {
-            in = connection.getInputStream();
-        } catch (IOException e) {
-            throw Throwables.propagate(e);
-        }
+        System.err.println("Request sent. Waiting for response...");
+        final HttpUtils.ReportingInputStream in = HttpUtils.getResponseStream(connection);
+        System.err.println("Processing response...");
 
         BinaryPackedObjects unpacker = new BinaryPackedObjects(localRepository.objectDatabase());
         BinaryPackedObjects.Callback callback = new BinaryPackedObjects.Callback() {
@@ -382,7 +389,15 @@ class HttpRemoteRepo extends AbstractRemoteRepo {
                 }
             }
         };
-        unpacker.ingest(in, callback);
+
+        Stopwatch sw = Stopwatch.createStarted();
+        IngestResults ingestResults = unpacker.ingest(in, callback);
+        sw.stop();
+
+        System.err
+                .printf("Processed %,d objects.\nInserted: %,d.\nExisting: %,d.\nTime to process: %s.\nCompressed size: %,d bytes.\nUncompressed size: %,d bytes.\n",
+                        ingestResults.total(), ingestResults.getInserted(),
+                        ingestResults.getExisting(), sw, in.compressedSize(), in.unCompressedSize());
     }
 
     private JsonObject createFetchMessage(List<ObjectId> want, Set<ObjectId> have) {

@@ -5,12 +5,17 @@
 package org.geogit.remote;
 
 import java.io.BufferedReader;
+import java.io.FilterInputStream;
+import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.InetAddress;
 import java.net.URL;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 import javax.annotation.Nullable;
 import javax.xml.stream.XMLInputFactory;
@@ -23,6 +28,8 @@ import org.geogit.api.RevObject;
 import org.geogit.api.SymRef;
 import org.geogit.repository.Repository;
 import org.geogit.storage.datastream.ObjectReader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
@@ -30,11 +37,15 @@ import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableList.Builder;
 import com.google.common.io.Closeables;
+import com.google.common.io.CountingInputStream;
+import com.google.common.io.CountingOutputStream;
 
 /**
  * Utility functions for performing common communications and operations with http remotes.
  */
 class HttpUtils {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(HttpUtils.class);
 
     /**
      * Parse the provided ref string to a {@link Ref}. The input string should be in the following
@@ -141,14 +152,10 @@ class HttpUtils {
         Optional<RevObject> object = Optional.absent();
         try {
             String expanded = repositoryURL.toString() + "/repo/objects/" + objectId.toString();
-            connection = (HttpURLConnection) new URL(expanded).openConnection();
-            connection.setRequestMethod("GET");
-
-            connection.setUseCaches(false);
-            connection.connect();
+            connection = connect(expanded);
 
             // Get Response
-            InputStream is = connection.getInputStream();
+            InputStream is = HttpUtils.getResponseStream(connection);
             try {
                 ObjectReader reader = new ObjectReader();
                 RevObject revObject = reader.read(objectId, is);
@@ -185,14 +192,10 @@ class HttpUtils {
             String expanded = repositoryURL.toString() + "/repo/exists?oid=" + objectId.toString()
                     + "&internalIp=" + internalIp;
 
-            connection = (HttpURLConnection) new URL(expanded).openConnection();
-            connection.setRequestMethod("GET");
-
-            connection.setUseCaches(false);
-            connection.connect();
+            connection = connect(expanded);
 
             // Get Response
-            InputStream is = connection.getInputStream();
+            InputStream is = HttpUtils.getResponseStream(connection);
             try {
                 BufferedReader rd = new BufferedReader(new InputStreamReader(is));
                 String line = rd.readLine();
@@ -233,13 +236,9 @@ class HttpUtils {
                 expanded = repositoryURL.toString() + "/updateref?name=" + refspec + "&delete=true";
             }
 
-            connection = (HttpURLConnection) new URL(expanded).openConnection();
-            connection.setRequestMethod("GET");
+            connection = connect(expanded);
 
-            connection.setUseCaches(false);
-            connection.connect();
-
-            InputStream inputStream = connection.getInputStream();
+            InputStream inputStream = HttpUtils.getResponseStream(connection);
 
             XMLStreamReader reader = XMLInputFactory.newFactory()
                     .createXMLStreamReader(inputStream);
@@ -299,14 +298,10 @@ class HttpUtils {
                 expanded = repositoryURL.toString() + "/repo/getdepth";
             }
 
-            connection = (HttpURLConnection) new URL(expanded).openConnection();
-            connection.setRequestMethod("GET");
-
-            connection.setUseCaches(false);
-            connection.connect();
+            connection = connect(expanded);
 
             // Get Response
-            InputStream is = connection.getInputStream();
+            InputStream is = HttpUtils.getResponseStream(connection);
             try {
                 BufferedReader rd = new BufferedReader(new InputStreamReader(is));
                 String line = rd.readLine();
@@ -338,14 +333,10 @@ class HttpUtils {
             String expanded = repositoryURL.toString() + "/repo/getparents?commitId="
                     + commit.toString();
 
-            connection = (HttpURLConnection) new URL(expanded).openConnection();
-            connection.setRequestMethod("GET");
-
-            connection.setUseCaches(false);
-            connection.connect();
+            connection = connect(expanded);
 
             // Get Response
-            InputStream is = connection.getInputStream();
+            InputStream is = HttpUtils.getResponseStream(connection);
             try {
                 BufferedReader rd = new BufferedReader(new InputStreamReader(is));
 
@@ -378,13 +369,9 @@ class HttpUtils {
         try {
             String expanded = repositoryURL.toString() + "/refparse?name=" + refspec;
 
-            connection = (HttpURLConnection) new URL(expanded).openConnection();
-            connection.setRequestMethod("GET");
+            connection = connect(expanded);
 
-            connection.setUseCaches(false);
-            connection.connect();
-
-            InputStream inputStream = connection.getInputStream();
+            InputStream inputStream = HttpUtils.getResponseStream(connection);
 
             XMLStreamReader reader = XMLInputFactory.newFactory()
                     .createXMLStreamReader(inputStream);
@@ -440,14 +427,10 @@ class HttpUtils {
             String expanded = repositoryURL.toString() + "/repo/affectedfeatures?commitId="
                     + commit.toString();
 
-            connection = (HttpURLConnection) new URL(expanded).openConnection();
-            connection.setRequestMethod("GET");
-
-            connection.setUseCaches(false);
-            connection.connect();
+            connection = connect(expanded);
 
             // Get Response
-            InputStream is = connection.getInputStream();
+            InputStream is = HttpUtils.getResponseStream(connection);
             try {
                 BufferedReader rd = new BufferedReader(new InputStreamReader(is));
 
@@ -478,13 +461,8 @@ class HttpUtils {
             String internalIp = InetAddress.getLocalHost().getHostName();
             String expanded = repositoryURL.toString() + "/repo/beginpush?internalIp=" + internalIp;
 
-            connection = (HttpURLConnection) new URL(expanded).openConnection();
-            connection.setRequestMethod("GET");
-
-            connection.setUseCaches(false);
-            connection.connect();
-
-            InputStream stream = connection.getInputStream();
+            connection = connect(expanded);
+            InputStream stream = HttpUtils.getResponseStream(connection);
             HttpUtils.consumeAndCloseStream(stream);
 
         } catch (Exception e) {
@@ -492,6 +470,22 @@ class HttpUtils {
         } finally {
             HttpUtils.consumeErrStreamAndCloseConnection(connection);
         }
+    }
+
+    /**
+     * Connects to the given URL using HTTP GET method
+     */
+    public static HttpURLConnection connect(String url) throws IOException {
+        HttpURLConnection connection;
+        connection = (HttpURLConnection) new URL(url).openConnection();
+        connection.setRequestMethod("GET");
+        connection.setUseCaches(false);
+        connection.addRequestProperty("Accept-Encoding", "gzip");
+        LOGGER.debug("Connecting to '{}'...", url);
+        connection.connect();
+        int responseCode = connection.getResponseCode();
+        LOGGER.debug(" connected ({}).", responseCode);
+        return connection;
     }
 
     /**
@@ -512,19 +506,119 @@ class HttpUtils {
                     + "&objectId=" + newCommitId.toString() + "&internalIp=" + internalIp
                     + "&originalRefValue=" + originalRefValue;
 
-            connection = (HttpURLConnection) new URL(expanded).openConnection();
-            connection.setRequestMethod("GET");
+            connection = connect(expanded);
 
-            connection.setUseCaches(false);
-            connection.connect();
-
-            connection.getInputStream();
-            // TODO: throw an exception if the remote ref was not updated.
+            InputStream stream = HttpUtils.getResponseStream(connection);
+            HttpUtils.consumeAndCloseStream(stream);
 
         } catch (Exception e) {
             Throwables.propagate(e);
         } finally {
             HttpUtils.consumeErrStreamAndCloseConnection(connection);
+        }
+    }
+
+    public static HttpUtils.ReportingInputStream getResponseStream(
+            final HttpURLConnection connection) {
+
+        HttpUtils.ReportingInputStream reportingStream;
+        try {
+            InputStream in = connection.getInputStream();
+            String contentEncoding = connection.getHeaderField("Content-Encoding");
+            boolean gzip = "gzip".equalsIgnoreCase(contentEncoding);
+            reportingStream = HttpUtils.newReportingInputStream(in, gzip);
+        } catch (IOException e) {
+            throw Throwables.propagate(e);
+        }
+        return reportingStream;
+    }
+
+    public static ReportingInputStream newReportingInputStream(InputStream in, boolean gzip) {
+        return new ReportingInputStream(in, gzip);
+    }
+
+    public static ReportingOutputStream newReportingOutputStream(OutputStream out,
+            boolean gzipEncode) {
+        return new ReportingOutputStream(out, gzipEncode);
+    }
+
+    public static class ReportingInputStream extends FilterInputStream {
+
+        private boolean isGzipEncoded;
+
+        private CountingInputStream uncompressed;
+
+        private CountingInputStream compressed;
+
+        private ReportingInputStream(InputStream in, boolean isGzipEncoded) {
+            super(new CountingInputStream(in));
+            this.isGzipEncoded = isGzipEncoded;
+            if (isGzipEncoded) {
+                compressed = (CountingInputStream) super.in;
+                GZIPInputStream gzipIn;
+                try {
+                    gzipIn = new GZIPInputStream(compressed);
+                } catch (IOException e) {
+                    throw Throwables.propagate(e);
+                }
+                uncompressed = new CountingInputStream(gzipIn);
+                super.in = uncompressed;
+            } else {
+                uncompressed = ((CountingInputStream) super.in);
+                compressed = uncompressed;
+            }
+        }
+
+        public boolean isCompressed() {
+            return isGzipEncoded;
+        }
+
+        public long compressedSize() {
+            return compressed.getCount();
+        }
+
+        public long unCompressedSize() {
+            return uncompressed.getCount();
+        }
+    }
+
+    public static class ReportingOutputStream extends FilterOutputStream {
+
+        private boolean gzipEncode;
+
+        private CountingOutputStream uncompressed;
+
+        private CountingOutputStream compressed;
+
+        private ReportingOutputStream(OutputStream out, boolean gzipEncode) {
+            super(new CountingOutputStream(out));
+            this.gzipEncode = gzipEncode;
+            if (gzipEncode) {
+                compressed = (CountingOutputStream) super.out;
+                GZIPOutputStream gzipOut;
+                try {
+                    gzipOut = new GZIPOutputStream(compressed);
+                } catch (IOException e) {
+                    throw Throwables.propagate(e);
+                }
+                uncompressed = new CountingOutputStream(gzipOut);
+                super.out = uncompressed;
+            } else {
+                uncompressed = ((CountingOutputStream) super.out);
+                compressed = uncompressed;
+            }
+        }
+
+        public boolean isCompressed() {
+            return gzipEncode;
+        }
+
+        public long compressedSize() {
+            return compressed.getCount();
+        }
+
+        public long unCompressedSize() {
+            return uncompressed.getCount();
         }
     }
 }
