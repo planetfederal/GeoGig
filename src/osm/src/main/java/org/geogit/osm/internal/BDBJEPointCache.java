@@ -4,6 +4,9 @@
  */
 package org.geogit.osm.internal;
 
+import static org.openstreetmap.osmosis.core.util.FixedPrecisionCoordinateConvertor.convertToDouble;
+import static org.openstreetmap.osmosis.core.util.FixedPrecisionCoordinateConvertor.convertToFixed;
+
 import java.io.File;
 import java.io.FileFilter;
 import java.util.List;
@@ -13,6 +16,7 @@ import javax.annotation.Nullable;
 
 import org.geogit.api.Platform;
 import org.geogit.storage.bdbje.EnvironmentBuilder;
+import org.openstreetmap.osmosis.core.util.FixedPrecisionCoordinateConvertor;
 
 import com.sleepycat.bind.tuple.LongBinding;
 import com.sleepycat.bind.tuple.TupleBinding;
@@ -29,6 +33,11 @@ import com.sleepycat.je.LockMode;
 import com.sleepycat.je.OperationStatus;
 import com.vividsolutions.jts.geom.Coordinate;
 
+/**
+ * A {@code PointCache} backed by a temporary BDB JE database, where each point is mapped as a
+ * {@code long} key, and {@code int, int} ordinates, using the conversion from double precision to
+ * integer defined in the osmosis {@link FixedPrecisionCoordinateConvertor} class.
+ */
 public class BDBJEPointCache implements PointCache {
 
     private static final Random random = new Random();
@@ -123,6 +132,10 @@ public class BDBJEPointCache implements PointCache {
         }
     }
 
+    /**
+     * Tuple binding for OSM coordinates that stores ordinates as {@code int} as per
+     * {@link FixedPrecisionCoordinateConvertor}
+     */
     private static final class CoordinateBinding extends TupleBinding<Coordinate> {
 
         private static final CoordinateBinding INSTANCE = new CoordinateBinding();
@@ -139,15 +152,15 @@ public class BDBJEPointCache implements PointCache {
 
         @Override
         public Coordinate entryToObject(TupleInput input) {
-            double x = input.readDouble();
-            double y = input.readDouble();
-            return new Coordinate(x, y);
+            int x = input.readInt();
+            int y = input.readInt();
+            return new Coordinate(convertToDouble(x), convertToDouble(y));
         }
 
         @Override
         public void objectToEntry(Coordinate c, TupleOutput output) {
-            output.writeDouble(c.x);
-            output.writeDouble(c.y);
+            output.writeInt(convertToFixed(c.x));
+            output.writeInt(convertToFixed(c.y));
         }
 
     }
