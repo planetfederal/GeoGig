@@ -16,8 +16,6 @@ import org.geogit.cli.CommandFailedException;
 import org.geogit.cli.GeogitCLI;
 import org.geogit.cli.InvalidParameterException;
 import org.geogit.test.integration.RepositoryTestCase;
-import org.geotools.data.AbstractDataStoreFactory;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;

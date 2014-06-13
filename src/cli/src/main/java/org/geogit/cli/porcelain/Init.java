@@ -12,8 +12,8 @@ import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
-import org.geogit.api.GeoGIT;
 import org.geogit.api.Context;
+import org.geogit.api.GeoGIT;
 import org.geogit.api.plumbing.ResolveGeogitDir;
 import org.geogit.api.porcelain.InitOp;
 import org.geogit.cli.AbstractCommand;

@@ -13,6 +13,7 @@ import javax.annotation.Nullable;
 
 import org.geogit.api.AbstractGeoGitOp;
 import org.geogit.api.ObjectId;
+import org.geogit.api.ProgressListener;
 import org.geogit.api.Ref;
 import org.geogit.api.RevTree;
 import org.geogit.api.plumbing.RevParse;
@@ -22,7 +23,6 @@ import org.geogit.api.plumbing.merge.Conflict;
 import org.geogit.di.CanRunDuringConflict;
 import org.geogit.repository.StagingArea;
 import org.geogit.repository.WorkingTree;
-import org.geogit.api.ProgressListener;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;

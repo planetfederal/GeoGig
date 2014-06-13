@@ -28,11 +28,11 @@ import javax.annotation.Nullable;
 import jline.console.ConsoleReader;
 import jline.console.CursorBuffer;
 
+import org.geogit.api.Context;
 import org.geogit.api.DefaultPlatform;
 import org.geogit.api.DefaultProgressListener;
 import org.geogit.api.GeoGIT;
 import org.geogit.api.GlobalContextBuilder;
-import org.geogit.api.Context;
 import org.geogit.api.Platform;
 import org.geogit.api.ProgressListener;
 import org.geogit.api.hooks.CannotRunGeogitOperationException;

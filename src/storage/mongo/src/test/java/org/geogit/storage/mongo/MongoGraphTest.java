@@ -6,22 +6,21 @@ package org.geogit.storage.mongo;
 
 import java.lang.reflect.Method;
 
-import org.geogit.storage.mongo.MongoGraph;
+import org.geogit.storage.integration.mongo.IniMongoProperties;
 
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
-import com.tinkerpop.blueprints.Graph;
 import com.tinkerpop.blueprints.EdgeTestSuite;
-import com.tinkerpop.blueprints.KeyIndexableGraphTestSuite;
-import com.tinkerpop.blueprints.GraphTestSuite;
+import com.tinkerpop.blueprints.Graph;
 import com.tinkerpop.blueprints.GraphQueryTestSuite;
+import com.tinkerpop.blueprints.GraphTestSuite;
+import com.tinkerpop.blueprints.KeyIndexableGraphTestSuite;
 import com.tinkerpop.blueprints.TestSuite;
 import com.tinkerpop.blueprints.VertexQueryTestSuite;
 import com.tinkerpop.blueprints.VertexTestSuite;
 import com.tinkerpop.blueprints.impls.GraphTest;
-import org.geogit.storage.integration.mongo.IniMongoProperties;
 
 public class MongoGraphTest extends GraphTest {
     public void doTestSuite(TestSuite suite) throws Exception {

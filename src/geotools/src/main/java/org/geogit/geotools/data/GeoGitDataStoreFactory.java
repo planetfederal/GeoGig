@@ -25,9 +25,9 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
+import org.geogit.api.ContextBuilder;
 import org.geogit.api.GeoGIT;
 import org.geogit.api.GlobalContextBuilder;
-import org.geogit.api.ContextBuilder;
 import org.geogit.cli.CLIContextBuilder;
 import org.geogit.repository.Repository;
 import org.geotools.data.DataStoreFactorySpi;

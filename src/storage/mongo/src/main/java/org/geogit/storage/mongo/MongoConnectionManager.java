@@ -5,7 +5,9 @@
 package org.geogit.storage.mongo;
 
 import java.net.UnknownHostException;
+
 import org.geogit.storage.ConnectionManager;
+
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 

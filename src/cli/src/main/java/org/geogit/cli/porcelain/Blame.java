@@ -26,8 +26,8 @@ import org.geogit.api.porcelain.BlameReport;
 import org.geogit.api.porcelain.ValueAndCommit;
 import org.geogit.cli.AbstractCommand;
 import org.geogit.cli.GeogitCLI;
-import org.geogit.cli.annotation.ReadOnly;
 import org.geogit.cli.InvalidParameterException;
+import org.geogit.cli.annotation.ReadOnly;
 import org.geogit.storage.text.TextValueSerializer;
 
 import com.beust.jcommander.Parameter;

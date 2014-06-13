@@ -18,8 +18,8 @@ import static org.mockito.Mockito.when;
 import java.io.File;
 import java.io.IOException;
 
-import org.geogit.api.GeoGIT;
 import org.geogit.api.Context;
+import org.geogit.api.GeoGIT;
 import org.geogit.api.MemoryModule;
 import org.geogit.api.Node;
 import org.geogit.api.NodeRef;

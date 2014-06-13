@@ -13,7 +13,6 @@ import jline.console.ConsoleReader;
 
 import org.geogit.api.GlobalContextBuilder;
 import org.geogit.api.ObjectId;
-import org.geogit.api.Platform;
 import org.geogit.api.RevTree;
 import org.geogit.api.TestPlatform;
 import org.geogit.api.plumbing.RevObjectParse;

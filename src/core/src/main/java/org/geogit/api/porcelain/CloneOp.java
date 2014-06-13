@@ -22,14 +22,12 @@ import org.geogit.remote.IRemoteRepo;
 import org.geogit.remote.RemoteUtils;
 import org.geogit.repository.Hints;
 import org.geogit.repository.Repository;
-import org.geogit.storage.DeduplicationService;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Suppliers;
 import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableSet;
-import com.google.inject.Inject;
 
 /**
  * Clones a remote repository to a given directory.

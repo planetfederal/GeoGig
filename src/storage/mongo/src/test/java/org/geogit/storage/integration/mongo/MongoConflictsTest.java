@@ -11,7 +11,6 @@ import org.geogit.api.Context;
 import org.geogit.api.ObjectId;
 import org.geogit.api.Platform;
 import org.geogit.api.TestPlatform;
-import org.geogit.api.porcelain.ConfigOp;
 import org.geogit.api.plumbing.merge.Conflict;
 import org.geogit.di.GeogitModule;
 import org.geogit.storage.StagingDatabase;

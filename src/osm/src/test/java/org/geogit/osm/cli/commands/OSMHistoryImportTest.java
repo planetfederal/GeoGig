@@ -13,7 +13,6 @@ import jline.console.ConsoleReader;
 
 import org.geogit.api.GeoGIT;
 import org.geogit.api.GlobalContextBuilder;
-import org.geogit.api.Platform;
 import org.geogit.api.RevFeature;
 import org.geogit.api.RevFeatureType;
 import org.geogit.api.TestPlatform;

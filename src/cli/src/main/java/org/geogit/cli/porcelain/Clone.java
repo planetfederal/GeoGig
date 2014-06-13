@@ -19,7 +19,6 @@ import org.geogit.cli.CommandFailedException;
 import org.geogit.cli.GeogitCLI;
 import org.geogit.cli.annotation.RemotesReadOnly;
 import org.geogit.cli.annotation.RequiresRepository;
-import org.geogit.cli.annotation.StagingDatabaseReadOnly;
 
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;

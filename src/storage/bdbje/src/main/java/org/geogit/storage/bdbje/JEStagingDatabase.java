@@ -21,8 +21,8 @@ import org.geogit.api.plumbing.ResolveGeogitDir;
 import org.geogit.api.plumbing.merge.Conflict;
 import org.geogit.repository.Hints;
 import org.geogit.repository.RepositoryConnectionException;
-import org.geogit.storage.ConfigDatabase;
 import org.geogit.storage.AbstractStagingDatabase;
+import org.geogit.storage.ConfigDatabase;
 import org.geogit.storage.ObjectDatabase;
 
 import com.google.common.base.Charsets;

@@ -6,7 +6,6 @@
 package org.geogit.di;
 
 import java.util.Iterator;
-import java.util.List;
 
 import org.geogit.api.ObjectId;
 import org.geogit.api.RevCommit;
@@ -20,7 +19,6 @@ import org.geogit.storage.StagingDatabase;
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterators;
-import com.google.common.collect.Lists;
 import com.google.inject.Provider;
 import com.google.inject.util.Providers;
 

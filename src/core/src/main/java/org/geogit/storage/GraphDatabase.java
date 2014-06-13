@@ -6,7 +6,6 @@ package org.geogit.storage;
 
 import java.io.Closeable;
 import java.util.Iterator;
-import java.util.List;
 
 import org.geogit.api.ObjectId;
 import org.geogit.di.Singleton;

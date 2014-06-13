@@ -7,11 +7,10 @@ package org.geogit.di;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import org.geogit.api.DefaultPlatform;
 import org.geogit.api.Context;
+import org.geogit.api.DefaultPlatform;
 import org.geogit.api.Platform;
 import org.geogit.api.hooks.CommandHooksDecorator;
-import org.geogit.api.hooks.Hookables;
 import org.geogit.repository.Index;
 import org.geogit.repository.Repository;
 import org.geogit.repository.StagingArea;

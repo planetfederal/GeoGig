@@ -13,8 +13,8 @@ import javax.annotation.Nullable;
 import org.geogit.api.ObjectId;
 import org.geogit.api.plumbing.merge.Conflict;
 import org.geogit.repository.RepositoryConnectionException;
-import org.geogit.storage.ConfigDatabase;
 import org.geogit.storage.AbstractStagingDatabase;
+import org.geogit.storage.ConfigDatabase;
 import org.geogit.storage.ObjectDatabase;
 import org.geogit.storage.StagingDatabase;
 

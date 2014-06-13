@@ -12,8 +12,8 @@ import org.geogit.api.Platform;
 import org.geogit.storage.ConfigDatabase;
 import org.geogit.storage.fs.IniFileConfigDatabase;
 
-import com.google.inject.Inject;
 import com.google.common.base.Optional;
+import com.google.inject.Inject;
 
 public class TestConfigDatabase implements ConfigDatabase {
     private ConfigDatabase delegate;

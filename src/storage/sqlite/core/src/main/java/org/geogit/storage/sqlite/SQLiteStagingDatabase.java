@@ -9,13 +9,11 @@ import static org.geogit.storage.sqlite.SQLiteStorage.VERSION;
 
 import java.util.List;
 
-import javax.sql.DataSource;
-
 import org.geogit.api.Platform;
 import org.geogit.api.plumbing.merge.Conflict;
 import org.geogit.repository.RepositoryConnectionException;
-import org.geogit.storage.ConfigDatabase;
 import org.geogit.storage.AbstractStagingDatabase;
+import org.geogit.storage.ConfigDatabase;
 import org.geogit.storage.ObjectDatabase;
 
 import com.google.common.base.Optional;

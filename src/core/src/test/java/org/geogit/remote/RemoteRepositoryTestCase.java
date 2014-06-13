@@ -17,10 +17,10 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-import org.geogit.api.GeoGIT;
-import org.geogit.api.GlobalContextBuilder;
 import org.geogit.api.Context;
 import org.geogit.api.ContextBuilder;
+import org.geogit.api.GeoGIT;
+import org.geogit.api.GlobalContextBuilder;
 import org.geogit.api.Node;
 import org.geogit.api.ObjectId;
 import org.geogit.api.Platform;

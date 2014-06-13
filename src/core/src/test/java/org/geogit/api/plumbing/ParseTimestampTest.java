@@ -8,8 +8,8 @@ package org.geogit.api.plumbing;
 import java.io.File;
 import java.util.Date;
 
-import org.geogit.api.GeoGIT;
 import org.geogit.api.Context;
+import org.geogit.api.GeoGIT;
 import org.geogit.api.MemoryModule;
 import org.geogit.api.Platform;
 import org.geogit.api.TestPlatform;

@@ -12,8 +12,8 @@ import java.util.Map.Entry;
 import java.util.UUID;
 import java.util.concurrent.TimeoutException;
 
-import org.geogit.api.GeogitTransaction;
 import org.geogit.api.Context;
+import org.geogit.api.GeogitTransaction;
 import org.geogit.api.Ref;
 import org.geogit.api.plumbing.TransactionBegin;
 import org.geogit.api.plumbing.TransactionEnd;

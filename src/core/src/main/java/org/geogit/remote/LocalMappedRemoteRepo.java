@@ -11,8 +11,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.geogit.api.CommitBuilder;
-import org.geogit.api.GeoGIT;
 import org.geogit.api.Context;
+import org.geogit.api.GeoGIT;
 import org.geogit.api.ObjectId;
 import org.geogit.api.Ref;
 import org.geogit.api.RevCommit;
