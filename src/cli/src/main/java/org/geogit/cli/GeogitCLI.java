@@ -6,12 +6,8 @@ package org.geogit.cli;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.io.File;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.text.NumberFormat;
 import java.util.Arrays;
 import java.util.Collection;
@@ -46,11 +42,6 @@ import org.geogit.cli.annotation.StagingDatabaseReadOnly;
 import org.geogit.repository.Hints;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.bridge.SLF4JBridgeHandler;
-
-import ch.qos.logback.classic.LoggerContext;
-import ch.qos.logback.classic.joran.JoranConfigurator;
-import ch.qos.logback.core.joran.spi.JoranException;
 
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
@@ -65,8 +56,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.common.io.ByteSource;
-import com.google.common.io.Files;
-import com.google.common.io.Resources;
 import com.google.inject.Binding;
 import com.google.inject.Guice;
 import com.google.inject.Key;
@@ -88,8 +77,6 @@ public class GeogitCLI {
     static {
         GlobalContextBuilder.builder = new CLIContextBuilder();
     }
-
-    private File geogitDirLoggingConfiguration;
 
     private static final com.google.inject.Injector commandsInjector;
     static {
@@ -323,6 +310,7 @@ public class GeogitCLI {
      * @param args
      */
     public static void main(String[] args) {
+        Logging.tryConfigureLogging();
         ConsoleReader consoleReader;
         try {
             consoleReader = new ConsoleReader(System.in, System.out);
@@ -353,92 +341,7 @@ public class GeogitCLI {
         }
     }
 
-    void tryConfigureLogging() {
-        // instantiate and call ResolveGeogitDir directly to avoid calling getGeogit() and hence get
-        // some logging events before having configured logging
-        final Optional<URL> geogitDirUrl = new ResolveGeogitDir(getPlatform()).call();
-        if (!geogitDirUrl.isPresent() || !"file".equalsIgnoreCase(geogitDirUrl.get().getProtocol())) {
-            // redirect java.util.logging to SLF4J anyways
-            SLF4JBridgeHandler.removeHandlersForRootLogger();
-            SLF4JBridgeHandler.install();
-            return;
-        }
-
-        final File geogitDir;
-        try {
-            geogitDir = new File(geogitDirUrl.get().toURI());
-        } catch (URISyntaxException e) {
-            throw Throwables.propagate(e);
-        }
-
-        if (geogitDir.equals(geogitDirLoggingConfiguration)) {
-            return;
-        }
-
-        if (!geogitDir.exists() || !geogitDir.isDirectory()) {
-            return;
-        }
-        final URL loggingFile = getOrCreateLoggingConfigFile(geogitDir);
-
-        if (loggingFile == null) {
-            return;
-        }
-
-        try {
-            LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
-            loggerContext.reset();
-            /*
-             * Set the geogitdir variable for the config file can resolve the default location
-             * ${geogitdir}/log/geogit.log
-             */
-            loggerContext.putProperty("geogitdir", geogitDir.getAbsolutePath());
-            JoranConfigurator configurator = new JoranConfigurator();
-            configurator.setContext(loggerContext);
-            configurator.doConfigure(loggingFile);
-
-            // redirect java.util.logging to SLF4J
-            SLF4JBridgeHandler.removeHandlersForRootLogger();
-            SLF4JBridgeHandler.install();
-            geogitDirLoggingConfiguration = geogitDir;
-        } catch (JoranException e) {
-            LOGGER.error("Error configuring logging from file {}. '{}'", loggingFile,
-                    e.getMessage(), e);
-        }
-    }
-
-    @Nullable
-    private URL getOrCreateLoggingConfigFile(final File geogitdir) {
-
-        final File logsDir = new File(geogitdir, "log");
-        if (!logsDir.exists() && !logsDir.mkdir()) {
-            return null;
-        }
-        final File configFile = new File(logsDir, "logback.xml");
-        if (configFile.exists()) {
-            try {
-                return configFile.toURI().toURL();
-            } catch (MalformedURLException e) {
-                throw Throwables.propagate(e);
-            }
-        }
-        ByteSource from;
-        final URL resource = getClass().getResource("logback_default.xml");
-        try {
-            from = Resources.asByteSource(resource);
-        } catch (NullPointerException npe) {
-            LOGGER.warn("Couldn't obtain default logging configuration file");
-            return null;
-        }
-        try {
-            from.copyTo(Files.asByteSink(configFile));
-            return configFile.toURI().toURL();
-        } catch (Exception e) {
-            LOGGER.warn("Error copying logback_default.xml to {}. Using default configuration.",
-                    configFile, e);
-            return resource;
-        }
-    }
-
+   
     /**
      * Finds all commands that are bound do the command injector.
      * 
@@ -535,7 +438,6 @@ public class GeogitCLI {
      */
     private void executeInternal(String... args) throws ParameterException, CommandFailedException,
             IOException, CannotRunGeogitOperationException {
-        tryConfigureLogging();
 
         JCommander mainCommander = newCommandParser();
         if (null == args || args.length == 0) {

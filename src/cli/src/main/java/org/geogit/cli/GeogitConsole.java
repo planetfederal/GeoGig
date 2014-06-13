@@ -50,6 +50,7 @@ public class GeogitConsole {
      * @param args unused
      */
     public static void main(String... args) {
+        Logging.tryConfigureLogging();
         try {
             if (args.length == 1) {
                 new GeogitConsole().runFile(args[0]);
@@ -109,7 +110,6 @@ public class GeogitConsole {
         consoleReader.getTerminal().setEchoEnabled(interactive);
 
         final GeogitCLI cli = new GeogitCLI(consoleReader);
-        cli.tryConfigureLogging();
         if (interactive) {
             addCommandCompleter(consoleReader, cli);
         } else {
