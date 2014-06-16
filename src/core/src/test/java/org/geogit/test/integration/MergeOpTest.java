@@ -634,9 +634,8 @@ public class MergeOpTest extends RepositoryTestCase {
         assertEquals(1, conflicts.size());
         String path = NodeRef.appendChild(pointsName, idP1);
         assertEquals(conflicts.get(0).getPath(), path);
-        assertEquals(conflicts.get(0).getOurs(), new RevFeatureBuilder().build(points1Modified)
-                .getId());
-        assertEquals(conflicts.get(0).getTheirs(), new RevFeatureBuilder().build(points1ModifiedB)
+        assertEquals(conflicts.get(0).getOurs(), RevFeatureBuilder.build(points1Modified).getId());
+        assertEquals(conflicts.get(0).getTheirs(), RevFeatureBuilder.build(points1ModifiedB)
                 .getId());
 
         // try to commit
@@ -661,7 +660,7 @@ public class MergeOpTest extends RepositoryTestCase {
         Optional<RevFeature> revFeature = geogit.command(RevObjectParse.class)
                 .setRefSpec(Ref.HEAD + ":" + path).call(RevFeature.class);
         assertTrue(revFeature.isPresent());
-        assertEquals(new RevFeatureBuilder().build(points1Merged), revFeature.get());
+        assertEquals(RevFeatureBuilder.build(points1Merged), revFeature.get());
         path = NodeRef.appendChild(pointsName, idP2);
         revFeature = geogit.command(RevObjectParse.class).setRefSpec(Ref.HEAD + ":" + path)
                 .call(RevFeature.class);
@@ -761,12 +760,12 @@ public class MergeOpTest extends RepositoryTestCase {
         Optional<RevFeature> revFeature = geogit.command(RevObjectParse.class)
                 .setRefSpec(Ref.HEAD + ":" + path).call(RevFeature.class);
         assertTrue(revFeature.isPresent());
-        assertEquals(new RevFeatureBuilder().build(points1Modified), revFeature.get());
+        assertEquals(RevFeatureBuilder.build(points1Modified), revFeature.get());
         path = NodeRef.appendChild(pointsName, idP2);
         revFeature = geogit.command(RevObjectParse.class).setRefSpec(Ref.HEAD + ":" + path)
                 .call(RevFeature.class);
         assertTrue(revFeature.isPresent());
-        assertEquals(new RevFeatureBuilder().build(points2), revFeature.get());
+        assertEquals(RevFeatureBuilder.build(points2), revFeature.get());
     }
 
     @Test
@@ -801,7 +800,7 @@ public class MergeOpTest extends RepositoryTestCase {
         Optional<RevFeature> revFeature = geogit.command(RevObjectParse.class)
                 .setRefSpec(Ref.HEAD + ":" + path).call(RevFeature.class);
         assertTrue(revFeature.isPresent());
-        assertEquals(new RevFeatureBuilder().build(points1ModifiedB), revFeature.get());
+        assertEquals(RevFeatureBuilder.build(points1ModifiedB), revFeature.get());
     }
 
     @Test
@@ -861,14 +860,14 @@ public class MergeOpTest extends RepositoryTestCase {
         Optional<RevFeature> revFeature = geogit.command(RevObjectParse.class)
                 .setRefSpec(Ref.STAGE_HEAD + ":" + path).call(RevFeature.class);
         assertTrue(revFeature.isPresent());
-        assertEquals(new RevFeatureBuilder().build(points2), revFeature.get());
+        assertEquals(RevFeatureBuilder.build(points2), revFeature.get());
         revFeature = geogit.command(RevObjectParse.class).setRefSpec(Ref.HEAD + ":" + path)
                 .call(RevFeature.class);
         assertFalse(revFeature.isPresent());
         revFeature = geogit.command(RevObjectParse.class).setRefSpec(Ref.WORK_HEAD + ":" + path)
                 .call(RevFeature.class);
         assertTrue(revFeature.isPresent());
-        assertEquals(new RevFeatureBuilder().build(points2), revFeature.get());
+        assertEquals(RevFeatureBuilder.build(points2), revFeature.get());
 
         Optional<Ref> ref = geogit.command(RefParse.class).setName(Ref.ORIG_HEAD).call();
         assertTrue(ref.isPresent());
@@ -994,7 +993,7 @@ public class MergeOpTest extends RepositoryTestCase {
 
         Feature mergedFeature = feature(pointsType, idP1, "StringProp1_2", new Integer(2000),
                 "POINT(1 1)");
-        RevFeature expected = new RevFeatureBuilder().build(mergedFeature);
+        RevFeature expected = RevFeatureBuilder.build(mergedFeature);
         assertEquals(expected, feature.get());
 
     }
@@ -1172,7 +1171,7 @@ public class MergeOpTest extends RepositoryTestCase {
         Optional<RevFeature> revFeature = geogit.command(RevObjectParse.class)
                 .setRefSpec(Ref.HEAD + ":" + path).call(RevFeature.class);
         assertTrue(revFeature.isPresent());
-        assertEquals(new RevFeatureBuilder().build(points1_modified), revFeature.get());
+        assertEquals(RevFeatureBuilder.build(points1_modified), revFeature.get());
     }
 
 }

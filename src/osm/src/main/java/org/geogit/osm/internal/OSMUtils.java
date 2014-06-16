@@ -4,7 +4,6 @@
  */
 package org.geogit.osm.internal;
 
-import java.io.File;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -15,7 +14,6 @@ import org.geotools.referencing.CRS;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.openstreetmap.osmosis.core.domain.v0_6.Tag;
-import org.openstreetmap.osmosis.xml.common.CompressionMethod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -120,15 +118,4 @@ public class OSMUtils {
         }
         return tags;
     }
-
-    private CompressionMethod resolveCompressionMethod(File file) {
-        String fileName = file.getName();
-        if (fileName.endsWith(".gz")) {
-            return CompressionMethod.GZip;
-        } else if (fileName.endsWith(".bz2")) {
-            return CompressionMethod.BZip2;
-        }
-        return CompressionMethod.None;
-    }
-
 }

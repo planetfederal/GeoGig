@@ -42,6 +42,7 @@ class ObjectDatabaseCacheInterceptor {
                 return subject instanceof StagingDatabase;
             }
 
+            @SuppressWarnings("unchecked")
             @Override
             public StagingDatabase decorate(Object subject) {
                 Provider<StagingDatabase> indexDb = Providers.of((StagingDatabase) subject);
@@ -58,10 +59,12 @@ class ObjectDatabaseCacheInterceptor {
                 return subject instanceof ObjectDatabase && (!(subject instanceof StagingDatabase));
             }
 
+            @SuppressWarnings("unchecked")
             @Override
             public ObjectDatabase decorate(Object subject) {
                 Provider<ObjectDatabase> odb = Providers.of((ObjectDatabase) subject);
-                CachingObjectDatabase cachingObjectDatabase = new CachingObjectDatabase(odb, cacheProvider);
+                CachingObjectDatabase cachingObjectDatabase = new CachingObjectDatabase(odb,
+                        cacheProvider);
                 return cachingObjectDatabase;
             }
         };

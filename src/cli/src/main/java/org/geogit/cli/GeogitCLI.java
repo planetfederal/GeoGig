@@ -8,7 +8,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.lang.annotation.Annotation;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
@@ -65,8 +64,8 @@ import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import com.google.common.io.ByteSource;
 import com.google.common.io.Files;
-import com.google.common.io.InputSupplier;
 import com.google.common.io.Resources;
 import com.google.inject.Binding;
 import com.google.inject.Guice;
@@ -405,16 +404,16 @@ public class GeogitCLI {
                 throw Throwables.propagate(e);
             }
         }
-        InputSupplier<InputStream> from;
+        ByteSource from;
         final URL resource = getClass().getResource("logback_default.xml");
         try {
-            from = Resources.newInputStreamSupplier(resource);
+            from = Resources.asByteSource(resource);
         } catch (NullPointerException npe) {
             LOGGER.warn("Couldn't obtain default logging configuration file");
             return null;
         }
         try {
-            Files.copy(from, configFile);
+            from.copyTo(Files.asByteSink(configFile));
             return configFile.toURI().toURL();
         } catch (Exception e) {
             LOGGER.warn("Error copying logback_default.xml to {}. Using default configuration.",

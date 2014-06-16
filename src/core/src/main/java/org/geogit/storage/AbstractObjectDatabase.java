@@ -89,8 +89,7 @@ public abstract class AbstractObjectDatabase implements ObjectDatabase {
     }
 
     @Override
-    public @Nullable
-    RevObject getIfPresent(ObjectId id) {
+    public @Nullable RevObject getIfPresent(ObjectId id) {
         Preconditions.checkNotNull(id, "id");
 
         final ObjectReader<RevObject> reader = serializationFactory.createObjectReader();
@@ -117,8 +116,7 @@ public abstract class AbstractObjectDatabase implements ObjectDatabase {
     }
 
     @Override
-    public @Nullable
-    <T extends RevObject> T getIfPresent(ObjectId id, Class<T> clazz)
+    public @Nullable <T extends RevObject> T getIfPresent(ObjectId id, Class<T> clazz)
             throws IllegalArgumentException {
         Preconditions.checkNotNull(id, "id");
         Preconditions.checkNotNull(clazz, "class");
@@ -246,7 +244,7 @@ public abstract class AbstractObjectDatabase implements ObjectDatabase {
                 throw Throwables.propagate(e);
             }
         }
-        int size = ((ByteArrayOutputStream) target).size();
+        // int size = ((ByteArrayOutputStream) target).size();
         // System.err.printf("%d,%s,%s\n", size, object.getId(), object.getType());
     }
 

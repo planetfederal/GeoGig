@@ -152,6 +152,7 @@ public class GeoGitAPI {
      * @return the result of calling the named command with the given parameters.
      * @throws ClassNotFoundException if no command named after {@code className} exists
      */
+    @SuppressWarnings("unchecked")
     public Object run(String className, Object params) throws ClassNotFoundException {
         Map<String, Object> paramsMap;
         if (params instanceof Map) {
@@ -207,6 +208,7 @@ public class GeoGitAPI {
         Class<AbstractGeoGitOp<?>> clazz = (Class<AbstractGeoGitOp<?>>) Class.forName(className);
 
         AbstractGeoGitOp<?> operation = repository.command(clazz);
+        @SuppressWarnings("unused")
         Map<String, Object> oldParams = Scripting.getParamMap(operation);
         Scripting.setParamMap(parameters, operation);
         return operation.call();

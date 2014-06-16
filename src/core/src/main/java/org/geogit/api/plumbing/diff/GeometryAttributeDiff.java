@@ -94,6 +94,7 @@ public class GeometryAttributeDiff implements AttributeDiff {
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public Optional<?> applyOn(Optional<?> obj) {
         Preconditions.checkState(canBeAppliedOn(obj));
@@ -108,6 +109,7 @@ public class GeometryAttributeDiff implements AttributeDiff {
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public boolean canBeAppliedOn(Optional<?> obj) {
         switch (type) {

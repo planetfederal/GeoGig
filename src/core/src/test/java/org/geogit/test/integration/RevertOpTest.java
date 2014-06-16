@@ -256,11 +256,14 @@ public class RevertOpTest extends RepositoryTestCase {
     @Test
     public void testStillDeletedMergeConflictResolution() throws Exception {
         insertAndAdd(points1);
+        @SuppressWarnings("unused")
         RevCommit c1 = geogit.command(CommitOp.class).setMessage("commit for " + idP1).call();
         deleteAndAdd(points1);
         RevCommit c2 = geogit.command(CommitOp.class).setMessage("commit for removing " + idP1)
                 .call();
+        @SuppressWarnings("unused")
         ObjectId oId1 = insertAndAdd(points1);
+        @SuppressWarnings("unused")
         RevCommit c3 = geogit.command(CommitOp.class).setMessage("commit for " + idP1 + " again")
                 .call();
         try {
@@ -274,12 +277,15 @@ public class RevertOpTest extends RepositoryTestCase {
 
     @Test
     public void testRevertToSameFeatureIsNotConflict() throws Exception {
+        @SuppressWarnings("unused")
         ObjectId oId1 = insertAndAdd(points1);
+        @SuppressWarnings("unused")
         RevCommit c1 = geogit.command(CommitOp.class).setMessage("commit for " + idP1).call();
         insertAndAdd(points1_modified);
         RevCommit c2 = geogit.command(CommitOp.class).setMessage("commit for modified " + idP1)
                 .call();
         insertAndAdd(points1);
+        @SuppressWarnings("unused")
         RevCommit c3 = geogit.command(CommitOp.class)
                 .setMessage("commit for modified " + idP1 + " again").call();
 
@@ -314,9 +320,8 @@ public class RevertOpTest extends RepositoryTestCase {
         assertEquals(1, conflicts.size());
         String path = NodeRef.appendChild(pointsName, idP1);
         assertEquals(conflicts.get(0).getPath(), path);
-        assertEquals(conflicts.get(0).getOurs(), new RevFeatureBuilder().build(points1_modifiedB)
-                .getId());
-        assertEquals(conflicts.get(0).getTheirs(), new RevFeatureBuilder().build(points1).getId());
+        assertEquals(conflicts.get(0).getOurs(), RevFeatureBuilder.build(points1_modifiedB).getId());
+        assertEquals(conflicts.get(0).getTheirs(), RevFeatureBuilder.build(points1).getId());
 
         // solve, and continue
         insert(points1);
@@ -351,6 +356,7 @@ public class RevertOpTest extends RepositoryTestCase {
     @Test
     public void testRevertModifiedFeatureConflictAndAbort() throws Exception {
         insertAndAdd(points1);
+        @SuppressWarnings("unused")
         RevCommit c1 = geogit.command(CommitOp.class).setMessage("commit for " + idP1).call();
         insertAndAdd(points1_modified);
         RevCommit c2 = geogit.command(CommitOp.class).setMessage("commit for modified " + idP1)
@@ -375,9 +381,8 @@ public class RevertOpTest extends RepositoryTestCase {
         assertEquals(1, conflicts.size());
         String path = NodeRef.appendChild(pointsName, idP1);
         assertEquals(conflicts.get(0).getPath(), path);
-        assertEquals(conflicts.get(0).getOurs(), new RevFeatureBuilder().build(points1_modifiedB)
-                .getId());
-        assertEquals(conflicts.get(0).getTheirs(), new RevFeatureBuilder().build(points1).getId());
+        assertEquals(conflicts.get(0).getOurs(), RevFeatureBuilder.build(points1_modifiedB).getId());
+        assertEquals(conflicts.get(0).getTheirs(), RevFeatureBuilder.build(points1).getId());
 
         geogit.command(RevertOp.class).setAbort(true).call();
 
@@ -418,6 +423,7 @@ public class RevertOpTest extends RepositoryTestCase {
 
         assertFalse(lines1Node.isPresent());
 
+        @SuppressWarnings("unused")
         Optional<NodeRef> linesNode = geogit.command(FindTreeChild.class).setChildPath(linesName)
                 .setParent(headTree).call();
 

@@ -458,9 +458,8 @@ public class RebaseOpTest extends RepositoryTestCase {
         assertEquals(1, conflicts.size());
         String path = NodeRef.appendChild(pointsName, idP1);
         assertEquals(conflicts.get(0).getPath(), path);
-        assertEquals(conflicts.get(0).getOurs(), new RevFeatureBuilder().build(points1Modified)
-                .getId());
-        assertEquals(conflicts.get(0).getTheirs(), new RevFeatureBuilder().build(points1ModifiedB)
+        assertEquals(conflicts.get(0).getOurs(), RevFeatureBuilder.build(points1Modified).getId());
+        assertEquals(conflicts.get(0).getTheirs(), RevFeatureBuilder.build(points1ModifiedB)
                 .getId());
 
         // solve, and continue
@@ -551,9 +550,8 @@ public class RebaseOpTest extends RepositoryTestCase {
         assertEquals(1, conflicts.size());
         String path = NodeRef.appendChild(pointsName, idP1);
         assertEquals(conflicts.get(0).getPath(), path);
-        assertEquals(conflicts.get(0).getOurs(), new RevFeatureBuilder().build(points1Modified)
-                .getId());
-        assertEquals(conflicts.get(0).getTheirs(), new RevFeatureBuilder().build(points1ModifiedB)
+        assertEquals(conflicts.get(0).getOurs(), RevFeatureBuilder.build(points1Modified).getId());
+        assertEquals(conflicts.get(0).getTheirs(), RevFeatureBuilder.build(points1ModifiedB)
                 .getId());
 
         // solve, and continue
@@ -594,7 +592,7 @@ public class RebaseOpTest extends RepositoryTestCase {
         points = geogit.command(RevObjectParse.class).setRefSpec(Ref.HEAD + ":" + path)
                 .call(RevFeature.class);
         assertTrue(points.isPresent());
-        assertEquals(new RevFeatureBuilder().build(points1Merged), points.get());
+        assertEquals(RevFeatureBuilder.build(points1Merged), points.get());
 
         ref = geogit.command(RefParse.class).setName(Ref.ORIG_HEAD).call();
         assertFalse(ref.isPresent());
@@ -671,7 +669,7 @@ public class RebaseOpTest extends RepositoryTestCase {
         Optional<RevFeature> points = geogit.command(RevObjectParse.class)
                 .setRefSpec(Ref.HEAD + ":" + path).call(RevFeature.class);
         assertTrue(points.isPresent());
-        assertEquals(new RevFeatureBuilder().build(points1ModifiedB), points.get());
+        assertEquals(RevFeatureBuilder.build(points1ModifiedB), points.get());
 
         List<Conflict> conflicts = geogit.command(ConflictsReadOp.class).call();
         assertFalse(conflicts.isEmpty());
@@ -704,7 +702,7 @@ public class RebaseOpTest extends RepositoryTestCase {
         points = geogit.command(RevObjectParse.class).setRefSpec(Ref.HEAD + ":" + path)
                 .call(RevFeature.class);
         assertTrue(points.isPresent());
-        assertEquals(new RevFeatureBuilder().build(points1ModifiedB), points.get());
+        assertEquals(RevFeatureBuilder.build(points1ModifiedB), points.get());
 
         Optional<Ref> ref = geogit.command(RefParse.class).setName(Ref.ORIG_HEAD).call();
         assertFalse(ref.isPresent());
@@ -774,7 +772,7 @@ public class RebaseOpTest extends RepositoryTestCase {
         Optional<RevFeature> points = geogit.command(RevObjectParse.class)
                 .setRefSpec(Ref.HEAD + ":" + path).call(RevFeature.class);
         assertTrue(points.isPresent());
-        assertEquals(new RevFeatureBuilder().build(points1Modified), points.get());
+        assertEquals(RevFeatureBuilder.build(points1Modified), points.get());
 
     }
 

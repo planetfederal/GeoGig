@@ -192,8 +192,6 @@ public class DiffTreeVisitorTest {
         RevTree right = createTreesTree(rightSource, 3, 100, metadataId).build();
         DiffTreeVisitor visitor = new DiffTreeVisitor(left, right, leftSource, rightSource);
 
-        // visitor.walk(new PrintingConsumer());
-
         final Node lroot = nodeFor(left);
         final Node rroot = nodeFor(right);
 
@@ -232,8 +230,6 @@ public class DiffTreeVisitorTest {
         RevTree right = createTreesTree(rightSource, 3, 10, metadataId).build();
         DiffTreeVisitor visitor = new DiffTreeVisitor(left, right, leftSource, rightSource);
 
-        // visitor.walk(new PrintingConsumer());
-
         final Node lroot = nodeFor(left);
         final Node rroot = nodeFor(right);
 
@@ -264,7 +260,6 @@ public class DiffTreeVisitorTest {
         assertDepth(right, rightSource, 2);
 
         DiffTreeVisitor visitor = new DiffTreeVisitor(left, right, leftSource, rightSource);
-        // visitor.walk(new PrintingConsumer());
 
         final Node lroot = nodeFor(left);
         final Node rroot = nodeFor(right);
@@ -298,8 +293,6 @@ public class DiffTreeVisitorTest {
         RevTree left = createTreesTree(leftSource, 3, 10, metadataId).build();
         RevTree right = createTreesTree(rightSource, 2, 10, metadataId).build();
         DiffTreeVisitor visitor = new DiffTreeVisitor(left, right, leftSource, rightSource);
-
-        // visitor.walk(new PrintingConsumer());
 
         final Node lroot = nodeFor(left);
         final Node rroot = nodeFor(right);
@@ -374,7 +367,6 @@ public class DiffTreeVisitorTest {
                 .build();
 
         DiffTreeVisitor visitor = new DiffTreeVisitor(left, right, leftSource, rightSource);
-        // visitor.walk(new PrintingConsumer());
 
         when(consumer.tree(any(Node.class), any(Node.class))).thenReturn(true);
         when(consumer.bucket(anyInt(), anyInt(), any(Bucket.class), any(Bucket.class))).thenReturn(
@@ -398,7 +390,6 @@ public class DiffTreeVisitorTest {
                 RevTree.MAX_BUCKETS * RevTree.NORMALIZED_SIZE_LIMIT + 1).build();
 
         DiffTreeVisitor visitor = new DiffTreeVisitor(left, right, leftSource, rightSource);
-        // visitor.walk(new PrintingConsumer());
 
         when(consumer.tree(any(Node.class), any(Node.class))).thenReturn(true);
         when(consumer.bucket(anyInt(), anyInt(), any(Bucket.class), any(Bucket.class))).thenReturn(
@@ -426,7 +417,6 @@ public class DiffTreeVisitorTest {
         RevTree right = createFeaturesTree(rightSource, "f", 1).build();
 
         DiffTreeVisitor visitor = new DiffTreeVisitor(left, right, leftSource, rightSource);
-        // visitor.walk(new PrintingConsumer());
 
         // consume all
         when(consumer.tree(any(Node.class), any(Node.class))).thenReturn(true);
@@ -459,7 +449,6 @@ public class DiffTreeVisitorTest {
         RevTree right = createFeaturesTree(rightSource, "f", rightsize).build();
 
         DiffTreeVisitor visitor = new DiffTreeVisitor(left, right, leftSource, rightSource);
-        // visitor.walk(new PrintingConsumer());
 
         // consume all
         when(consumer.tree(any(Node.class), any(Node.class))).thenReturn(true);
@@ -535,7 +524,6 @@ public class DiffTreeVisitorTest {
                 true).build();
 
         DiffTreeVisitor visitor = new DiffTreeVisitor(left, right, leftSource, rightSource);
-        // visitor.walk(new PrintingConsumer());
 
         // consume all
         when(consumer.tree(any(Node.class), any(Node.class))).thenReturn(true);
@@ -590,7 +578,6 @@ public class DiffTreeVisitorTest {
                 true).build();
 
         DiffTreeVisitor visitor = new DiffTreeVisitor(leftRoot, rightRoot, leftSource, rightSource);
-        // visitor.walk(new PrintingConsumer());
 
         // consume all
         when(consumer.tree(any(Node.class), any(Node.class))).thenReturn(true);
@@ -662,7 +649,6 @@ public class DiffTreeVisitorTest {
         RevTree right = createFeaturesTree(rightSource, "f", 1).build();
 
         DiffTreeVisitor visitor = new DiffTreeVisitor(left, right, leftSource, rightSource);
-        // visitor.walk(new PrintingConsumer());
 
         // consume all
         when(consumer.tree(any(Node.class), any(Node.class))).thenReturn(true);
@@ -687,45 +673,4 @@ public class DiffTreeVisitorTest {
         verify(consumer, times(1)).endTree(any(Node.class), any(Node.class));
         verifyNoMoreInteractions(consumer);
     }
-
-    private static class PrintingConsumer implements Consumer {
-
-        private int indent = 0;
-
-        @Override
-        public boolean tree(Node left, Node right) {
-            print("tree\t%s -> %s", left, right);
-            return true;
-        }
-
-        @Override
-        public void feature(Node left, Node right) {
-            // print("feature\t%s -> %s", left, right);
-        }
-
-        @Override
-        public boolean bucket(int bucketIndex, int bucketDepth, Bucket left, Bucket right) {
-            indent = bucketDepth;
-            print("bucket\tidx:%d/depth:%d %s -> %s", bucketIndex, bucketDepth, left, right);
-            return true;
-        }
-
-        private void print(String format, Object... args) {
-            for (int i = 0; i < indent; i++) {
-                System.out.print('\t');
-            }
-            System.out.printf(format + "\n", args);
-        }
-
-        @Override
-        public void endTree(Node left, Node right) {
-            // nothing to do
-        }
-
-        @Override
-        public void endBucket(int bucketIndex, int bucketDepth, Bucket left, Bucket right) {
-            // nothing to do
-        }
-
-    };
 }

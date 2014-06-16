@@ -26,7 +26,9 @@ public abstract class AbstractGeoJsonCommand extends AbstractCommand implements 
             checkParameter(geoJsonfile.exists(), "File does not exist '%s'", geoJsonfile);
             InputStream in = new FileInputStream(geoJsonfile);
             FeatureJSON fjson = new FeatureJSON();
+            @SuppressWarnings("rawtypes")
             FeatureCollection fc = fjson.readFeatureCollection(in);
+            @SuppressWarnings("unchecked")
             DataStore dataStore = new MemoryDataStore(fc);
             return dataStore;
         } catch (IOException ioe) {

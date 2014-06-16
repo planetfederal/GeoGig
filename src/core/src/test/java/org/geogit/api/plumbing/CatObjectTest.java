@@ -72,8 +72,7 @@ public class CatObjectTest extends RepositoryTestCase {
 
     @Test
     public void TestCatFeatureObject() {
-        RevFeatureBuilder rfb = new RevFeatureBuilder();
-        RevFeature feature = rfb.build(points1);
+        RevFeature feature = RevFeatureBuilder.build(points1);
         CharSequence desc = geogit.command(CatObject.class)
                 .setObject(Suppliers.ofInstance(feature)).call();
         String[] lines = desc.toString().split("\n");

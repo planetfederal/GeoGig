@@ -127,6 +127,7 @@ class FeatureTypeAdapterFeatureSource<T extends FeatureType, F extends Feature> 
             this.builder = builder;
         }
 
+        @SuppressWarnings("unchecked")
         @Override
         public F next() {
             F next = super.next();

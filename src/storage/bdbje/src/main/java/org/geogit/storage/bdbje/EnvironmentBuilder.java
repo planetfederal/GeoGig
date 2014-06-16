@@ -6,7 +6,6 @@ package org.geogit.storage.bdbje;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
@@ -16,8 +15,8 @@ import org.geogit.api.plumbing.ResolveGeogitDir;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Throwables;
+import com.google.common.io.ByteSource;
 import com.google.common.io.Files;
-import com.google.common.io.InputSupplier;
 import com.google.common.io.Resources;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -96,10 +95,9 @@ public class EnvironmentBuilder implements Provider<Environment> {
             if (!conf.exists()) {
                 String resource = stagingDatabase ? "je.properties.staging"
                         : "je.properties.objectdb";
-                InputSupplier<InputStream> from = Resources.newInputStreamSupplier(getClass()
-                        .getResource(resource));
+                ByteSource from = Resources.asByteSource((getClass().getResource(resource)));
                 try {
-                    Files.copy(from, conf);
+                    from.copyTo(Files.asByteSink(conf));
                 } catch (IOException e) {
                     Throwables.propagate(e);
                 }
@@ -111,7 +109,7 @@ public class EnvironmentBuilder implements Provider<Environment> {
             envCfg.setCacheMode(CacheMode.MAKE_COLD);
             envCfg.setLockTimeout(5, TimeUnit.SECONDS);
             envCfg.setDurability(Durability.COMMIT_SYNC);
-            //envCfg.setReadOnly(readOnly);
+            // envCfg.setReadOnly(readOnly);
         } else {
             envCfg = this.forceConfig;
         }

@@ -11,11 +11,8 @@ import org.geogit.api.Node;
 import org.geogit.api.ObjectId;
 import org.geogit.api.RevTree;
 
-import com.google.common.base.Charsets;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Ordering;
-import com.google.common.hash.HashCode;
-import com.google.common.hash.HashFunction;
 import com.google.common.primitives.UnsignedLong;
 
 /**
@@ -162,109 +159,4 @@ public final class NodePathStorageOrder extends Ordering<String> implements Seri
             return byteN;
         }
     }
-
-    /**
-     * A HashOrder based on a {@link HashFunction}, for testing purposes, used to be the default
-     * with a SHA-1 hash algorithm before 0.6.0
-     */
-    private static class HashFunctionOrder extends HashOrder {
-
-        private static final long serialVersionUID = 1266787641620204350L;
-
-        private final HashFunction hasher;
-
-        public HashFunctionOrder(HashFunction hasher) {
-            this.hasher = hasher;
-        }
-
-        @Override
-        public int compare(String p1, String p2) {
-            HashCode h1 = hasher.hashString(p1, Charsets.UTF_8);
-            HashCode h2 = hasher.hashString(p2, Charsets.UTF_8);
-            return ObjectId.compare(h1.asBytes(), h2.asBytes());
-        }
-
-        /**
-         * Computes the bucket index that corresponds to the given node name at the given depth.
-         * 
-         * @return and Integer between zero and {@link RevTree#MAX_BUCKETS} minus one
-         */
-        @Override
-        public int byteN(final String nodeName, final int depth) {
-            byte[] hashCode = hasher.hashString(nodeName, Charsets.UTF_8).asBytes();
-            final int byteN = (byte) hashCode[depth] & 0xFF;
-            return byteN;
-        }
-    }
-
-    // public static void main(String a[]) {
-    // try {
-    // final int c = 5 * 1000 * 1000;
-    //
-    // List<Node> nodes = new ArrayList<Node>(c);
-    // for (int i = 0; i < c; i++) {
-    // Node node = node(i);
-    // nodes.add(node);
-    // }
-    // nodes = Collections.unmodifiableList(nodes);
-    //
-    // System.err.println("\nTesting FNV1-A hash");
-    // NodePathStorageOrder.hashOrder = new FNV1a64bitHash();
-    // test(c, nodes);
-    //
-    // System.err.println("\nTesting murmur3_32 hash");
-    // NodePathStorageOrder.hashOrder = new HashFunctionOrder(Hashing.murmur3_32());
-    // test(c, nodes);
-    //
-    // System.err.println("\nTesting SHA-1 hash");
-    // NodePathStorageOrder.hashOrder = new HashFunctionOrder(Hashing.sha1());
-    // test(c, nodes);
-    // } finally {
-    // System.exit(0);
-    // }
-    // }
-    //
-    // private static void test(int c, List<Node> nodes) {
-    // ObjectDatabase db = new HeapObjectDatabse(new DataStreamSerializationFactory());
-    // db.open();
-    //
-    // RevTreeBuilder builder = new RevTreeBuilder(db);
-    // nodes = new ArrayList<Node>(nodes);
-    // System.err.print("sorting... ");
-    // Stopwatch s = new Stopwatch().start();
-    // Collections.sort(nodes, new NodeStorageOrder());
-    // System.err.printf("%,d nodes sorted in %s\n", nodes.size(), s.stop());
-    //
-    // s.reset().start();
-    // for (Node node : nodes) {
-    // builder.put(node);
-    // }
-    // RevTree tree = builder.build();
-    // db.put(tree);
-    // System.err.printf("%,d nodes tree created in %s\n", tree.size(), s.stop());
-    //
-    // Set<Node> set = new TreeSet<Node>(new NodeStorageOrder());
-    // set.addAll(nodes);
-    // int diff = nodes.size() - set.size();
-    // System.err.printf("%,d collisions\n", diff);
-    // print(tree, db);
-    // db.close();
-    // }
-    //
-    // private static void print(RevTree tree, ObjectDatabase db) {
-    // Iterator<RevTree> it = new DeepMove.AllTrees(tree.getId(), db);
-    // int n = Iterators.size(it);
-    // System.err.printf("%,d trees\n", n);
-    //
-    // Iterator<NodeRef> refs = new DepthTreeIterator("", ObjectId.NULL, tree, db,
-    // Strategy.FEATURES_ONLY);
-    // Stopwatch s = new Stopwatch().start();
-    // n = Iterators.size(refs);
-    // System.err.printf("%,d features traversed in %s\n", n, s.stop());
-    // }
-    //
-    // private static Node node(int i) {
-    // String name = String.valueOf(i);
-    // return Node.create(name, ObjectId.forString(name), ObjectId.NULL, TYPE.FEATURE);
-    // }
 }

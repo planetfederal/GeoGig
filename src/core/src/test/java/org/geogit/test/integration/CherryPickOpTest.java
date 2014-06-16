@@ -185,11 +185,11 @@ public class CherryPickOpTest extends RepositoryTestCase {
         Optional<RevObject> pts2 = geogit.command(RevObjectParse.class)
                 .setRefSpec(Ref.WORK_HEAD + ":" + NodeRef.appendChild(pointsName, idP2)).call();
         assertTrue(pts2.isPresent());
-        assertEquals(new RevFeatureBuilder().build(points2), pts2.get());
+        assertEquals(RevFeatureBuilder.build(points2), pts2.get());
         pts2 = geogit.command(RevObjectParse.class)
                 .setRefSpec(Ref.STAGE_HEAD + ":" + NodeRef.appendChild(pointsName, idP2)).call();
         assertTrue(pts2.isPresent());
-        assertEquals(new RevFeatureBuilder().build(points2), pts2.get());
+        assertEquals(RevFeatureBuilder.build(points2), pts2.get());
         // solve and commit
         Feature points1Solved = feature(pointsType, idP1, "StringProp1_2", new Integer(2000),
                 "POINT(1 1)");
@@ -199,7 +199,7 @@ public class CherryPickOpTest extends RepositoryTestCase {
         Optional<RevObject> ptsSolved = geogit.command(RevObjectParse.class)
                 .setRefSpec(Ref.WORK_HEAD + ":" + NodeRef.appendChild(pointsName, idP1)).call();
         assertTrue(pts2.isPresent());
-        assertEquals(new RevFeatureBuilder().build(points1Solved), ptsSolved.get());
+        assertEquals(RevFeatureBuilder.build(points1Solved), ptsSolved.get());
 
         cherrypickHead = geogit.command(RefParse.class).setName(Ref.CHERRY_PICK_HEAD).call();
         assertFalse(cherrypickHead.isPresent());

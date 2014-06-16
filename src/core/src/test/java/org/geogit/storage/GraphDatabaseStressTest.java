@@ -72,7 +72,7 @@ public abstract class GraphDatabaseStressTest  {
     private class InsertMany implements Runnable {
         private final String key;
 
-        private final ConcurrentLinkedQueue errorLog;
+        private final ConcurrentLinkedQueue<String> errorLog;
 
         public InsertMany(String key, ConcurrentLinkedQueue<String> errorLog) {
             this.key = key;

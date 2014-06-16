@@ -210,7 +210,7 @@ public class Patch {
             sb.append("A\t" + path + "\t" + feature.getFeatureType().getId() + "\n");
             ObjectWriter<RevObject> writer = factory.createObjectWriter(TYPE.FEATURE);
             ByteArrayOutputStream output = new ByteArrayOutputStream();
-            RevFeature revFeature = new RevFeatureBuilder().build(feature.getFeature());
+            RevFeature revFeature = RevFeatureBuilder.build(feature.getFeature());
             try {
                 writer.write(revFeature, output);
             } catch (IOException e) {
@@ -223,7 +223,7 @@ public class Patch {
             sb.append("R\t" + path + "\t" + feature.getFeatureType().getId() + "\n");
             ObjectWriter<RevObject> writer = factory.createObjectWriter(TYPE.FEATURE);
             ByteArrayOutputStream output = new ByteArrayOutputStream();
-            RevFeature revFeature = new RevFeatureBuilder().build(feature.getFeature());
+            RevFeature revFeature = RevFeatureBuilder.build(feature.getFeature());
             try {
                 writer.write(revFeature, output);
             } catch (IOException e) {

@@ -88,30 +88,31 @@ public class OSMDownload extends AbstractCommand implements CLICommand {
 
         osmAPIUrl = resolveAPIURL();
 
+        Optional<OSMReport> report;
         if (update) {
-            Optional<OSMReport> report = cli.getGeogit().command(OSMUpdateOp.class)
-                    .setAPIUrl(osmAPIUrl).setRebase(rebase).setMessage(message)
+            report = cli.getGeogit().command(OSMUpdateOp.class).setAPIUrl(osmAPIUrl)
+                    .setRebase(rebase).setMessage(message)
                     .setProgressListener(cli.getProgressListener()).call();
         } else {
-            Optional<OSMReport> report = cli.getGeogit().command(OSMDownloadOp.class).setBbox(bbox)
+            report = cli.getGeogit().command(OSMDownloadOp.class).setBbox(bbox)
                     .setFilterFile(filterFile).setKeepFiles(keepFiles).setMessage(message)
                     .setMappingFile(mappingFile).setOsmAPIUrl(osmAPIUrl).setSaveFile(saveFile)
                     .setProgressListener(cli.getProgressListener()).call();
-            if (report.isPresent()) {
-                OSMReport rep = report.get();
-                String msg;
-                if (rep.getUnpprocessedCount() > 0) {
-                    msg = String
-                            .format("\nSome elements returned by the specified filter could not be processed.\n"
-                                    + "Processed entities: %,d.\nWrong or uncomplete elements: %,d.\nNodes: %,d.\nWays: %,d.\n",
-                                    rep.getCount(), rep.getUnpprocessedCount(), rep.getNodeCount(),
-                                    rep.getWayCount());
-                } else {
-                    msg = String.format("\nProcessed entities: %,d.\n Nodes: %,d.\n Ways: %,d\n",
-                            rep.getCount(), rep.getNodeCount(), rep.getWayCount());
-                }
-                cli.getConsole().println(msg);
+        }
+        if (report.isPresent()) {
+            OSMReport rep = report.get();
+            String msg;
+            if (rep.getUnpprocessedCount() > 0) {
+                msg = String
+                        .format("\nSome elements returned by the specified filter could not be processed.\n"
+                                + "Processed entities: %,d.\nWrong or uncomplete elements: %,d.\nNodes: %,d.\nWays: %,d.\n",
+                                rep.getCount(), rep.getUnpprocessedCount(), rep.getNodeCount(),
+                                rep.getWayCount());
+            } else {
+                msg = String.format("\nProcessed entities: %,d.\n Nodes: %,d.\n Ways: %,d\n",
+                        rep.getCount(), rep.getNodeCount(), rep.getWayCount());
             }
+            cli.getConsole().println(msg);
         }
     }
 

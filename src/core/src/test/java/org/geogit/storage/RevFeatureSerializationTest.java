@@ -88,8 +88,7 @@ public abstract class RevFeatureSerializationTest extends Assert {
 
     protected void testFeatureReadWrite(Feature feature) throws Exception {
 
-        RevFeatureBuilder builder = new RevFeatureBuilder();
-        RevFeature newFeature = builder.build(feature);
+        RevFeature newFeature = RevFeatureBuilder.build(feature);
         ObjectWriter<RevFeature> writer = factory.<RevFeature> createObjectWriter(TYPE.FEATURE);
 
         ByteArrayOutputStream output = new ByteArrayOutputStream();

@@ -45,7 +45,7 @@ class ShellScriptHook implements CommandHook {
     }
 
     @Override
-    public boolean appliesTo(Class<? extends AbstractGeoGitOp> clazz) {
+    public boolean appliesTo(Class<? extends AbstractGeoGitOp<?>> clazz) {
         return true;
     }
 

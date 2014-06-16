@@ -198,6 +198,7 @@ public class SquashOpTest extends RepositoryTestCase {
         // |/
         // o - master - HEAD - Merge commit
         insertAndAdd(points1);
+        @SuppressWarnings("unused")
         final RevCommit c1 = geogit.command(CommitOp.class).setMessage("commit for " + idP1).call();
         geogit.command(BranchCreateOp.class).setAutoCheckout(true).setName("branch1").call();
         insertAndAdd(points2);
@@ -238,14 +239,17 @@ public class SquashOpTest extends RepositoryTestCase {
         // |/
         // o - master - HEAD - Merge commit*
         insertAndAdd(points1);
+        @SuppressWarnings("unused")
         final RevCommit c1 = geogit.command(CommitOp.class).setMessage("commit for " + idP1).call();
         geogit.command(BranchCreateOp.class).setAutoCheckout(true).setName("branch1").call();
         insertAndAdd(points2);
         final RevCommit c2 = geogit.command(CommitOp.class).setMessage("commit for " + idP2).call();
         insertAndAdd(points3);
+        @SuppressWarnings("unused")
         final RevCommit c3 = geogit.command(CommitOp.class).setMessage("commit for " + idP3).call();
         geogit.command(CheckoutOp.class).setSource("master").call();
         insertAndAdd(lines1);
+        @SuppressWarnings("unused")
         final RevCommit c4 = geogit.command(CommitOp.class).setMessage("commit for " + idL1).call();
         Ref branch1 = geogit.command(RefParse.class).setName("branch1").call().get();
         MergeReport mergeReport = geogit.command(MergeOp.class)
@@ -284,6 +288,7 @@ public class SquashOpTest extends RepositoryTestCase {
         insertAndAdd(points3);
         final RevCommit c3 = geogit.command(CommitOp.class).setMessage("commit for " + idP3).call();
         insertAndAdd(lines1);
+        @SuppressWarnings("unused")
         final RevCommit c4 = geogit.command(CommitOp.class).setMessage("commit for " + idL1).call();
         Ref branch1 = geogit.command(RefParse.class).setName("branch1").call().get();
         MergeReport mergeReport = geogit.command(MergeOp.class)
@@ -317,16 +322,20 @@ public class SquashOpTest extends RepositoryTestCase {
         // |/
         // o - master - HEAD - Merge commit*
         insertAndAdd(lines2);
+        @SuppressWarnings("unused")
         final RevCommit c0 = geogit.command(CommitOp.class).setMessage("commit for " + idL2).call();
         insertAndAdd(points1);
         final RevCommit c1 = geogit.command(CommitOp.class).setMessage("commit for " + idP1).call();
         geogit.command(BranchCreateOp.class).setAutoCheckout(true).setName("branch1").call();
         insertAndAdd(points2);
+        @SuppressWarnings("unused")
         final RevCommit c2 = geogit.command(CommitOp.class).setMessage("commit for " + idP2).call();
         geogit.command(CheckoutOp.class).setSource("master").call();
         insertAndAdd(points3);
+        @SuppressWarnings("unused")
         final RevCommit c3 = geogit.command(CommitOp.class).setMessage("commit for " + idP3).call();
         insertAndAdd(lines1);
+        @SuppressWarnings("unused")
         final RevCommit c4 = geogit.command(CommitOp.class).setMessage("commit for " + idL1).call();
         Ref branch1 = geogit.command(RefParse.class).setName("branch1").call().get();
         MergeReport mergeReport = geogit.command(MergeOp.class)
@@ -361,18 +370,22 @@ public class SquashOpTest extends RepositoryTestCase {
         // o - Lines 3 added
 
         insertAndAdd(points1);
+        @SuppressWarnings("unused")
         final RevCommit c1 = geogit.command(CommitOp.class).setMessage("commit for " + idP1).call();
         insertAndAdd(points2);
         final RevCommit c2 = geogit.command(CommitOp.class).setMessage("commit for " + idP2).call();
         insertAndAdd(points3);
         final RevCommit c3 = geogit.command(CommitOp.class).setMessage("commit for " + idP3).call();
         insertAndAdd(lines1);
+        @SuppressWarnings("unused")
         final RevCommit c4 = geogit.command(CommitOp.class).setMessage("commit for " + idL1).call();
         geogit.command(BranchCreateOp.class).setName("branch1").setAutoCheckout(true).call();
         insertAndAdd(lines2);
+        @SuppressWarnings("unused")
         final RevCommit c5 = geogit.command(CommitOp.class).setMessage("commit for " + idL2).call();
         geogit.command(CheckoutOp.class).setSource("master").call();
         insertAndAdd(lines3);
+        @SuppressWarnings("unused")
         final RevCommit c6 = geogit.command(CommitOp.class).setMessage("commit for " + idL3).call();
 
         try {
@@ -388,15 +401,18 @@ public class SquashOpTest extends RepositoryTestCase {
     @Test
     public void testSquashwithBranchWithoutCommitsCreatedInChildren() throws Exception {
         insertAndAdd(points1);
+        @SuppressWarnings("unused")
         final RevCommit c1 = geogit.command(CommitOp.class).setMessage("commit for " + idP1).call();
         insertAndAdd(points2);
         final RevCommit c2 = geogit.command(CommitOp.class).setMessage("commit for " + idP2).call();
         insertAndAdd(points3);
         final RevCommit c3 = geogit.command(CommitOp.class).setMessage("commit for " + idP3).call();
         insertAndAdd(lines1);
+        @SuppressWarnings("unused")
         final RevCommit c4 = geogit.command(CommitOp.class).setMessage("commit for " + idL1).call();
         geogit.command(BranchCreateOp.class).setName("branch1").call();
         insertAndAdd(lines2);
+        @SuppressWarnings("unused")
         final RevCommit c5 = geogit.command(CommitOp.class).setMessage("commit for " + idL2).call();
 
         try {

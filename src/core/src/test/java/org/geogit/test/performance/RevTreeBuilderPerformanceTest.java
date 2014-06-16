@@ -31,7 +31,7 @@ public class RevTreeBuilderPerformanceTest extends RepositoryTestCase {
 
     private static final ObjectId FAKE_ID = ObjectId.forString("fake");
 
-    private static final int numNodes = 512*32;
+    private static final int numNodes = 512 * 32;
 
     private static Iterable<Node> nodes;
 
@@ -129,19 +129,6 @@ public class RevTreeBuilderPerformanceTest extends RepositoryTestCase {
         sw.stop();
         System.err.printf("-- Created tree with %d sorted partitioned size in %s\n", partitionSize,
                 sw);
-    }
-
-    private static List<Node> createNodes(int numNodes) {
-        System.err.printf("Creating %d nodes...", numNodes);
-
-        List<Node> nodes = new ArrayList<Node>(numNodes);
-
-        for (int i = 0; i < numNodes; i++) {
-            Node ref = createNode(i);
-            nodes.add(ref);
-        }
-        System.err.println("done.");
-        return nodes;
     }
 
     private static Node createNode(int i) {

@@ -22,7 +22,6 @@ import com.google.common.base.Optional;
 import com.google.inject.Inject;
 
 public class IniFileConfigDatabase implements ConfigDatabase {
-    private Platform platform;
 
     private INIFile local;
 
@@ -30,7 +29,6 @@ public class IniFileConfigDatabase implements ConfigDatabase {
 
     @Inject
     public IniFileConfigDatabase(final Platform platform) {
-        this.platform = platform;
         this.local = new INIFile() {
             @Override
             public File iniFile() {
@@ -280,15 +278,16 @@ public class IniFileConfigDatabase implements ConfigDatabase {
         }
     }
 
+    @SuppressWarnings("unchecked")
     private <T> T cast(Class<T> c, String s) {
         if (String.class.equals(c)) {
-            return (T) s;
+            return c.cast(s);
         }
-        if (c.equals(int.class)) {
+        if (int.class.equals(c) || Integer.class.equals(c)) {
             return (T) Integer.valueOf(s);
         }
         if (Boolean.class.equals(c)) {
-            return (T) Boolean.valueOf(s);
+            return c.cast(Boolean.valueOf(s));
         }
         throw new IllegalArgumentException("Unsupported type: " + c);
     }

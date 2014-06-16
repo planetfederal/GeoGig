@@ -6,6 +6,8 @@
 package org.geogit.api.plumbing;
 
 import java.io.File;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.geogit.api.Context;
@@ -21,6 +23,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.rules.TemporaryFolder;
 
+import com.google.common.base.Throwables;
 import com.google.inject.Guice;
 import com.google.inject.util.Modules;
 
@@ -29,7 +32,16 @@ import com.google.inject.util.Modules;
  */
 public class ParseTimestampTest extends Assert {
 
-    private static final Date REFERENCE_DATE = new Date(1972, 10, 10, 10, 10);
+    private static final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+
+    private static final Date REFERENCE_DATE;// = new Date(1972, 10, 10, 10, 10);
+    static {
+        try {
+            REFERENCE_DATE = format.parse("1972-10-10 10:10:10");
+        } catch (ParseException e) {
+            throw Throwables.propagate(e);
+        }
+    }
 
     @Rule
     public TemporaryFolder tempFolder = new TemporaryFolder();
@@ -51,8 +63,9 @@ public class ParseTimestampTest extends Assert {
                 return REFERENCE_DATE.getTime();
             }
         };
-        Context injector = Guice.createInjector(Modules.override(new GeogitModule()).with(
-                new MemoryModule(testPlatform))).getInstance(Context.class);
+        Context injector = Guice.createInjector(
+                Modules.override(new GeogitModule()).with(new MemoryModule(testPlatform)))
+                .getInstance(Context.class);
 
         fakeGeogit = new GeoGIT(injector, workingDirectory);
         assertNotNull(fakeGeogit.getOrCreateRepository());
@@ -72,20 +85,28 @@ public class ParseTimestampTest extends Assert {
     }
 
     @Test
-    public void testGitLikeStrings() {
-        Long millis = command.setString("yesterday").call();
-        assertEquals(new Date(1972, 10, 9).getTime(), millis.longValue());
-        millis = command.setString("today").call();
-        assertEquals(new Date(1972, 10, 10).getTime(), millis.longValue());
-        millis = command.setString("1.minute.ago").call();
-        assertEquals(new Date(1972, 10, 10, 10, 9).getTime(), millis.longValue());
-        millis = command.setString("10.minutes.ago").call();
-        assertEquals(new Date(1972, 10, 10, 10, 0).getTime(), millis.longValue());
-        millis = command.setString("10.MINUTES.AGO").call();
-        assertEquals(new Date(1972, 10, 10, 10, 0).getTime(), millis.longValue());
-        millis = command.setString("10.hours.10.minutes.ago").call();
-        assertEquals(new Date(1972, 10, 10, 0, 0).getTime(), millis.longValue());
-        millis = command.setString("1.week.ago").call();
-        assertEquals(new Date(1972, 10, 3, 10, 10).getTime(), millis.longValue());
+    public void testGitLikeStrings() throws ParseException {
+        Date today = format.parse("1972-10-10 00:00:00");
+        Date yesterday = format.parse("1972-10-09 00:00:00");
+        Date aMinuteAgo = format.parse("1972-10-10 10:09:10");
+        Date tenMinutesAgo = format.parse("1972-10-10 10:00:10");
+        Date tenHoursTenMinutesAgo = format.parse("1972-10-10 00:00:10");
+        Date aWeekAgo = format.parse("1972-10-03 10:10:10");
+
+        Date actual;
+        actual = new Date(command.setString("today").call());
+        assertEquals(today, actual);
+        actual = new Date(command.setString("yesterday").call());
+        assertEquals(yesterday, actual);
+        actual = new Date(command.setString("1.minute.ago").call());
+        assertEquals(aMinuteAgo, actual);
+        actual = new Date(command.setString("10.minutes.ago").call());
+        assertEquals(tenMinutesAgo, actual);
+        actual = new Date(command.setString("10.MINUTES.AGO").call());
+        assertEquals(tenMinutesAgo, actual);
+        actual = new Date(command.setString("10.hours.10.minutes.ago").call());
+        assertEquals(tenHoursTenMinutesAgo, actual);
+        actual = new Date(command.setString("1.week.ago").call());
+        assertEquals(aWeekAgo, actual);
     }
 }

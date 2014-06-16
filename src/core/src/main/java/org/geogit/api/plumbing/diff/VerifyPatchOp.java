@@ -159,7 +159,7 @@ public class VerifyPatchOp extends AbstractGeoGitOp<VerifyPatchResults> {
                 RevFeatureType revFeatureType = command(RevObjectParse.class)
                         .setObjectId(noderef.get().getMetadataId()).call(RevFeatureType.class)
                         .get();
-                RevFeature patchRevFeature = new RevFeatureBuilder().build(feature.getFeature());
+                RevFeature patchRevFeature = RevFeatureBuilder.build(feature.getFeature());
                 if (revFeature.equals(patchRevFeature)
                         && revFeatureType.equals(feature.getFeatureType())) {
                     toApply.addRemovedFeature(feature.getPath(), feature.getFeature(),

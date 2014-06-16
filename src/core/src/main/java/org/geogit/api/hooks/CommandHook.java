@@ -29,5 +29,5 @@ public interface CommandHook {
 
     public <T> T post(AbstractGeoGitOp<T> command, Object retVal, boolean success) throws Exception;
 
-    public boolean appliesTo(Class<? extends AbstractGeoGitOp> clazz);
+    public boolean appliesTo(Class<? extends AbstractGeoGitOp<?>> clazz);
 }

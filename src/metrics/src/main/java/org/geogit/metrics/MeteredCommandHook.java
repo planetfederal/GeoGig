@@ -22,7 +22,7 @@ public class MeteredCommandHook implements CommandHook {
      * @return {@code true}, applies to all ops
      */
     @Override
-    public boolean appliesTo(Class<? extends AbstractGeoGitOp> clazz) {
+    public boolean appliesTo(Class<? extends AbstractGeoGitOp<?>> clazz) {
         return true;
     }
 
@@ -56,6 +56,7 @@ public class MeteredCommandHook implements CommandHook {
         return command;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <T> T post(AbstractGeoGitOp<T> command, Object retVal, boolean success) throws Exception {
 

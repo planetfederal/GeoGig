@@ -22,13 +22,6 @@ import com.google.common.io.LineProcessor;
  */
 public class ReadOSMLogEntries extends AbstractGeoGitOp<List<OSMLogEntry>> {
 
-    private OSMLogEntry entry;
-
-    public ReadOSMLogEntries setEntry(OSMLogEntry entry) {
-        this.entry = entry;
-        return this;
-    }
-
     @Override
     protected List<OSMLogEntry> _call() {
         URL url = command(ResolveOSMLogfile.class).call();

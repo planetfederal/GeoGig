@@ -84,6 +84,7 @@ public class MergeFeaturesOp extends AbstractGeoGitOp<Feature> {
 
     }
 
+    @SuppressWarnings("unchecked")
     private Feature merge(RevFeature featureA, RevFeature featureB, RevFeature ancestor,
             RevFeatureType featureType) {
 

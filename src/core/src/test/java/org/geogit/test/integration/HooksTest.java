@@ -201,9 +201,14 @@ public class HooksTest extends RepositoryTestCase {
 
         private static boolean POST_EXCEPTION_THROWN;
 
-        private static Class<? extends AbstractGeoGitOp> CAPTURE_CLASS = AbstractGeoGitOp.class;
+        @SuppressWarnings("rawtypes")
+        private static Class<? extends AbstractGeoGitOp> CAPTURE_CLASS;
 
         private static AbstractGeoGitOp<?> PRE_OP, POST_OP;
+
+        public ClasspathHookTest() {
+            reset();
+        }
 
         private static void reset() {
             ENABLED = false;
@@ -215,8 +220,9 @@ public class HooksTest extends RepositoryTestCase {
             POST_EXCEPTION_THROWN = false;
         }
 
+        @SuppressWarnings("rawtypes")
         @Override
-        public boolean appliesTo(Class<? extends AbstractGeoGitOp> clazz) {
+        public boolean appliesTo(Class<? extends AbstractGeoGitOp<?>> clazz) {
             boolean enabled = ENABLED;
             Class<? extends AbstractGeoGitOp> captureClass = CAPTURE_CLASS;
             checkNotNull(clazz);
@@ -236,6 +242,7 @@ public class HooksTest extends RepositoryTestCase {
             return command;
         }
 
+        @SuppressWarnings("unchecked")
         @Override
         public <T> T post(AbstractGeoGitOp<T> command, Object retVal, boolean success)
                 throws Exception {

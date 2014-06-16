@@ -205,7 +205,6 @@ public class WorkingTreeTest extends RepositoryTestCase {
         workTree.insert(pointsName, featureList.iterator(), LISTENER, targetList, -5);
     }
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Test
     public void testInsertNonPagingFeatureSource() throws Exception {
         assertEquals(2, super.getGeogit().getPlatform().availableProcessors());
@@ -218,6 +217,7 @@ public class WorkingTreeTest extends RepositoryTestCase {
         final QueryCapabilities caps = mock(QueryCapabilities.class);
         when(caps.isOffsetSupported()).thenReturn(true);
 
+        @SuppressWarnings("rawtypes")
         FeatureSource source = store.getFeatureSource(pointsName);
         assertFalse(source.getQueryCapabilities().isOffsetSupported());
 
@@ -695,8 +695,8 @@ public class WorkingTreeTest extends RepositoryTestCase {
         assertEquals(null, featureBlobId.get().getMetadataId().orNull());
         path = NodeRef.appendChild(pointsName, points3.getIdentifier().getID());
         featureBlobId = findTreeChild(root, path);
-        assertEquals(RevFeatureTypeImpl.build(pointsType).getId(), featureBlobId.get().getMetadataId()
-                .orNull());
+        assertEquals(RevFeatureTypeImpl.build(pointsType).getId(), featureBlobId.get()
+                .getMetadataId().orNull());
 
     }
 

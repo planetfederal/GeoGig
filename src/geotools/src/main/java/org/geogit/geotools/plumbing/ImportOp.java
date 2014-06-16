@@ -120,6 +120,7 @@ public class ImportOp extends AbstractGeoGitOp<RevTree> {
      * 
      * @return RevTree the new working tree
      */
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     protected RevTree _call() {
 
@@ -294,7 +295,7 @@ public class ImportOp extends AbstractGeoGitOp<RevTree> {
         return transformedIterator;
     }
 
-    private Integer collectionSize(FeatureSource featureSource) {
+    private Integer collectionSize(@SuppressWarnings("rawtypes") FeatureSource featureSource) {
         final Integer collectionSize;
         {
             int fastCount;
@@ -406,8 +407,9 @@ public class ImportOp extends AbstractGeoGitOp<RevTree> {
 
         private SimpleFeatureType featureType;
 
-        public FidAndFtReplacerIterator(FeatureIterator iterator, final String attributeName,
-                String fidPrefix, SimpleFeatureType featureType) {
+        @SuppressWarnings("unchecked")
+        public FidAndFtReplacerIterator(@SuppressWarnings("rawtypes") FeatureIterator iterator,
+                final String attributeName, String fidPrefix, SimpleFeatureType featureType) {
             super(iterator);
             this.attributeName = attributeName;
             this.fidPrefix = fidPrefix;
@@ -433,7 +435,8 @@ public class ImportOp extends AbstractGeoGitOp<RevTree> {
     }
 
     private void insert(final WorkingTree workTree, final String path,
-            final FeatureSource featureSource, final ProgressListener taskProgress) {
+            @SuppressWarnings("rawtypes") final FeatureSource featureSource,
+            final ProgressListener taskProgress) {
 
         final Query query = new Query();
         CoordinateSequenceFactory coordSeq = new PackedCoordinateSequenceFactory();

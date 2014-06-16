@@ -50,7 +50,6 @@ import com.google.common.collect.Lists;
 /**
  *
  */
-@SuppressWarnings("unchecked")
 class GeogitFeatureStore extends ContentFeatureStore {
 
     /**

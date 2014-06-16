@@ -69,7 +69,6 @@ public class OSMApplyDiffOp extends AbstractGeoGitOp<Optional<OSMReport>> {
         return this;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     protected Optional<OSMReport> _call() {
         checkNotNull(file);

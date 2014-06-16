@@ -55,6 +55,7 @@ public class Scripting {
      *        (for instance, changing the commit message in a commit operation)
      * @throws CannotRunGeogitOperationException
      */
+    @SuppressWarnings("unchecked")
     public static void runJVMScript(AbstractGeoGitOp<?> operation, File scriptFile)
             throws CannotRunGeogitOperationException {
 
@@ -229,7 +230,6 @@ public class Scripting {
         @Override
         public void run() {
             try {
-                String line = null;
                 int c;
                 while ((c = is.read()) != -1) {
                     out.write(c);

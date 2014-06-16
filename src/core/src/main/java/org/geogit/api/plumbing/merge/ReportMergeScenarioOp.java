@@ -175,8 +175,7 @@ public class ReportMergeScenarioOp extends AbstractGeoGitOp<MergeScenarioReport>
                                         .setFirstFeature(mergeIntoDiff.getNewObject())
                                         .setSecondFeature(toMergeDiff.getNewObject())
                                         .setAncestorFeature(mergeIntoDiff.getOldObject()).call();
-                                RevFeature revFeature = new RevFeatureBuilder()
-                                        .build(mergedFeature);
+                                RevFeature revFeature = RevFeatureBuilder.build(mergedFeature);
                                 if (revFeature.getId().equals(toMergeDiff.newObjectId())) {
                                     // the resulting merged feature equals the feature to merge from
                                     // the branch, which means that it exists in the repo and there

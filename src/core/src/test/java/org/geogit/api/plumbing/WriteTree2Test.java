@@ -728,7 +728,7 @@ public class WriteTree2Test extends RepositoryTestCase {
         } catch (ParseException e) {
             throw Throwables.propagate(e);
         }
-        RevFeature revFeature = new RevFeatureBuilder().build(feature);
+        RevFeature revFeature = RevFeatureBuilder.build(feature);
         db.put(revFeature);
         Envelope bounds = (Envelope) feature.getBounds();
         return Node.create(id, revFeature.getId(), ObjectId.NULL, TYPE.FEATURE, bounds);

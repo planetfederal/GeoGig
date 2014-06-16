@@ -20,8 +20,7 @@ public class FeatureBuilderTest extends RepositoryTestCase {
     @Test
     public void testFeatureBuilder() {
         FeatureBuilder builder = new FeatureBuilder(pointsType);
-        RevFeatureBuilder revBuilder = new RevFeatureBuilder();
-        RevFeature point1 = revBuilder.build(points1);
+        RevFeature point1 = RevFeatureBuilder.build(points1);
 
         Feature test = builder.build(idP1, point1);
 
@@ -31,7 +30,7 @@ public class FeatureBuilderTest extends RepositoryTestCase {
         assertEquals(points1.getType(), test.getType());
         assertEquals(points1.getUserData(), test.getUserData());
 
-        RevFeature feature = revBuilder.build(test);
+        RevFeature feature = RevFeatureBuilder.build(test);
         Feature test2 = builder.build(idP1, feature);
 
         assertEquals(((SimpleFeature) test).getAttributes(),

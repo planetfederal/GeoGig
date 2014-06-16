@@ -49,7 +49,7 @@ public abstract class ConnectionManager<A, C> {
         PoolEntry<C> entry = pool.get(address);
         if (entry == null) {
             C connection = connect(address);
-            entry = new PoolEntry(connection);
+            entry = new PoolEntry<C>(connection);
             pool.put(address, entry);
         }
         entry.clients += 1;

@@ -40,7 +40,7 @@ public class Hookables {
      * @return the string to be used as filename for storing the script files for the corresponding
      *         hook
      */
-    public static Optional<String> getFilename(Class<? extends AbstractGeoGitOp> clazz) {
+    public static Optional<String> getFilename(Class<? extends AbstractGeoGitOp<?>> clazz) {
         Hookable annotation = clazz.getAnnotation(Hookable.class);
         if (annotation != null) {
             return Optional.of(annotation.name());
@@ -66,7 +66,8 @@ public class Hookables {
 
     public static List<CommandHook> findHooksFor(AbstractGeoGitOp<?> operation) {
 
-        final Class<? extends AbstractGeoGitOp> clazz = operation.getClass();
+        @SuppressWarnings("unchecked")
+        final Class<? extends AbstractGeoGitOp<?>> clazz = (Class<? extends AbstractGeoGitOp<?>>) operation.getClass();
 
         List<CommandHook> hooks = Lists.newLinkedList();
         /*

@@ -68,6 +68,7 @@ public class OnlineTestProperties {
         return f;
     }
 
+    @SuppressWarnings("unchecked")
     public <T> Optional<T> get(String key, Class<T> c) {
         if (key == null) {
             throw new RuntimeException("Section.key not provided to get.");

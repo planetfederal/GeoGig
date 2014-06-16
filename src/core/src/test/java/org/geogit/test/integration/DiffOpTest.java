@@ -397,6 +397,7 @@ public class DiffOpTest extends RepositoryTestCase {
     // assertEquals(expected, actual);
     // }
 
+    @SuppressWarnings("unused")
     @Test
     public void testMultipleDeletes() throws Exception {
 
@@ -430,6 +431,7 @@ public class DiffOpTest extends RepositoryTestCase {
         assertEquals(Sets.newHashSet(oid11, oid13), ids);
     }
 
+    @SuppressWarnings("unused")
     @Test
     public void testTreeDeletes() throws Exception {
 
@@ -495,6 +497,7 @@ public class DiffOpTest extends RepositoryTestCase {
         WorkingTree workTree = repo.workingTree();
         Name name = lines1.getType().getName();
         String parentPath = name.getLocalPart();
+        @SuppressWarnings("unused")
         Node ref = workTree.insert(parentPath, lines1B);
         geogit.command(AddOp.class).call();
         RevCommit commit2 = geogit.command(CommitOp.class).setAll(true).call();

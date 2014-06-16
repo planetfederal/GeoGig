@@ -24,14 +24,11 @@ import javax.annotation.Nullable;
 
 import org.geogit.api.ProgressListener;
 
-import com.google.common.io.ByteStreams;
 import com.google.common.io.Closeables;
 
 public class OSMDownloader {
 
     private final String osmAPIUrl;
-
-    private ProgressListener progress;
 
     /**
      * @param osmAPIUrl api url, e.g. {@code http://api.openstreetmap.org/api/0.6},
@@ -41,7 +38,6 @@ public class OSMDownloader {
         checkNotNull(osmAPIUrl);
         checkNotNull(progress);
         this.osmAPIUrl = osmAPIUrl;
-        this.progress = progress;
     }
 
     private class DownloadOSMData {
@@ -135,61 +131,5 @@ public class OSMDownloader {
             return c;
         }
 
-    }
-
-    private static class ProgressInputStream extends FilterInputStream {
-
-        private final ProgressListener listener;
-
-        private int readCount;
-
-        public ProgressInputStream(InputStream stream, ProgressListener listener) {
-            super(stream);
-            this.listener = listener;
-        }
-
-        @Override
-        public int read() throws IOException {
-            int read = super.read();
-            if (read != -1) {
-                progress(1);
-            }
-            return read;
-        }
-
-        @Override
-        public int read(byte b[], int off, int len) throws IOException {
-            int read = super.read(b, off, len);
-            if (read != -1) {
-                progress(read);
-            }
-            return read;
-        }
-
-        /**
-         * @param read
-         */
-        private void progress(int read) {
-            readCount += read;
-            listener.setProgress(readCount);
-        }
-    }
-
-    private static void copy(final InputStream from, final File to) {
-        File tmp = new File(to.getAbsolutePath() + ".tmp");
-        try {
-            tmp.createNewFile();
-            OutputStream output = new FileOutputStream(tmp);
-            try {
-                ByteStreams.copy(from, output);
-                output.flush();
-            } finally {
-                output.close();
-            }
-            to.delete();
-            tmp.renameTo(to);
-        } catch (Exception e) {
-            tmp.delete();
-        }
     }
 }

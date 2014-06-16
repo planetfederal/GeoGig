@@ -467,8 +467,6 @@ public class OSMHistoryImport extends AbstractCommand implements CLICommand {
 
     private static final RevFeatureType NODE_REV_TYPE = RevFeatureTypeImpl.build(nodeType());
 
-    private static final RevFeatureType WAY_REV_TYPE = RevFeatureTypeImpl.build(wayType());
-
     private static SimpleFeature toFeature(Primitive feature, Geometry geom) {
 
         SimpleFeatureType ft = feature instanceof Node ? nodeType() : wayType();

@@ -121,7 +121,7 @@ public class HeapGraphDatabase implements GraphDatabase {
                 return new ImmutableList.Builder<ObjectId>().addAll(
                         filter(transform(n.to(), NODE_TO_ID), Predicates.notNull())).build();
             }
-        }).or((ImmutableList) ImmutableList.of());
+        }).or(ImmutableList.<ObjectId> of());
     }
 
     @Override
@@ -132,7 +132,7 @@ public class HeapGraphDatabase implements GraphDatabase {
                 return new ImmutableList.Builder<ObjectId>()
                         .addAll(transform(n.from(), NODE_TO_ID)).build();
             }
-        }).or((ImmutableList) ImmutableList.of());
+        }).or(ImmutableList.<ObjectId> of());
     }
 
     @Override

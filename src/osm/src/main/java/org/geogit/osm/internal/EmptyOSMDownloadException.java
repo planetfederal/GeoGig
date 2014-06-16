@@ -11,4 +11,6 @@ package org.geogit.osm.internal;
  */
 public class EmptyOSMDownloadException extends RuntimeException {
 
+    private static final long serialVersionUID = 8223721470742074183L;
+
 }

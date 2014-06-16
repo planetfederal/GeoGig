@@ -189,7 +189,6 @@ public class GeoGitFeatureSourceTest extends RepositoryTestCase {
         assertEquals(3, pointsSource.getCount(Query.ALL));
         assertEquals(3, linesSource.getCount(Query.ALL));
 
-        ReferencedEnvelope bounds;
         Filter filter;
 
         filter = ff.id(Collections.singleton(ff.featureId(RepositoryTestCase.idP2)));
@@ -216,7 +215,6 @@ public class GeoGitFeatureSourceTest extends RepositoryTestCase {
         assertEquals(2, pointsSource.getCount(new Query(pointsName, filter)));
 
         filter = ECQL.toFilter("sp = 'StringProp2_3' OR ip = 2000");
-        bounds = linesSource.getBounds(new Query(linesName, filter));
         assertEquals(2, linesSource.getCount(new Query(linesName, filter)));
     }
 

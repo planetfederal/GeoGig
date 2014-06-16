@@ -187,6 +187,7 @@ public class XerialObjectDatabase extends SQLiteObjectDatabase<DataSource> {
                 PreparedStatement stmt = open(cx.prepareStatement(log(sql, LOG)));
 
                 // partition the objects into chunks for batch processing
+                @SuppressWarnings({ "unchecked", "rawtypes" })
                 Iterator<List<? extends RevObject>> it = (Iterator) Iterators.partition(objects,
                         partitionSize);
 

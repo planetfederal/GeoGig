@@ -22,10 +22,8 @@ public class RevFeatureBuilderTest extends RepositoryTestCase {
 
     @Test
     public void testBuildEmpty() throws Exception {
-        RevFeatureBuilder b = new RevFeatureBuilder();
-
         try {
-            b.build(null);
+            RevFeatureBuilder.build(null);
             fail("expected IllegalStateException on null feature");
         } catch (IllegalStateException e) {
             assertTrue(e.getMessage().contains("No feature set"));
@@ -34,9 +32,7 @@ public class RevFeatureBuilderTest extends RepositoryTestCase {
 
     @Test
     public void testBuildFull() throws Exception {
-        RevFeatureBuilder b = new RevFeatureBuilder();
-
-        RevFeature feature = b.build(points1);
+        RevFeature feature = RevFeatureBuilder.build(points1);
 
         ImmutableList<Optional<Object>> values = feature.getValues();
 
@@ -46,7 +42,7 @@ public class RevFeatureBuilderTest extends RepositoryTestCase {
             assertTrue(values.contains(Optional.fromNullable(prop.getValue())));
         }
 
-        RevFeature feature2 = b.build(lines1);
+        RevFeature feature2 = RevFeatureBuilder.build(lines1);
 
         values = feature2.getValues();
 

@@ -128,6 +128,7 @@ public class GeoJsonExport extends AbstractGeoJsonCommand implements CLICommand 
         try {
             op.setProgressListener(cli.getProgressListener()).call();
             FeatureJSON fjson = new FeatureJSON();
+            @SuppressWarnings("rawtypes")
             FeatureCollection fc = featureSource.getFeatures();
             writer = new FileWriter(file);
             fjson.writeFeatureCollection(fc, writer);

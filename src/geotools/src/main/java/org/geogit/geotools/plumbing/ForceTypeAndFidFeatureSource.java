@@ -118,6 +118,7 @@ class ForceTypeAndFidFeatureSource<T extends FeatureType, F extends Feature> ext
             this.forcedType = forcedType;
         }
 
+        @SuppressWarnings("unchecked")
         @Override
         public F next() {
             F next = super.next();

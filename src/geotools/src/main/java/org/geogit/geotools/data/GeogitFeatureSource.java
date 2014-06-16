@@ -47,7 +47,6 @@ import com.google.common.base.Preconditions;
 /**
  *
  */
-@SuppressWarnings("unchecked")
 class GeogitFeatureSource extends ContentFeatureSource {
 
     /**

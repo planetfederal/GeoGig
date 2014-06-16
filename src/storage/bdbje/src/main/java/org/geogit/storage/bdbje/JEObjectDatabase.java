@@ -366,7 +366,7 @@ public class JEObjectDatabase extends AbstractObjectDatabase implements ObjectDa
         BulkInsert task = new BulkInsert(objects, listener, buffSize);
 
         try {
-            Integer insertedCount = task.run();
+            task.run();
         } catch (Exception e) {
             throw Throwables.propagate(e);
         }

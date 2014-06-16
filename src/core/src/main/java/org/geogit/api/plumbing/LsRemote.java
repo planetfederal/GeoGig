@@ -92,7 +92,6 @@ public class LsRemote extends AbstractGeoGitOp<ImmutableSet<Ref>> {
      * 
      * @return an immutable set of the refs for the given remote
      */
-    @SuppressWarnings("deprecation")
     @Override
     protected  ImmutableSet<Ref> _call() {
         Preconditions.checkState(remote.get().isPresent(), "Remote was not provided");

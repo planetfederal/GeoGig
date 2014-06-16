@@ -20,6 +20,10 @@ import com.google.common.collect.ImmutableList;
  */
 public final class RevFeatureBuilder {
 
+    private RevFeatureBuilder() {
+        //
+    }
+
     /**
      * Constructs a new {@link RevFeature} from the provided {@link Feature}.
      * 

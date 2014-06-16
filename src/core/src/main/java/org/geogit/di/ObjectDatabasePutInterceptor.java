@@ -41,6 +41,7 @@ class ObjectDatabasePutInterceptor implements Decorator {
         return canDecorate;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public ObjectDatabase decorate(Object subject) {
         return new GraphUpdatingObjectDatabase(graphDb, (ObjectDatabase) subject);

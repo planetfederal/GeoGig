@@ -317,10 +317,4 @@ public final class BinaryPackedChanges {
         public abstract void callback(DiffEntry diff);
     }
 
-    private static final Callback DEFAULT_CALLBACK = new Callback() {
-        @Override
-        public void callback(DiffEntry diff) {
-            // do nothing
-        }
-    };
 }

@@ -45,6 +45,7 @@ public abstract class SQLiteStagingDatabase<T> extends AbstractStagingDatabase {
         this.platform = platform;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void open() {
         super.open();

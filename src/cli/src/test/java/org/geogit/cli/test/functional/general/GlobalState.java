@@ -17,8 +17,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.Charset;
 import java.util.List;
 
 import jline.UnsupportedTerminal;
@@ -40,11 +38,11 @@ import org.junit.rules.TemporaryFolder;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.Name;
 
+import com.google.common.base.Charsets;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import com.google.common.io.ByteStreams;
-import com.google.common.io.CharStreams;
-import com.google.common.io.InputSupplier;
+import com.google.common.io.CharSource;
 
 /**
  */
@@ -128,9 +126,8 @@ public class GlobalState {
     public static List<String> runAndParseCommand(boolean failFast, String... command)
             throws Exception {
         runCommand(failFast, command);
-        InputSupplier<InputStreamReader> readerSupplier = CharStreams.newReaderSupplier(
-                ByteStreams.newInputStreamSupplier(stdOut.toByteArray()), Charset.forName("UTF-8"));
-        List<String> lines = CharStreams.readLines(readerSupplier);
+        CharSource reader = CharSource.wrap(stdOut.toString(Charsets.UTF_8.name()));
+        ImmutableList<String> lines = reader.readLines();
         return lines;
     }
 
