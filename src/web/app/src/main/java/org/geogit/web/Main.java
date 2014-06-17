@@ -97,11 +97,6 @@ public class Main extends Application {
             }
         };
         RepositoryRouter root = new RepositoryRouter();
-        Redirector redirector = new Redirector(getContext(), "console/",
-                Redirector.MODE_CLIENT_PERMANENT);
-        root.attach("/console/{resource}", ConsoleResourceResource.class);
-        root.attach("/console/", ConsoleResourceResource.class);
-        root.attach("/console", redirector);
 
         router.attach("/repo", root);
         router.attach("/{command}.{extension}", CommandResource.class);
