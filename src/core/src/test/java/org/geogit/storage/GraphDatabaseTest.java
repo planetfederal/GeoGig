@@ -96,13 +96,13 @@ public abstract class GraphDatabaseTest {
         database.put(mappedId, new ImmutableList.Builder<ObjectId>().build());
         database.map(mappedId, commitId);
         ObjectId mapping = database.getMapping(mappedId);
-        assertEquals(commitId, mapping);
+        assertEquals(commitId + " : " + mappedId + " : " + mapping, commitId, mapping);
 
         // update mapping
         ObjectId commitId2 = ObjectId.forString("commitId2");
         database.map(mappedId, commitId2);
         mapping = database.getMapping(mappedId);
-        assertEquals(commitId2, mapping);
+        assertEquals(commitId2 + " : " + mappedId + " : " + mapping, commitId2, mapping);
     }
 
     @Test

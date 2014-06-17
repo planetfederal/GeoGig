@@ -26,7 +26,7 @@ public class MongoGraphDatabaseTest extends GraphDatabaseTest {
 
         MongoConnectionManager manager = new MongoConnectionManager();
         ConfigDatabase config = new TestConfigDatabase(platform);
-        MongoGraphDatabase mongoGraphDatabase = new MongoGraphDatabase(platform, manager, config);
+        MongoGraphDatabase mongoGraphDatabase = new MongoGraphDatabase(manager, config);
         return mongoGraphDatabase;
     }
 }

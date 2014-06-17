@@ -45,6 +45,11 @@ public interface GraphDatabase extends Closeable {
         public GraphNode getToNode() {
             return to;
         }
+
+        @Override
+        public String toString() {
+            return "" + from + ":" + to;
+        }
     }
 
     public abstract class GraphNode {
