@@ -17,7 +17,7 @@
   <dependencies>
     <dependency>
       <groupId>org.geogit</groupId>
-      <artifactId>geogit-blueprints</artifactId>
+      <artifactId>geogit-core</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
@@ -52,11 +52,6 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.tinkerpop.blueprints</groupId>
-      <artifactId>blueprints-test</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>

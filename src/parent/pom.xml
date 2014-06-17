@@ -130,7 +130,6 @@
 
   <properties>
     <bdbje.version>5.0.84</bdbje.version>
-    <blueprints.version>2.4.0</blueprints.version>
     <compress-lzf.version>1.0.1</compress-lzf.version>
     <cucumber-java.version>1.0.14</cucumber-java.version>
     <gson.version>2.2.2</gson.version>
@@ -296,21 +295,6 @@
         <groupId>org.codehaus.jettison</groupId>
         <artifactId>jettison</artifactId>
         <version>${jettison.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.tinkerpop.blueprints</groupId>
-        <artifactId>blueprints-core</artifactId>
-        <version>${blueprints.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.tinkerpop.blueprints</groupId>
-        <artifactId>blueprints-test</artifactId>
-        <version>${blueprints.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.tinkerpop.gremlin</groupId>
-        <artifactId>gremlin-java</artifactId>
-        <version>${blueprints.version}</version>
       </dependency>
       <dependency>
         <groupId>org.restlet</groupId>

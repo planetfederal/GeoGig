@@ -23,7 +23,6 @@ import org.geogit.rest.repository.FixedEncoder;
 import org.geogit.rest.repository.RepositoryProvider;
 import org.geogit.rest.repository.RepositoryRouter;
 import org.geogit.storage.bdbje.JEStorageModule;
-import org.geogit.storage.blueprints.BlueprintsGraphModule;
 import org.restlet.Application;
 import org.restlet.Component;
 import org.restlet.Restlet;
@@ -154,7 +153,7 @@ public class Main extends Application {
             public Context build(Hints hints) {
                 return Guice.createInjector(
                         Modules.override(new GeogitModule()).with(new JEStorageModule(),
-                                new BlueprintsGraphModule(), new HintsModule(hints))).getInstance(
+                                new HintsModule(hints))).getInstance(
                         Context.class);
             }
         };

@@ -20,7 +20,6 @@ import org.geogit.storage.StagingDatabase;
 import org.geogit.storage.bdbje.JEGraphDatabase;
 import org.geogit.storage.bdbje.JEObjectDatabase;
 import org.geogit.storage.bdbje.JEStagingDatabase;
-import org.geogit.storage.blueprints.TinkerGraphDatabase;
 import org.geogit.storage.fs.FileRefDatabase;
 import org.geogit.storage.mongo.MongoGraphDatabase;
 import org.geogit.storage.mongo.MongoObjectDatabase;
@@ -104,10 +103,6 @@ public class CLIContextBuilder extends ContextBuilder {
             graphPlugins //
                     .addBinding(DEFAULT_GRAPH) //
                     .to(JEGraphDatabase.class) //
-                    .in(Scopes.SINGLETON);
-            graphPlugins //
-                    .addBinding(new VersionedFormat("tinkergraph", "0.1")) //
-                    .to(TinkerGraphDatabase.class) //
                     .in(Scopes.SINGLETON);
             graphPlugins //
                     .addBinding(new VersionedFormat("mongodb", "0.1")) //
