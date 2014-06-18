@@ -113,6 +113,7 @@ public class GlobalState {
         GlobalContextBuilder.builder = injectorBuilder;
         Platform platform = injector.platform();
         geogitCLI.setPlatform(platform);
+        geogitCLI.tryConfigureLogging();
     }
 
     /**

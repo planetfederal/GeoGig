@@ -1,5 +1,7 @@
 package org.geogit.rest.repository;
 
+import org.geogit.web.console.ConsoleResourceResource;
+import org.restlet.Redirector;
 import org.restlet.Router;
 
 public class RepositoryRouter extends Router {
@@ -18,5 +20,11 @@ public class RepositoryRouter extends Router {
         attach("/filteredchanges", new FilteredChangesResource());
         attach("/applychanges", new ApplyChangesResource());
         attach("/mergefeature", MergeFeatureResource.class);
+
+        Redirector redirector = new Redirector(getContext(), "console/",
+                Redirector.MODE_CLIENT_PERMANENT);
+        attach("/console/{resource}", ConsoleResourceResource.class);
+        attach("/console/", ConsoleResourceResource.class);
+        attach("/console", redirector);
     }
 }

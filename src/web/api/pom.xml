@@ -26,7 +26,7 @@
     </dependency>
     <dependency>
       <groupId>org.geogit</groupId>
-      <artifactId>geogit-core</artifactId>
+      <artifactId>geogit-cli</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>

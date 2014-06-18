@@ -6,12 +6,8 @@ package org.geogit.cli;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.io.File;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.text.NumberFormat;
 import java.util.Arrays;
 import java.util.Collection;
@@ -46,11 +42,6 @@ import org.geogit.cli.annotation.StagingDatabaseReadOnly;
 import org.geogit.repository.Hints;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.bridge.SLF4JBridgeHandler;
-
-import ch.qos.logback.classic.LoggerContext;
-import ch.qos.logback.classic.joran.JoranConfigurator;
-import ch.qos.logback.core.joran.spi.JoranException;
 
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
@@ -64,9 +55,6 @@ import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import com.google.common.io.ByteSource;
-import com.google.common.io.Files;
-import com.google.common.io.Resources;
 import com.google.inject.Binding;
 import com.google.inject.Guice;
 import com.google.inject.Key;
@@ -89,15 +77,19 @@ public class GeogitCLI {
         GlobalContextBuilder.builder = new CLIContextBuilder();
     }
 
-    private File geogitDirLoggingConfiguration;
-
-    private com.google.inject.Injector commandsInjector;
+    private static final com.google.inject.Injector commandsInjector;
+    static {
+        Iterable<CLIModule> plugins = ServiceLoader.load(CLIModule.class);
+        commandsInjector = Guice.createInjector(plugins);
+    }
 
     private Context geogitInjector;
 
     private Platform platform;
 
     private GeoGIT geogit;
+
+    private final GeoGIT providedGeogit;
 
     private final ConsoleReader consoleReader;
 
@@ -117,11 +109,16 @@ public class GeogitCLI {
      * @param consoleReader
      */
     public GeogitCLI(final ConsoleReader consoleReader) {
+        this(null, consoleReader);
+    }
+
+    /**
+     * Constructor to use the provided {@code GeoGIT} instance and never try to close it.
+     */
+    public GeogitCLI(final GeoGIT geogit, final ConsoleReader consoleReader) {
         this.consoleReader = consoleReader;
         this.platform = new DefaultPlatform();
-
-        Iterable<CLIModule> plugins = ServiceLoader.load(CLIModule.class);
-        commandsInjector = Guice.createInjector(plugins);
+        this.providedGeogit = geogit;
     }
 
     /**
@@ -160,6 +157,9 @@ public class GeogitCLI {
      */
     @Nullable
     public synchronized GeoGIT getGeogit() {
+        if (providedGeogit != null) {
+            return providedGeogit;
+        }
         if (geogit == null) {
             GeoGIT geogit = loadRepository();
             setGeogit(geogit);
@@ -285,6 +285,9 @@ public class GeogitCLI {
      * Closes the GeoGIT facade if it exists.
      */
     public synchronized void close() {
+        if (providedGeogit != null) {
+            return;
+        }
         if (geogit != null) {
             geogit.close();
             geogit = null;
@@ -306,6 +309,7 @@ public class GeogitCLI {
      * @param args
      */
     public static void main(String[] args) {
+        Logging.tryConfigureLogging();
         ConsoleReader consoleReader;
         try {
             consoleReader = new ConsoleReader(System.in, System.out);
@@ -333,92 +337,6 @@ public class GeogitCLI {
 
         if (exitCode != 0 || cli.isExitOnFinish()) {
             System.exit(exitCode);
-        }
-    }
-
-    void tryConfigureLogging() {
-        // instantiate and call ResolveGeogitDir directly to avoid calling getGeogit() and hence get
-        // some logging events before having configured logging
-        final Optional<URL> geogitDirUrl = new ResolveGeogitDir(getPlatform()).call();
-        if (!geogitDirUrl.isPresent() || !"file".equalsIgnoreCase(geogitDirUrl.get().getProtocol())) {
-            // redirect java.util.logging to SLF4J anyways
-            SLF4JBridgeHandler.removeHandlersForRootLogger();
-            SLF4JBridgeHandler.install();
-            return;
-        }
-
-        final File geogitDir;
-        try {
-            geogitDir = new File(geogitDirUrl.get().toURI());
-        } catch (URISyntaxException e) {
-            throw Throwables.propagate(e);
-        }
-
-        if (geogitDir.equals(geogitDirLoggingConfiguration)) {
-            return;
-        }
-
-        if (!geogitDir.exists() || !geogitDir.isDirectory()) {
-            return;
-        }
-        final URL loggingFile = getOrCreateLoggingConfigFile(geogitDir);
-
-        if (loggingFile == null) {
-            return;
-        }
-
-        try {
-            LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
-            loggerContext.reset();
-            /*
-             * Set the geogitdir variable for the config file can resolve the default location
-             * ${geogitdir}/log/geogit.log
-             */
-            loggerContext.putProperty("geogitdir", geogitDir.getAbsolutePath());
-            JoranConfigurator configurator = new JoranConfigurator();
-            configurator.setContext(loggerContext);
-            configurator.doConfigure(loggingFile);
-
-            // redirect java.util.logging to SLF4J
-            SLF4JBridgeHandler.removeHandlersForRootLogger();
-            SLF4JBridgeHandler.install();
-            geogitDirLoggingConfiguration = geogitDir;
-        } catch (JoranException e) {
-            LOGGER.error("Error configuring logging from file {}. '{}'", loggingFile,
-                    e.getMessage(), e);
-        }
-    }
-
-    @Nullable
-    private URL getOrCreateLoggingConfigFile(final File geogitdir) {
-
-        final File logsDir = new File(geogitdir, "log");
-        if (!logsDir.exists() && !logsDir.mkdir()) {
-            return null;
-        }
-        final File configFile = new File(logsDir, "logback.xml");
-        if (configFile.exists()) {
-            try {
-                return configFile.toURI().toURL();
-            } catch (MalformedURLException e) {
-                throw Throwables.propagate(e);
-            }
-        }
-        ByteSource from;
-        final URL resource = getClass().getResource("logback_default.xml");
-        try {
-            from = Resources.asByteSource(resource);
-        } catch (NullPointerException npe) {
-            LOGGER.warn("Couldn't obtain default logging configuration file");
-            return null;
-        }
-        try {
-            from.copyTo(Files.asByteSink(configFile));
-            return configFile.toURI().toURL();
-        } catch (Exception e) {
-            LOGGER.warn("Error copying logback_default.xml to {}. Using default configuration.",
-                    configFile, e);
-            return resource;
         }
     }
 
@@ -518,7 +436,6 @@ public class GeogitCLI {
      */
     private void executeInternal(String... args) throws ParameterException, CommandFailedException,
             IOException, CannotRunGeogitOperationException {
-        tryConfigureLogging();
 
         JCommander mainCommander = newCommandParser();
         if (null == args || args.length == 0) {
@@ -545,7 +462,8 @@ public class GeogitCLI {
                     }
                 }
                 consoleReader.flush();
-                throw new CommandFailedException();
+                throw new CommandFailedException(String.format("'%s' is not a command.",
+                        commandName));
             }
 
             Object object = commandParser.getObjects().get(0);
@@ -656,7 +574,7 @@ public class GeogitCLI {
         final String aliasedCommand = args[0];
         String configParam = "alias." + aliasedCommand;
         boolean closeGeogit = false;
-        GeoGIT geogit = this.geogit;
+        GeoGIT geogit = this.providedGeogit == null ? this.geogit : this.providedGeogit;
         if (geogit == null) { // in case the repo is not initialized yet
             closeGeogit = true;
             geogit = newGeoGIT(Hints.readOnly());
@@ -908,5 +826,10 @@ public class GeogitCLI {
                 }
             }
         });
+    }
+
+    @VisibleForTesting
+    public void tryConfigureLogging() {
+        Logging.tryConfigureLogging(getPlatform());
     }
 }

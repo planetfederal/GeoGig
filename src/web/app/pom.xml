@@ -43,7 +43,12 @@
     </dependency>
     <dependency>
       <groupId>org.geogit</groupId>
-      <artifactId>geogit-cli</artifactId>
+      <artifactId>geogit-core</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.geogit</groupId>
+      <artifactId>geogit-geotools</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>

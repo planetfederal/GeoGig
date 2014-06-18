@@ -114,7 +114,6 @@ public class GeogitPy4JEntryPoint {
                 return super.progressListener;
             }
         };
-        cli.tryConfigureLogging();
         DefaultPlatform platform = new DefaultPlatform();
         platform.setWorkingDir(new File(folder));
         cli.setPlatform(platform);
@@ -176,6 +175,7 @@ public class GeogitPy4JEntryPoint {
     }
 
     public static void main(String[] args) {
+        Logging.tryConfigureLogging();
         int port = GatewayServer.DEFAULT_PORT;
         if (args.length != 0) {
             if (args.length > 1) {
