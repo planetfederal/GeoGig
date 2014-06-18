@@ -340,7 +340,6 @@ public class GeogitCLI {
         }
     }
 
-   
     /**
      * Finds all commands that are bound do the command injector.
      * 
@@ -827,5 +826,10 @@ public class GeogitCLI {
                 }
             }
         });
+    }
+
+    @VisibleForTesting
+    public void tryConfigureLogging() {
+        Logging.tryConfigureLogging(getPlatform());
     }
 }

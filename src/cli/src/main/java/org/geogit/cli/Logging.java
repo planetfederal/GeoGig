@@ -12,6 +12,7 @@ import java.net.URL;
 import javax.annotation.Nullable;
 
 import org.geogit.api.DefaultPlatform;
+import org.geogit.api.Platform;
 import org.geogit.api.plumbing.ResolveGeogitDir;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,9 +42,13 @@ class Logging {
     private static File geogitDirLoggingConfiguration;
 
     static void tryConfigureLogging() {
+        tryConfigureLogging(new DefaultPlatform());
+    }
+
+    static void tryConfigureLogging(Platform platform) {
         // instantiate and call ResolveGeogitDir directly to avoid calling getGeogit() and hence get
         // some logging events before having configured logging
-        final Optional<URL> geogitDirUrl = new ResolveGeogitDir(new DefaultPlatform()).call();
+        final Optional<URL> geogitDirUrl = new ResolveGeogitDir(platform).call();
         if (!geogitDirUrl.isPresent() || !"file".equalsIgnoreCase(geogitDirUrl.get().getProtocol())) {
             // redirect java.util.logging to SLF4J anyways
             SLF4JBridgeHandler.removeHandlersForRootLogger();
