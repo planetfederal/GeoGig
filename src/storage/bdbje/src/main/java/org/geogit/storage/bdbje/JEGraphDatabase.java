@@ -225,7 +225,7 @@ public class JEGraphDatabase extends SynchronizedGraphDatabase {
         @Override
         protected void finalize() {
             if (isOpen()) {
-                LOGGER.warn("JEGraphDatabase %s was not closed. Forcing close at finalize()",
+                LOGGER.warn("JEGraphDatabase {} was not closed. Forcing close at finalize()",
                         env.getHome());
                 close();
             }

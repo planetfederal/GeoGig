@@ -867,7 +867,7 @@ public class JEObjectDatabase extends AbstractObjectDatabase implements ObjectDa
     @Override
     protected void finalize() {
         if (isOpen()) {
-            LOGGER.warn("JEObjectDatabase %s was not closed. Forcing close at finalize()",
+            LOGGER.warn("JEObjectDatabase {} was not closed. Forcing close at finalize()",
                     env.getHome());
             close();
         }
