@@ -46,7 +46,7 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.impl.PackedCoordinateSequenceFactory;
+import com.vividsolutions.jts.geom.PrecisionModel;
 
 /**
  * Reads a OSM diff file and apply the changes to the current repo.
@@ -59,6 +59,8 @@ import com.vividsolutions.jts.geom.impl.PackedCoordinateSequenceFactory;
 
 public class OSMApplyDiffOp extends AbstractGeoGitOp<Optional<OSMReport>> {
 
+    private static final GeometryFactory GEOMF = new GeometryFactory(new PrecisionModel(1_000_000));
+    //new PackedCoordinateSequenceFactory());
     /**
      * The file to import
      */
@@ -198,7 +200,7 @@ public class OSMApplyDiffOp extends AbstractGeoGitOp<Optional<OSMReport>> {
             if (nodesNodeRef.isPresent()) {
                 nodesNodeRef.get().expand(envelope);
             }
-            bbox = new GeometryFactory().toGeometry(envelope);
+            bbox = GEOMF.toGeometry(envelope);
         }
 
         public long getUnprocessedCount() {
@@ -273,6 +275,7 @@ public class OSMApplyDiffOp extends AbstractGeoGitOp<Optional<OSMReport>> {
                 return;
             }
             if (geom != null) {
+                System.err.printf("%s within %s? %s\n", geom, bbox, geom.within(bbox));
                 if (changeAction.equals(ChangeAction.Create) && geom.within(bbox)
                         || changeAction.equals(ChangeAction.Modify)) {
                     Feature feature = converter.toFeature(entity, geom);
@@ -307,13 +310,12 @@ public class OSMApplyDiffOp extends AbstractGeoGitOp<Optional<OSMReport>> {
         public void initialize(Map<String, Object> map) {
         }
 
-        private final GeometryFactory GEOMF = new GeometryFactory(
-                new PackedCoordinateSequenceFactory());
-
         protected Geometry parsePoint(Node node) {
-            Coordinate coord = new Coordinate(node.getLongitude(), node.getLatitude());
+            double longitude = node.getLongitude();
+            double latitude = node.getLatitude();
+            Coordinate coord = new Coordinate(longitude, latitude);
             Point pt = GEOMF.createPoint(coord);
-            pointCache.put(Long.valueOf(node.getId()), coord);
+            pointCache.put(Long.valueOf(node.getId()), pt.getCoordinate());
             return pt;
         }
 

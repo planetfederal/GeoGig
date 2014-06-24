@@ -6,28 +6,28 @@ package org.geogit.storage.bdbje;
 
 import java.io.File;
 
-import org.geogit.api.TestPlatform;
+import org.geogit.api.Platform;
 import org.geogit.repository.Hints;
 import org.geogit.storage.ConfigDatabase;
 import org.geogit.storage.GraphDatabase;
-import org.geogit.storage.GraphDatabaseStressTest;
+import org.geogit.storage.GraphDatabaseTest;
 import org.geogit.storage.fs.IniFileConfigDatabase;
 
 import com.google.common.base.Preconditions;
 
-public class JEGraphDatabaseStressTest extends GraphDatabaseStressTest {
+public class JEGraphDatabaseV2Test extends GraphDatabaseTest {
+
     // instance variable so its reused as if it were the singleton in the guice config
     private EnvironmentBuilder envProvider;
 
     @Override
-    protected GraphDatabase createDatabase(TestPlatform platform) {
+    protected GraphDatabase createDatabase(Platform platform) throws Exception {
         File root = platform.pwd();
         Preconditions.checkState(new File(root, ".geogit").exists());
 
         envProvider = new EnvironmentBuilder(platform);
 
         ConfigDatabase configDB = new IniFileConfigDatabase(platform);
-        return new JEGraphDatabase(configDB, envProvider, new Hints());
+        return new JEGraphDatabase_v0_2(configDB, envProvider, new Hints());
     }
-
 }

@@ -4,7 +4,7 @@
  */
 package org.geogit.remote;
 
-import static org.geogit.storage.datastream.FormatCommon.readObjectId;
+import static org.geogit.storage.datastream.FormatCommonV1.readObjectId;
 
 import java.io.DataInput;
 import java.io.DataInputStream;
@@ -27,8 +27,8 @@ import org.geogit.repository.Repository;
 import org.geogit.storage.BulkOpListener;
 import org.geogit.storage.BulkOpListener.CountingListener;
 import org.geogit.storage.ObjectDatabase;
-import org.geogit.storage.datastream.DataStreamSerializationFactory;
-import org.geogit.storage.datastream.FormatCommon;
+import org.geogit.storage.datastream.DataStreamSerializationFactoryV1;
+import org.geogit.storage.datastream.FormatCommonV1;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,7 +45,7 @@ public final class BinaryPackedChanges {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BinaryPackedChanges.class);
 
-    private static final DataStreamSerializationFactory serializer = DataStreamSerializationFactory.INSTANCE;
+    private static final DataStreamSerializationFactoryV1 serializer = DataStreamSerializationFactoryV1.INSTANCE;
 
     private final Repository repository;
 
@@ -149,7 +149,7 @@ public final class BinaryPackedChanges {
                 objectCount++;
             }
             DataOutput dataOut = new DataOutputStream(out);
-            FormatCommon.writeDiff(diff, dataOut);
+            FormatCommonV1.writeDiff(diff, dataOut);
         }
         // signal the end of changes
         out.write(CHUNK_TYPE.FILTER_FLAG.value());
@@ -305,7 +305,7 @@ public final class BinaryPackedChanges {
                 throw new IllegalStateException("Unknown chunk type: " + chunkType);
             }
 
-            DiffEntry diff = FormatCommon.readDiff(data);
+            DiffEntry diff = FormatCommonV1.readDiff(data);
             return new DiffPacket(diff, revObj, metadata);
         }
     }

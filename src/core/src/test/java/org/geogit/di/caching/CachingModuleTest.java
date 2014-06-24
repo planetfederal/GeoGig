@@ -32,7 +32,7 @@ import org.geogit.storage.ConfigDatabase;
 import org.geogit.storage.ObjectDatabase;
 import org.geogit.storage.ObjectSerializingFactory;
 import org.geogit.storage.StagingDatabase;
-import org.geogit.storage.datastream.DataStreamSerializationFactory;
+import org.geogit.storage.datastream.DataStreamSerializationFactoryV1;
 import org.geogit.storage.fs.IniFileConfigDatabase;
 import org.geogit.storage.memory.HeapObjectDatabse;
 import org.geogit.storage.memory.HeapStagingDatabase;
@@ -95,7 +95,7 @@ public class CachingModuleTest {
                 Multibinder.newSetBinder(binder(), Decorator.class);
                 bind(DecoratorProvider.class).in(Scopes.SINGLETON);
 
-                DataStreamSerializationFactory sfac = new DataStreamSerializationFactory();
+                DataStreamSerializationFactoryV1 sfac = DataStreamSerializationFactoryV1.INSTANCE;
                 bind(ObjectSerializingFactory.class).toInstance(sfac);
 
                 bind(ObjectDatabase.class).to(HeapObjectDatabse.class).in(Scopes.SINGLETON);

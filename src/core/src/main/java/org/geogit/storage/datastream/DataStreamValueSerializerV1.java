@@ -25,7 +25,7 @@ import com.vividsolutions.jts.io.WKBWriter;
  * A class to serializer/deserialize attribute values to/from a data stream
  * 
  */
-public class DataStreamValueSerializer {
+class DataStreamValueSerializerV1 {
 
     static interface ValueSerializer {
 

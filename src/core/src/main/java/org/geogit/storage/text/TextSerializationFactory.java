@@ -184,7 +184,7 @@ public class TextSerializationFactory implements ObjectSerializingFactory {
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> ObjectReader<T> createObjectReader(TYPE type) {
+    public <T extends RevObject> ObjectReader<T> createObjectReader(TYPE type) {
         switch (type) {
         case COMMIT:
             return (ObjectReader<T>) COMMIT_READER;

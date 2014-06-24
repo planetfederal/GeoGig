@@ -27,7 +27,8 @@ import org.geogit.api.Ref;
 import org.geogit.api.RevObject;
 import org.geogit.api.SymRef;
 import org.geogit.repository.Repository;
-import org.geogit.storage.datastream.ObjectReader;
+import org.geogit.storage.ObjectReader;
+import org.geogit.storage.datastream.DataStreamSerializationFactoryV1;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -157,7 +158,8 @@ class HttpUtils {
             // Get Response
             InputStream is = HttpUtils.getResponseStream(connection);
             try {
-                ObjectReader reader = new ObjectReader();
+                ObjectReader<RevObject> reader = DataStreamSerializationFactoryV1.INSTANCE
+                        .createObjectReader();
                 RevObject revObject = reader.read(objectId, is);
                 if (localRepository != null) {
                     localRepository.objectDatabase().put(revObject);

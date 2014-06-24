@@ -33,7 +33,7 @@ import org.geogit.api.porcelain.DiffOp;
 import org.geogit.repository.Repository;
 import org.geogit.storage.ObjectSerializingFactory;
 import org.geogit.storage.ObjectWriter;
-import org.geogit.storage.datastream.DataStreamSerializationFactory;
+import org.geogit.storage.datastream.DataStreamSerializationFactoryV1;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Throwables;
@@ -365,7 +365,7 @@ class HttpMappedRemoteRepo extends AbstractMappedRemoteRepo {
                 connection.setDoInput(true);
                 out = connection.getOutputStream();
                 // pack the commit object
-                final ObjectSerializingFactory factory = new DataStreamSerializationFactory();
+                final ObjectSerializingFactory factory = DataStreamSerializationFactoryV1.INSTANCE;
                 final ObjectWriter<RevCommit> commitWriter = factory
                         .createObjectWriter(TYPE.COMMIT);
                 commitWriter.write(commit, out);

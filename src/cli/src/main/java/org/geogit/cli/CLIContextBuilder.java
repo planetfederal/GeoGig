@@ -17,9 +17,12 @@ import org.geogit.storage.GraphDatabase;
 import org.geogit.storage.ObjectDatabase;
 import org.geogit.storage.RefDatabase;
 import org.geogit.storage.StagingDatabase;
-import org.geogit.storage.bdbje.JEGraphDatabase;
-import org.geogit.storage.bdbje.JEObjectDatabase;
-import org.geogit.storage.bdbje.JEStagingDatabase;
+import org.geogit.storage.bdbje.JEGraphDatabase_v0_1;
+import org.geogit.storage.bdbje.JEGraphDatabase_v0_2;
+import org.geogit.storage.bdbje.JEObjectDatabase_v0_1;
+import org.geogit.storage.bdbje.JEObjectDatabase_v0_2;
+import org.geogit.storage.bdbje.JEStagingDatabase_v0_1;
+import org.geogit.storage.bdbje.JEStagingDatabase_v0_2;
 import org.geogit.storage.fs.FileRefDatabase;
 import org.geogit.storage.mongo.MongoGraphDatabase;
 import org.geogit.storage.mongo.MongoObjectDatabase;
@@ -37,13 +40,13 @@ import com.google.inject.util.Modules;
 
 public class CLIContextBuilder extends ContextBuilder {
 
-    private static final VersionedFormat DEFAULT_OBJECTS = new VersionedFormat("bdbje", "0.1");
-
-    private static final VersionedFormat DEFAULT_STAGING = new VersionedFormat("bdbje", "0.1");
-
     private static final VersionedFormat DEFAULT_REFS = new VersionedFormat("file", "1.0");
 
-    private static final VersionedFormat DEFAULT_GRAPH = new VersionedFormat("bdbje", "0.1");
+    private static final VersionedFormat DEFAULT_OBJECTS = new VersionedFormat("bdbje", "0.2");
+
+    private static final VersionedFormat DEFAULT_STAGING = new VersionedFormat("bdbje", "0.2");
+
+    private static final VersionedFormat DEFAULT_GRAPH = new VersionedFormat("bdbje", "0.2");
 
     private static final PluginDefaults defaults = new PluginDefaults(DEFAULT_OBJECTS,//
             DEFAULT_STAGING,//
@@ -71,9 +74,13 @@ public class CLIContextBuilder extends ContextBuilder {
             MapBinder<VersionedFormat, ObjectDatabase> objectPlugins = MapBinder.newMapBinder(
                     binder(), VersionedFormat.class, ObjectDatabase.class);
             objectPlugins //
-                    .addBinding(DEFAULT_OBJECTS)//
-                    .to(JEObjectDatabase.class)//
+                    .addBinding(new VersionedFormat("bdbje", "0.2"))//
+                    .to(JEObjectDatabase_v0_2.class)//
                     .in(Scopes.SINGLETON);//
+            objectPlugins //
+                    .addBinding(new VersionedFormat("bdbje", "0.1"))//
+                    .to(JEObjectDatabase_v0_1.class)//
+                    .in(Scopes.SINGLETON);
             objectPlugins //
                     .addBinding(new VersionedFormat("mongodb", "0.1"))//
                     .to(MongoObjectDatabase.class)//
@@ -90,8 +97,12 @@ public class CLIContextBuilder extends ContextBuilder {
                     .to(MongoStagingDatabase.class)//
                     .in(Scopes.SINGLETON);
             stagingPlugins //
-                    .addBinding(DEFAULT_STAGING)//
-                    .to(JEStagingDatabase.class)//
+                    .addBinding(new VersionedFormat("bdbje", "0.2"))//
+                    .to(JEStagingDatabase_v0_2.class)//
+                    .in(Scopes.SINGLETON);
+            stagingPlugins //
+                    .addBinding(new VersionedFormat("bdbje", "0.1"))//
+                    .to(JEStagingDatabase_v0_1.class)//
                     .in(Scopes.SINGLETON);
             stagingPlugins //
                     .addBinding(
@@ -101,8 +112,12 @@ public class CLIContextBuilder extends ContextBuilder {
             MapBinder<VersionedFormat, GraphDatabase> graphPlugins = MapBinder.newMapBinder(
                     binder(), VersionedFormat.class, GraphDatabase.class);
             graphPlugins //
-                    .addBinding(DEFAULT_GRAPH) //
-                    .to(JEGraphDatabase.class) //
+                    .addBinding(new VersionedFormat("bdbje", "0.2")) //
+                    .to(JEGraphDatabase_v0_2.class) //
+                    .in(Scopes.SINGLETON);
+            graphPlugins //
+                    .addBinding(new VersionedFormat("bdbje", "0.1")) //
+                    .to(JEGraphDatabase_v0_1.class) //
                     .in(Scopes.SINGLETON);
             graphPlugins //
                     .addBinding(new VersionedFormat("mongodb", "0.1")) //

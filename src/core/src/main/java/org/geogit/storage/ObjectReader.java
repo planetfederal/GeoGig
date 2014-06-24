@@ -7,6 +7,7 @@ package org.geogit.storage;
 import java.io.InputStream;
 
 import org.geogit.api.ObjectId;
+import org.geogit.api.RevObject;
 
 import com.vividsolutions.jts.geom.GeometryFactory;
 
@@ -15,7 +16,7 @@ import com.vividsolutions.jts.geom.GeometryFactory;
  * 
  * @param <T> the type of the object to read
  */
-public interface ObjectReader<T> {
+public interface ObjectReader<T extends RevObject> {
 
     /**
      * Hint of type {@link GeometryFactory}

@@ -28,7 +28,7 @@ import java.util.concurrent.Future;
 
 import org.geogit.api.Node;
 import org.geogit.storage.NodeStorageOrder;
-import org.geogit.storage.datastream.FormatCommon;
+import org.geogit.storage.datastream.FormatCommonV1;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Throwables;
@@ -70,7 +70,7 @@ class NodeIndex implements Closeable {
                         buf.reset();
                         DataOutput out = new DataOutputStream(buf);
                         try {
-                            FormatCommon.writeNode(node, out);
+                            FormatCommonV1.writeNode(node, out);
                         } catch (IOException e) {
                             throw Throwables.propagate(e);
                         }
@@ -228,7 +228,7 @@ class NodeIndex implements Closeable {
         @Override
         protected Node computeNext() {
             try {
-                Node node = FormatCommon.readNode(in);
+                Node node = FormatCommonV1.readNode(in);
                 return node;
             } catch (EOFException eof) {
                 Closeables.closeQuietly(in);

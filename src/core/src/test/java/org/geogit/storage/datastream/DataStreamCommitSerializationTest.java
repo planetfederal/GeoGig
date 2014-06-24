@@ -6,12 +6,13 @@ package org.geogit.storage.datastream;
 
 import org.geogit.storage.ObjectSerializingFactory;
 import org.geogit.storage.RevCommitSerializationTest;
+import org.geogit.storage.datastream.DataStreamSerializationFactoryV1;
 
 public class DataStreamCommitSerializationTest extends RevCommitSerializationTest {
 
     @Override
     protected ObjectSerializingFactory getObjectSerializingFactory() {
-        return new DataStreamSerializationFactory();
+        return new DataStreamSerializationFactoryV1();
     }
 
 }

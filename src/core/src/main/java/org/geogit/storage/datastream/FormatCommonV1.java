@@ -55,7 +55,7 @@ import com.google.common.collect.ImmutableList.Builder;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 
-public class FormatCommon {
+public class FormatCommonV1 {
 
     public final static byte NUL = 0x00;
 
@@ -77,7 +77,7 @@ public class FormatCommon {
     }
 
     public final static ObjectId readObjectId(DataInput in) throws IOException {
-        byte[] bytes = new byte[20];
+        byte[] bytes = new byte[ObjectId.NUM_BYTES];
         in.readFully(bytes);
         return ObjectId.createNoClone(bytes);
     }
@@ -297,7 +297,7 @@ public class FormatCommon {
         for (int i = 0; i < count; i++) {
             final byte fieldTag = in.readByte();
             final FieldType fieldType = FieldType.valueOf(fieldTag);
-            Object value = DataStreamValueSerializer.read(fieldType, in);
+            Object value = DataStreamValueSerializerV1.read(fieldType, in);
             builder.add(Optional.fromNullable(value));
         }
 

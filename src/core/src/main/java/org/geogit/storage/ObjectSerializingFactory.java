@@ -62,7 +62,7 @@ public interface ObjectSerializingFactory {
      * @param type
      * @return
      */
-    public <T> ObjectReader<T> createObjectReader(TYPE type);
+    public <T extends RevObject> ObjectReader<T> createObjectReader(TYPE type);
 
     public ObjectReader<RevObject> createObjectReader();
 }

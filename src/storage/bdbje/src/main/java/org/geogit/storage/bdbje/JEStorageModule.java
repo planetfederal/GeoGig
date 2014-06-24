@@ -21,10 +21,10 @@ public class JEStorageModule extends AbstractModule {
     @Override
     protected void configure() {
         // BDB JE bindings for the different kinds of databases
-        bind(ObjectDatabase.class).to(JEObjectDatabase.class).in(Scopes.SINGLETON);
-        bind(StagingDatabase.class).to(JEStagingDatabase.class).in(Scopes.SINGLETON);
+        bind(ObjectDatabase.class).to(JEObjectDatabase_v0_1.class).in(Scopes.SINGLETON);
+        bind(StagingDatabase.class).to(JEStagingDatabase_v0_1.class).in(Scopes.SINGLETON);
         bind(DeduplicationService.class).to(BDBJEDeduplicationService.class).in(Scopes.SINGLETON);
-        bind(GraphDatabase.class).to(JEGraphDatabase.class).in(Scopes.SINGLETON);
+        bind(GraphDatabase.class).to(JEGraphDatabase_v0_1.class).in(Scopes.SINGLETON);
 
         // this module's specific. Used by the JE*Databases to set up the db environment
         // A new instance of each db

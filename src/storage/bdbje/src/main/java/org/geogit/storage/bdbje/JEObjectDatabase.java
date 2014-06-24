@@ -33,14 +33,12 @@ import javax.annotation.Nullable;
 
 import org.geogit.api.ObjectId;
 import org.geogit.api.RevObject;
-import org.geogit.repository.Hints;
-import org.geogit.repository.RepositoryConnectionException;
 import org.geogit.storage.AbstractObjectDatabase;
 import org.geogit.storage.BulkOpListener;
 import org.geogit.storage.ConfigDatabase;
 import org.geogit.storage.ObjectDatabase;
 import org.geogit.storage.ObjectReader;
-import org.geogit.storage.datastream.DataStreamSerializationFactory;
+import org.geogit.storage.ObjectSerializingFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,7 +52,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.UnmodifiableIterator;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import com.google.inject.Inject;
 import com.ning.compress.lzf.LZFInputStream;
 import com.sleepycat.je.CacheMode;
 import com.sleepycat.je.Cursor;
@@ -73,7 +70,7 @@ import com.sleepycat.je.TransactionConfig;
 /**
  * 
  */
-public class JEObjectDatabase extends AbstractObjectDatabase implements ObjectDatabase {
+abstract class JEObjectDatabase extends AbstractObjectDatabase implements ObjectDatabase {
 
     /** Name of the BDB JE Environment inside the .geogit folder used for the objects database */
     static final String ENVIRONMENT_NAME = "objects";
@@ -109,22 +106,16 @@ public class JEObjectDatabase extends AbstractObjectDatabase implements ObjectDa
 
     protected Database objectDb;
 
-    private ConfigDatabase configDB;
+    protected final ConfigDatabase configDB;
 
     private final boolean readOnly;
 
     private final String envName;
 
-    @Inject
-    public JEObjectDatabase(final ConfigDatabase configDB, final EnvironmentBuilder envProvider,
-            final Hints hints) {
-        this(configDB, envProvider, hints.getBoolean(Hints.OBJECTS_READ_ONLY),
-                JEObjectDatabase.ENVIRONMENT_NAME);
-    }
-
-    public JEObjectDatabase(final ConfigDatabase configDB, final EnvironmentBuilder envProvider,
+    public JEObjectDatabase(final ObjectSerializingFactory serialization,
+            final ConfigDatabase configDB, final EnvironmentBuilder envProvider,
             final boolean readOnly, final String envName) {
-        super(DataStreamSerializationFactory.INSTANCE);
+        super(serialization);
         this.configDB = configDB;
         this.envProvider = envProvider;
         this.readOnly = readOnly;
@@ -148,6 +139,7 @@ public class JEObjectDatabase extends AbstractObjectDatabase implements ObjectDa
             LOGGER.trace("Database already closed.");
             return;
         }
+
         final File envHome = env.getHome();
         try {
             LOGGER.debug("Closing object database at {}", envHome);
@@ -208,6 +200,7 @@ public class JEObjectDatabase extends AbstractObjectDatabase implements ObjectDa
 
         LOGGER.debug("Object database opened at {}. Transactional: {}", env.getHome(), objectDb
                 .getConfig().getTransactional());
+
     }
 
     protected Database createDatabase() {
@@ -467,6 +460,7 @@ public class JEObjectDatabase extends AbstractObjectDatabase implements ObjectDa
             writeObject(o, out);
             int size = out.size() - offset;
             offsets.put(o.getId(), new int[] { offset, size });
+
             return true;
         }
 
@@ -711,16 +705,6 @@ public class JEObjectDatabase extends AbstractObjectDatabase implements ObjectDa
             commit(transaction);
         }
         return count;
-    }
-
-    @Override
-    public void configure() throws RepositoryConnectionException {
-        RepositoryConnectionException.StorageType.OBJECT.configure(configDB, "bdbje", "0.1");
-    }
-
-    @Override
-    public void checkConfig() throws RepositoryConnectionException {
-        RepositoryConnectionException.StorageType.OBJECT.verify(configDB, "bdbje", "0.1");
     }
 
     @Override

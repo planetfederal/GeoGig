@@ -201,6 +201,10 @@ public final class ObjectId implements Comparable<ObjectId> {
         System.arraycopy(hashCode, 0, target, 0, NUM_BYTES);
     }
 
+    public void getRawValue(byte[] target, int size) {
+        System.arraycopy(hashCode, 0, target, 0, size);
+    }
+
     /**
      * Utility method to quickly hash a String and create an ObjectId out of the string SHA-1 hash.
      * <p>

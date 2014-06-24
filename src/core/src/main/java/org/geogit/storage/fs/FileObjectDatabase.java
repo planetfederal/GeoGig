@@ -28,7 +28,7 @@ import org.geogit.storage.AbstractObjectDatabase;
 import org.geogit.storage.BulkOpListener;
 import org.geogit.storage.ConfigDatabase;
 import org.geogit.storage.ObjectDatabase;
-import org.geogit.storage.datastream.DataStreamSerializationFactory;
+import org.geogit.storage.datastream.DataStreamSerializationFactoryV1;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Throwables;
@@ -66,7 +66,7 @@ public class FileObjectDatabase extends AbstractObjectDatabase implements Object
 
     protected FileObjectDatabase(final Platform platform, final String databaseName,
             final ConfigDatabase configDB) {
-        super(DataStreamSerializationFactory.INSTANCE);
+        super(DataStreamSerializationFactoryV1.INSTANCE);
         checkNotNull(platform);
         checkNotNull(databaseName);
         this.platform = platform;

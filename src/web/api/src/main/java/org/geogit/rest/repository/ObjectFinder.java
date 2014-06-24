@@ -16,7 +16,7 @@ import org.geogit.api.ObjectId;
 import org.geogit.api.RevObject;
 import org.geogit.repository.Repository;
 import org.geogit.storage.ObjectSerializingFactory;
-import org.geogit.storage.datastream.DataStreamSerializationFactory;
+import org.geogit.storage.datastream.DataStreamSerializationFactoryV1;
 import org.restlet.Context;
 import org.restlet.Finder;
 import org.restlet.data.MediaType;
@@ -82,7 +82,7 @@ public class ObjectFinder extends Finder {
     private static class RevObjectBinaryRepresentation extends OutputRepresentation {
         private final ObjectId oid;
 
-        private static final ObjectSerializingFactory serialFac = new DataStreamSerializationFactory();
+        private static final ObjectSerializingFactory serialFac = DataStreamSerializationFactoryV1.INSTANCE;
 
         private final GeoGIT ggit;
 

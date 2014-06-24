@@ -9,9 +9,9 @@ import org.geogit.storage.GraphDatabase;
 import org.geogit.storage.ObjectDatabase;
 import org.geogit.storage.StagingDatabase;
 import org.geogit.storage.bdbje.EnvironmentBuilder;
-import org.geogit.storage.bdbje.JEGraphDatabase;
-import org.geogit.storage.bdbje.JEObjectDatabase;
-import org.geogit.storage.bdbje.JEStagingDatabase;
+import org.geogit.storage.bdbje.JEGraphDatabase_v0_1;
+import org.geogit.storage.bdbje.JEObjectDatabase_v0_1;
+import org.geogit.storage.bdbje.JEStagingDatabase_v0_1;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Scopes;
@@ -24,9 +24,9 @@ public class JETestStorageModule extends AbstractModule {
     @Override
     protected void configure() {
         // BDB JE bindings for the different kinds of databases
-        bind(ObjectDatabase.class).to(JEObjectDatabase.class).in(Scopes.SINGLETON);
-        bind(StagingDatabase.class).to(JEStagingDatabase.class).in(Scopes.SINGLETON);
-        bind(GraphDatabase.class).to(JEGraphDatabase.class).in(Scopes.SINGLETON);
+        bind(ObjectDatabase.class).to(JEObjectDatabase_v0_1.class).in(Scopes.SINGLETON);
+        bind(StagingDatabase.class).to(JEStagingDatabase_v0_1.class).in(Scopes.SINGLETON);
+        bind(GraphDatabase.class).to(JEGraphDatabase_v0_1.class).in(Scopes.SINGLETON);
 
         // this module's specific. Used by the JE*Databases to set up the db environment
         // A new instance of each db

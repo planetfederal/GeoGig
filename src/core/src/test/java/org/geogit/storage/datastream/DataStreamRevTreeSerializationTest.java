@@ -6,10 +6,11 @@ package org.geogit.storage.datastream;
 
 import org.geogit.storage.ObjectSerializingFactory;
 import org.geogit.storage.RevTreeSerializationTest;
+import org.geogit.storage.datastream.DataStreamSerializationFactoryV1;
 
 public class DataStreamRevTreeSerializationTest extends RevTreeSerializationTest {
     @Override
     protected ObjectSerializingFactory getObjectSerializingFactory() {
-        return new DataStreamSerializationFactory();
+        return new DataStreamSerializationFactoryV1();
     }
 }

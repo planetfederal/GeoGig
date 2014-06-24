@@ -19,7 +19,7 @@ import org.geogit.cli.GeogitCLI;
 import org.geogit.cli.annotation.ReadOnly;
 import org.geogit.storage.ObjectSerializingFactory;
 import org.geogit.storage.ObjectWriter;
-import org.geogit.storage.datastream.DataStreamSerializationFactory;
+import org.geogit.storage.datastream.DataStreamSerializationFactoryV1;
 
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
@@ -61,7 +61,7 @@ public class Cat extends AbstractCommand {
         Optional<RevObject> obj = geogit.command(RevObjectParse.class).setRefSpec(path).call();
         checkParameter(obj.isPresent(), "refspec did not resolve to any object.");
         if (binary) {
-            ObjectSerializingFactory factory = new DataStreamSerializationFactory();
+            ObjectSerializingFactory factory = DataStreamSerializationFactoryV1.INSTANCE;
             ObjectWriter<RevObject> writer = factory.createObjectWriter(obj.get().getType());
             writer.write(obj.get(), System.out);
         } else {

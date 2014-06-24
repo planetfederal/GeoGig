@@ -49,7 +49,7 @@ public class JEObjectDatabaseTest extends Assert {
 
     private ObjectDatabase createDb() {
         ConfigDatabase configDB = new IniFileConfigDatabase(platform);
-        JEObjectDatabase db = new JEObjectDatabase(configDB, envProvider, hints);
+        JEObjectDatabase db = new JEObjectDatabase_v0_1(configDB, envProvider, hints);
         db.open();
         return db;
     }

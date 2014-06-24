@@ -29,7 +29,7 @@ import org.geogit.storage.Deduplicator;
 import org.geogit.storage.ObjectDatabase;
 import org.geogit.storage.ObjectReader;
 import org.geogit.storage.ObjectSerializingFactory;
-import org.geogit.storage.datastream.DataStreamSerializationFactory;
+import org.geogit.storage.datastream.DataStreamSerializationFactoryV1;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -61,7 +61,7 @@ public final class BinaryPackedObjects {
 
     public BinaryPackedObjects(ObjectDatabase database) {
         this.database = database;
-        this.factory = new DataStreamSerializationFactory();
+        this.factory = DataStreamSerializationFactoryV1.INSTANCE;
         this.objectReader = factory.createObjectReader();
     }
 

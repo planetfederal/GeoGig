@@ -32,7 +32,7 @@ import org.geogit.storage.ConfigDatabase;
 import org.geogit.storage.ObjectDatabase;
 import org.geogit.storage.ObjectInserter;
 import org.geogit.storage.ObjectSerializingFactory;
-import org.geogit.storage.datastream.DataStreamSerializationFactory;
+import org.geogit.storage.datastream.DataStreamSerializationFactoryV1;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicates;
@@ -51,7 +51,7 @@ public abstract class SQLiteObjectDatabase<C> implements ObjectDatabase {
 
     final ConfigDatabase configdb;
 
-    final ObjectSerializingFactory serializer = DataStreamSerializationFactory.INSTANCE;
+    final ObjectSerializingFactory serializer = DataStreamSerializationFactoryV1.INSTANCE;
 
     C cx;
 

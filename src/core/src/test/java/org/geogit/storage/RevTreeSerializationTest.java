@@ -7,7 +7,10 @@ package org.geogit.storage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.Map;
 
+import org.geogit.api.Bounded;
 import org.geogit.api.Bucket;
 import org.geogit.api.Node;
 import org.geogit.api.ObjectId;
@@ -20,6 +23,7 @@ import org.junit.Test;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 import com.vividsolutions.jts.geom.Envelope;
 
 public abstract class RevTreeSerializationTest extends Assert {
@@ -46,7 +50,7 @@ public abstract class RevTreeSerializationTest extends Assert {
                 RevObject.TYPE.FEATURE, null));
         ImmutableList<Node> spatialFeatures = ImmutableList.of(Node.create("foo",
                 ObjectId.forString("nodeid"), ObjectId.forString("metadataid"),
-                RevObject.TYPE.FEATURE, new Envelope(1, 2, 1, 2)));
+                RevObject.TYPE.FEATURE, new Envelope(0.0000001, 0.0000002, 0.0000001, 0.0000002)));
         ImmutableList<Node> trees = ImmutableList.of(Node.create("bar",
                 ObjectId.forString("barnodeid"), ObjectId.forString("barmetadataid"),
                 RevObject.TYPE.TREE, null));
@@ -86,6 +90,31 @@ public abstract class RevTreeSerializationTest extends Assert {
     public void testRoundTripBuckets() {
         RevTree roundTripped = read(tree3_buckets.getId(), write(tree3_buckets));
         assertTreesAreEqual(tree3_buckets, roundTripped);
+    }
+
+    @Test
+    public void testRoundTripBucketsFull() {
+
+        ObjectId id = ObjectId.forString("fake");
+        long size = 100000000;
+        int childTreeCount = 0;
+        Map<Integer, Bucket> bucketTrees = createBuckets(32);
+
+        final RevTreeImpl tree = RevTreeImpl.createNodeTree(id, size, childTreeCount, bucketTrees);
+
+        RevTree roundTripped = read(tree.getId(), write(tree));
+        assertTreesAreEqual(tree, roundTripped);
+
+    }
+
+    private Map<Integer, Bucket> createBuckets(int count) {
+        Map<Integer, Bucket> buckets = Maps.newHashMap();
+        for (int i = 0; i < count; i++) {
+            Bucket bucket = Bucket.create(ObjectId.forString("b" + i), new Envelope(i, i * 2, i,
+                    i * 2));
+            buckets.put(i, bucket);
+        }
+        return buckets;
     }
 
     @Test
@@ -132,5 +161,26 @@ public abstract class RevTreeSerializationTest extends Assert {
         assertTrue(a.trees().equals(b.trees()));
         assertTrue(a.numTrees() == b.numTrees());
         assertTrue(a.size() == b.size());
+
+        Iterator<? extends Bounded> ia;
+        Iterator<? extends Bounded> ib;
+        if (a.buckets().isPresent()) {
+            ia = a.buckets().get().values().iterator();
+            ib = b.buckets().get().values().iterator();
+        } else {
+            ia = a.children();
+            ib = b.children();
+        }
+
+        while (ia.hasNext()) {
+            Bounded ba = ia.next();
+            Bounded bb = ib.next();
+            Envelope ea = new Envelope();
+            Envelope eb = new Envelope();
+            ba.expand(ea);
+            bb.expand(eb);
+            assertEquals(ea.getMinX(), eb.getMinX(), 1e-7D);
+        }
     }
+
 }

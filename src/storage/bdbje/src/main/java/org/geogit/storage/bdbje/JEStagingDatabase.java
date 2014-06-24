@@ -19,8 +19,6 @@ import org.geogit.api.Platform;
 import org.geogit.api.RevTree;
 import org.geogit.api.plumbing.ResolveGeogitDir;
 import org.geogit.api.plumbing.merge.Conflict;
-import org.geogit.repository.Hints;
-import org.geogit.repository.RepositoryConnectionException;
 import org.geogit.storage.AbstractStagingDatabase;
 import org.geogit.storage.ConfigDatabase;
 import org.geogit.storage.ObjectDatabase;
@@ -34,7 +32,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.io.Files;
 import com.google.common.io.LineProcessor;
-import com.google.inject.Inject;
 
 /**
  * The Index (or Staging Area) object database.
@@ -59,48 +56,26 @@ import com.google.inject.Inject;
  * list of staged objects.
  * 
  */
-public class JEStagingDatabase extends AbstractStagingDatabase {
+abstract class JEStagingDatabase extends AbstractStagingDatabase {
 
     /**
      * Name of the BDB JE environment inside the .geogit folder used for the staging database
      */
     static final String ENVIRONMENT_NAME = "index";
-    
+
     private Platform platform;
 
-    private ConfigDatabase configDB;
+    protected final ConfigDatabase configDB;
 
     private File repositoryDirectory;
 
-    /**
-     * @param referenceDatabase the repository reference database, used to get the head re
-     * @param repoDb
-     * @param stagingDb
-     */
-    @Inject
     public JEStagingDatabase(final ObjectDatabase repositoryDb,
-            final EnvironmentBuilder envBuilder, final Platform platform,
-            final ConfigDatabase configDB, final Hints hints) {
-
-        super(Suppliers.ofInstance(repositoryDb), stagingDbSupplier(envBuilder, configDB, hints));
+            final Supplier<JEObjectDatabase> stagingDbSupplier, final Platform platform,
+            final ConfigDatabase configDB) {
+        super(Suppliers.ofInstance(repositoryDb), stagingDbSupplier);
 
         this.platform = platform;
         this.configDB = configDB;
-    }
-
-    private static Supplier<JEObjectDatabase> stagingDbSupplier(
-            final EnvironmentBuilder envProvider, final ConfigDatabase configDb, final Hints hints) {
-
-        return Suppliers.memoize(new Supplier<JEObjectDatabase>() {
-
-            @Override
-            public JEObjectDatabase get() {
-                boolean readOnly = hints.getBoolean(Hints.STAGING_READ_ONLY);
-                JEObjectDatabase db = new JEObjectDatabase(configDb, envProvider, readOnly,
-                        JEStagingDatabase.ENVIRONMENT_NAME);
-                return db;
-            }
-        });
     }
 
     @Override
@@ -359,15 +334,5 @@ public class JEStagingDatabase extends AbstractStagingDatabase {
                 checkState(file.delete(), "Unable to delete conflicts file %s", file);
             }
         }
-    }
-
-    @Override
-    public void configure() throws RepositoryConnectionException {
-        RepositoryConnectionException.StorageType.STAGING.configure(configDB, "bdbje", "0.1");
-    }
-
-    @Override
-    public void checkConfig() throws RepositoryConnectionException {
-        RepositoryConnectionException.StorageType.STAGING.verify(configDB, "bdbje", "0.1");
     }
 }

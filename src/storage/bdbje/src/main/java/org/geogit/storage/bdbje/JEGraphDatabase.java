@@ -9,12 +9,9 @@ import static com.sleepycat.je.OperationStatus.SUCCESS;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Queue;
 
 import javax.annotation.Nullable;
@@ -37,10 +34,7 @@ import com.google.common.collect.ImmutableList.Builder;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
-import com.google.inject.Inject;
 import com.sleepycat.bind.tuple.TupleBinding;
-import com.sleepycat.bind.tuple.TupleInput;
-import com.sleepycat.bind.tuple.TupleOutput;
 import com.sleepycat.je.CacheMode;
 import com.sleepycat.je.Database;
 import com.sleepycat.je.DatabaseConfig;
@@ -62,21 +56,20 @@ import com.sleepycat.je.TransactionConfig;
  * serialize writes and have free threaded reads.
  * </p>
  */
-public class JEGraphDatabase extends SynchronizedGraphDatabase {
+abstract class JEGraphDatabase extends SynchronizedGraphDatabase {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JEGraphDatabase.class);
 
     static final String ENVIRONMENT_NAME = "graph";
 
-    @Inject
     public JEGraphDatabase(final ConfigDatabase config, final EnvironmentBuilder envProvider,
-            final Hints hints) {
-        super(new Impl(config, envProvider, hints));
+            final TupleBinding<NodeData> binding, final String formatVersion, final Hints hints) {
+        super(new Impl(config, envProvider, binding, formatVersion, hints));
     }
 
     private static class Impl implements GraphDatabase {
 
-        private static final GraphNodeBinding BINDING = new GraphNodeBinding();
+        private final TupleBinding<NodeData> BINDING;
 
         private EnvironmentBuilder envProvider;
 
@@ -95,10 +88,14 @@ public class JEGraphDatabase extends SynchronizedGraphDatabase {
 
         private final boolean readOnly;
 
+        private final String formatVersion;
+
         public Impl(final ConfigDatabase config, final EnvironmentBuilder envProvider,
-                final Hints hints) {
+                final TupleBinding<NodeData> binding, final String formatVersion, final Hints hints) {
             this.configDb = config;
             this.envProvider = envProvider;
+            this.BINDING = binding;
+            this.formatVersion = formatVersion;
             this.envName = JEGraphDatabase.ENVIRONMENT_NAME;
             this.readOnly = hints.getBoolean(Hints.OBJECTS_READ_ONLY);
         }
@@ -183,12 +180,14 @@ public class JEGraphDatabase extends SynchronizedGraphDatabase {
 
         @Override
         public void configure() throws RepositoryConnectionException {
-            RepositoryConnectionException.StorageType.GRAPH.configure(configDb, "bdbje", "0.1");
+            RepositoryConnectionException.StorageType.GRAPH.configure(configDb, "bdbje",
+                    formatVersion);
         }
 
         @Override
         public void checkConfig() throws RepositoryConnectionException {
-            RepositoryConnectionException.StorageType.GRAPH.verify(configDb, "bdbje", "0.1");
+            RepositoryConnectionException.StorageType.GRAPH
+                    .verify(configDb, "bdbje", formatVersion);
         }
 
         @Override
@@ -228,42 +227,6 @@ public class JEGraphDatabase extends SynchronizedGraphDatabase {
                 LOGGER.warn("JEGraphDatabase {} was not closed. Forcing close at finalize()",
                         env.getHome());
                 close();
-            }
-        }
-
-        private static class NodeData {
-            public ObjectId id;
-
-            public List<ObjectId> outgoing;
-
-            public List<ObjectId> incoming;
-
-            public Map<String, String> properties;
-
-            @Nullable
-            public ObjectId mappedTo;
-
-            public NodeData(ObjectId id, List<ObjectId> parents) {
-                this(id, ObjectId.NULL, new ArrayList<ObjectId>(parents),
-                        new ArrayList<ObjectId>(2), new HashMap<String, String>());
-            }
-
-            NodeData(ObjectId id, ObjectId mappedTo, List<ObjectId> parents,
-                    List<ObjectId> children, Map<String, String> properties) {
-                this.id = id;
-                this.mappedTo = mappedTo;
-                this.outgoing = parents;
-                this.incoming = children;
-                this.properties = properties;
-            }
-
-            public NodeData(ObjectId id) {
-                this(id, ImmutableList.<ObjectId> of());
-            }
-
-            public boolean isSparse() {
-                return properties.containsKey(SPARSE_FLAG) ? Boolean.valueOf(properties
-                        .get(SPARSE_FLAG)) : false;
             }
         }
 
@@ -543,110 +506,6 @@ public class JEGraphDatabase extends SynchronizedGraphDatabase {
         public void truncate() {
             // TODO Auto-generated method stub
 
-        }
-
-        private static class GraphNodeBinding extends TupleBinding<NodeData> {
-
-            private static final ObjectIdBinding OID = new ObjectIdBinding();
-
-            private static final OidListBinding OIDLIST = new OidListBinding();
-
-            private static final PropertiesBinding PROPS = new PropertiesBinding();
-
-            @Override
-            public NodeData entryToObject(TupleInput input) {
-                ObjectId id = OID.entryToObject(input);
-                ObjectId mappedTo = OID.entryToObject(input);
-                List<ObjectId> outgoing = OIDLIST.entryToObject(input);
-                List<ObjectId> incoming = OIDLIST.entryToObject(input);
-                Map<String, String> properties = PROPS.entryToObject(input);
-
-                NodeData nodeData = new NodeData(id, mappedTo, outgoing, incoming, properties);
-                return nodeData;
-            }
-
-            @Override
-            public void objectToEntry(NodeData node, TupleOutput output) {
-                OID.objectToEntry(node.id, output);
-                OID.objectToEntry(node.mappedTo, output);
-                OIDLIST.objectToEntry(node.outgoing, output);
-                OIDLIST.objectToEntry(node.incoming, output);
-                PROPS.objectToEntry(node.properties, output);
-            }
-
-            private static class ObjectIdBinding extends TupleBinding<ObjectId> {
-
-                @Nullable
-                @Override
-                public ObjectId entryToObject(TupleInput input) {
-                    int size = input.read();
-                    if (size == 0) {
-                        return ObjectId.NULL;
-                    }
-                    Preconditions.checkState(ObjectId.NUM_BYTES == size);
-                    byte[] hash = new byte[size];
-                    Preconditions.checkState(size == input.read(hash));
-                    return ObjectId.createNoClone(hash);
-                }
-
-                @Override
-                public void objectToEntry(@Nullable ObjectId object, TupleOutput output) {
-                    if (null == object || object.isNull()) {
-                        output.write(0);
-                    } else {
-                        output.write(ObjectId.NUM_BYTES);
-                        output.write(object.getRawValue());
-                    }
-                }
-            }
-
-            private static class OidListBinding extends TupleBinding<List<ObjectId>> {
-                private static final ObjectIdBinding OID = new ObjectIdBinding();
-
-                @Override
-                public List<ObjectId> entryToObject(TupleInput input) {
-                    int len = input.readInt();
-                    List<ObjectId> list = new ArrayList<ObjectId>((int) (1.5 * len));
-                    for (int i = 0; i < len; i++) {
-                        list.add(OID.entryToObject(input));
-                    }
-                    return list;
-                }
-
-                @Override
-                public void objectToEntry(List<ObjectId> list, TupleOutput output) {
-                    int len = list.size();
-                    output.writeInt(len);
-                    for (int i = 0; i < len; i++) {
-                        OID.objectToEntry(list.get(i), output);
-                    }
-                }
-
-            }
-
-            private static class PropertiesBinding extends TupleBinding<Map<String, String>> {
-
-                @Override
-                public Map<String, String> entryToObject(TupleInput input) {
-                    int len = input.readInt();
-                    Map<String, String> props = new HashMap<String, String>();
-                    for (int i = 0; i < len; i++) {
-                        String k = input.readString();
-                        String v = input.readString();
-                        props.put(k, v);
-                    }
-                    return props;
-                }
-
-                @Override
-                public void objectToEntry(Map<String, String> props, TupleOutput output) {
-                    output.writeInt(props.size());
-                    for (Map.Entry<String, String> e : props.entrySet()) {
-                        output.writeString(e.getKey());
-                        output.writeString(e.getValue());
-                    }
-                }
-            }
         }
     }
 }

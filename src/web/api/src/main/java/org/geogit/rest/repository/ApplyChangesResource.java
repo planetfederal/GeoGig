@@ -26,7 +26,7 @@ import org.geogit.remote.HttpFilteredDiffIterator;
 import org.geogit.repository.Repository;
 import org.geogit.storage.ObjectReader;
 import org.geogit.storage.ObjectSerializingFactory;
-import org.geogit.storage.datastream.DataStreamSerializationFactory;
+import org.geogit.storage.datastream.DataStreamSerializationFactoryV1;
 import org.restlet.Context;
 import org.restlet.Finder;
 import org.restlet.data.MediaType;
@@ -75,7 +75,7 @@ public class ApplyChangesResource extends Finder {
                 final Repository repository = ggit.getRepository();
 
                 // read in commit object
-                final ObjectSerializingFactory factory = new DataStreamSerializationFactory();
+                final ObjectSerializingFactory factory = DataStreamSerializationFactoryV1.INSTANCE;
                 ObjectReader<RevCommit> reader = factory.createCommitReader();
                 RevCommit commit = reader.read(ObjectId.NULL, input); // I don't need to know the
                                                                       // original ObjectId

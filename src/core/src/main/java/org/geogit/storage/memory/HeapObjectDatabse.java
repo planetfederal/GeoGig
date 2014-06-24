@@ -18,7 +18,7 @@ import org.geogit.api.RevObject;
 import org.geogit.storage.AbstractObjectDatabase;
 import org.geogit.storage.BulkOpListener;
 import org.geogit.storage.ObjectDatabase;
-import org.geogit.storage.datastream.DataStreamSerializationFactory;
+import org.geogit.storage.datastream.DataStreamSerializationFactoryV1;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Throwables;
@@ -38,7 +38,7 @@ public class HeapObjectDatabse extends AbstractObjectDatabase implements ObjectD
     private ConcurrentMap<ObjectId, byte[]> objects;
 
     public HeapObjectDatabse() {
-        super(DataStreamSerializationFactory.INSTANCE);
+        super(DataStreamSerializationFactoryV1.INSTANCE);
     }
 
     /**

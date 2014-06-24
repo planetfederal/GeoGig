@@ -29,7 +29,7 @@ import org.geogit.storage.ObjectDatabase;
 import org.geogit.storage.ObjectInserter;
 import org.geogit.storage.ObjectSerializingFactory;
 import org.geogit.storage.ObjectWriter;
-import org.geogit.storage.datastream.DataStreamSerializationFactory;
+import org.geogit.storage.datastream.DataStreamSerializationFactoryV1;
 
 import com.google.common.base.Functions;
 import com.google.common.base.Preconditions;
@@ -69,7 +69,7 @@ public class MongoObjectDatabase implements ObjectDatabase {
 
     protected DBCollection collection = null;
 
-    protected ObjectSerializingFactory serializers = DataStreamSerializationFactory.INSTANCE;
+    protected ObjectSerializingFactory serializers = DataStreamSerializationFactoryV1.INSTANCE;
 
     private String collectionName;
 
