@@ -242,7 +242,9 @@ public class TextSerializationFactory implements ObjectSerializingFactory {
         }
 
         protected void println(Writer w, CharSequence... s) throws IOException {
-            print(w, s);
+            if (s != null) {
+                print(w, s);
+            }
             w.write('\n');
         }
 
@@ -259,12 +261,17 @@ public class TextSerializationFactory implements ObjectSerializingFactory {
             print(w, "\t");
             Envelope envHelper = new Envelope();
             writeBBox(w, node, envHelper);
-            println(w, "");
+            println(w);
         }
 
-        private void writeBBox(Writer w, Node node, Envelope envHelper) throws IOException {
+        protected void writeBBox(Writer w, Node node, Envelope envHelper) throws IOException {
             envHelper.setToNull();
             node.expand(envHelper);
+            writeEnvelope(w, envHelper);
+
+        }
+
+        protected void writeEnvelope(Writer w, Envelope envHelper) throws IOException {
             if (envHelper.isNull()) {
                 print(w, TextWriter.NULL_BOUNDING_BOX);
                 return;
@@ -277,7 +284,6 @@ public class TextSerializationFactory implements ObjectSerializingFactory {
             print(w, Double.toString(envHelper.getMinY()));
             print(w, ";");
             print(w, Double.toString(envHelper.getMaxY()));
-
         }
 
     }
@@ -475,13 +481,8 @@ public class TextSerializationFactory implements ObjectSerializingFactory {
                 Envelope env = new Envelope();
                 env.setToNull();
                 bucket.expand(env);
-                print(w, Double.toString(env.getMinX()));
-                print(w, ";");
-                print(w, Double.toString(env.getMaxX()));
-                print(w, ";");
-                print(w, Double.toString(env.getMinY()));
-                print(w, ";");
-                println(w, Double.toString(env.getMaxY()));
+                writeEnvelope(w, env);
+                println(w);
             }
         }
 
@@ -573,9 +574,9 @@ public class TextSerializationFactory implements ObjectSerializingFactory {
 
         }
 
-        private Envelope parseBBox(String s) {
+        protected Envelope parseBBox(String s) {
             if (s.equals(TextWriter.NULL_BOUNDING_BOX)) {
-                return null;
+                return new Envelope();
             }
             List<String> tokens = Lists.newArrayList(Splitter.on(';').split(s));
             Preconditions.checkArgument(tokens.size() == 4, "Wrong bounding box definition: %s", s);
@@ -877,7 +878,7 @@ public class TextSerializationFactory implements ObjectSerializingFactory {
                             line);
                     Integer idx = Integer.parseInt(tokens.get(1));
                     ObjectId bucketId = ObjectId.valueOf(tokens.get(2));
-                    Envelope bounds = parseEnvelope(tokens.get(3));
+                    Envelope bounds = parseBBox(tokens.get(3));
                     Bucket bucket = Bucket.create(bucketId, bounds);
                     subtrees.put(idx, bucket);
                 } else {
@@ -894,22 +895,6 @@ public class TextSerializationFactory implements ObjectSerializingFactory {
             }
             return tree;
         }
-
-        private Envelope parseEnvelope(String s) {
-            ArrayList<String> tokens = Lists.newArrayList(Splitter.on(";").split(s));
-            Preconditions.checkArgument(tokens.size() == 4, "Wrong bbox definition: %s", s);
-            try {
-                double xmin = Double.parseDouble(tokens.get(0));
-                double xmax = Double.parseDouble(tokens.get(1));
-                double ymin = Double.parseDouble(tokens.get(2));
-                double ymax = Double.parseDouble(tokens.get(3));
-                return new Envelope(xmin, xmax, ymin, ymax);
-            } catch (NumberFormatException e) {
-                throw new IllegalArgumentException("Wrong bbox definition: " + s);
-            }
-
-        }
-
     };
 
     /**

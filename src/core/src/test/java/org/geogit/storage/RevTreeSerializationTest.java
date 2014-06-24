@@ -57,10 +57,13 @@ public abstract class RevTreeSerializationTest extends Assert {
         ImmutableList<Node> spatialTrees = ImmutableList.of(Node.create("bar",
                 ObjectId.forString("barnodeid"), ObjectId.forString("barmetadataid"),
                 RevObject.TYPE.TREE, new Envelope(1, 2, 1, 2)));
+
         ImmutableMap<Integer, Bucket> spatialBuckets = ImmutableMap.of(1,
                 Bucket.create(ObjectId.forString("buckettree"), new Envelope()));
+
         ImmutableMap<Integer, Bucket> buckets = ImmutableMap.of(1,
                 Bucket.create(ObjectId.forString("buckettree"), new Envelope(1, 2, 1, 2)));
+
         tree1_leaves = RevTreeImpl.createLeafTree(ObjectId.forString("leaves"), 1, features,
                 ImmutableList.<Node> of());
         tree2_internal = RevTreeImpl.createLeafTree(ObjectId.forString("internal"), 1,
@@ -172,6 +175,7 @@ public abstract class RevTreeSerializationTest extends Assert {
             ib = b.children();
         }
 
+        // bounds are not part of the Bounded.equals(Object) contract as its auxiliary information
         while (ia.hasNext()) {
             Bounded ba = ia.next();
             Bounded bb = ib.next();
@@ -180,6 +184,9 @@ public abstract class RevTreeSerializationTest extends Assert {
             ba.expand(ea);
             bb.expand(eb);
             assertEquals(ea.getMinX(), eb.getMinX(), 1e-7D);
+            assertEquals(ea.getMinY(), eb.getMinY(), 1e-7D);
+            assertEquals(ea.getMaxX(), eb.getMaxX(), 1e-7D);
+            assertEquals(ea.getMaxY(), eb.getMaxY(), 1e-7D);
         }
     }
 
