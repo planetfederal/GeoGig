@@ -29,7 +29,7 @@ Installing GeoGit
 
 To install GeoGit, follow these steps.
 
-#. If not already on your system, install a `Java JDK <http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html>`_. A Java JRE is not sufficient to run GeoGit.
+#. If not already on your system, install a `Java JDK <http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html>`_. GeoGit requires Java 7 or higher to run. Make sure the `java` executable is accessible (i.e. check your PATH environment variable) and the JAVA_HOME environment variable points to the JDK or JRE installation directory.
 
 #. After the JDK is installed, navigate to http://geogit.org and click :guilabel:`Download`.
 

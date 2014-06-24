@@ -67,28 +67,29 @@ The getdepth, manifest, getparents and batchobjects operations performed are des
 GeoServer
 =========
 
-GeoServer can be built with GeoGit support enabling a GeoGit repository to be exposed as a remote for cloning, pushing and pulling as well as via OGC services (WMS/WFS/WMTS etc). Each top level tree in a GeoGit repository corresponds to a GeoServer layer. GeoServer treats a GeoGit repository as a store in much the same way as it does a database.
+A GeoServer extension is available to allow GeoServer to interact with a GeoGit repository and use it as data store. It enables a GeoGit repository to be exposed as a remote for cloning, pushing and pulling as well as via OGC services (WMS/WFS/WMTS etc). Each top level tree in a GeoGit repository corresponds to a GeoServer layer. GeoServer treats a GeoGit repository as a store in much the same way as it does a database.
 
-Building GeoServer/GeoTools GeoGit Extension
---------------------------------------------
+Building/installing the GeoServer GeoGit extension
+----------------------------------------------------
 
-The GeoGit module is not currently included in GeoServers community extensions, so you must build in this support by using OpenGeo's fork of GeoServer in the geogit branch https://github.com/opengeo/geoserver/tree/geogit or by adding the following dependencies to your own pom.xml::
+
+The GeoGit module is not currently included in GeoServer's community extensions. You can add it by including the following dependencies into your own pom.xml::
 
      <dependencies>
         <dependency>
           <groupId>org.geogit</groupId>
           <artifactId>geogit-web-api</artifactId>
-          <version>0.3-SNAPSHOT</version>
+          <version>0.9</version>
         </dependency>
         <dependency>
           <groupId>org.geogit</groupId>
           <artifactId>geogit-geotools</artifactId>
-          <version>0.3-SNAPSHOT</version>
+          <version>0.9</version>
         </dependency>
         <dependency>
           <groupId>org.geogit</groupId>
           <artifactId>geogit-geoserver</artifactId>
-          <version>0.3-SNAPSHOT</version>
+          <version>0.9</version>
         </dependency>
       </dependencies>
 
@@ -97,6 +98,27 @@ Include the plugin in your mvn build command::
     mvn clean install -Pgeogit
 
 Deploy the resulting war in a servlet container.
+
+Another way of installing the GeoGit extension is to build it yourself and then deploy it in the servlet container where you have deployed GeoServer.
+
+The GeoServer GeoGit extension is found along with other GeoServer extensions in the geoserver-ext repository. 
+
+- Clone the repository by running:
+
+::
+
+    git clone git@github.com:opengeo/geoserver-exts.git
+    cd geoserver-exts
+    mvn install
+
+
+- In the ``geogit/target`` folder you will find a jar file named  ``gs-geogit-2.X-SNAPSHOT-shaded-plugin.jar``. Put that jar file in the GeoServer ``WEB-INF/lib`` folder. 
+
+- Restart GeoServer.
+
+The GeoGit data store should now be available.
+
+
 
 Configuring a GeoGit Store in GeoServer
 ---------------------------------------

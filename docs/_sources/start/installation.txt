@@ -10,7 +10,7 @@ Binaries
 
 Pre-built binaries are available for GeoGit.
 
-#. If not already on your system, install a `Java JDK <http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html>`_. A Java JRE is not sufficient to run GeoGit.
+#. If not already on your system, install a `Java JDK <http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html>`_. GeoGit requires Java 7 or higher to run. Make sure the `java` executable is accessible (i.e. check your PATH environment variable) and the JAVA_HOME environment variable points to the JDK or JRE installation directory.
 
 #. After the JDK is installed, navigate to http://geogit.org and click :guilabel:`Download`.
 
@@ -31,7 +31,7 @@ To build GeoGit and have an executable binary that you can run:
 
 	   git clone http://github.com/boundlessgeo/GeoGit.git
 
-#. If not already on your system, install a `Java JDK <http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html>`_. A Java JRE is not sufficient to build or run GeoGit.
+#. If not already on your system, install a `Java JDK <http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html>`_. A Java JRE is not sufficient to build GeoGit.
 
 #. If not already on your system, install `Maven <http://maven.apache.org/download.cgi>`_.
 

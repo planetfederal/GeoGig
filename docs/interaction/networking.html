@@ -5,7 +5,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta name="viewport" content="width=device-width, maximum-scale=1">
   
-  <title>GeoGit Networking &mdash; GeoGit 0.9.0 User Manual</title>
+  <title>GeoGit Networking &mdash; GeoGit 0.10.0 User Manual</title>
   <link rel="stylesheet" href="../_static/screen.css" type="text/css" media="screen, projection" />
   <link rel="stylesheet" href="../_static/print.css" type="text/css" media="print" /> 
   <!--[if IE]>
@@ -17,12 +17,12 @@
   <script type="text/javascript">
     var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '0.9.0',
+        VERSION:     '0.10.0',
         COLLAPSE_MODINDEX: false,
         FILE_SUFFIX: '.html'
     };
   </script>
-      <link rel="top" title="GeoGit 0.9.0 User Manual" href="../index.html" />
+      <link rel="top" title="GeoGit 0.10.0 User Manual" href="../index.html" />
       <link rel="up" title="Other ways to interact with GeoGit" href="index.html" />
       <link rel="next" title="Web-Api Documentation" href="web-api.html" />
       <link rel="prev" title="The GeoGit Console" href="console.html" />
@@ -78,7 +78,7 @@
             </div>
 <ul id="breadcrumbs">
   
-  <li><a href="../index.html">GeoGit 0.9.0 User Manual</a> &raquo;</li>
+  <li><a href="../index.html">GeoGit 0.10.0 User Manual</a> &raquo;</li>
   <li><a href="index.html" accesskey="U">Other ways to interact with GeoGit</a> &raquo;</li>
   <li>GeoGit Networking</li>
 </ul>
@@ -155,25 +155,25 @@ INFO: 2013-05-27    13:34:58    127.0.0.1   -   127.0.0.1   8080    GET /geogit/
 </div>
 <div class="section" id="geoserver">
 <h1>GeoServer<a class="headerlink" href="#geoserver" title="Permalink to this headline">¶</a></h1>
-<p>GeoServer can be built with GeoGit support enabling a GeoGit repository to be exposed as a remote for cloning, pushing and pulling as well as via OGC services (WMS/WFS/WMTS etc). Each top level tree in a GeoGit repository corresponds to a GeoServer layer. GeoServer treats a GeoGit repository as a store in much the same way as it does a database.</p>
-<div class="section" id="building-geoserver-geotools-geogit-extension">
-<h2>Building GeoServer/GeoTools GeoGit Extension<a class="headerlink" href="#building-geoserver-geotools-geogit-extension" title="Permalink to this headline">¶</a></h2>
-<p>The GeoGit module is not currently included in GeoServers community extensions, so you must build in this support by using OpenGeo&#8217;s fork of GeoServer in the geogit branch <a class="reference external" href="https://github.com/opengeo/geoserver/tree/geogit">https://github.com/opengeo/geoserver/tree/geogit</a> or by adding the following dependencies to your own pom.xml:</p>
+<p>A GeoServer extension is available to allow GeoServer to interact with a GeoGit repository and use it as data store. It enables a GeoGit repository to be exposed as a remote for cloning, pushing and pulling as well as via OGC services (WMS/WFS/WMTS etc). Each top level tree in a GeoGit repository corresponds to a GeoServer layer. GeoServer treats a GeoGit repository as a store in much the same way as it does a database.</p>
+<div class="section" id="building-installing-the-geoserver-geogit-extension">
+<h2>Building/installing the GeoServer GeoGit extension<a class="headerlink" href="#building-installing-the-geoserver-geogit-extension" title="Permalink to this headline">¶</a></h2>
+<p>The GeoGit module is not currently included in GeoServer&#8217;s community extensions. You can add it by including the following dependencies into your own pom.xml:</p>
 <div class="highlight-python"><div class="highlight"><pre>&lt;dependencies&gt;
    &lt;dependency&gt;
      &lt;groupId&gt;org.geogit&lt;/groupId&gt;
      &lt;artifactId&gt;geogit-web-api&lt;/artifactId&gt;
-     &lt;version&gt;0.3-SNAPSHOT&lt;/version&gt;
+     &lt;version&gt;0.9&lt;/version&gt;
    &lt;/dependency&gt;
    &lt;dependency&gt;
      &lt;groupId&gt;org.geogit&lt;/groupId&gt;
      &lt;artifactId&gt;geogit-geotools&lt;/artifactId&gt;
-     &lt;version&gt;0.3-SNAPSHOT&lt;/version&gt;
+     &lt;version&gt;0.9&lt;/version&gt;
    &lt;/dependency&gt;
    &lt;dependency&gt;
      &lt;groupId&gt;org.geogit&lt;/groupId&gt;
      &lt;artifactId&gt;geogit-geoserver&lt;/artifactId&gt;
-     &lt;version&gt;0.3-SNAPSHOT&lt;/version&gt;
+     &lt;version&gt;0.9&lt;/version&gt;
    &lt;/dependency&gt;
  &lt;/dependencies&gt;
 </pre></div>
@@ -183,6 +183,21 @@ INFO: 2013-05-27    13:34:58    127.0.0.1   -   127.0.0.1   8080    GET /geogit/
 </pre></div>
 </div>
 <p>Deploy the resulting war in a servlet container.</p>
+<p>Another way of installing the GeoGit extension is to build it yourself and then deploy it in the servlet container where you have deployed GeoServer.</p>
+<p>The GeoServer GeoGit extension is found along with other GeoServer extensions in the geoserver-ext repository.</p>
+<ul class="simple">
+<li>Clone the repository by running:</li>
+</ul>
+<div class="highlight-python"><div class="highlight"><pre>git clone git@github.com:opengeo/geoserver-exts.git
+cd geoserver-exts
+mvn install
+</pre></div>
+</div>
+<ul class="simple">
+<li>In the <tt class="docutils literal"><span class="pre">geogit/target</span></tt> folder you will find a jar file named  <tt class="docutils literal"><span class="pre">gs-geogit-2.X-SNAPSHOT-shaded-plugin.jar</span></tt>. Put that jar file in the GeoServer <tt class="docutils literal"><span class="pre">WEB-INF/lib</span></tt> folder.</li>
+<li>Restart GeoServer.</li>
+</ul>
+<p>The GeoGit data store should now be available.</p>
 </div>
 <div class="section" id="configuring-a-geogit-store-in-geoserver">
 <h2>Configuring a GeoGit Store in GeoServer<a class="headerlink" href="#configuring-a-geogit-store-in-geoserver" title="Permalink to this headline">¶</a></h2>
@@ -278,7 +293,7 @@ Already up to date.
 <li><a class="reference internal" href="#">GeoGit Networking</a></li>
 <li><a class="reference internal" href="#standalone-testing-server">Standalone Testing Server</a></li>
 <li><a class="reference internal" href="#geoserver">GeoServer</a><ul>
-<li><a class="reference internal" href="#building-geoserver-geotools-geogit-extension">Building GeoServer/GeoTools GeoGit Extension</a></li>
+<li><a class="reference internal" href="#building-installing-the-geoserver-geogit-extension">Building/installing the GeoServer GeoGit extension</a></li>
 <li><a class="reference internal" href="#configuring-a-geogit-store-in-geoserver">Configuring a GeoGit Store in GeoServer</a></li>
 <li><a class="reference internal" href="#cloning-pushing-and-pulling">Cloning Pushing and Pulling</a></li>
 <li><a class="reference internal" href="#automated-repository-synchronization">Automated Repository Synchronization</a></li>
