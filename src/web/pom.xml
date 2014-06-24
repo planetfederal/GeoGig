@@ -6,12 +6,12 @@
   <parent>
     <groupId>org.geogit</groupId>
     <artifactId>geogit</artifactId>
-    <version>0.10-SNAPSHOT</version>
+    <version>0.10.0</version>
     <relativePath>../parent/pom.xml</relativePath>
   </parent>
 
   <artifactId>web</artifactId>
-  <version>0.10-SNAPSHOT</version>
+  <version>0.10.0</version>
   <packaging>pom</packaging>
   <name>Web modules</name>
 

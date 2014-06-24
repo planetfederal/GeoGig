@@ -5,7 +5,7 @@
 
   <groupId>org.geogit</groupId>
   <artifactId>geogit</artifactId>
-  <version>0.10-SNAPSHOT</version>
+  <version>0.10.0</version>
   <packaging>pom</packaging>
   <name>GeoGit</name>
 
