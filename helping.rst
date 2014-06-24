@@ -10,7 +10,7 @@ Communication
 
 In all cases, communication with the GeoGit community and team is crucial, so make sure that you know the main ways to get in contact with other GeoGit users and developers.
 
-Discussion takes place on our `geogit google group <https://groups.google.com/a/opengeo.org/group/geogit/>`_. Please join and introduce yourself, we'd love to help, and to figure out ways for you to get involved.
+Discussion takes place on our `geogit google group <https://groups.google.com/a/boundlessgeo.com/forum/#!forum/geogit/>`_. Please join and introduce yourself, we'd love to help, and to figure out ways for you to get involved.
 
 There is also a GeoGit IRC channel on `freenode <http://freenode.net/>`_ (`#geogit <irc://irc.freenode.net/geoserver>`_). GeoGit developers can usually be found there.
 
