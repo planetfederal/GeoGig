@@ -154,10 +154,10 @@ public class InitOp extends AbstractGeoGitOp<Repository> {
         }
 
         Map<String, String> effectiveConfigBuilder = Maps.newTreeMap();
+        addDefaults(defaults, effectiveConfigBuilder);
         if (config != null) {
             effectiveConfigBuilder.putAll(config);
         }
-        addDefaults(defaults, effectiveConfigBuilder);
 
         if (filterFile != null) {
             try {
