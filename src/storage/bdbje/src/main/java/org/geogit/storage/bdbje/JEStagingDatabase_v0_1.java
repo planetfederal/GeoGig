@@ -28,6 +28,7 @@ public final class JEStagingDatabase_v0_1 extends JEStagingDatabase {
             @Override
             public JEObjectDatabase get() {
                 boolean readOnly = hints.getBoolean(Hints.STAGING_READ_ONLY);
+                envBuilder.setIsStagingDatabase(true);
                 JEObjectDatabase db = new JEObjectDatabase_v0_1(configDB, envBuilder, readOnly,
                         JEStagingDatabase.ENVIRONMENT_NAME);
                 return db;
