@@ -154,7 +154,7 @@ public class Status extends AbstractCommand implements CLICommand {
             }
         }
         sb.setLength(0);
-        ansi.a("# ").a(total).reset().a(" total.");
+        ansi.a("# ").a(String.format("%,d", total)).a(" total.");
         console.println(ansi.toString());
     }
 
@@ -174,7 +174,7 @@ public class Status extends AbstractCommand implements CLICommand {
         }
 
         sb.setLength(0);
-        ansi.a("# ").a(total).reset().a(" total.");
+        ansi.a("# ").a(String.format("%,d", total)).a(" total.");
         console.println(ansi.toString());
     }
 
