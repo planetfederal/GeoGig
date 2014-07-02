@@ -474,8 +474,9 @@ public class WorkingTree {
         Stopwatch sw = Stopwatch.createStarted();
 
         final RevTree origTree = indexDatabase.getTree(treeRef.objectId());
+        Platform platform = context.platform();
         RevTreeBuilder2 builder = new RevTreeBuilder2(indexDatabase, origTree,
-                treeRef.getMetadataId(), executorService);
+                treeRef.getMetadataId(), platform, executorService);
 
         List<Future<Integer>> insertBlobsFuture = insertBlobs(source, query, executorService,
                 listener, collectionSize, nFetchThreads, builder);

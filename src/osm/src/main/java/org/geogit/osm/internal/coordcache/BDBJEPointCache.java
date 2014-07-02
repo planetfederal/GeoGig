@@ -2,22 +2,19 @@
  * This code is licensed under the BSD New License, available at the root
  * application directory.
  */
-package org.geogit.osm.internal;
-
-import static org.openstreetmap.osmosis.core.util.FixedPrecisionCoordinateConvertor.convertToDouble;
-import static org.openstreetmap.osmosis.core.util.FixedPrecisionCoordinateConvertor.convertToFixed;
+package org.geogit.osm.internal.coordcache;
 
 import java.io.File;
 import java.io.FileFilter;
 import java.util.List;
 import java.util.Random;
 
-import javax.annotation.Nullable;
-
 import org.geogit.api.Platform;
+import org.geogit.osm.internal.OSMCoordinateSequence;
+import org.geogit.osm.internal.OSMCoordinateSequenceFactory;
 import org.geogit.storage.bdbje.EnvironmentBuilder;
-import org.openstreetmap.osmosis.core.util.FixedPrecisionCoordinateConvertor;
 
+import com.google.common.base.Preconditions;
 import com.sleepycat.bind.tuple.LongBinding;
 import com.sleepycat.bind.tuple.TupleBinding;
 import com.sleepycat.bind.tuple.TupleInput;
@@ -31,14 +28,16 @@ import com.sleepycat.je.Environment;
 import com.sleepycat.je.EnvironmentConfig;
 import com.sleepycat.je.LockMode;
 import com.sleepycat.je.OperationStatus;
-import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.CoordinateSequence;
 
 /**
- * A {@code PointCache} backed by a temporary BDB JE database, where each point is mapped as a
- * {@code long} key, and {@code int, int} ordinates, using the conversion from double precision to
- * integer defined in the osmosis {@link FixedPrecisionCoordinateConvertor} class.
+ * A {@link PointCache} that uses a temporary BDB JE database inside the repository's
+ * {@code .geogit/tmp}
  */
 public class BDBJEPointCache implements PointCache {
+
+    private static final OSMCoordinateSequenceFactory CSFAC = OSMCoordinateSequenceFactory
+            .instance();
 
     private static final Random random = new Random();
 
@@ -65,7 +64,7 @@ public class BDBJEPointCache implements PointCache {
         envCfg.setConfigParam("je.evictor.nodesPerScan", "1000");
 
         EnvironmentBuilder environmentBuilder = new EnvironmentBuilder(platform);
-        environmentBuilder.setRelativePath("osm", envName);
+        environmentBuilder.setRelativePath("tmp", "pointcache", envName);
         environmentBuilder.setIsStagingDatabase(true);
         environmentBuilder.setConfig(envCfg);
 
@@ -78,30 +77,18 @@ public class BDBJEPointCache implements PointCache {
     }
 
     @Override
-    public void put(Long nodeId, Coordinate coord) {
+    public void put(Long nodeId, OSMCoordinateSequence coord) {
+        Preconditions.checkNotNull(nodeId, "id is null");
+        Preconditions.checkNotNull(coord, "coord is null");
+        Preconditions.checkArgument(1 == coord.size(), "coord list size is not 1");
 
         DatabaseEntry key = new DatabaseEntry();
         LongBinding.longToEntry(nodeId.longValue(), key);
 
-        DatabaseEntry data = CoordinateBinding.objectToEntry(coord);
+        int[] c = coord.ordinates();
+        DatabaseEntry data = CoordinateBinding.objectToEntry(c);
 
         database.put(null, key, data);
-    }
-
-    @Override
-    @Nullable
-    public Coordinate get(long nodeId) {
-
-        DatabaseEntry key = new DatabaseEntry();
-        LongBinding.longToEntry(nodeId, key);
-
-        DatabaseEntry data = new DatabaseEntry();
-        OperationStatus status = database.get(null, key, data, LockMode.DEFAULT);
-        if (OperationStatus.SUCCESS.equals(status)) {
-            Coordinate coord = CoordinateBinding.entryToCoord(data);
-            return coord;
-        }
-        throw new IllegalArgumentException(String.format("Node id %d not found", nodeId));
     }
 
     @Override
@@ -132,44 +119,38 @@ public class BDBJEPointCache implements PointCache {
         }
     }
 
-    /**
-     * Tuple binding for OSM coordinates that stores ordinates as {@code int} as per
-     * {@link FixedPrecisionCoordinateConvertor}
-     */
-    private static final class CoordinateBinding extends TupleBinding<Coordinate> {
+    private static final class CoordinateBinding extends TupleBinding<int[]> {
 
         private static final CoordinateBinding INSTANCE = new CoordinateBinding();
 
-        public static final DatabaseEntry objectToEntry(Coordinate coord) {
+        public static final DatabaseEntry objectToEntry(int[] coord) {
             DatabaseEntry data = new DatabaseEntry();
             INSTANCE.objectToEntry(coord, data);
             return data;
         }
 
-        public static Coordinate entryToCoord(DatabaseEntry data) {
+        public static int[] entryToCoord(DatabaseEntry data) {
             return INSTANCE.entryToObject(data);
         }
 
         @Override
-        public Coordinate entryToObject(TupleInput input) {
-            int x = input.readInt();
-            int y = input.readInt();
-            return new Coordinate(convertToDouble(x), convertToDouble(y));
+        public int[] entryToObject(TupleInput input) {
+            return new int[] { input.readInt(), input.readInt() };
         }
 
         @Override
-        public void objectToEntry(Coordinate c, TupleOutput output) {
-            output.writeInt(convertToFixed(c.x));
-            output.writeInt(convertToFixed(c.y));
+        public void objectToEntry(int[] c, TupleOutput output) {
+            output.writeInt(c[0]);
+            output.writeInt(c[1]);
         }
 
     }
 
     @Override
-    public Coordinate[] get(List<Long> ids) {
+    public CoordinateSequence get(List<Long> ids) {
+        Preconditions.checkNotNull(ids, "ids is null");
 
-        Coordinate[] coords = new Coordinate[ids.size()];
-
+        OSMCoordinateSequence cs = CSFAC.create(ids.size());
         DatabaseEntry key = new DatabaseEntry();
         DatabaseEntry data = new DatabaseEntry();
 
@@ -182,9 +163,10 @@ public class BDBJEPointCache implements PointCache {
                 throw new IllegalArgumentException(msg);
 
             }
-            Coordinate c = CoordinateBinding.entryToCoord(data);
-            coords[index] = c;
+            int[] c = CoordinateBinding.entryToCoord(data);
+            cs.setOrdinate(index, 0, c[0]);
+            cs.setOrdinate(index, 1, c[1]);
         }
-        return coords;
+        return cs;
     }
 }

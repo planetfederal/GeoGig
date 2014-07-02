@@ -16,7 +16,7 @@ je.log.fileMax=67108864
 je.sharedCache = true
 
 #default: 60, maximum: 90, mutually exclusive with je.maxMemory
-je.maxMemoryPercent = 50
+je.maxMemoryPercent = 60
 
 # # of bytes for the db cache, mutually exclusive with je.maxMemoryPercent
 #je.maxMemory = 512000000

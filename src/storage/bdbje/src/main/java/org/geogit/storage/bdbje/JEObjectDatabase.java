@@ -264,6 +264,7 @@ abstract class JEObjectDatabase extends AbstractObjectDatabase implements Object
 
     @Override
     protected List<ObjectId> lookUpInternal(final byte[] partialId) {
+        checkOpen();
 
         DatabaseEntry key;
         {
@@ -311,6 +312,8 @@ abstract class JEObjectDatabase extends AbstractObjectDatabase implements Object
      */
     @Override
     public boolean exists(final ObjectId id) {
+        checkOpen();
+
         Preconditions.checkNotNull(id, "id");
 
         DatabaseEntry key = new DatabaseEntry(id.getRawValue());
@@ -326,6 +329,8 @@ abstract class JEObjectDatabase extends AbstractObjectDatabase implements Object
 
     @Override
     protected InputStream getRawInternal(final ObjectId id, final boolean failIfNotFound) {
+        checkOpen();
+
         Preconditions.checkNotNull(id, "id");
         DatabaseEntry key = new DatabaseEntry(id.getRawValue());
         DatabaseEntry data = new DatabaseEntry();
@@ -710,6 +715,7 @@ abstract class JEObjectDatabase extends AbstractObjectDatabase implements Object
     @Override
     public Iterator<RevObject> getAll(final Iterable<ObjectId> ids, final BulkOpListener listener) {
         Preconditions.checkNotNull(ids, "ids");
+        checkOpen();
 
         return new CursorRevObjectIterator(ids.iterator(), listener);
     }
@@ -858,9 +864,14 @@ abstract class JEObjectDatabase extends AbstractObjectDatabase implements Object
     }
 
     public void checkWritable() {
+        checkOpen();
         if (readOnly) {
             throw new UnsupportedOperationException(envName + " is read only.");
         }
+    }
+
+    private void checkOpen() {
+        Preconditions.checkState(isOpen(), "Database is closed");
     }
 
     @Override

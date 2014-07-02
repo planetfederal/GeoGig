@@ -59,7 +59,7 @@ public final class NodePathStorageOrder extends Ordering<String> implements Seri
 
     private static final long serialVersionUID = -685759544293388523L;
 
-    private static final HashOrder hashOrder = new FNV1a64bitHash();
+    private static final FNV1a64bitHash hashOrder = new FNV1a64bitHash();
 
     @Override
     public int compare(String p1, String p2) {
@@ -83,18 +83,15 @@ public final class NodePathStorageOrder extends Ordering<String> implements Seri
         return Integer.valueOf(bucket);
     }
 
-    private static abstract class HashOrder extends Ordering<String> implements Serializable {
-
-        private static final long serialVersionUID = -469599567110937126L;
-
-        public abstract int byteN(String path, int depth);
-
+    public UnsignedLong hashCodeLong(String name) {
+        UnsignedLong fnv = FNV1a64bitHash.fnv(name);
+        return fnv;
     }
 
     /**
      * The FNV-1a hash function used as {@link Node} storage order.
      */
-    private static class FNV1a64bitHash extends HashOrder {
+    private static class FNV1a64bitHash implements Serializable {
 
         private static final long serialVersionUID = -1931193743208260766L;
 
@@ -103,7 +100,6 @@ public final class NodePathStorageOrder extends Ordering<String> implements Seri
 
         private static final UnsignedLong FNV64_PRIME = UnsignedLong.valueOf("1099511628211");
 
-        @Override
         public int compare(final String p1, final String p2) {
             UnsignedLong hash1 = fnv(p1);
             UnsignedLong hash2 = fnv(p2);
@@ -146,7 +142,6 @@ public final class NodePathStorageOrder extends Ordering<String> implements Seri
          * Returns the Nth unsigned byte in the hash of {@code nodeName} where N is given by
          * {@code depth}
          */
-        @Override
         public int byteN(final String nodeName, final int depth) {
             Preconditions.checkArgument(depth < 8, "depth too deep: %s", Integer.valueOf(depth));
 

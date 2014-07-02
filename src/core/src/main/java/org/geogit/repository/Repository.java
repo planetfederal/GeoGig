@@ -148,7 +148,7 @@ public class Repository implements Context {
     public <T extends AbstractGeoGitOp<?>> T command(Class<T> commandClass) {
         return injector.command(commandClass);
     }
-
+    
     /**
      * Test if a blob exists in the object database
      * 

@@ -21,6 +21,8 @@ import org.geogit.api.Platform;
 import org.geogit.api.ProgressListener;
 import org.geogit.api.SubProgressListener;
 import org.geogit.api.plumbing.FindTreeChild;
+import org.geogit.osm.internal.coordcache.BDBJEPointCache;
+import org.geogit.osm.internal.coordcache.PointCache;
 import org.geogit.repository.FeatureToDelete;
 import org.geogit.repository.WorkingTree;
 import org.opengis.feature.Feature;
@@ -33,6 +35,7 @@ import org.openstreetmap.osmosis.core.domain.v0_6.Way;
 import org.openstreetmap.osmosis.core.domain.v0_6.WayNode;
 import org.openstreetmap.osmosis.core.task.common.ChangeAction;
 import org.openstreetmap.osmosis.core.task.v0_6.ChangeSink;
+import org.openstreetmap.osmosis.core.util.FixedPrecisionCoordinateConvertor;
 import org.openstreetmap.osmosis.xml.common.CompressionMethod;
 import org.openstreetmap.osmosis.xml.v0_6.XmlChangeReader;
 
@@ -40,7 +43,7 @@ import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.CoordinateSequence;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
@@ -59,8 +62,15 @@ import com.vividsolutions.jts.geom.PrecisionModel;
 
 public class OSMApplyDiffOp extends AbstractGeoGitOp<Optional<OSMReport>> {
 
-    private static final GeometryFactory GEOMF = new GeometryFactory(new PrecisionModel(1_000_000));
-    //new PackedCoordinateSequenceFactory());
+    private static final PrecisionModel PRECISION_MODEL = new PrecisionModel(
+            1D / FixedPrecisionCoordinateConvertor.convertToDouble(1));
+
+    private static final OSMCoordinateSequenceFactory CSFAC = OSMCoordinateSequenceFactory
+            .instance();
+
+    private static final GeometryFactory GEOMF = new GeometryFactory(PRECISION_MODEL, 4326, CSFAC);
+
+    // new PackedCoordinateSequenceFactory());
     /**
      * The file to import
      */
@@ -313,9 +323,12 @@ public class OSMApplyDiffOp extends AbstractGeoGitOp<Optional<OSMReport>> {
         protected Geometry parsePoint(Node node) {
             double longitude = node.getLongitude();
             double latitude = node.getLatitude();
-            Coordinate coord = new Coordinate(longitude, latitude);
-            Point pt = GEOMF.createPoint(coord);
-            pointCache.put(Long.valueOf(node.getId()), pt.getCoordinate());
+            OSMCoordinateSequenceFactory csf = CSFAC;
+            OSMCoordinateSequence cs = csf.create(1, 2);
+            cs.setOrdinate(0, 0, longitude);
+            cs.setOrdinate(0, 1, latitude);
+            Point pt = GEOMF.createPoint(cs);
+            pointCache.put(Long.valueOf(node.getId()), cs);
             return pt;
         }
 
@@ -335,7 +348,7 @@ public class OSMApplyDiffOp extends AbstractGeoGitOp<Optional<OSMReport>> {
             final List<Long> ids = Lists.transform(nodes, NODELIST_TO_ID_LIST);
 
             try {
-                Coordinate[] coordinates = pointCache.get(ids);
+                CoordinateSequence coordinates = pointCache.get(ids);
                 return GEOMF.createLineString(coordinates);
             } catch (IllegalArgumentException e) {
                 unableToProcessCount++;

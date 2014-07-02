@@ -114,7 +114,6 @@ public class DataStoreConcurrencyTest {
 
     @Test
     public void testConcurrentEdits() throws Exception {
-
         final int insertsPerTask = 20;
         List<Future<Integer>> insertResults = runInserts(writeThreadCount, insertsPerTask);
         for (Future<Integer> f : insertResults) {

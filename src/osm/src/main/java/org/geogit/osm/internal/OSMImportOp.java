@@ -26,6 +26,8 @@ import org.geogit.api.SubProgressListener;
 import org.geogit.api.hooks.Hookable;
 import org.geogit.api.porcelain.AddOp;
 import org.geogit.api.porcelain.CommitOp;
+import org.geogit.osm.internal.coordcache.MappedPointCache;
+import org.geogit.osm.internal.coordcache.PointCache;
 import org.geogit.osm.internal.log.AddOSMLogEntry;
 import org.geogit.osm.internal.log.OSMLogEntry;
 import org.geogit.osm.internal.log.OSMMappingLogEntry;
@@ -40,6 +42,7 @@ import org.openstreetmap.osmosis.core.domain.v0_6.Way;
 import org.openstreetmap.osmosis.core.domain.v0_6.WayNode;
 import org.openstreetmap.osmosis.core.task.v0_6.RunnableSource;
 import org.openstreetmap.osmosis.core.task.v0_6.Sink;
+import org.openstreetmap.osmosis.core.util.FixedPrecisionCoordinateConvertor;
 import org.openstreetmap.osmosis.xml.common.CompressionMethod;
 
 import com.google.common.base.Function;
@@ -49,12 +52,12 @@ import com.google.common.base.Stopwatch;
 import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
 import com.google.common.io.Closeables;
-import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.CoordinateSequence;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.impl.PackedCoordinateSequenceFactory;
+import com.vividsolutions.jts.geom.PrecisionModel;
 
 import crosby.binary.osmosis.OsmosisReader;
 
@@ -65,6 +68,14 @@ import crosby.binary.osmosis.OsmosisReader;
  */
 @Hookable(name = "osmimport")
 public class OSMImportOp extends AbstractGeoGitOp<Optional<OSMReport>> {
+
+    private static final PrecisionModel PRECISION_MODEL = new PrecisionModel(
+            1D / FixedPrecisionCoordinateConvertor.convertToDouble(1));
+
+    private static final OSMCoordinateSequenceFactory CSFAC = OSMCoordinateSequenceFactory
+            .instance();
+
+    private static final GeometryFactory GEOMF = new GeometryFactory(PRECISION_MODEL, 4326, CSFAC);
 
     /**
      * The filter to use if calling the overpass API
@@ -329,6 +340,7 @@ public class OSMImportOp extends AbstractGeoGitOp<Optional<OSMReport>> {
                 // no-op
             }
         };
+
         workTree.insert(parentTreePathResolver, iterator, noPorgressReportingListener, null, null);
 
         if (sink.getCount() == 0) {
@@ -400,7 +412,8 @@ public class OSMImportOp extends AbstractGeoGitOp<Optional<OSMReport>> {
             this.progressListener = progressListener;
             this.latestChangeset = 0;
             this.latestTimestamp = 0;
-            this.pointCache = new BDBJEPointCache(platform);
+            // this.pointCache = new BDBJEPointCache(platform);
+            this.pointCache = new MappedPointCache(platform);
             this.sw = Stopwatch.createStarted();
         }
 
@@ -422,13 +435,19 @@ public class OSMImportOp extends AbstractGeoGitOp<Optional<OSMReport>> {
 
         @Override
         public void complete() {
-            progressListener.setProgress(count);
-            progressListener.complete();
-            target.finish();
-            pointCache.dispose();
-            sw.stop();
-            progressListener.setDescription(String
-                    .format("%,d entities processed in %s", count, sw));
+            try {
+                progressListener.setProgress(count);
+                progressListener.complete();
+                sw.stop();
+                String msg = String.format("%,d entities processed in %s", count, sw);
+                progressListener.setDescription(msg);
+            } finally {
+                try {
+                    target.finish();
+                } finally {
+                    pointCache.dispose();
+                }
+            }
         }
 
         @Override
@@ -471,6 +490,7 @@ public class OSMImportOp extends AbstractGeoGitOp<Optional<OSMReport>> {
                 if (feature == null || noRaw) {
                     return;
                 }
+
                 target.put(feature);
 
             }
@@ -502,13 +522,13 @@ public class OSMImportOp extends AbstractGeoGitOp<Optional<OSMReport>> {
         public void initialize(Map<String, Object> map) {
         }
 
-        private final GeometryFactory GEOMF = new GeometryFactory(
-                new PackedCoordinateSequenceFactory());
-
         protected Geometry parsePoint(Node node) {
-            Coordinate coord = new Coordinate(node.getLongitude(), node.getLatitude());
-            Point pt = GEOMF.createPoint(coord);
-            pointCache.put(Long.valueOf(node.getId()), coord);
+            OSMCoordinateSequenceFactory csf = CSFAC;
+            OSMCoordinateSequence cs = csf.create(1, 2);
+            cs.setOrdinate(0, 0, node.getLongitude());
+            cs.setOrdinate(0, 1, node.getLatitude());
+            Point pt = GEOMF.createPoint(cs);
+            pointCache.put(Long.valueOf(node.getId()), cs);
             return pt;
         }
 
@@ -527,7 +547,7 @@ public class OSMImportOp extends AbstractGeoGitOp<Optional<OSMReport>> {
 
             final List<Long> ids = Lists.transform(nodes, NODELIST_TO_ID_LIST);
 
-            Coordinate[] coordinates = pointCache.get(ids);
+            CoordinateSequence coordinates = pointCache.get(ids);
             return GEOMF.createLineString(coordinates);
         }
     }
