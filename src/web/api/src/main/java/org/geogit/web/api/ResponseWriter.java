@@ -1188,18 +1188,20 @@ public class ResponseWriter {
         if (totalModified > 0) {
             writeElement("totalModified", Integer.toString(totalModified));
         }
-        if (!authors.isEmpty()) {
+        {
             out.writeStartElement("Authors");
 
             for (RevPerson author : authors) {
-                out.writeStartElement("Author");
-                if (author.getName().isPresent()) {
-                    writeElement("name", author.getName().get());
+                if (author.getName().isPresent() || author.getEmail().isPresent()) {
+                    out.writeStartElement("Author");
+                    if (author.getName().isPresent()) {
+                        writeElement("name", author.getName().get());
+                    }
+                    if (author.getEmail().isPresent()) {
+                        writeElement("email", author.getEmail().get());
+                    }
+                    out.writeEndElement();
                 }
-                if (author.getEmail().isPresent()) {
-                    writeElement("email", author.getEmail().get());
-                }
-                out.writeEndElement();
             }
 
             writeElement("totalAuthors", Integer.toString(authors.size()));
