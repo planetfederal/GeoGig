@@ -72,7 +72,7 @@ Expose Clone with Webservices using GeoServer
     View Layer Preview
     Inspect WFS/WMS
 Add the clone as a remote to the original repo
-    geogit remote http://localhost:8080/geoserver/geogit/opengeo:ethiopia 
+    geogit remote add clone http://localhost:8080/geoserver/geogit/opengeo:ethiopia
 Make more Edits against PostGIS in QGIS
     Start Editing Session
     Add new Features
