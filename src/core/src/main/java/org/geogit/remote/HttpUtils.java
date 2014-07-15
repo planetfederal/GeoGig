@@ -482,7 +482,7 @@ class HttpUtils {
         connection = (HttpURLConnection) new URL(url).openConnection();
         connection.setRequestMethod("GET");
         connection.setUseCaches(false);
-        connection.addRequestProperty("Accept-Encoding", "gzip");
+        // connection.addRequestProperty("Accept-Encoding", "gzip");
         LOGGER.debug("Connecting to '{}'...", url);
         connection.connect();
         int responseCode = connection.getResponseCode();
