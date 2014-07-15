@@ -98,21 +98,28 @@ public class StatisticsWebOp extends AbstractWebAPICommand {
 
         if (log.hasNext()) {
             lastCommit = log.next();
+            authors.add(lastCommit.getAuthor());
             totalCommits++;
         }
         while (log.hasNext()) {
             firstCommit = log.next();
             RevPerson newAuthor = firstCommit.getAuthor();
-            boolean authorFound = false;
-            for (RevPerson author : authors) {
-                if (newAuthor.getName().equals(author.getName())
-                        && newAuthor.getEmail().equals(author.getEmail())) {
-                    authorFound = true;
-                    break;
-                }
+            // If the author isn't defined, use the committer for the purposes of statistics.
+            if (!newAuthor.getName().isPresent() && !newAuthor.getEmail().isPresent()) {
+                newAuthor = firstCommit.getCommitter();
             }
-            if (!authorFound) {
-                authors.add(newAuthor);
+            if (newAuthor.getName().isPresent() || newAuthor.getEmail().isPresent()) {
+                boolean authorFound = false;
+                for (RevPerson author : authors) {
+                    if (newAuthor.getName().equals(author.getName())
+                            && newAuthor.getEmail().equals(author.getEmail())) {
+                        authorFound = true;
+                        break;
+                    }
+                }
+                if (!authorFound) {
+                    authors.add(newAuthor);
+                }
             }
             totalCommits++;
         }
