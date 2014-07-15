@@ -590,7 +590,7 @@ Add the clone as a remote to the original repo:
 
 .. code::
 
- geogit remote http://localhost:8080/geoserver/geogit/opengeo:ethiopia 
+ geogit remote add clone http://localhost:8080/geoserver/geogit/opengeo:ethiopia
 
 Make more Edits against PostGIS in QGIS:
 
