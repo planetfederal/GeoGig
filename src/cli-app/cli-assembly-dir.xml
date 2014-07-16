@@ -11,37 +11,37 @@
     
     <files>
         <file>
-            <source>target/geogit-build/bin/geogit</source>
+            <source>target/geogig-build/bin/geogig</source>
             <outputDirectory>bin</outputDirectory>
-            <destName>geogit</destName>
+            <destName>geogig</destName>
             <fileMode>0755</fileMode>
         </file>
         <file>
-            <source>target/geogit-build/bin/geogit-console</source>
+            <source>target/geogig-build/bin/geogig-console</source>
             <outputDirectory>bin</outputDirectory>
-            <destName>geogit-console</destName>
+            <destName>geogig-console</destName>
             <fileMode>0755</fileMode>
         </file>
         <file>
-            <source>target/geogit-build/bin/geogit-gateway</source>
+            <source>target/geogig-build/bin/geogig-gateway</source>
             <outputDirectory>bin</outputDirectory>
-            <destName>geogit-gateway</destName>
+            <destName>geogig-gateway</destName>
             <fileMode>0755</fileMode>
         </file>
         <file>
-            <source>target/geogit-build/bin/geogit.bat</source>
+            <source>target/geogig-build/bin/geogig.bat</source>
             <outputDirectory>bin</outputDirectory>
         </file>
         <file>
-            <source>target/geogit-build/bin/geogit-console.bat</source>
+            <source>target/geogig-build/bin/geogig-console.bat</source>
             <outputDirectory>bin</outputDirectory>
         </file>
         <file>
-            <source>target/geogit-build/bin/geogit-gateway.bat</source>
+            <source>target/geogig-build/bin/geogig-gateway.bat</source>
             <outputDirectory>bin</outputDirectory>
         </file>
         <file>
-            <source>target/geogit-build/dependency-tree.txt</source>
+            <source>target/geogig-build/dependency-tree.txt</source>
             <outputDirectory>repo</outputDirectory>
         </file>
         <file>
@@ -51,7 +51,7 @@
     
     <fileSets>
         <fileSet>
-            <directory>target/geogit-build/repo</directory>
+            <directory>target/geogig-build/repo</directory>
             <outputDirectory>/repo</outputDirectory>
             <includes>
                 <include>*</include>
