@@ -29,6 +29,8 @@ import org.geogit.remote.RemoteUtils;
 import org.geogit.repository.Hints;
 import org.geogit.repository.Repository;
 import org.geogit.storage.DeduplicationService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
@@ -45,6 +47,8 @@ import com.google.common.collect.ImmutableSet;
  * needs to be revisited once we get more merge tools.
  */
 public class PushOp extends AbstractGeoGitOp<Boolean> {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(PushOp.class);
 
     private boolean all;
 
@@ -219,6 +223,7 @@ public class PushOp extends AbstractGeoGitOp<Boolean> {
             throw Throwables.propagate(e);
         }
 
+        LOGGER.info("Pushing {} to {}({})", localRef, localRemoteRefName, remoteRefSpec);
         updateRef(localRef.getObjectId(), localRemoteRefName);
         return true;
     }

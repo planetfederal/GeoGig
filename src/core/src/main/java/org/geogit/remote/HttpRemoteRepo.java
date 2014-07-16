@@ -235,7 +235,11 @@ class HttpRemoteRepo extends AbstractRemoteRepo {
         if (remoteRef.isPresent()) {
             originalRemoteRefValue = remoteRef.get().getObjectId();
         }
-        endPush(refspec, ref.getObjectId(), originalRemoteRefValue.toString());
+
+        String nameToSet =
+                remoteRef.isPresent() ? remoteRef.get().getName() : Ref.HEADS_PREFIX + refspec;
+
+        endPush(nameToSet, ref.getObjectId(), originalRemoteRefValue.toString());
     }
 
     private void sendPackedObjects(final List<ObjectId> toSend, final Set<ObjectId> roots,

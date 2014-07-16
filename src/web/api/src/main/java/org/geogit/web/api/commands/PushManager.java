@@ -19,6 +19,8 @@ import org.geogit.api.plumbing.RefParse;
 import org.geogit.api.plumbing.ResolveTreeish;
 import org.geogit.api.plumbing.TransactionBegin;
 import org.geogit.api.plumbing.UpdateRef;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Throwables;
@@ -30,6 +32,8 @@ import com.google.common.base.Throwables;
  * remote.
  */
 public class PushManager {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(PushManager.class);
 
     private Set<String> incomingIPs;
 
@@ -85,9 +89,14 @@ public class PushManager {
             String refName = refspec;
             if (oldRef.isPresent()) {
                 if (oldRef.get().getObjectId().equals(newCommit)) {
+                    LOGGER.info("ref '{}' -> {} not updated, got same id", refName, newCommit);
                     return;
                 }
+                LOGGER.info("Updating ref '{}'[{}] -> {}", refName, oldRef.get().getObjectId(),
+                        newCommit);
                 refName = oldRef.get().getName();
+            } else {
+                LOGGER.info("Creating new ref '{}' -> {}", refName, newCommit);
             }
             if (headRef.isPresent() && headRef.get() instanceof SymRef) {
                 if (((SymRef) headRef.get()).getTarget().equals(refName)) {
