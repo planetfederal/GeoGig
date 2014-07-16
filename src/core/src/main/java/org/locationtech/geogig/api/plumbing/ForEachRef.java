@@ -5,7 +5,7 @@
 
 package org.locationtech.geogig.api.plumbing;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.Ref;
 
 import com.google.common.base.Optional;
@@ -18,7 +18,7 @@ import com.google.common.collect.ImmutableSet;
  * <p>
  * 
  */
-public class ForEachRef extends AbstractGeoGitOp<ImmutableSet<Ref>> {
+public class ForEachRef extends AbstractGeoGigOp<ImmutableSet<Ref>> {
 
     private Predicate<Ref> filter;
 

@@ -6,7 +6,7 @@ package org.locationtech.geogig.cli;
 
 import org.locationtech.geogig.api.Context;
 import org.locationtech.geogig.api.ContextBuilder;
-import org.locationtech.geogig.di.GeogitModule;
+import org.locationtech.geogig.di.GeogigModule;
 import org.locationtech.geogig.di.PluginDefaults;
 import org.locationtech.geogig.di.PluginsModule;
 import org.locationtech.geogig.di.VersionedFormat;
@@ -56,7 +56,7 @@ public class CLIContextBuilder extends ContextBuilder {
     @Override
     public Context build(Hints hints) {
         return Guice.createInjector(
-                Modules.override(new GeogitModule(), new CachingModule()).with(new MetricsModule(),
+                Modules.override(new GeogigModule(), new CachingModule()).with(new MetricsModule(),
                         new PluginsModule(), new DefaultPlugins(), new HintsModule(hints)))
                 .getInstance(org.locationtech.geogig.api.Context.class);
     }

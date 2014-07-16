@@ -31,7 +31,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.locationtech.geogig.api.Context;
-import org.locationtech.geogig.api.GeoGIT;
+import org.locationtech.geogig.api.GeoGIG;
 import org.locationtech.geogig.api.RevCommit;
 import org.locationtech.geogig.api.TestPlatform;
 import org.locationtech.geogig.api.porcelain.ConfigOp;
@@ -39,7 +39,7 @@ import org.locationtech.geogig.api.porcelain.ConfigOp.ConfigAction;
 import org.locationtech.geogig.api.porcelain.InitOp;
 import org.locationtech.geogig.api.porcelain.LogOp;
 import org.locationtech.geogig.cli.test.functional.general.CLITestContextBuilder;
-import org.locationtech.geogig.geotools.data.GeoGitDataStore;
+import org.locationtech.geogig.geotools.data.GeoGigDataStore;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
@@ -49,7 +49,7 @@ import com.google.common.util.concurrent.ThreadFactoryBuilder;
 
 public class DataStoreConcurrencyTest {
 
-    private GeoGitDataStore store;
+    private GeoGigDataStore store;
 
     private static final SimpleFeatureType pointType;
     static {
@@ -80,14 +80,14 @@ public class DataStoreConcurrencyTest {
         TestPlatform platform = new TestPlatform(workingDirectory);
         platform.setUserHome(userHomeDirectory);
         Context injector = new CLITestContextBuilder(platform).build();
-        GeoGIT geogit = new GeoGIT(injector);
+        GeoGIG geogit = new GeoGIG(injector);
         geogit.command(InitOp.class).call();
         geogit.command(ConfigOp.class).setAction(ConfigAction.CONFIG_SET).setName("user.name")
                 .setValue("gabriel").call();
         geogit.command(ConfigOp.class).setAction(ConfigAction.CONFIG_SET).setName("user.email")
                 .setValue("gabriel@roldan.example.com").call();
 
-        store = new GeoGitDataStore(geogit);
+        store = new GeoGigDataStore(geogit);
 
         store.createSchema(pointType);
 
@@ -185,13 +185,13 @@ public class DataStoreConcurrencyTest {
 
         private static final Random rnd = new Random(1000);
 
-        private final GeoGitDataStore dataStore;
+        private final GeoGigDataStore dataStore;
 
         private final SimpleFeatureBuilder builder;
 
         private int numInserts;
 
-        public InsertTask(GeoGitDataStore store, int numInserts) {
+        public InsertTask(GeoGigDataStore store, int numInserts) {
             this.dataStore = store;
             this.numInserts = numInserts;
             this.builder = new SimpleFeatureBuilder(pointType);
@@ -235,11 +235,11 @@ public class DataStoreConcurrencyTest {
 
     public static class ReadTask implements Callable<Integer> {
 
-        private final GeoGitDataStore dataStore;
+        private final GeoGigDataStore dataStore;
 
         private final int numReads;
 
-        public ReadTask(GeoGitDataStore store, final int numReads) {
+        public ReadTask(GeoGigDataStore store, final int numReads) {
             this.dataStore = store;
             this.numReads = numReads;
         }

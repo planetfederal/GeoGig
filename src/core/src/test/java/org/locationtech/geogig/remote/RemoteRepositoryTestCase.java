@@ -30,7 +30,7 @@ import org.junit.Rule;
 import org.junit.rules.TemporaryFolder;
 import org.locationtech.geogig.api.Context;
 import org.locationtech.geogig.api.ContextBuilder;
-import org.locationtech.geogig.api.GeoGIT;
+import org.locationtech.geogig.api.GeoGIG;
 import org.locationtech.geogig.api.GlobalContextBuilder;
 import org.locationtech.geogig.api.Node;
 import org.locationtech.geogig.api.ObjectId;
@@ -114,8 +114,8 @@ public abstract class RemoteRepositoryTestCase {
     @Rule
     public final TemporaryFolder tempFolder = new TemporaryFolder();
 
-    protected class GeogitContainer {
-        public GeoGIT geogit;
+    protected class GeogigContainer {
+        public GeoGIG geogit;
 
         public Repository repo;
 
@@ -123,7 +123,7 @@ public abstract class RemoteRepositoryTestCase {
 
         public Context injector;
 
-        public GeogitContainer(final String workingDirectory) throws IOException {
+        public GeogigContainer(final String workingDirectory) throws IOException {
 
             envHome = tempFolder.newFolder(workingDirectory);
 
@@ -131,7 +131,7 @@ public abstract class RemoteRepositoryTestCase {
             GlobalContextBuilder.builder = injectorBuilder;
             injector = injectorBuilder.build();
 
-            geogit = new GeoGIT(injector, envHome);
+            geogit = new GeoGIG(injector, envHome);
             repo = geogit.getOrCreateRepository();
 
             repo.command(ConfigOp.class).setAction(ConfigAction.CONFIG_SET).setName("user.name")
@@ -158,9 +158,9 @@ public abstract class RemoteRepositoryTestCase {
         }
     }
 
-    public GeogitContainer localGeogit;
+    public GeogigContainer localGeogit;
 
-    public GeogitContainer remoteGeogit;
+    public GeogigContainer remoteGeogit;
 
     public IRemoteRepo remoteRepo;
 
@@ -178,8 +178,8 @@ public abstract class RemoteRepositoryTestCase {
     }
 
     protected final void doSetUp() throws IOException, SchemaException, ParseException, Exception {
-        localGeogit = new GeogitContainer("localtestrepository");
-        remoteGeogit = new GeogitContainer("remotetestrepository");
+        localGeogit = new GeogigContainer("localtestrepository");
+        remoteGeogit = new GeogigContainer("remotetestrepository");
 
         LocalRemoteRepo remoteRepo = spy(new LocalRemoteRepo(remoteGeogit.getInjector(),
                 remoteGeogit.envHome.getCanonicalFile(), localGeogit.repo));
@@ -307,12 +307,12 @@ public abstract class RemoteRepositoryTestCase {
         return builder.buildFeature(id);
     }
 
-    protected List<RevCommit> populate(GeoGIT geogit, boolean oneCommitPerFeature,
+    protected List<RevCommit> populate(GeoGIG geogit, boolean oneCommitPerFeature,
             Feature... features) throws Exception {
         return populate(geogit, oneCommitPerFeature, Arrays.asList(features));
     }
 
-    protected List<RevCommit> populate(GeoGIT geogit, boolean oneCommitPerFeature,
+    protected List<RevCommit> populate(GeoGIG geogit, boolean oneCommitPerFeature,
             List<Feature> features) throws Exception {
 
         List<RevCommit> commits = new ArrayList<RevCommit>();
@@ -336,7 +336,7 @@ public abstract class RemoteRepositoryTestCase {
     /**
      * Inserts the Feature to the index and stages it to be committed.
      */
-    protected ObjectId insertAndAdd(GeoGIT geogit, Feature f) throws Exception {
+    protected ObjectId insertAndAdd(GeoGIG geogit, Feature f) throws Exception {
         ObjectId objectId = insert(geogit, f);
 
         geogit.command(AddOp.class).call();
@@ -346,7 +346,7 @@ public abstract class RemoteRepositoryTestCase {
     /**
      * Inserts the feature to the index but does not stages it to be committed
      */
-    protected ObjectId insert(GeoGIT geogit, Feature f) throws Exception {
+    protected ObjectId insert(GeoGIG geogit, Feature f) throws Exception {
         final WorkingTree workTree = geogit.getRepository().workingTree();
         Name name = f.getType().getName();
         String parentPath = name.getLocalPart();
@@ -355,12 +355,12 @@ public abstract class RemoteRepositoryTestCase {
         return objectId;
     }
 
-    protected void insertAndAdd(GeoGIT geogit, Feature... features) throws Exception {
+    protected void insertAndAdd(GeoGIG geogit, Feature... features) throws Exception {
         insert(geogit, features);
         geogit.command(AddOp.class).call();
     }
 
-    protected void insert(GeoGIT geogit, Feature... features) throws Exception {
+    protected void insert(GeoGIG geogit, Feature... features) throws Exception {
         for (Feature f : features) {
             insert(geogit, f);
         }
@@ -373,7 +373,7 @@ public abstract class RemoteRepositoryTestCase {
      * @return
      * @throws Exception
      */
-    protected boolean deleteAndAdd(GeoGIT geogit, Feature f) throws Exception {
+    protected boolean deleteAndAdd(GeoGIG geogit, Feature f) throws Exception {
         boolean existed = delete(geogit, f);
         if (existed) {
             geogit.command(AddOp.class).call();
@@ -382,7 +382,7 @@ public abstract class RemoteRepositoryTestCase {
         return existed;
     }
 
-    protected boolean delete(GeoGIT geogit, Feature f) throws Exception {
+    protected boolean delete(GeoGIG geogit, Feature f) throws Exception {
         final WorkingTree workTree = geogit.getRepository().workingTree();
         Name name = f.getType().getName();
         String localPart = name.getLocalPart();

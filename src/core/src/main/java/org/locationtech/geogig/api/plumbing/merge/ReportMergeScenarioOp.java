@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.FeatureInfo;
 import org.locationtech.geogig.api.NodeRef;
 import org.locationtech.geogig.api.ObjectId;
@@ -42,7 +42,7 @@ import com.google.common.collect.Maps;
  * commit, classified according to whether they can or not be safely applied onto the reference
  * commit. Changes that will have no effect on the target commit are not included as unconflicted.
  */
-public class ReportMergeScenarioOp extends AbstractGeoGitOp<MergeScenarioReport> {
+public class ReportMergeScenarioOp extends AbstractGeoGigOp<MergeScenarioReport> {
 
     private RevCommit toMerge;
 

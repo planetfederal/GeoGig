@@ -11,7 +11,7 @@ import org.geotools.data.DataStore;
 import org.locationtech.geogig.api.ProgressListener;
 import org.locationtech.geogig.cli.CLICommand;
 import org.locationtech.geogig.cli.CommandFailedException;
-import org.locationtech.geogig.cli.GeogitCLI;
+import org.locationtech.geogig.cli.GeogigCLI;
 import org.locationtech.geogig.cli.annotation.ObjectDatabaseReadOnly;
 import org.locationtech.geogig.geotools.plumbing.GeoToolsOpException;
 import org.locationtech.geogig.geotools.plumbing.ImportOp;
@@ -70,7 +70,7 @@ public class SQLServerImport extends AbstractSQLServerCommand implements CLIComm
      * Executes the import command using the provided options.
      */
     @Override
-    protected void runInternal(GeogitCLI cli) throws IOException {
+    protected void runInternal(GeogigCLI cli) throws IOException {
         DataStore dataStore = getDataStore();
 
         try {

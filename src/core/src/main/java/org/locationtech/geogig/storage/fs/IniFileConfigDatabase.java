@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 
 import org.locationtech.geogig.api.Platform;
-import org.locationtech.geogig.api.plumbing.ResolveGeogitDir;
+import org.locationtech.geogig.api.plumbing.ResolveGeogigDir;
 import org.locationtech.geogig.api.porcelain.ConfigException;
 import org.locationtech.geogig.api.porcelain.ConfigException.StatusCode;
 import org.locationtech.geogig.storage.ConfigDatabase;
@@ -32,7 +32,7 @@ public class IniFileConfigDatabase implements ConfigDatabase {
         this.local = new INIFile() {
             @Override
             public File iniFile() {
-                final Optional<URL> url = new ResolveGeogitDir(platform).call();
+                final Optional<URL> url = new ResolveGeogigDir(platform).call();
 
                 if (!url.isPresent()) {
                     throw new ConfigException(StatusCode.INVALID_LOCATION);

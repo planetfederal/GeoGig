@@ -17,11 +17,11 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.rules.TemporaryFolder;
 import org.locationtech.geogig.api.Context;
-import org.locationtech.geogig.api.GeoGIT;
+import org.locationtech.geogig.api.GeoGIG;
 import org.locationtech.geogig.api.MemoryModule;
 import org.locationtech.geogig.api.Platform;
 import org.locationtech.geogig.api.TestPlatform;
-import org.locationtech.geogig.di.GeogitModule;
+import org.locationtech.geogig.di.GeogigModule;
 
 import com.google.common.base.Throwables;
 import com.google.inject.Guice;
@@ -51,7 +51,7 @@ public class ParseTimestampTest extends Assert {
 
     private ParseTimestamp command;
 
-    private GeoGIT fakeGeogit;
+    private GeoGIG fakeGeogit;
 
     @Before
     public void setUp() {
@@ -64,10 +64,10 @@ public class ParseTimestampTest extends Assert {
             }
         };
         Context injector = Guice.createInjector(
-                Modules.override(new GeogitModule()).with(new MemoryModule(testPlatform)))
+                Modules.override(new GeogigModule()).with(new MemoryModule(testPlatform)))
                 .getInstance(Context.class);
 
-        fakeGeogit = new GeoGIT(injector, workingDirectory);
+        fakeGeogit = new GeoGIG(injector, workingDirectory);
         assertNotNull(fakeGeogit.getOrCreateRepository());
         command = fakeGeogit.command(ParseTimestamp.class);
     }

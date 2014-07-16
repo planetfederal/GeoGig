@@ -16,7 +16,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.locationtech.geogig.api.GeoGIT;
+import org.locationtech.geogig.api.GeoGIG;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.RepositoryFilter;
 import org.locationtech.geogig.api.RevCommit;
@@ -140,7 +140,7 @@ public class FilteredChangesResource extends Finder {
                     }
                 }
 
-                final GeoGIT ggit = getGeogit(getRequest()).get();
+                final GeoGIG ggit = getGeogit(getRequest()).get();
                 final Repository repository = ggit.getRepository();
 
                 RevCommit commit = repository.getCommit(commitId);

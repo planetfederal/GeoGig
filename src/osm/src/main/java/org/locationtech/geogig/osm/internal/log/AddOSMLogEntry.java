@@ -8,7 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 
 import com.google.common.base.Charsets;
 import com.google.common.base.Throwables;
@@ -20,7 +20,7 @@ import com.google.common.io.Files;
  * those trees that represent a dataset that correspond to given OSM snapshot and can, therefore, be
  * used to synchronize
  */
-public class AddOSMLogEntry extends AbstractGeoGitOp<Void> {
+public class AddOSMLogEntry extends AbstractGeoGigOp<Void> {
 
     private OSMLogEntry entry;
 

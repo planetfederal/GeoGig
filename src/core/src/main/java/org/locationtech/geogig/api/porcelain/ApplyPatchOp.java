@@ -12,7 +12,7 @@ import java.util.Set;
 
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.FeatureInfo;
 import org.locationtech.geogig.api.NodeRef;
 import org.locationtech.geogig.api.Ref;
@@ -49,7 +49,7 @@ import com.google.common.collect.Maps;
  * @see WorkingTree
  * @see Patch
  */
-public class ApplyPatchOp extends AbstractGeoGitOp<Patch> {
+public class ApplyPatchOp extends AbstractGeoGigOp<Patch> {
 
     private Patch patch;
 

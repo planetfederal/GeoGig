@@ -10,7 +10,7 @@ import static org.locationtech.geogig.rest.repository.RESTUtils.getGeogit;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.locationtech.geogig.api.GeoGIT;
+import org.locationtech.geogig.api.GeoGIG;
 import org.locationtech.geogig.remote.BinaryPackedObjects;
 import org.locationtech.geogig.remote.BinaryPackedObjects.IngestResults;
 import org.restlet.data.Request;
@@ -45,7 +45,7 @@ public class SendObjectResource extends Resource {
             LOGGER.info("Receiving objects from {}", request.getClientInfo().getAddress());
             Representation representation = request.getEntity();
             input = representation.getStream();
-            final GeoGIT ggit = getGeogit(request).get();
+            final GeoGIG ggit = getGeogit(request).get();
             final BinaryPackedObjects unpacker = new BinaryPackedObjects(ggit.getRepository()
                     .objectDatabase());
 

@@ -20,7 +20,7 @@ import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.locationtech.geogig.cli.CLICommand;
 import org.locationtech.geogig.cli.CommandFailedException;
-import org.locationtech.geogig.cli.GeogitCLI;
+import org.locationtech.geogig.cli.GeogigCLI;
 import org.locationtech.geogig.cli.annotation.ReadOnly;
 import org.locationtech.geogig.geotools.cli.porcelain.AbstractShpCommand;
 import org.locationtech.geogig.geotools.plumbing.ExportOp;
@@ -61,7 +61,7 @@ public class OSMExportShp extends AbstractShpCommand implements CLICommand {
      * Executes the export command using the provided options.
      */
     @Override
-    protected void runInternal(GeogitCLI cli) throws IOException {
+    protected void runInternal(GeogigCLI cli) throws IOException {
         Preconditions.checkNotNull(mappingFile != null, "A data mapping file must be specified");
 
         if (args == null || args.isEmpty() || args.size() != 1) {

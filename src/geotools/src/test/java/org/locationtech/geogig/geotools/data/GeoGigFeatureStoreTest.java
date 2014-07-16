@@ -46,21 +46,21 @@ import org.opengis.filter.Id;
 import org.opengis.filter.identity.FeatureId;
 import org.opengis.filter.identity.ResourceId;
 
-public class GeoGitFeatureStoreTest extends RepositoryTestCase {
+public class GeoGigFeatureStoreTest extends RepositoryTestCase {
 
     private static final FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
 
-    private GeoGitDataStore dataStore;
+    private GeoGigDataStore dataStore;
 
-    private GeogitFeatureStore points;
+    private GeogigFeatureStore points;
 
     @Override
     protected void setUpInternal() throws Exception {
-        dataStore = new GeoGitDataStore(geogit);
+        dataStore = new GeoGigDataStore(geogit);
         dataStore.createSchema(super.pointsType);
         dataStore.createSchema(super.linesType);
 
-        points = (GeogitFeatureStore) dataStore.getFeatureSource(pointsTypeName);
+        points = (GeogigFeatureStore) dataStore.getFeatureSource(pointsTypeName);
     }
 
     @Override
@@ -340,8 +340,8 @@ public class GeoGitFeatureStoreTest extends RepositoryTestCase {
         try {
             points.addFeatures(collection);
 
-            tx.putProperty(GeogitTransactionState.VERSIONING_COMMIT_AUTHOR, "John Doe");
-            tx.putProperty(GeogitTransactionState.VERSIONING_COMMIT_MESSAGE, "test message");
+            tx.putProperty(GeogigTransactionState.VERSIONING_COMMIT_AUTHOR, "John Doe");
+            tx.putProperty(GeogigTransactionState.VERSIONING_COMMIT_MESSAGE, "test message");
             tx.commit();
             assertEquals(3, dataStore.getFeatureSource(pointsTypeName).getFeatures().size());
         } catch (Exception e) {
@@ -371,8 +371,8 @@ public class GeoGitFeatureStoreTest extends RepositoryTestCase {
         try {
             points.addFeatures(collection);
 
-            tx.putProperty(GeogitTransactionState.VERSIONING_COMMIT_AUTHOR, "john");
-            tx.putProperty(GeogitTransactionState.VERSIONING_COMMIT_MESSAGE, "test message");
+            tx.putProperty(GeogigTransactionState.VERSIONING_COMMIT_AUTHOR, "john");
+            tx.putProperty(GeogigTransactionState.VERSIONING_COMMIT_MESSAGE, "test message");
             tx.putProperty("fullname", "John Doe");
             tx.putProperty("email", "jd@example.com");
             tx.commit();

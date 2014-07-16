@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.geotools.data.DataStore;
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.geotools.plumbing.GeoToolsOpException.StatusCode;
 import org.opengis.feature.type.Name;
 
@@ -20,7 +20,7 @@ import com.google.common.base.Optional;
  * 
  * @see DataStore
  */
-public class ListOp extends AbstractGeoGitOp<Optional<List<String>>> {
+public class ListOp extends AbstractGeoGigOp<Optional<List<String>>> {
 
     private DataStore dataStore;
 

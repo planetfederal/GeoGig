@@ -43,7 +43,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.rules.TemporaryFolder;
-import org.locationtech.geogig.api.GeoGIT;
+import org.locationtech.geogig.api.GeoGIG;
 import org.locationtech.geogig.api.NodeRef;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.Ref;
@@ -437,7 +437,7 @@ public class DefaultStepDefinitions {
     @Given("^I have unstaged an empty feature type$")
     public void I_have_unstaged_an_empty_feature_type() throws Throwable {
         insert(points1);
-        GeoGIT geogit = geogitCLI.newGeoGIT();
+        GeoGIG geogit = geogitCLI.newGeoGIT();
         final WorkingTree workTree = geogit.getRepository().workingTree();
         workTree.delete(pointsName, idP1);
         geogit.close();

@@ -12,7 +12,7 @@ import jline.console.ConsoleReader;
 
 import org.fusesource.jansi.Ansi;
 import org.fusesource.jansi.Ansi.Color;
-import org.locationtech.geogig.api.GeoGIT;
+import org.locationtech.geogig.api.GeoGIG;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.Ref;
 import org.locationtech.geogig.api.RevCommit;
@@ -24,7 +24,7 @@ import org.locationtech.geogig.api.porcelain.BranchListOp;
 import org.locationtech.geogig.api.porcelain.BranchRenameOp;
 import org.locationtech.geogig.cli.AbstractCommand;
 import org.locationtech.geogig.cli.CLICommand;
-import org.locationtech.geogig.cli.GeogitCLI;
+import org.locationtech.geogig.cli.GeogigCLI;
 import org.locationtech.geogig.cli.annotation.ObjectDatabaseReadOnly;
 import org.locationtech.geogig.cli.annotation.StagingDatabaseReadOnly;
 
@@ -111,8 +111,8 @@ public class Branch extends AbstractCommand implements CLICommand {
     private boolean rename = false;
 
     @Override
-    public void runInternal(final GeogitCLI cli) throws IOException {
-        final GeoGIT geogit = cli.getGeogit();
+    public void runInternal(final GeogigCLI cli) throws IOException {
+        final GeoGIG geogit = cli.getGeogit();
 
         final ConsoleReader console = cli.getConsole();
 
@@ -168,9 +168,9 @@ public class Branch extends AbstractCommand implements CLICommand {
         console.println("Created branch " + newBranch.getName());
     }
 
-    private void listBranches(GeogitCLI cli) throws IOException {
+    private void listBranches(GeogigCLI cli) throws IOException {
         final ConsoleReader console = cli.getConsole();
-        final GeoGIT geogit = cli.getGeogit();
+        final GeoGIG geogit = cli.getGeogit();
 
         boolean local = all || !(remotes);
         boolean remote = all || remotes;
@@ -222,7 +222,7 @@ public class Branch extends AbstractCommand implements CLICommand {
      * @param branchRef
      * @return
      */
-    private Optional<RevCommit> findCommit(GeoGIT geogit, Ref branchRef) {
+    private Optional<RevCommit> findCommit(GeoGIG geogit, Ref branchRef) {
         ObjectId commitId = branchRef.getObjectId();
         if (commitId.isNull()) {
             return Optional.absent();

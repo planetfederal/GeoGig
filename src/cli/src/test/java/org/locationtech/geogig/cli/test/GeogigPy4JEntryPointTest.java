@@ -26,13 +26,13 @@ import org.locationtech.geogig.api.GlobalContextBuilder;
 import org.locationtech.geogig.api.TestPlatform;
 import org.locationtech.geogig.api.porcelain.AddOp;
 import org.locationtech.geogig.api.porcelain.CommitOp;
-import org.locationtech.geogig.cli.GeogitPy4JEntryPoint;
+import org.locationtech.geogig.cli.GeogigPy4JEntryPoint;
 import org.locationtech.geogig.cli.test.functional.general.CLITestContextBuilder;
 import org.locationtech.geogig.cli.test.functional.general.GlobalState;
 
 import py4j.GatewayServer;
 
-public class GeogitPy4JEntryPointTest {
+public class GeogigPy4JEntryPointTest {
 
     @Before
     public void setUpDirectories() throws IOException {
@@ -49,7 +49,7 @@ public class GeogitPy4JEntryPointTest {
         setupGeogit();
         setupFeatures();
         String repoFolder = platform.pwd().getAbsolutePath();
-        GeogitPy4JEntryPoint py4j = new GeogitPy4JEntryPoint();
+        GeogigPy4JEntryPoint py4j = new GeogigPy4JEntryPoint();
         GatewayServer gatewayServer = new GatewayServer(py4j);
         gatewayServer.start();
         py4j.runCommand(repoFolder, new String[] { "init" });

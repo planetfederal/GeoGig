@@ -13,7 +13,7 @@ import javax.annotation.Nullable;
 
 import org.locationtech.geogig.api.DefaultPlatform;
 import org.locationtech.geogig.api.Platform;
-import org.locationtech.geogig.api.plumbing.ResolveGeogitDir;
+import org.locationtech.geogig.api.plumbing.ResolveGeogigDir;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.bridge.SLF4JBridgeHandler;
@@ -48,7 +48,7 @@ class Logging {
     static void tryConfigureLogging(Platform platform) {
         // instantiate and call ResolveGeogitDir directly to avoid calling getGeogit() and hence get
         // some logging events before having configured logging
-        final Optional<URL> geogitDirUrl = new ResolveGeogitDir(platform).call();
+        final Optional<URL> geogitDirUrl = new ResolveGeogigDir(platform).call();
         if (!geogitDirUrl.isPresent() || !"file".equalsIgnoreCase(geogitDirUrl.get().getProtocol())) {
             // redirect java.util.logging to SLF4J anyways
             SLF4JBridgeHandler.removeHandlersForRootLogger();
@@ -114,7 +114,7 @@ class Logging {
             }
         }
         ByteSource from;
-        final URL resource = GeogitCLI.class.getResource("logback_default.xml");
+        final URL resource = GeogigCLI.class.getResource("logback_default.xml");
         try {
             from = Resources.asByteSource(resource);
         } catch (NullPointerException npe) {

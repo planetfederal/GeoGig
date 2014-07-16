@@ -14,7 +14,7 @@ import java.util.SortedSet;
 
 import javax.annotation.Nullable;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.Node;
 import org.locationtech.geogig.api.NodeRef;
 import org.locationtech.geogig.api.ObjectId;
@@ -66,7 +66,7 @@ import com.vividsolutions.jts.geom.Envelope;
  * @see MutableTree
  * @see DeepMove
  */
-public class WriteTree2 extends AbstractGeoGitOp<ObjectId> {
+public class WriteTree2 extends AbstractGeoGigOp<ObjectId> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WriteTree2.class);
 

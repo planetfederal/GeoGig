@@ -28,7 +28,7 @@ import com.google.common.base.Throwables;
  * Provides an entry point using the py4j library, to expose GeoGit functionality to python
  * applications
  */
-public class GeogitPy4JEntryPoint {
+public class GeogigPy4JEntryPoint {
 
     ConsoleReader consoleReader;
 
@@ -69,9 +69,9 @@ public class GeogitPy4JEntryPoint {
 
     private Iterator<String> pages = null;
 
-    private GeoGitPy4JProgressListener listener;
+    private GeoGigPy4JProgressListener listener;
 
-    public GeogitPy4JEntryPoint() {
+    public GeogigPy4JEntryPoint() {
         listener = new SilentProgressListener();
         os = new ToStringOutputStream();
         stream = new PrintStream(os);
@@ -93,7 +93,7 @@ public class GeogitPy4JEntryPoint {
      */
     public int runCommand(String folder, String[] args) throws IOException {
         System.gc();
-        GeogitCLI cli = new GeogitCLI(consoleReader) {
+        GeogigCLI cli = new GeogigCLI(consoleReader) {
             @Override
             public synchronized ProgressListener getProgressListener() {
                 if (super.progressListener == null) {
@@ -101,12 +101,12 @@ public class GeogitPy4JEntryPoint {
                     super.progressListener = new DefaultProgressListener() {
                         @Override
                         public void setDescription(String s) {
-                            GeogitPy4JEntryPoint.this.listener.setProgressText(s);
+                            GeogigPy4JEntryPoint.this.listener.setProgressText(s);
                         }
 
                         @Override
                         public synchronized void setProgress(float percent) {
-                            GeogitPy4JEntryPoint.this.listener.setProgress(percent);
+                            GeogigPy4JEntryPoint.this.listener.setProgress(percent);
 
                         }
                     };
@@ -163,7 +163,7 @@ public class GeogitPy4JEntryPoint {
      * 
      * @param listener
      */
-    public void setProgressListener(GeoGitPy4JProgressListener listener) {
+    public void setProgressListener(GeoGigPy4JProgressListener listener) {
         this.listener = listener;
     }
 
@@ -189,14 +189,14 @@ public class GeogitPy4JEntryPoint {
                 return;
             }
         }
-        GatewayServer gatewayServer = new GatewayServer(new GeogitPy4JEntryPoint(), port);
+        GatewayServer gatewayServer = new GatewayServer(new GeogigPy4JEntryPoint(), port);
         gatewayServer.start();
         System.out.println("GeoGit server correctly started and waiting for conections at port "
                 + Integer.toString(port));
     }
 }
 
-class SilentProgressListener implements GeoGitPy4JProgressListener {
+class SilentProgressListener implements GeoGigPy4JProgressListener {
 
     @Override
     public void setProgress(float i) {

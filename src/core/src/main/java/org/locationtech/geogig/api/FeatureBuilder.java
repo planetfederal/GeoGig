@@ -44,8 +44,8 @@ public class FeatureBuilder {
     public FeatureBuilder(RevFeatureType type) {
         this.type = type;
         this.featureType = type.type();
-        this.attNameToRevTypeIndex = GeogitSimpleFeature.buildAttNameToRevTypeIndex(type);
-        this.typeToRevTypeIndex = GeogitSimpleFeature.buildTypeToRevTypeIndex(type);
+        this.attNameToRevTypeIndex = GeogigSimpleFeature.buildAttNameToRevTypeIndex(type);
+        this.typeToRevTypeIndex = GeogigSimpleFeature.buildTypeToRevTypeIndex(type);
     }
 
     public RevFeatureType getType() {
@@ -77,7 +77,7 @@ public class FeatureBuilder {
         final FeatureId fid = new FeatureIdVersionedImpl(id, version);
 
         ImmutableList<Optional<Object>> values = revFeature.getValues();
-        GeogitSimpleFeature feature = new GeogitSimpleFeature(values,
+        GeogigSimpleFeature feature = new GeogigSimpleFeature(values,
                 (SimpleFeatureType) featureType, fid, attNameToRevTypeIndex, typeToRevTypeIndex);
         return feature;
     }

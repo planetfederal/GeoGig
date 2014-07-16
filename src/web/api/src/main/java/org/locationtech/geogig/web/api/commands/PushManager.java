@@ -10,8 +10,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.locationtech.geogig.api.GeoGIT;
-import org.locationtech.geogig.api.GeogitTransaction;
+import org.locationtech.geogig.api.GeoGIG;
+import org.locationtech.geogig.api.GeogigTransaction;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.Ref;
 import org.locationtech.geogig.api.SymRef;
@@ -74,7 +74,7 @@ public class PushManager {
      * @param geogit the geogit of the local repository
      * @param ipAddress the remote machine that is pushing objects
      */
-    public void connectionSucceeded(final GeoGIT geogit, final String ipAddress,
+    public void connectionSucceeded(final GeoGIG geogit, final String ipAddress,
             final String refspec, final ObjectId newCommit) {
 
         if (!incomingIPs.remove(ipAddress)) {// remove and check for existence in one shot
@@ -82,7 +82,7 @@ public class PushManager {
         }
 
         // Do not use the geogit instance after this, but the tx one!
-        GeogitTransaction tx = geogit.command(TransactionBegin.class).call();
+        GeogigTransaction tx = geogit.command(TransactionBegin.class).call();
         try {
             Optional<Ref> oldRef = tx.command(RefParse.class).setName(refspec).call();
             Optional<Ref> headRef = tx.command(RefParse.class).setName(Ref.HEAD).call();

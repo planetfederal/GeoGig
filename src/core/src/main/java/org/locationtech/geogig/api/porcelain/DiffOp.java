@@ -10,7 +10,7 @@ import java.util.Iterator;
 
 import javax.annotation.Nullable;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.plumbing.DiffIndex;
 import org.locationtech.geogig.api.plumbing.DiffTree;
@@ -46,7 +46,7 @@ import org.locationtech.geogig.di.CanRunDuringConflict;
  * @see DiffTree
  */
 @CanRunDuringConflict
-public class DiffOp extends AbstractGeoGitOp<Iterator<DiffEntry>> implements Iterable<DiffEntry> {
+public class DiffOp extends AbstractGeoGigOp<Iterator<DiffEntry>> implements Iterable<DiffEntry> {
 
     private String oldRefSpec;
 

@@ -31,14 +31,14 @@ import javax.annotation.Nullable;
 
 import org.geotools.data.DataStoreFactorySpi;
 import org.locationtech.geogig.api.ContextBuilder;
-import org.locationtech.geogig.api.GeoGIT;
+import org.locationtech.geogig.api.GeoGIG;
 import org.locationtech.geogig.api.GlobalContextBuilder;
 import org.locationtech.geogig.cli.CLIContextBuilder;
 import org.locationtech.geogig.repository.Repository;
 
 import com.google.common.base.Preconditions;
 
-public class GeoGitDataStoreFactory implements DataStoreFactorySpi {
+public class GeoGigDataStoreFactory implements DataStoreFactorySpi {
 
     /** GEO_GIT */
     public static final String DISPLAY_NAME = "GeoGIT";
@@ -116,7 +116,7 @@ public class GeoGitDataStoreFactory implements DataStoreFactorySpi {
     }
 
     @Override
-    public GeoGitDataStore createDataStore(Map<String, Serializable> params) throws IOException {
+    public GeoGigDataStore createDataStore(Map<String, Serializable> params) throws IOException {
 
         final File repositoryRoot = (File) REPOSITORY.lookUp(params);
 
@@ -141,9 +141,9 @@ public class GeoGitDataStoreFactory implements DataStoreFactorySpi {
             }
         }
 
-        GeoGIT geogit;
+        GeoGIG geogit;
         try {
-            geogit = new GeoGIT(repositoryRoot);
+            geogit = new GeoGIG(repositoryRoot);
         } catch (RuntimeException e) {
             throw new IOException(e.getMessage(), e);
         }
@@ -157,7 +157,7 @@ public class GeoGitDataStoreFactory implements DataStoreFactorySpi {
                     repositoryRoot.getAbsolutePath()));
         }
 
-        GeoGitDataStore store = new GeoGitDataStore(geogit);
+        GeoGigDataStore store = new GeoGigDataStore(geogit);
         if (defaultNamespace != null) {
             store.setNamespaceURI(defaultNamespace);
         }
@@ -171,7 +171,7 @@ public class GeoGitDataStoreFactory implements DataStoreFactorySpi {
      * @see org.geotools.data.DataStoreFactorySpi#createNewDataStore(java.util.Map)
      */
     @Override
-    public GeoGitDataStore createNewDataStore(Map<String, Serializable> params) throws IOException {
+    public GeoGigDataStore createNewDataStore(Map<String, Serializable> params) throws IOException {
         String defaultNamespace = (String) DEFAULT_NAMESPACE.lookUp(params);
 
         File repositoryRoot = (File) REPOSITORY.lookUp(params);
@@ -182,7 +182,7 @@ public class GeoGitDataStoreFactory implements DataStoreFactorySpi {
             repositoryRoot.mkdirs();
         }
 
-        GeoGIT geogit = new GeoGIT(repositoryRoot);
+        GeoGIG geogit = new GeoGIG(repositoryRoot);
 
         try {
             Repository repository = geogit.getOrCreateRepository();
@@ -191,7 +191,7 @@ public class GeoGitDataStoreFactory implements DataStoreFactorySpi {
             throw new IOException(e);
         }
 
-        GeoGitDataStore store = new GeoGitDataStore(geogit);
+        GeoGigDataStore store = new GeoGigDataStore(geogit);
         if (defaultNamespace != null) {
             store.setNamespaceURI(defaultNamespace);
         }

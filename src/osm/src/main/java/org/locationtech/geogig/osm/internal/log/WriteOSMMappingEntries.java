@@ -9,7 +9,7 @@ import java.io.IOException;
 
 import jline.internal.Preconditions;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.osm.internal.Mapping;
 import org.locationtech.geogig.osm.internal.MappingRule;
 
@@ -21,7 +21,7 @@ import com.google.common.io.Files;
  * Writes the mapping files that store the information about a mapping operation, storing the id
  * from which the affected trees have been mapped and the mapping code used
  */
-public class WriteOSMMappingEntries extends AbstractGeoGitOp<Void> {
+public class WriteOSMMappingEntries extends AbstractGeoGigOp<Void> {
 
     private Mapping mapping;
 

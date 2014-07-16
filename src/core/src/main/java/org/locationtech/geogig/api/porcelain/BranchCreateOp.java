@@ -9,7 +9,7 @@ import static com.google.common.base.Preconditions.checkState;
 
 import javax.annotation.Nullable;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.Ref;
 import org.locationtech.geogig.api.RevObject.TYPE;
@@ -28,7 +28,7 @@ import com.google.common.base.Optional;
  * @TODO: support branch descriptions
  * @TODO: support setting up the branch to track a remote branch
  */
-public class BranchCreateOp extends AbstractGeoGitOp<Ref> {
+public class BranchCreateOp extends AbstractGeoGigOp<Ref> {
 
     private String branchName;
 

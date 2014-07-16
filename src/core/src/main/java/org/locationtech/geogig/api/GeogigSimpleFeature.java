@@ -49,7 +49,7 @@ import com.vividsolutions.jts.geom.Geometry;
 
 /**
  */
-public class GeogitSimpleFeature implements SimpleFeature {
+public class GeogigSimpleFeature implements SimpleFeature {
 
     private final FeatureId id;
 
@@ -90,7 +90,7 @@ public class GeogitSimpleFeature implements SimpleFeature {
      * @param validating
      * @param nameToRevTypeInded - attribute name to value index mapping
      */
-    public GeogitSimpleFeature(ImmutableList<Optional<Object>> values,
+    public GeogigSimpleFeature(ImmutableList<Optional<Object>> values,
             SimpleFeatureType featureType, FeatureId id, Map<String, Integer> nameToRevTypeInded,
             BiMap<Integer, Integer> typeToRevTypeIndex) {
         this.id = id;
@@ -401,11 +401,11 @@ public class GeogitSimpleFeature implements SimpleFeature {
             return true;
         }
 
-        if (!(obj instanceof GeogitSimpleFeature)) {
+        if (!(obj instanceof GeogigSimpleFeature)) {
             return false;
         }
 
-        GeogitSimpleFeature feat = (GeogitSimpleFeature) obj;
+        GeogigSimpleFeature feat = (GeogigSimpleFeature) obj;
 
         if (!id.equals(feat.getIdentifier())) {
             return false;

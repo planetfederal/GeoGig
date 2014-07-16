@@ -14,7 +14,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.locationtech.geogig.api.CommitBuilder;
-import org.locationtech.geogig.api.GeoGIT;
+import org.locationtech.geogig.api.GeoGIG;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.RevCommit;
 import org.locationtech.geogig.api.RevTree;
@@ -70,7 +70,7 @@ public class ApplyChangesResource extends Finder {
             ObjectId newCommitId = ObjectId.NULL;
             try {
                 input = getRequest().getEntity().getStream();
-                final GeoGIT ggit = getGeogit(getRequest()).get();
+                final GeoGIG ggit = getGeogit(getRequest()).get();
 
                 final Repository repository = ggit.getRepository();
 

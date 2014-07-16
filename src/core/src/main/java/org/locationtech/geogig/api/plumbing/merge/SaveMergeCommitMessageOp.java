@@ -7,14 +7,14 @@ package org.locationtech.geogig.api.plumbing.merge;
 import java.io.File;
 import java.net.URL;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
-import org.locationtech.geogig.api.plumbing.ResolveGeogitDir;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
+import org.locationtech.geogig.api.plumbing.ResolveGeogigDir;
 
 import com.google.common.base.Charsets;
 import com.google.common.base.Throwables;
 import com.google.common.io.Files;
 
-public class SaveMergeCommitMessageOp extends AbstractGeoGitOp<Void> {
+public class SaveMergeCommitMessageOp extends AbstractGeoGigOp<Void> {
 
     private String message;
 
@@ -25,7 +25,7 @@ public class SaveMergeCommitMessageOp extends AbstractGeoGitOp<Void> {
 
     @Override
     protected Void _call() {
-        URL envHome = new ResolveGeogitDir(platform()).call().get();
+        URL envHome = new ResolveGeogigDir(platform()).call().get();
         try {
             File file = new File(envHome.toURI());
             file = new File(file, "MERGE_MSG");

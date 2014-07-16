@@ -8,7 +8,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import org.geotools.feature.simple.SimpleFeatureBuilder;
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.NodeRef;
 import org.locationtech.geogig.api.RevFeature;
 import org.locationtech.geogig.api.RevFeatureType;
@@ -33,7 +33,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * the features to merge, which will be overwritten by changes in the other one
  * 
  */
-public class MergeFeaturesOp extends AbstractGeoGitOp<Feature> {
+public class MergeFeaturesOp extends AbstractGeoGigOp<Feature> {
 
     private NodeRef nodeRefB;
 

@@ -5,7 +5,7 @@
 package org.locationtech.geogig.test.integration.je.repository;
 
 import org.locationtech.geogig.api.Context;
-import org.locationtech.geogig.di.GeogitModule;
+import org.locationtech.geogig.di.GeogigModule;
 import org.locationtech.geogig.test.integration.je.JETestStorageModule;
 
 import com.google.inject.Guice;
@@ -15,7 +15,7 @@ public class JEIndexTest extends org.locationtech.geogig.test.integration.reposi
     @Override
     protected Context createInjector() {
         return Guice.createInjector(
-                Modules.override(new GeogitModule()).with(new JETestStorageModule())).getInstance(
+                Modules.override(new GeogigModule()).with(new JETestStorageModule())).getInstance(
                 Context.class);
     }
 }

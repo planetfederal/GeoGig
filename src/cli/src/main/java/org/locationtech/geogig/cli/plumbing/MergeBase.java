@@ -10,7 +10,7 @@ import java.util.List;
 
 import jline.console.ConsoleReader;
 
-import org.locationtech.geogig.api.GeoGIT;
+import org.locationtech.geogig.api.GeoGIG;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.RevCommit;
 import org.locationtech.geogig.api.RevObject;
@@ -18,7 +18,7 @@ import org.locationtech.geogig.api.plumbing.FindCommonAncestor;
 import org.locationtech.geogig.api.plumbing.RevObjectParse;
 import org.locationtech.geogig.cli.AbstractCommand;
 import org.locationtech.geogig.cli.CLICommand;
-import org.locationtech.geogig.cli.GeogitCLI;
+import org.locationtech.geogig.cli.GeogigCLI;
 import org.locationtech.geogig.cli.annotation.ReadOnly;
 
 import com.beust.jcommander.Parameter;
@@ -41,11 +41,11 @@ public class MergeBase extends AbstractCommand implements CLICommand {
     private List<String> commits = new ArrayList<String>();
 
     @Override
-    public void runInternal(GeogitCLI cli) throws IOException {
+    public void runInternal(GeogigCLI cli) throws IOException {
         checkParameter(commits.size() == 2, "Two commit references must be provided");
 
         ConsoleReader console = cli.getConsole();
-        GeoGIT geogit = cli.getGeogit();
+        GeoGIG geogit = cli.getGeogit();
 
         Optional<RevObject> left = geogit.command(RevObjectParse.class).setRefSpec(commits.get(0))
                 .call();

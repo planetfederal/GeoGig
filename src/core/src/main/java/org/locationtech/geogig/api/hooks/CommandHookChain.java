@@ -11,7 +11,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.PriorityQueue;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,11 +21,11 @@ public class CommandHookChain {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CommandHookChain.class);
 
-    private AbstractGeoGitOp<?> target;
+    private AbstractGeoGigOp<?> target;
 
     private List<CommandHook> hooks;
 
-    private CommandHookChain(final AbstractGeoGitOp<?> target) {
+    private CommandHookChain(final AbstractGeoGigOp<?> target) {
         this.target = target;
         this.hooks = new LinkedList<CommandHook>();
     }
@@ -38,21 +38,21 @@ public class CommandHookChain {
         this.hooks.add(next);
     }
 
-    public void runPreHooks() throws CannotRunGeogitOperationException {
-        AbstractGeoGitOp<?> command = target;
+    public void runPreHooks() throws CannotRunGeogigOperationException {
+        AbstractGeoGigOp<?> command = target;
         // run pre-hooks
         for (CommandHook hook : Lists.reverse(hooks)) {
             try {
                 LOGGER.debug("Running pre command hook {}", hook);
                 command = hook.pre(command);
-            } catch (CannotRunGeogitOperationException e) {
+            } catch (CannotRunGeogigOperationException e) {
                 throw e;
             }
         }
     }
 
     public Object runPostHooks(Object retVal, boolean success) {
-        AbstractGeoGitOp<?> command = target;
+        AbstractGeoGigOp<?> command = target;
 
         for (CommandHook hook : hooks) {
             try {
@@ -90,9 +90,9 @@ public class CommandHookChain {
             }
         };
 
-        private AbstractGeoGitOp<?> command;
+        private AbstractGeoGigOp<?> command;
 
-        public Builder command(AbstractGeoGitOp<?> command) {
+        public Builder command(AbstractGeoGigOp<?> command) {
             this.command = command;
             return this;
         }

@@ -23,7 +23,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.locationtech.geogig.api.Context;
-import org.locationtech.geogig.api.GeoGIT;
+import org.locationtech.geogig.api.GeoGIG;
 import org.locationtech.geogig.api.MemoryModule;
 import org.locationtech.geogig.api.Node;
 import org.locationtech.geogig.api.NodeRef;
@@ -36,7 +36,7 @@ import org.locationtech.geogig.api.TestPlatform;
 import org.locationtech.geogig.api.plumbing.CreateTree;
 import org.locationtech.geogig.api.plumbing.RevObjectParse;
 import org.locationtech.geogig.api.plumbing.WriteBack;
-import org.locationtech.geogig.di.GeogitModule;
+import org.locationtech.geogig.di.GeogigModule;
 import org.locationtech.geogig.storage.ObjectDatabase;
 
 import com.google.common.base.Optional;
@@ -51,7 +51,7 @@ public class DepthSearchTest {
     @Rule
     public final TemporaryFolder tempFolder = new TemporaryFolder();
 
-    private GeoGIT fakeGeogit;
+    private GeoGIG fakeGeogit;
 
     private ObjectDatabase odb;
 
@@ -65,10 +65,10 @@ public class DepthSearchTest {
     public void setUp() throws IOException {
         File envHome = tempFolder.getRoot();
         Platform testPlatform = new TestPlatform(envHome);
-        Context injector = Guice.createInjector(Modules.override(new GeogitModule()).with(
+        Context injector = Guice.createInjector(Modules.override(new GeogigModule()).with(
                 new MemoryModule(testPlatform))).getInstance(Context.class);
 
-        fakeGeogit = new GeoGIT(injector);
+        fakeGeogit = new GeoGIG(injector);
         Repository fakeRepo = fakeGeogit.getOrCreateRepository();
         odb = fakeRepo.objectDatabase();
         search = new DepthSearch(odb);

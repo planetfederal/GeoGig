@@ -22,7 +22,7 @@ import org.junit.rules.ExpectedException;
 import org.junit.rules.TemporaryFolder;
 import org.locationtech.geogig.api.Platform;
 import org.locationtech.geogig.cli.CommandFailedException;
-import org.locationtech.geogig.cli.GeogitCLI;
+import org.locationtech.geogig.cli.GeogigCLI;
 import org.mockito.exceptions.base.MockitoException;
 
 public class OracleImportTest {
@@ -32,13 +32,13 @@ public class OracleImportTest {
     @Rule
     public TemporaryFolder tempFolder = new TemporaryFolder();
 
-    private GeogitCLI cli;
+    private GeogigCLI cli;
 
     @Before
     public void setUp() throws Exception {
         ConsoleReader consoleReader = new ConsoleReader(System.in, System.out,
                 new UnsupportedTerminal());
-        cli = new GeogitCLI(consoleReader);
+        cli = new GeogigCLI(consoleReader);
 
         setUpGeogit(cli);
     }
@@ -105,7 +105,7 @@ public class OracleImportTest {
     public void testImportException() throws Exception {
         ConsoleReader consoleReader = new ConsoleReader(System.in, System.out,
                 new UnsupportedTerminal());
-        GeogitCLI mockCli = spy(new GeogitCLI(consoleReader));
+        GeogigCLI mockCli = spy(new GeogigCLI(consoleReader));
 
         setUpGeogit(mockCli);
 
@@ -161,7 +161,7 @@ public class OracleImportTest {
         importCommand.run(cli);
     }
 
-    private void setUpGeogit(GeogitCLI cli) throws Exception {
+    private void setUpGeogit(GeogigCLI cli) throws Exception {
         final File userhome = tempFolder.newFolder("mockUserHomeDir");
         final File workingDir = tempFolder.newFolder("mockWorkingDir");
         tempFolder.newFolder("mockWorkingDir/.geogit");

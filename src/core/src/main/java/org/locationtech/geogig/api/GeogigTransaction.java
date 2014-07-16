@@ -33,7 +33,7 @@ import com.google.common.base.Preconditions;
  * @see org.locationtech.geogig.api.plumbing.TransactionBegin
  * @see org.locationtech.geogig.api.plumbing.TransactionEnd
  */
-public class GeogitTransaction implements Context {
+public class GeogigTransaction implements Context {
 
     public static final String TRANSACTIONS_NAMESPACE = "transactions";
 
@@ -59,8 +59,8 @@ public class GeogitTransaction implements Context {
      * @param locator the non transactional command locator
      * @param transactionId the id of the transaction
      */
-    public GeogitTransaction(Context locator, UUID transactionId) {
-        Preconditions.checkArgument(!(locator instanceof GeogitTransaction));
+    public GeogigTransaction(Context locator, UUID transactionId) {
+        Preconditions.checkArgument(!(locator instanceof GeogigTransaction));
         this.injector = locator;
         this.transactionId = transactionId;
 
@@ -83,7 +83,7 @@ public class GeogitTransaction implements Context {
      * @param authorEmail email of the author of this transaction
      * @return {@code this}
      */
-    public GeogitTransaction setAuthor(@Nullable String authorName, @Nullable String authorEmail) {
+    public GeogigTransaction setAuthor(@Nullable String authorName, @Nullable String authorEmail) {
         this.authorName = Optional.fromNullable(authorName);
         this.authorEmail = Optional.fromNullable(authorEmail);
         return this;
@@ -118,7 +118,7 @@ public class GeogitTransaction implements Context {
      * @return a new instance of the requested command class, with its dependencies resolved
      */
     @Override
-    public <T extends AbstractGeoGitOp<?>> T command(Class<T> commandClass) {
+    public <T extends AbstractGeoGigOp<?>> T command(Class<T> commandClass) {
         T instance = injector.command(commandClass);
         instance.setContext(this);
         return instance;

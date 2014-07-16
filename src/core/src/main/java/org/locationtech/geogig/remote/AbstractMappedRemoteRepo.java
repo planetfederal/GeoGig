@@ -28,7 +28,7 @@ import org.locationtech.geogig.api.RevObject.TYPE;
 import org.locationtech.geogig.api.RevTree;
 import org.locationtech.geogig.api.SymRef;
 import org.locationtech.geogig.api.plumbing.FindCommonAncestor;
-import org.locationtech.geogig.api.plumbing.ResolveGeogitDir;
+import org.locationtech.geogig.api.plumbing.ResolveGeogigDir;
 import org.locationtech.geogig.api.plumbing.ResolveTreeish;
 import org.locationtech.geogig.api.plumbing.WriteTree;
 import org.locationtech.geogig.api.plumbing.diff.DiffEntry;
@@ -70,7 +70,7 @@ public abstract class AbstractMappedRemoteRepo implements IRemoteRepo {
         String filterFile = filterResult.get().get("sparse.filter");
         Preconditions.checkState(filterFile != null, "No filter found for sparse clone.");
         try {
-            Optional<URL> envHome = localRepository.command(ResolveGeogitDir.class).call();
+            Optional<URL> envHome = localRepository.command(ResolveGeogigDir.class).call();
             checkState(envHome.isPresent(), "Not inside a geogit directory");
             final URL envLocation = envHome.get();
             if (!"file".equals(envLocation.getProtocol())) {

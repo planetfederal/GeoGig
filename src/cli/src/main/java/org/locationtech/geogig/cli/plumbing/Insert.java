@@ -14,13 +14,13 @@ import java.util.Map;
 import jline.console.ConsoleReader;
 
 import org.geotools.feature.simple.SimpleFeatureBuilder;
-import org.locationtech.geogig.api.GeoGIT;
+import org.locationtech.geogig.api.GeoGIG;
 import org.locationtech.geogig.api.NodeRef;
 import org.locationtech.geogig.api.RevFeatureType;
 import org.locationtech.geogig.api.plumbing.ResolveFeatureType;
 import org.locationtech.geogig.cli.AbstractCommand;
 import org.locationtech.geogig.cli.CLICommand;
-import org.locationtech.geogig.cli.GeogitCLI;
+import org.locationtech.geogig.cli.GeogigCLI;
 import org.locationtech.geogig.storage.FieldType;
 import org.locationtech.geogig.storage.text.TextValueSerializer;
 import org.opengis.feature.Feature;
@@ -47,10 +47,10 @@ public class Insert extends AbstractCommand implements CLICommand {
     @Parameter(names = "-f", description = "File with definition of features to insert")
     private String filepath;
 
-    private GeoGIT geogit;
+    private GeoGIG geogit;
 
     @Override
-    public void runInternal(GeogitCLI cli) throws IOException {
+    public void runInternal(GeogigCLI cli) throws IOException {
 
         ConsoleReader console = cli.getConsole();
         geogit = cli.getGeogit();

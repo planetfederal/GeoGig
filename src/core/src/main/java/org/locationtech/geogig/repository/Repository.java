@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.Context;
 import org.locationtech.geogig.api.Node;
 import org.locationtech.geogig.api.NodeRef;
@@ -23,7 +23,7 @@ import org.locationtech.geogig.api.RevObject;
 import org.locationtech.geogig.api.RevTree;
 import org.locationtech.geogig.api.plumbing.FindTreeChild;
 import org.locationtech.geogig.api.plumbing.RefParse;
-import org.locationtech.geogig.api.plumbing.ResolveGeogitDir;
+import org.locationtech.geogig.api.plumbing.ResolveGeogigDir;
 import org.locationtech.geogig.api.plumbing.ResolveTreeish;
 import org.locationtech.geogig.api.plumbing.RevObjectParse;
 import org.locationtech.geogig.api.plumbing.RevParse;
@@ -105,7 +105,7 @@ public class Repository implements Context {
         injector.objectDatabase().open();
         injector.graphDatabase().open();
         injector.stagingDatabase().open();
-        Optional<URL> repoUrl = command(ResolveGeogitDir.class).call();
+        Optional<URL> repoUrl = command(ResolveGeogigDir.class).call();
         Preconditions.checkState(repoUrl.isPresent(), "Repository URL can't be located");
         this.repositoryLocation = repoUrl.get();
         for (RepositoryListener l : listeners) {
@@ -145,7 +145,7 @@ public class Repository implements Context {
      * @param commandClass the kind of command to locate and instantiate
      * @return a new instance of the requested command class, with its dependencies resolved
      */
-    public <T extends AbstractGeoGitOp<?>> T command(Class<T> commandClass) {
+    public <T extends AbstractGeoGigOp<?>> T command(Class<T> commandClass) {
         return injector.command(commandClass);
     }
     

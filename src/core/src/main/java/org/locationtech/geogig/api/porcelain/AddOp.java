@@ -11,7 +11,7 @@ import java.util.Set;
 
 import javax.annotation.Nullable;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.ProgressListener;
 import org.locationtech.geogig.api.Ref;
@@ -36,7 +36,7 @@ import com.google.common.collect.Iterators;
  * @see StagingArea
  */
 @CanRunDuringConflict
-public class AddOp extends AbstractGeoGitOp<WorkingTree> {
+public class AddOp extends AbstractGeoGigOp<WorkingTree> {
 
     private Set<String> patterns;
 

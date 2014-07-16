@@ -7,7 +7,7 @@ package org.locationtech.geogig.metrics;
 import java.lang.management.ManagementFactory;
 
 import org.locationtech.geogig.api.Platform;
-import org.locationtech.geogig.di.GeogitModule;
+import org.locationtech.geogig.di.GeogigModule;
 import org.locationtech.geogig.storage.ConfigDatabase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 import com.google.inject.AbstractModule;
 
 /**
- * Guice module to be used jointly with {@link GeogitModule}, that logs command ellapsed time to a
+ * Guice module to be used jointly with {@link GeogigModule}, that logs command ellapsed time to a
  * file.
  * <p>
  * The {@code metrics.enabled} (boolean) <b>local</b> configuration property is used to
@@ -87,7 +87,7 @@ public class MetricsModule extends AbstractModule {
         final HeapMemoryMetricsService jvmMetricsService = new HeapMemoryMetricsService(
                 getProvider(Platform.class), getProvider(ConfigDatabase.class));
 
-        GeogitModule.bindDecorator(binder(), new RepositoryDecorator(jvmMetricsService));
+        GeogigModule.bindDecorator(binder(), new RepositoryDecorator(jvmMetricsService));
     }
 
 }

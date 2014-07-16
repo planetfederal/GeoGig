@@ -15,13 +15,13 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
-import org.locationtech.geogig.api.GeoGIT;
+import org.locationtech.geogig.api.GeoGIG;
 import org.locationtech.geogig.api.GlobalContextBuilder;
 import org.locationtech.geogig.api.RevFeature;
 import org.locationtech.geogig.api.RevTree;
 import org.locationtech.geogig.api.TestPlatform;
 import org.locationtech.geogig.api.plumbing.RevObjectParse;
-import org.locationtech.geogig.cli.GeogitCLI;
+import org.locationtech.geogig.cli.GeogigCLI;
 import org.locationtech.geogig.cli.test.functional.general.CLITestContextBuilder;
 import org.locationtech.geogig.osm.internal.OSMImportOp;
 
@@ -30,7 +30,7 @@ import com.google.common.collect.ImmutableList;
 
 public class OSMUnmapTest extends Assert {
 
-    private GeogitCLI cli;
+    private GeogigCLI cli;
 
     @Rule
     public TemporaryFolder tempFolder = new TemporaryFolder();
@@ -39,7 +39,7 @@ public class OSMUnmapTest extends Assert {
     public void setUp() throws Exception {
         ConsoleReader consoleReader = new ConsoleReader(System.in, System.out,
                 new UnsupportedTerminal());
-        cli = new GeogitCLI(consoleReader);
+        cli = new GeogigCLI(consoleReader);
         File workingDirectory = tempFolder.getRoot();
         TestPlatform platform = new TestPlatform(workingDirectory);
         GlobalContextBuilder.builder = new CLITestContextBuilder(platform);
@@ -56,7 +56,7 @@ public class OSMUnmapTest extends Assert {
         File mappingFile = new File(mappingFilename);
         cli.execute("osm", "import", file.getAbsolutePath(), "--mapping",
                 mappingFile.getAbsolutePath());
-        GeoGIT geogit = cli.newGeoGIT();
+        GeoGIG geogit = cli.newGeoGIT();
         Optional<RevFeature> revFeature = geogit.command(RevObjectParse.class)
                 .setRefSpec("WORK_HEAD:busstops/507464799").call(RevFeature.class);
         assertTrue(revFeature.isPresent());
@@ -70,7 +70,7 @@ public class OSMUnmapTest extends Assert {
     @Test
     public void testUnMapping() throws Exception {
         cli.execute("osm", "unmap", "busstops");
-        GeoGIT geogit = cli.newGeoGIT();
+        GeoGIG geogit = cli.newGeoGIT();
         Optional<RevTree> tree = geogit.command(RevObjectParse.class).setRefSpec("HEAD:node")
                 .call(RevTree.class);
         assertTrue(tree.isPresent());

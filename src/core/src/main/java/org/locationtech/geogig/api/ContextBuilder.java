@@ -4,7 +4,7 @@
  */
 package org.locationtech.geogig.api;
 
-import org.locationtech.geogig.di.GeogitModule;
+import org.locationtech.geogig.di.GeogigModule;
 import org.locationtech.geogig.repository.Hints;
 
 import com.google.inject.AbstractModule;
@@ -21,7 +21,7 @@ public class ContextBuilder {
      *        can make use of it
      */
     public Context build(Hints hints) {
-        return Guice.createInjector(new GeogitModule(), new HintsModule(hints)).getInstance(
+        return Guice.createInjector(new GeogigModule(), new HintsModule(hints)).getInstance(
                 org.locationtech.geogig.api.Context.class);
     }
 

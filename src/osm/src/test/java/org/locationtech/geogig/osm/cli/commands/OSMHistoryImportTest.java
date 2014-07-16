@@ -18,7 +18,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
-import org.locationtech.geogig.api.GeoGIT;
+import org.locationtech.geogig.api.GeoGIG;
 import org.locationtech.geogig.api.GlobalContextBuilder;
 import org.locationtech.geogig.api.RevFeature;
 import org.locationtech.geogig.api.RevFeatureType;
@@ -27,7 +27,7 @@ import org.locationtech.geogig.api.plumbing.RevObjectParse;
 import org.locationtech.geogig.api.plumbing.diff.DiffEntry;
 import org.locationtech.geogig.api.plumbing.diff.DiffEntry.ChangeType;
 import org.locationtech.geogig.api.porcelain.DiffOp;
-import org.locationtech.geogig.cli.GeogitCLI;
+import org.locationtech.geogig.cli.GeogigCLI;
 import org.locationtech.geogig.cli.test.functional.general.CLITestContextBuilder;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -40,7 +40,7 @@ import com.google.common.collect.ImmutableList;
  */
 public class OSMHistoryImportTest extends Assert {
 
-    private GeogitCLI cli;
+    private GeogigCLI cli;
 
     private String fakeOsmApiUrl;
 
@@ -51,7 +51,7 @@ public class OSMHistoryImportTest extends Assert {
     public void setUp() throws Exception {
         ConsoleReader consoleReader = new ConsoleReader(System.in, System.out,
                 new UnsupportedTerminal());
-        cli = new GeogitCLI(consoleReader);
+        cli = new GeogigCLI(consoleReader);
         fakeOsmApiUrl = getClass().getResource("../../internal/history/01_10").toExternalForm();
 
         File workingDirectory = tempFolder.getRoot();
@@ -75,7 +75,7 @@ public class OSMHistoryImportTest extends Assert {
         cli.execute("config", "user.email", "groldan@opengeo.org");
         cli.execute("osm", "import-history", fakeOsmApiUrl, "--to", "10");
 
-        GeoGIT geogit = cli.getGeogit();
+        GeoGIG geogit = cli.getGeogit();
         List<DiffEntry> changes = ImmutableList.copyOf(geogit.command(DiffOp.class)
                 .setOldVersion("HEAD~2").setNewVersion("HEAD~1").call());
         assertEquals(1, changes.size());

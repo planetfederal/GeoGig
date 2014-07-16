@@ -7,7 +7,7 @@ package org.locationtech.geogig.api.plumbing;
 
 import java.util.Iterator;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.storage.GraphDatabase;
 import org.locationtech.geogig.storage.GraphDatabase.Direction;
@@ -21,7 +21,7 @@ import com.google.inject.Inject;
  * Determines if there are any sparse commits between the start commit and the end commit, not
  * including the end commit.
  */
-public class CheckSparsePath extends AbstractGeoGitOp<Boolean> {
+public class CheckSparsePath extends AbstractGeoGigOp<Boolean> {
 
     private ObjectId start;
 

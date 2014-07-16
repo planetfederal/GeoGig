@@ -17,7 +17,7 @@ import javax.annotation.Nullable;
 
 import org.locationtech.geogig.api.Platform;
 import org.locationtech.geogig.api.RevTree;
-import org.locationtech.geogig.api.plumbing.ResolveGeogitDir;
+import org.locationtech.geogig.api.plumbing.ResolveGeogigDir;
 import org.locationtech.geogig.api.plumbing.merge.Conflict;
 import org.locationtech.geogig.storage.AbstractStagingDatabase;
 import org.locationtech.geogig.storage.ConfigDatabase;
@@ -81,7 +81,7 @@ abstract class JEStagingDatabase extends AbstractStagingDatabase {
     @Override
     public void open() {
         super.open();
-        Optional<URL> repoPath = new ResolveGeogitDir(platform).call();
+        Optional<URL> repoPath = new ResolveGeogigDir(platform).call();
         try {
             File repoLocation = new File(repoPath.get().toURI());
             this.repositoryDirectory = repoLocation;

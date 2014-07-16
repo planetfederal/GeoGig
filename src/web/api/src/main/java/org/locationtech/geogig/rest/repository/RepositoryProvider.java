@@ -5,7 +5,7 @@
 
 package org.locationtech.geogig.rest.repository;
 
-import org.locationtech.geogig.api.GeoGIT;
+import org.locationtech.geogig.api.GeoGIG;
 import org.restlet.data.Request;
 
 import com.google.common.base.Optional;
@@ -18,6 +18,6 @@ public interface RepositoryProvider {
      */
     String KEY = "__REPOSITORY_PROVIDER_KEY__";
 
-    public Optional<GeoGIT> getGeogit(Request request);
+    public Optional<GeoGIG> getGeogit(Request request);
 
 }

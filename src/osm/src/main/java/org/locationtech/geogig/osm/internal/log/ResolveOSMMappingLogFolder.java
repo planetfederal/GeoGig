@@ -8,9 +8,9 @@ import java.io.File;
 import java.net.URISyntaxException;
 import java.net.URL;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.Platform;
-import org.locationtech.geogig.api.plumbing.ResolveGeogitDir;
+import org.locationtech.geogig.api.plumbing.ResolveGeogigDir;
 
 import com.google.common.base.Throwables;
 
@@ -21,11 +21,11 @@ import com.google.common.base.Throwables;
  * If the folder is not found, it will be created.
  * 
  */
-public class ResolveOSMMappingLogFolder extends AbstractGeoGitOp<File> {
+public class ResolveOSMMappingLogFolder extends AbstractGeoGigOp<File> {
 
     @Override
     protected File _call() {
-        final URL geogitDirUrl = command(ResolveGeogitDir.class).call().get();
+        final URL geogitDirUrl = command(ResolveGeogigDir.class).call().get();
         File repoDir;
         try {
             repoDir = new File(geogitDirUrl.toURI());

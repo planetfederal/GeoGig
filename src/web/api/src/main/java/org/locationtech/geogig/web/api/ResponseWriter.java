@@ -23,7 +23,7 @@ import org.locationtech.geogig.api.Bucket;
 import org.locationtech.geogig.api.Context;
 import org.locationtech.geogig.api.FeatureBuilder;
 import org.locationtech.geogig.api.FeatureInfo;
-import org.locationtech.geogig.api.GeogitSimpleFeature;
+import org.locationtech.geogig.api.GeogigSimpleFeature;
 import org.locationtech.geogig.api.Node;
 import org.locationtech.geogig.api.NodeRef;
 import org.locationtech.geogig.api.ObjectId;
@@ -853,7 +853,7 @@ public class ResponseWriter {
 
                             RevFeature revFeature = (RevFeature) feature.get();
                             FeatureBuilder builder = new FeatureBuilder(featureType);
-                            GeogitSimpleFeature simpleFeature = (GeogitSimpleFeature) builder
+                            GeogigSimpleFeature simpleFeature = (GeogigSimpleFeature) builder
                                     .build(revFeature.getId().toString(), revFeature);
                             change = new GeometryChange(simpleFeature, input.changeType(), path,
                                     crsCode);
@@ -865,7 +865,7 @@ public class ResponseWriter {
         while (changeIterator.hasNext() && (elementsPerPage == 0 || counter < elementsPerPage)) {
             GeometryChange next = changeIterator.next();
             if (next != null) {
-                GeogitSimpleFeature feature = next.getFeature();
+                GeogigSimpleFeature feature = next.getFeature();
                 ChangeType change = next.getChangeType();
                 out.writeStartElement("Feature");
                 writeElement("change", change.toString());
@@ -978,7 +978,7 @@ public class ResponseWriter {
                             }
 
                             FeatureBuilder builder = new FeatureBuilder(type);
-                            GeogitSimpleFeature simpleFeature = (GeogitSimpleFeature) builder
+                            GeogigSimpleFeature simpleFeature = (GeogigSimpleFeature) builder
                                     .build(feature.getId().toString(), feature);
                             Geometry geom = null;
                             List<Object> attributes = simpleFeature.getAttributes();
@@ -1051,7 +1051,7 @@ public class ResponseWriter {
                         }
 
                         FeatureBuilder builder = new FeatureBuilder(featureType);
-                        GeogitSimpleFeature simpleFeature = (GeogitSimpleFeature) builder.build(
+                        GeogigSimpleFeature simpleFeature = (GeogigSimpleFeature) builder.build(
                                 revFeature.getId().toString(), revFeature);
                         change = new GeometryChange(simpleFeature, ChangeType.MODIFIED, input
                                 .getPath(), crsCode);
@@ -1062,7 +1062,7 @@ public class ResponseWriter {
         while (changeIterator.hasNext()) {
             GeometryChange next = changeIterator.next();
             if (next != null) {
-                GeogitSimpleFeature feature = next.getFeature();
+                GeogigSimpleFeature feature = next.getFeature();
                 out.writeStartElement("Feature");
                 writeElement("change", "MERGED");
                 writeElement("id", next.getPath());
@@ -1212,7 +1212,7 @@ public class ResponseWriter {
     }
 
     private class GeometryChange {
-        private GeogitSimpleFeature feature;
+        private GeogigSimpleFeature feature;
 
         private ChangeType changeType;
 
@@ -1220,7 +1220,7 @@ public class ResponseWriter {
 
         private String crs;
 
-        public GeometryChange(GeogitSimpleFeature feature, ChangeType changeType, String path,
+        public GeometryChange(GeogigSimpleFeature feature, ChangeType changeType, String path,
                 String crs) {
             this.feature = feature;
             this.changeType = changeType;
@@ -1228,7 +1228,7 @@ public class ResponseWriter {
             this.crs = crs;
         }
 
-        public GeogitSimpleFeature getFeature() {
+        public GeogigSimpleFeature getFeature() {
             return feature;
         }
 

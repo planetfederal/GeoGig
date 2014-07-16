@@ -6,7 +6,7 @@ package org.locationtech.geogig.web.api.commands;
 
 import javax.annotation.Nullable;
 
-import org.locationtech.geogig.api.GeogitTransaction;
+import org.locationtech.geogig.api.GeogigTransaction;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.Ref;
 import org.locationtech.geogig.api.RevCommit;
@@ -90,7 +90,7 @@ public class MergeWebOp extends AbstractWebAPICommand {
             throw new CommandSpecException("No commits were specified for merging.");
         }
 
-        final GeogitTransaction transaction = (GeogitTransaction) this.getCommandLocator(context);
+        final GeogigTransaction transaction = (GeogigTransaction) this.getCommandLocator(context);
 
         final Optional<Ref> currHead = transaction.command(RefParse.class).setName(Ref.HEAD).call();
         if (!currHead.isPresent()) {

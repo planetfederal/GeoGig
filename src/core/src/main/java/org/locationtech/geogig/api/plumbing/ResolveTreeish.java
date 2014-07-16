@@ -8,7 +8,7 @@ package org.locationtech.geogig.api.plumbing;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.RevCommit;
 import org.locationtech.geogig.api.RevObject.TYPE;
@@ -20,7 +20,7 @@ import com.google.common.base.Optional;
 /**
  * Resolves the given "ref spec" to a tree id in the repository's object database.
  */
-public class ResolveTreeish extends AbstractGeoGitOp<Optional<ObjectId>> {
+public class ResolveTreeish extends AbstractGeoGigOp<Optional<ObjectId>> {
 
     private String treeishRefSpec;
 

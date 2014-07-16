@@ -9,9 +9,9 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.Platform;
-import org.locationtech.geogig.api.plumbing.ResolveGeogitDir;
+import org.locationtech.geogig.api.plumbing.ResolveGeogigDir;
 
 import com.google.common.base.Throwables;
 import com.google.common.io.Files;
@@ -24,11 +24,11 @@ import com.google.common.io.Files;
  * will be created as needed.
  * 
  */
-public class ResolveOSMLogfile extends AbstractGeoGitOp<URL> {
+public class ResolveOSMLogfile extends AbstractGeoGigOp<URL> {
 
     @Override
     protected URL _call() {
-        final URL geogitDirUrl = command(ResolveGeogitDir.class).call().get();
+        final URL geogitDirUrl = command(ResolveGeogigDir.class).call().get();
         File repoDir;
         try {
             repoDir = new File(geogitDirUrl.toURI());

@@ -52,13 +52,13 @@ import com.google.common.collect.Lists;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.LineString;
 
-public class GeoGitDataStoreTest extends RepositoryTestCase {
+public class GeoGigDataStoreTest extends RepositoryTestCase {
 
-    private GeoGitDataStore dataStore;
+    private GeoGigDataStore dataStore;
 
     @Override
     protected void setUpInternal() throws Exception {
-        dataStore = new GeoGitDataStore(geogit);
+        dataStore = new GeoGigDataStore(geogit);
     }
 
     @Override
@@ -291,7 +291,7 @@ public class GeoGitDataStoreTest extends RepositoryTestCase {
         }
         commit();
         source = dataStore.getFeatureSource(RepositoryTestCase.linesTypeName);
-        assertTrue(source instanceof GeogitFeatureStore);
+        assertTrue(source instanceof GeogigFeatureStore);
 
         try {
             dataStore.getFeatureSource(RepositoryTestCase.pointsTypeName);
@@ -303,7 +303,7 @@ public class GeoGitDataStoreTest extends RepositoryTestCase {
         insertAndAdd(points1);
         commit();
         source = dataStore.getFeatureSource(RepositoryTestCase.pointsTypeName);
-        assertTrue(source instanceof GeogitFeatureStore);
+        assertTrue(source instanceof GeogigFeatureStore);
     }
 
     @Test
@@ -320,7 +320,7 @@ public class GeoGitDataStoreTest extends RepositoryTestCase {
         insertAndAdd(lines1);
         commit();
         source = dataStore.getFeatureSource(RepositoryTestCase.linesName);
-        assertTrue(source instanceof GeogitFeatureStore);
+        assertTrue(source instanceof GeogigFeatureStore);
 
         try {
             dataStore.getFeatureSource(RepositoryTestCase.pointsName);
@@ -332,7 +332,7 @@ public class GeoGitDataStoreTest extends RepositoryTestCase {
         insertAndAdd(points1);
         commit();
         source = dataStore.getFeatureSource(RepositoryTestCase.pointsName);
-        assertTrue(source instanceof GeogitFeatureStore);
+        assertTrue(source instanceof GeogigFeatureStore);
     }
 
     @Test

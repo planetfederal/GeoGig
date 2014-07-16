@@ -9,7 +9,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.Ref;
 import org.locationtech.geogig.api.SymRef;
@@ -23,7 +23,7 @@ import com.google.common.collect.ImmutableSet;
 /**
  * Resolve a ref name to the stored {@link Ref reference} object
  */
-public class RefParse extends AbstractGeoGitOp<Optional<Ref>> {
+public class RefParse extends AbstractGeoGigOp<Optional<Ref>> {
 
     private static final Set<String> STANDARD_REFS = ImmutableSet.of(Ref.HEAD, Ref.MASTER,
             Ref.ORIGIN, Ref.STAGE_HEAD, Ref.WORK_HEAD);

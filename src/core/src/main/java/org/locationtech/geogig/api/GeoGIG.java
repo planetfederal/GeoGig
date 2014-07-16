@@ -11,7 +11,7 @@ import java.net.URL;
 
 import javax.annotation.Nullable;
 
-import org.locationtech.geogig.api.plumbing.ResolveGeogitDir;
+import org.locationtech.geogig.api.plumbing.ResolveGeogigDir;
 import org.locationtech.geogig.api.plumbing.diff.DiffObjectCount;
 import org.locationtech.geogig.api.porcelain.InitOp;
 import org.locationtech.geogig.repository.Repository;
@@ -28,7 +28,7 @@ import com.google.common.base.Throwables;
  * </p>
  * 
  */
-public class GeoGIT {
+public class GeoGIG {
 
     private Context context;
 
@@ -37,7 +37,7 @@ public class GeoGIT {
     /**
      * Constructs a new instance of the GeoGit facade.
      */
-    public GeoGIT() {
+    public GeoGIG() {
         context = GlobalContextBuilder.builder.build();
     }
 
@@ -46,7 +46,7 @@ public class GeoGIT {
      * 
      * @param workingDir the working directory for this instance of GeoGit
      */
-    public GeoGIT(File workingDir) {
+    public GeoGIG(File workingDir) {
         this();
         context.platform().setWorkingDir(workingDir);
     }
@@ -57,7 +57,7 @@ public class GeoGIT {
      * @param injector the injector to use
      * @see Context
      */
-    public GeoGIT(final Context injector) {
+    public GeoGIG(final Context injector) {
         this(injector, null);
     }
 
@@ -69,7 +69,7 @@ public class GeoGIT {
      * @param workingDir the working directory for this instance of GeoGit
      * @see Context
      */
-    public GeoGIT(final Context injector, @Nullable final File workingDir) {
+    public GeoGIG(final Context injector, @Nullable final File workingDir) {
         Preconditions.checkNotNull(injector, "injector");
         this.context = injector;
         if (workingDir != null) {
@@ -95,7 +95,7 @@ public class GeoGIT {
      * @param commandClass the kind of command to locate and instantiate
      * @return a new instance of the requested command class, with its dependencies resolved
      */
-    public <T extends AbstractGeoGitOp<?>> T command(Class<T> commandClass) {
+    public <T extends AbstractGeoGigOp<?>> T command(Class<T> commandClass) {
         return context.command(commandClass);
     }
 
@@ -138,7 +138,7 @@ public class GeoGIT {
             return repository;
         }
 
-        final Optional<URL> repoLocation = command(ResolveGeogitDir.class).call();
+        final Optional<URL> repoLocation = command(ResolveGeogigDir.class).call();
         if (repoLocation.isPresent()) {
             try {
                 repository = context.repository();

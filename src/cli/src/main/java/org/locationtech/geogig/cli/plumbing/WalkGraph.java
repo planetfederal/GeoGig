@@ -16,7 +16,7 @@ import org.locationtech.geogig.api.plumbing.CreateDeduplicator;
 import org.locationtech.geogig.api.plumbing.WalkGraphOp;
 import org.locationtech.geogig.cli.AbstractCommand;
 import org.locationtech.geogig.cli.CLICommand;
-import org.locationtech.geogig.cli.GeogitCLI;
+import org.locationtech.geogig.cli.GeogigCLI;
 import org.locationtech.geogig.cli.annotation.ReadOnly;
 import org.locationtech.geogig.storage.Deduplicator;
 
@@ -40,7 +40,7 @@ public class WalkGraph extends AbstractCommand implements CLICommand {
     private boolean verbose;
 
     @Override
-    public void runInternal(GeogitCLI cli) throws IOException {
+    public void runInternal(GeogigCLI cli) throws IOException {
         String ref;
         if (refList.isEmpty()) {
             ref = null;

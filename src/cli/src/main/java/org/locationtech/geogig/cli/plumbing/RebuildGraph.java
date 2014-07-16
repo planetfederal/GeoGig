@@ -13,7 +13,7 @@ import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.plumbing.RebuildGraphOp;
 import org.locationtech.geogig.cli.AbstractCommand;
 import org.locationtech.geogig.cli.CLICommand;
-import org.locationtech.geogig.cli.GeogitCLI;
+import org.locationtech.geogig.cli.GeogigCLI;
 import org.locationtech.geogig.cli.annotation.StagingDatabaseReadOnly;
 
 import com.beust.jcommander.Parameter;
@@ -33,7 +33,7 @@ public class RebuildGraph extends AbstractCommand implements CLICommand {
     private boolean quiet = false;
 
     @Override
-    public void runInternal(GeogitCLI cli) throws IOException {
+    public void runInternal(GeogigCLI cli) throws IOException {
         ImmutableList<ObjectId> updatedObjects = cli.getGeogit().command(RebuildGraphOp.class)
                 .call();
 

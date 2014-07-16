@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.List;
 
-import org.locationtech.geogig.api.GeoGIT;
+import org.locationtech.geogig.api.GeoGIG;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.Ref;
 import org.locationtech.geogig.api.plumbing.RefParse;
@@ -55,11 +55,11 @@ public class EndPush extends Resource {
             Request request = getRequest();
             try {
                 ClientInfo info = request.getClientInfo();
-                Optional<GeoGIT> ggit = getGeogit(request);
+                Optional<GeoGIG> ggit = getGeogit(request);
                 Preconditions.checkState(ggit.isPresent());
                 Form options = request.getResourceRef().getQueryAsForm();
 
-                final GeoGIT geogit = ggit.get();
+                final GeoGIG geogit = ggit.get();
 
                 // make a combined ip address to handle requests from multiple machines in the same
                 // external network.

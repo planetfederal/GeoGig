@@ -12,7 +12,7 @@ import org.geotools.data.DataStore;
 import org.locationtech.geogig.api.ProgressListener;
 import org.locationtech.geogig.cli.CLICommand;
 import org.locationtech.geogig.cli.CommandFailedException;
-import org.locationtech.geogig.cli.GeogitCLI;
+import org.locationtech.geogig.cli.GeogigCLI;
 import org.locationtech.geogig.cli.InvalidParameterException;
 import org.locationtech.geogig.cli.annotation.ObjectDatabaseReadOnly;
 import org.locationtech.geogig.geotools.plumbing.GeoToolsOpException;
@@ -74,7 +74,7 @@ public class ShpImport extends AbstractShpCommand implements CLICommand {
      * Executes the import command using the provided options.
      */
     @Override
-    protected void runInternal(GeogitCLI cli) throws IOException {
+    protected void runInternal(GeogigCLI cli) throws IOException {
         checkParameter(shapeFile != null && !shapeFile.isEmpty(), "No shapefile specified");
 
         for (String shp : shapeFile) {

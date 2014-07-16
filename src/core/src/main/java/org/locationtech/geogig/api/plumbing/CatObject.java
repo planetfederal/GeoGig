@@ -9,7 +9,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.RevObject;
 import org.locationtech.geogig.storage.ObjectWriter;
 import org.locationtech.geogig.storage.text.TextSerializationFactory;
@@ -21,7 +21,7 @@ import com.google.common.base.Supplier;
 /**
  * Provides content information for repository objects
  */
-public class CatObject extends AbstractGeoGitOp<CharSequence> {
+public class CatObject extends AbstractGeoGigOp<CharSequence> {
 
     private Supplier<? extends RevObject> object;
 

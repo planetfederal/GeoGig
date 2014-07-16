@@ -20,7 +20,7 @@ import org.locationtech.geogig.api.Platform;
 /**
  *
  */
-public class ResolveGeogitDirTest {
+public class ResolveGeogigDirTest {
 
     @Rule
     public TemporaryFolder tmpFolder = new TemporaryFolder();
@@ -35,18 +35,18 @@ public class ResolveGeogitDirTest {
         Platform platform = mock(Platform.class);
         when(platform.pwd()).thenReturn(workingDir);
 
-        URL resolvedRepoDir = new ResolveGeogitDir(platform).call().get();
+        URL resolvedRepoDir = new ResolveGeogigDir(platform).call().get();
         assertEquals(fakeRepo.toURI().toURL(), resolvedRepoDir);
 
         workingDir = new File(new File(workingDir, "subdir1"), "subdir2");
         workingDir.mkdirs();
         when(platform.pwd()).thenReturn(workingDir);
 
-        resolvedRepoDir = new ResolveGeogitDir(platform).call().get();
+        resolvedRepoDir = new ResolveGeogigDir(platform).call().get();
         assertEquals(fakeRepo.toURI().toURL(), resolvedRepoDir);
 
         when(platform.pwd()).thenReturn(tmpFolder.getRoot());
-        assertFalse(new ResolveGeogitDir(platform).call().isPresent());
+        assertFalse(new ResolveGeogigDir(platform).call().isPresent());
 
     }
 

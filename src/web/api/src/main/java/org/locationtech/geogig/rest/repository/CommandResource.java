@@ -19,7 +19,7 @@ import javax.xml.stream.XMLStreamWriter;
 
 import org.codehaus.jettison.mapped.MappedNamespaceConvention;
 import org.codehaus.jettison.mapped.MappedXMLStreamWriter;
-import org.locationtech.geogig.api.GeoGIT;
+import org.locationtech.geogig.api.GeoGIG;
 import org.locationtech.geogig.web.api.CommandBuilder;
 import org.locationtech.geogig.web.api.CommandContext;
 import org.locationtech.geogig.web.api.CommandResponse;
@@ -88,7 +88,7 @@ public class CommandResource extends Resource {
 
     private Representation runCommand(Variant variant, Request request) {
 
-        final Optional<GeoGIT> geogit = getGeogit(request);
+        final Optional<GeoGIG> geogit = getGeogit(request);
         Preconditions.checkState(geogit.isPresent());
 
         Representation rep = null;
@@ -178,14 +178,14 @@ public class CommandResource extends Resource {
 
         StreamResponse streamContent = null;
 
-        final GeoGIT geogit;
+        final GeoGIG geogit;
 
-        RestletContext(GeoGIT geogit) {
+        RestletContext(GeoGIG geogit) {
             this.geogit = geogit;
         }
 
         @Override
-        public GeoGIT getGeoGIT() {
+        public GeoGIG getGeoGIT() {
             return geogit;
         }
 

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.NodeRef;
 import org.locationtech.geogig.api.plumbing.FindTreeChild;
 import org.locationtech.geogig.api.plumbing.diff.DiffEntry;
@@ -24,7 +24,7 @@ import com.google.common.base.Preconditions;
  * 
  */
 @CanRunDuringConflict
-public class RemoveOp extends AbstractGeoGitOp<WorkingTree> {
+public class RemoveOp extends AbstractGeoGigOp<WorkingTree> {
 
     private List<String> pathsToRemove;
 

@@ -4,7 +4,7 @@
  */
 package org.locationtech.geogig.web.api;
 
-import org.locationtech.geogig.api.GeoGIT;
+import org.locationtech.geogig.api.GeoGIG;
 
 /**
  *
@@ -12,9 +12,9 @@ import org.locationtech.geogig.api.GeoGIT;
 public interface CommandContext {
 
     /**
-     * @return the {@link GeoGIT} for this context.
+     * @return the {@link GeoGIG} for this context.
      */
-    GeoGIT getGeoGIT();
+    GeoGIG getGeoGIT();
 
     /**
      * Sets the response for the context.

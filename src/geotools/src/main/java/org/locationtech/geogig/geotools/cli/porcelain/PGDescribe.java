@@ -12,7 +12,7 @@ import java.util.Map.Entry;
 import org.geotools.data.DataStore;
 import org.locationtech.geogig.cli.CLICommand;
 import org.locationtech.geogig.cli.CommandFailedException;
-import org.locationtech.geogig.cli.GeogitCLI;
+import org.locationtech.geogig.cli.GeogigCLI;
 import org.locationtech.geogig.cli.annotation.ReadOnly;
 import org.locationtech.geogig.geotools.plumbing.DescribeOp;
 import org.locationtech.geogig.geotools.plumbing.GeoToolsOpException;
@@ -42,7 +42,7 @@ public class PGDescribe extends AbstractPGCommand implements CLICommand {
      * Executes the describe command using the provided options.
      */
     @Override
-    protected void runInternal(GeogitCLI cli) throws IOException {
+    protected void runInternal(GeogigCLI cli) throws IOException {
         DataStore dataStore = getDataStore();
 
         try {

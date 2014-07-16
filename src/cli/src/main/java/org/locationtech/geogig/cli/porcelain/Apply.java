@@ -17,7 +17,7 @@ import java.util.List;
 
 import jline.console.ConsoleReader;
 
-import org.locationtech.geogig.api.GeoGIT;
+import org.locationtech.geogig.api.GeoGIG;
 import org.locationtech.geogig.api.plumbing.diff.Patch;
 import org.locationtech.geogig.api.plumbing.diff.PatchSerializer;
 import org.locationtech.geogig.api.plumbing.diff.VerifyPatchOp;
@@ -26,7 +26,7 @@ import org.locationtech.geogig.api.porcelain.ApplyPatchOp;
 import org.locationtech.geogig.api.porcelain.CannotApplyPatchException;
 import org.locationtech.geogig.cli.AbstractCommand;
 import org.locationtech.geogig.cli.CommandFailedException;
-import org.locationtech.geogig.cli.GeogitCLI;
+import org.locationtech.geogig.cli.GeogigCLI;
 
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
@@ -69,12 +69,12 @@ public class Apply extends AbstractCommand {
     private boolean summary;
 
     @Override
-    public void runInternal(GeogitCLI cli) throws IOException {
+    public void runInternal(GeogigCLI cli) throws IOException {
         checkParameter(patchFiles.size() < 2, "Only one single patch file accepted");
         checkParameter(!patchFiles.isEmpty(), "No patch file specified");
 
         ConsoleReader console = cli.getConsole();
-        GeoGIT geogit = cli.getGeogit();
+        GeoGIG geogit = cli.getGeogit();
 
         File patchFile = new File(patchFiles.get(0));
         checkParameter(patchFile.exists(), "Patch file cannot be found");

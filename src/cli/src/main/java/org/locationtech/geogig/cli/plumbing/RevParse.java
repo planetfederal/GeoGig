@@ -13,11 +13,11 @@ import java.util.List;
 
 import jline.console.ConsoleReader;
 
-import org.locationtech.geogig.api.GeoGIT;
+import org.locationtech.geogig.api.GeoGIG;
 import org.locationtech.geogig.api.ObjectId;
-import org.locationtech.geogig.api.plumbing.ResolveGeogitDir;
+import org.locationtech.geogig.api.plumbing.ResolveGeogigDir;
 import org.locationtech.geogig.cli.AbstractCommand;
-import org.locationtech.geogig.cli.GeogitCLI;
+import org.locationtech.geogig.cli.GeogigCLI;
 import org.locationtech.geogig.cli.annotation.ReadOnly;
 import org.locationtech.geogig.repository.Hints;
 
@@ -55,8 +55,8 @@ public class RevParse extends AbstractCommand {
      * Executes the rev-parse command using the provided options.
      */
     @Override
-    protected void runInternal(GeogitCLI cli) throws IOException {
-        GeoGIT geogit = cli.getGeogit();
+    protected void runInternal(GeogigCLI cli) throws IOException {
+        GeoGIG geogit = cli.getGeogit();
 
         if (!refSpecs.isEmpty()) {
             checkParameter(!(resolve_geogit_dir || is_inside_work_tree),
@@ -92,8 +92,8 @@ public class RevParse extends AbstractCommand {
         }
     }
 
-    private void isInsideWorkTree(ConsoleReader console, GeoGIT geogit) throws IOException {
-        Optional<URL> repoUrl = geogit.command(ResolveGeogitDir.class).call();
+    private void isInsideWorkTree(ConsoleReader console, GeoGIG geogit) throws IOException {
+        Optional<URL> repoUrl = geogit.command(ResolveGeogigDir.class).call();
 
         File pwd = geogit.getPlatform().pwd();
 
@@ -106,9 +106,9 @@ public class RevParse extends AbstractCommand {
         }
     }
 
-    private void resolveGeogitDir(ConsoleReader console, GeoGIT geogit) throws IOException {
+    private void resolveGeogitDir(ConsoleReader console, GeoGIG geogit) throws IOException {
 
-        URL repoUrl = geogit.command(ResolveGeogitDir.class).call().orNull();
+        URL repoUrl = geogit.command(ResolveGeogigDir.class).call().orNull();
         if (null == repoUrl) {
             File currDir = geogit.getPlatform().pwd();
             console.println("Error: not a geogit dir '"

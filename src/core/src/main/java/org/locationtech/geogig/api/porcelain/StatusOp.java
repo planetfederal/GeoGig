@@ -6,7 +6,7 @@ package org.locationtech.geogig.api.porcelain;
 
 import java.util.Iterator;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.plumbing.DiffIndex;
 import org.locationtech.geogig.api.plumbing.DiffWorkTree;
 import org.locationtech.geogig.api.plumbing.diff.DiffEntry;
@@ -22,7 +22,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterators;
 
 @CanRunDuringConflict
-public class StatusOp extends AbstractGeoGitOp<StatusOp.StatusSummary> {
+public class StatusOp extends AbstractGeoGigOp<StatusOp.StatusSummary> {
 
     public static class StatusSummary {
 

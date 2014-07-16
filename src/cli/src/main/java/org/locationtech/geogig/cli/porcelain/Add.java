@@ -11,14 +11,14 @@ import java.util.List;
 
 import jline.console.ConsoleReader;
 
-import org.locationtech.geogig.api.GeoGIT;
+import org.locationtech.geogig.api.GeoGIG;
 import org.locationtech.geogig.api.plumbing.diff.DiffObjectCount;
 import org.locationtech.geogig.api.plumbing.merge.Conflict;
 import org.locationtech.geogig.api.plumbing.merge.ConflictsReadOp;
 import org.locationtech.geogig.api.porcelain.AddOp;
 import org.locationtech.geogig.cli.AbstractCommand;
 import org.locationtech.geogig.cli.CLICommand;
-import org.locationtech.geogig.cli.GeogitCLI;
+import org.locationtech.geogig.cli.GeogigCLI;
 import org.locationtech.geogig.cli.InvalidParameterException;
 import org.locationtech.geogig.cli.annotation.ObjectDatabaseReadOnly;
 import org.locationtech.geogig.repository.WorkingTree;
@@ -67,11 +67,11 @@ public class Add extends AbstractCommand implements CLICommand {
      * Executes the add command using the provided options.
      * 
      * @param cli
-     * @see org.locationtech.geogig.cli.AbstractCommand#runInternal(org.locationtech.geogig.cli.GeogitCLI)
+     * @see org.locationtech.geogig.cli.AbstractCommand#runInternal(org.locationtech.geogig.cli.GeogigCLI)
      */
     @Override
-    public void runInternal(GeogitCLI cli) throws IOException {
-        final GeoGIT geogit = cli.getGeogit();
+    public void runInternal(GeogigCLI cli) throws IOException {
+        final GeoGIG geogit = cli.getGeogit();
 
         final ConsoleReader console = cli.getConsole();
 

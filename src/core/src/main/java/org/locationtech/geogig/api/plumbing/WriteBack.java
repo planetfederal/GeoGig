@@ -11,7 +11,7 @@ import static com.google.common.base.Preconditions.checkState;
 
 import javax.annotation.Nullable;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.Node;
 import org.locationtech.geogig.api.NodeRef;
 import org.locationtech.geogig.api.ObjectId;
@@ -41,7 +41,7 @@ import com.vividsolutions.jts.geom.Envelope;
  * @see RevObjectParse
  * @see FindTreeChild
  */
-public class WriteBack extends AbstractGeoGitOp<ObjectId> {
+public class WriteBack extends AbstractGeoGigOp<ObjectId> {
 
     private boolean indexDb;
 

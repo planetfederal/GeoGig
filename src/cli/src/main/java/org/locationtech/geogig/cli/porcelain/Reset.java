@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
-import org.locationtech.geogig.api.GeoGIT;
+import org.locationtech.geogig.api.GeoGIG;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.plumbing.DiffWorkTree;
 import org.locationtech.geogig.api.plumbing.RevParse;
@@ -20,7 +20,7 @@ import org.locationtech.geogig.api.porcelain.ResetOp.ResetMode;
 import org.locationtech.geogig.cli.AbstractCommand;
 import org.locationtech.geogig.cli.CLICommand;
 import org.locationtech.geogig.cli.CommandFailedException;
-import org.locationtech.geogig.cli.GeogitCLI;
+import org.locationtech.geogig.cli.GeogigCLI;
 import org.locationtech.geogig.cli.InvalidParameterException;
 import org.locationtech.geogig.cli.annotation.ObjectDatabaseReadOnly;
 
@@ -88,11 +88,11 @@ public class Reset extends AbstractCommand implements CLICommand {
      * Executes the reset command using the provided options.
      * 
      * @param cli
-     * @see org.locationtech.geogig.cli.AbstractCommand#runInternal(org.locationtech.geogig.cli.GeogitCLI)
+     * @see org.locationtech.geogig.cli.AbstractCommand#runInternal(org.locationtech.geogig.cli.GeogigCLI)
      */
     @Override
-    public void runInternal(GeogitCLI cli) {
-        final GeoGIT geogit = cli.getGeogit();
+    public void runInternal(GeogigCLI cli) {
+        final GeoGIG geogit = cli.getGeogit();
 
         ResetMode mode = resolveResetMode();
 

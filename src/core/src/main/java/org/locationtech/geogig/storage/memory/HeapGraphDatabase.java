@@ -15,7 +15,7 @@ import java.util.Map;
 
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.Platform;
-import org.locationtech.geogig.api.plumbing.ResolveGeogitDir;
+import org.locationtech.geogig.api.plumbing.ResolveGeogigDir;
 import org.locationtech.geogig.storage.GraphDatabase;
 
 import com.google.common.base.Function;
@@ -57,7 +57,7 @@ public class HeapGraphDatabase implements GraphDatabase {
             return;
         }
 
-        Optional<URL> url = new ResolveGeogitDir(platform).call();
+        Optional<URL> url = new ResolveGeogigDir(platform).call();
         if (url.isPresent()) {
             synchronized (graphs) {
                 URL key = url.get();
@@ -93,7 +93,7 @@ public class HeapGraphDatabase implements GraphDatabase {
             return;
         }
         graph = null;
-        Optional<URL> url = new ResolveGeogitDir(platform).call();
+        Optional<URL> url = new ResolveGeogigDir(platform).call();
         if (url.isPresent()) {
             synchronized (graphs) {
                 URL key = url.get();

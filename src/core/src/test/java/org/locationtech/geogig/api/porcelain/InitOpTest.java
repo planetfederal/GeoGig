@@ -34,7 +34,7 @@ import org.locationtech.geogig.api.Platform;
 import org.locationtech.geogig.api.Ref;
 import org.locationtech.geogig.api.RevTree;
 import org.locationtech.geogig.api.plumbing.RefParse;
-import org.locationtech.geogig.api.plumbing.ResolveGeogitDir;
+import org.locationtech.geogig.api.plumbing.ResolveGeogigDir;
 import org.locationtech.geogig.api.plumbing.UpdateRef;
 import org.locationtech.geogig.api.plumbing.UpdateSymRef;
 import org.locationtech.geogig.di.PluginDefaults;
@@ -190,10 +190,10 @@ public class InitOpTest {
         when(injector.repository()).thenReturn(mockRepo);
         init.setContext(injector);
 
-        assertTrue(ResolveGeogitDir.lookup(platform.pwd()).isPresent());
+        assertTrue(ResolveGeogigDir.lookup(platform.pwd()).isPresent());
         assertNotNull(init.call());
         verify(platform, atLeastOnce()).pwd();
-        assertTrue(ResolveGeogitDir.lookup(platform.pwd()).isPresent());
+        assertTrue(ResolveGeogigDir.lookup(platform.pwd()).isPresent());
 
         verify(injector, never()).command(eq(UpdateRef.class));
         verify(injector, never()).command(eq(UpdateSymRef.class));
@@ -210,7 +210,7 @@ public class InitOpTest {
 
         when(platform.pwd()).thenReturn(subDir);
 
-        assertTrue(ResolveGeogitDir.lookup(platform.pwd()).isPresent());
+        assertTrue(ResolveGeogigDir.lookup(platform.pwd()).isPresent());
         assertNotNull(init.call());
         verify(platform, atLeastOnce()).pwd();
     }

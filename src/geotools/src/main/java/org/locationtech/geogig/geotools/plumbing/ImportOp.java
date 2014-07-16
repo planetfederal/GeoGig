@@ -26,7 +26,7 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.type.AttributeDescriptorImpl;
 import org.geotools.filter.identity.FeatureIdImpl;
 import org.geotools.jdbc.JDBCFeatureSource;
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.FeatureBuilder;
 import org.locationtech.geogig.api.NodeRef;
 import org.locationtech.geogig.api.ProgressListener;
@@ -70,7 +70,7 @@ import com.vividsolutions.jts.geom.impl.PackedCoordinateSequenceFactory;
  * @see DataStore
  */
 @Hookable(name = "import")
-public class ImportOp extends AbstractGeoGitOp<RevTree> {
+public class ImportOp extends AbstractGeoGigOp<RevTree> {
 
     private boolean all = false;
 

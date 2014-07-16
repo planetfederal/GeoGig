@@ -4,7 +4,7 @@
  */
 package org.locationtech.geogig.api.porcelain;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.Node;
 import org.locationtech.geogig.api.NodeRef;
 import org.locationtech.geogig.api.ObjectId;
@@ -29,7 +29,7 @@ import com.vividsolutions.jts.geom.Envelope;
 // The annotation is here to allow this being run from the 'conflicts' command.
 // Other than that, there is no reason for this to be restricted to non-conflicting scenarios
 @CanRunDuringConflict
-public class FeatureNodeRefFromRefspec extends AbstractGeoGitOp<Optional<NodeRef>> {
+public class FeatureNodeRefFromRefspec extends AbstractGeoGigOp<Optional<NodeRef>> {
 
     private String ref;
 

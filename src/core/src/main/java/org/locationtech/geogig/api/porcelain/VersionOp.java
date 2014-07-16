@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.di.CanRunDuringConflict;
 
 import com.google.common.base.Throwables;
@@ -18,13 +18,13 @@ import com.google.common.base.Throwables;
  * 
  */
 @CanRunDuringConflict
-public class VersionOp extends AbstractGeoGitOp<VersionInfo> {
+public class VersionOp extends AbstractGeoGigOp<VersionInfo> {
 
     /**
      * Executes the Version operation.
      * 
      * @return the version info of the current build
-     * @see org.locationtech.geogig.api.AbstractGeoGitOp#call()
+     * @see org.locationtech.geogig.api.AbstractGeoGigOp#call()
      */
     protected VersionInfo _call() {
         Properties properties = new Properties();

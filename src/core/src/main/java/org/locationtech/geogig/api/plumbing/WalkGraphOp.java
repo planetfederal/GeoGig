@@ -6,7 +6,7 @@ package org.locationtech.geogig.api.plumbing;
 
 import java.util.Iterator;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.RevObject;
 import org.locationtech.geogig.repository.PostOrderIterator;
@@ -15,7 +15,7 @@ import org.locationtech.geogig.storage.Deduplicator;
 import com.google.common.base.Optional;
 import com.google.common.collect.Iterators;
 
-public class WalkGraphOp extends AbstractGeoGitOp<Iterator<RevObject>> {
+public class WalkGraphOp extends AbstractGeoGigOp<Iterator<RevObject>> {
 
     private String reference;
     

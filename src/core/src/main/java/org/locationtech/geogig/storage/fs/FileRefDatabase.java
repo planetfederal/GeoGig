@@ -21,7 +21,7 @@ import java.util.Map;
 
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.Platform;
-import org.locationtech.geogig.api.plumbing.ResolveGeogitDir;
+import org.locationtech.geogig.api.plumbing.ResolveGeogigDir;
 import org.locationtech.geogig.repository.RepositoryConnectionException;
 import org.locationtech.geogig.storage.AbstractRefDatabase;
 import org.locationtech.geogig.storage.ConfigDatabase;
@@ -61,7 +61,7 @@ public class FileRefDatabase extends AbstractRefDatabase {
      */
     @Override
     public void create() {
-        Optional<URL> envHome = new ResolveGeogitDir(platform).call();
+        Optional<URL> envHome = new ResolveGeogigDir(platform).call();
         checkState(envHome.isPresent(), "Not inside a geogit directory");
 
         final URL envURL = envHome.get();
@@ -193,7 +193,7 @@ public class FileRefDatabase extends AbstractRefDatabase {
      * @return
      */
     private File toFile(String refPath) {
-        Optional<URL> envHome = new ResolveGeogitDir(platform).call();
+        Optional<URL> envHome = new ResolveGeogigDir(platform).call();
 
         String[] path = refPath.split("/");
 
@@ -265,7 +265,7 @@ public class FileRefDatabase extends AbstractRefDatabase {
     public Map<String, String> getAll(String namespace) {
         File refsRoot;
         try {
-            Optional<URL> envHome = new ResolveGeogitDir(platform).call();
+            Optional<URL> envHome = new ResolveGeogigDir(platform).call();
             refsRoot = new File(envHome.get().toURI());
         } catch (Exception e) {
             throw Throwables.propagate(e);
@@ -350,7 +350,7 @@ public class FileRefDatabase extends AbstractRefDatabase {
 
     @Override
     public String toString() {
-        Optional<URL> envHome = new ResolveGeogitDir(platform).call();
+        Optional<URL> envHome = new ResolveGeogigDir(platform).call();
         return String.format("%s[geogit dir: %s]", getClass().getSimpleName(), envHome.orNull());
     }
 }

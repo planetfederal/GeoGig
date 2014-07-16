@@ -11,9 +11,9 @@ import java.io.File;
 import java.util.ServiceLoader;
 
 import org.junit.Test;
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.RevCommit;
-import org.locationtech.geogig.api.hooks.CannotRunGeogitOperationException;
+import org.locationtech.geogig.api.hooks.CannotRunGeogigOperationException;
 import org.locationtech.geogig.api.hooks.CommandHook;
 import org.locationtech.geogig.api.hooks.Scripting;
 import org.locationtech.geogig.api.porcelain.AddOp;
@@ -110,7 +110,7 @@ public class HooksTest extends RepositoryTestCase {
             geogit.command(CommitOp.class).setMessage("Message").call();
             fail();
         } catch (Exception e) {
-            assertTrue(e instanceof CannotRunGeogitOperationException);
+            assertTrue(e instanceof CannotRunGeogigOperationException);
         }
 
         // a hook that returns zero
@@ -163,7 +163,7 @@ public class HooksTest extends RepositoryTestCase {
             try {
                 insertAndAdd(points1);
                 fail("Expected pre hook exception");
-            } catch (CannotRunGeogitOperationException e) {
+            } catch (CannotRunGeogigOperationException e) {
                 assertEquals("expected", e.getMessage());
             }
             assertEquals(AddOp.class, ClasspathHookTest.PRE_OP.getClass());
@@ -206,9 +206,9 @@ public class HooksTest extends RepositoryTestCase {
         private static boolean POST_EXCEPTION_THROWN;
 
         @SuppressWarnings("rawtypes")
-        private static Class<? extends AbstractGeoGitOp> CAPTURE_CLASS;
+        private static Class<? extends AbstractGeoGigOp> CAPTURE_CLASS;
 
-        private static AbstractGeoGitOp<?> PRE_OP, POST_OP;
+        private static AbstractGeoGigOp<?> PRE_OP, POST_OP;
 
         public ClasspathHookTest() {
             reset();
@@ -218,7 +218,7 @@ public class HooksTest extends RepositoryTestCase {
             ENABLED = false;
             PRE_FAIL = false;
             POST_FAIL = false;
-            CAPTURE_CLASS = AbstractGeoGitOp.class;
+            CAPTURE_CLASS = AbstractGeoGigOp.class;
             PRE_OP = null;
             POST_OP = null;
             POST_EXCEPTION_THROWN = false;
@@ -226,9 +226,9 @@ public class HooksTest extends RepositoryTestCase {
 
         @SuppressWarnings("rawtypes")
         @Override
-        public boolean appliesTo(Class<? extends AbstractGeoGitOp<?>> clazz) {
+        public boolean appliesTo(Class<? extends AbstractGeoGigOp<?>> clazz) {
             boolean enabled = ENABLED;
-            Class<? extends AbstractGeoGitOp> captureClass = CAPTURE_CLASS;
+            Class<? extends AbstractGeoGigOp> captureClass = CAPTURE_CLASS;
             checkNotNull(clazz);
             checkNotNull(captureClass);
             boolean applies = enabled && CAPTURE_CLASS.equals(clazz);
@@ -236,19 +236,19 @@ public class HooksTest extends RepositoryTestCase {
         }
 
         @Override
-        public <C extends AbstractGeoGitOp<?>> C pre(C command)
-                throws CannotRunGeogitOperationException {
+        public <C extends AbstractGeoGigOp<?>> C pre(C command)
+                throws CannotRunGeogigOperationException {
             checkState(ENABLED);
             PRE_OP = command;
             if (PRE_FAIL) {
-                throw new CannotRunGeogitOperationException("expected");
+                throw new CannotRunGeogigOperationException("expected");
             }
             return command;
         }
 
         @SuppressWarnings("unchecked")
         @Override
-        public <T> T post(AbstractGeoGitOp<T> command, Object retVal, boolean success)
+        public <T> T post(AbstractGeoGigOp<T> command, Object retVal, boolean success)
                 throws Exception {
             checkState(ENABLED);
             POST_OP = command;

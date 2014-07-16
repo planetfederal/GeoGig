@@ -26,12 +26,12 @@ import jline.console.CursorBuffer;
 import org.locationtech.geogig.api.Context;
 import org.locationtech.geogig.api.DefaultPlatform;
 import org.locationtech.geogig.api.DefaultProgressListener;
-import org.locationtech.geogig.api.GeoGIT;
+import org.locationtech.geogig.api.GeoGIG;
 import org.locationtech.geogig.api.GlobalContextBuilder;
 import org.locationtech.geogig.api.Platform;
 import org.locationtech.geogig.api.ProgressListener;
-import org.locationtech.geogig.api.hooks.CannotRunGeogitOperationException;
-import org.locationtech.geogig.api.plumbing.ResolveGeogitDir;
+import org.locationtech.geogig.api.hooks.CannotRunGeogigOperationException;
+import org.locationtech.geogig.api.plumbing.ResolveGeogigDir;
 import org.locationtech.geogig.api.porcelain.ConfigException;
 import org.locationtech.geogig.api.porcelain.ConfigGet;
 import org.locationtech.geogig.cli.annotation.ObjectDatabaseReadOnly;
@@ -69,9 +69,9 @@ import com.google.inject.Module;
  * {@link Module} that implements {@link CLIModule} declared in any classpath's
  * {@code META-INF/services/com.google.inject.Module} file.
  */
-public class GeogitCLI {
+public class GeogigCLI {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(GeogitCLI.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(GeogigCLI.class);
 
     static {
         GlobalContextBuilder.builder = new CLIContextBuilder();
@@ -87,9 +87,9 @@ public class GeogitCLI {
 
     private Platform platform;
 
-    private GeoGIT geogit;
+    private GeoGIG geogit;
 
-    private final GeoGIT providedGeogit;
+    private final GeoGIG providedGeogit;
 
     private final ConsoleReader consoleReader;
 
@@ -108,14 +108,14 @@ public class GeogitCLI {
      * 
      * @param consoleReader
      */
-    public GeogitCLI(final ConsoleReader consoleReader) {
+    public GeogigCLI(final ConsoleReader consoleReader) {
         this(null, consoleReader);
     }
 
     /**
      * Constructor to use the provided {@code GeoGIT} instance and never try to close it.
      */
-    public GeogitCLI(final GeoGIT geogit, final ConsoleReader consoleReader) {
+    public GeogigCLI(final GeoGIG geogit, final ConsoleReader consoleReader) {
         this.consoleReader = consoleReader;
         this.platform = new DefaultPlatform();
         this.providedGeogit = geogit;
@@ -153,24 +153,24 @@ public class GeogitCLI {
      * 
      * @return the GeoGIT facade associated with the current repository, or {@code null} if there's
      *         no repository in the current {@link Platform#pwd() working directory}
-     * @see ResolveGeogitDir
+     * @see ResolveGeogigDir
      */
     @Nullable
-    public synchronized GeoGIT getGeogit() {
+    public synchronized GeoGIG getGeogit() {
         if (providedGeogit != null) {
             return providedGeogit;
         }
         if (geogit == null) {
-            GeoGIT geogit = loadRepository();
+            GeoGIG geogit = loadRepository();
             setGeogit(geogit);
         }
         return geogit;
     }
 
     @VisibleForTesting
-    public synchronized GeoGIT getGeogit(Hints hints) {
+    public synchronized GeoGIG getGeogit(Hints hints) {
         close();
-        GeoGIT geogit = loadRepository(hints);
+        GeoGIG geogit = loadRepository(hints);
         setGeogit(geogit);
         return geogit;
     }
@@ -180,7 +180,7 @@ public class GeogitCLI {
      * 
      * @param geogit
      */
-    public void setGeogit(@Nullable GeoGIT geogit) {
+    public void setGeogit(@Nullable GeoGIG geogit) {
         this.geogit = geogit;
     }
 
@@ -208,22 +208,22 @@ public class GeogitCLI {
     }
 
     /**
-     * Loads the repository _if_ inside a geogit repository and returns a configured {@link GeoGIT}
+     * Loads the repository _if_ inside a geogit repository and returns a configured {@link GeoGIG}
      * facade.
      * 
      * @return a geogit for the current repository or {@code null} if not inside a geogit repository
      *         directory.
      */
     @Nullable
-    private GeoGIT loadRepository() {
+    private GeoGIG loadRepository() {
         return loadRepository(this.hints);
     }
 
     @Nullable
-    private GeoGIT loadRepository(Hints hints) {
-        GeoGIT geogit = newGeoGIT(hints);
+    private GeoGIG loadRepository(Hints hints) {
+        GeoGIG geogit = newGeoGIT(hints);
 
-        if (geogit.command(ResolveGeogitDir.class).call().isPresent()) {
+        if (geogit.command(ResolveGeogigDir.class).call().isPresent()) {
             geogit.getRepository();
             return geogit;
         }
@@ -238,13 +238,13 @@ public class GeogitCLI {
      * 
      * @return the constructed GeoGIT.
      */
-    public GeoGIT newGeoGIT() {
+    public GeoGIG newGeoGIT() {
         return newGeoGIT(Hints.readWrite());
     }
 
-    public GeoGIT newGeoGIT(Hints hints) {
+    public GeoGIG newGeoGIT(Hints hints) {
         Context inj = newGeogitInjector(hints);
-        GeoGIT geogit = new GeoGIT(inj, platform.pwd());
+        GeoGIG geogit = new GeoGIG(inj, platform.pwd());
         try {
             geogit.getRepository();
         } catch (Exception e) {
@@ -319,7 +319,7 @@ public class GeogitCLI {
             throw Throwables.propagate(e);
         }
 
-        final GeogitCLI cli = new GeogitCLI(consoleReader);
+        final GeogigCLI cli = new GeogigCLI(consoleReader);
         addShutdownHook(cli);
         int exitCode = cli.execute(args);
 
@@ -386,7 +386,7 @@ public class GeogitCLI {
             exception = paramValidationError;
             consoleMessage = paramValidationError.getMessage();
 
-        } catch (CannotRunGeogitOperationException cannotRun) {
+        } catch (CannotRunGeogigOperationException cannotRun) {
 
             consoleMessage = cannotRun.getMessage();
 
@@ -435,7 +435,7 @@ public class GeogitCLI {
      * @throws exceptions thrown by the executed commands.
      */
     private void executeInternal(String... args) throws ParameterException, CommandFailedException,
-            IOException, CannotRunGeogitOperationException {
+            IOException, CannotRunGeogigOperationException {
 
         JCommander mainCommander = newCommandParser();
         if (null == args || args.length == 0) {
@@ -574,14 +574,14 @@ public class GeogitCLI {
         final String aliasedCommand = args[0];
         String configParam = "alias." + aliasedCommand;
         boolean closeGeogit = false;
-        GeoGIT geogit = this.providedGeogit == null ? this.geogit : this.providedGeogit;
+        GeoGIG geogit = this.providedGeogit == null ? this.geogit : this.providedGeogit;
         if (geogit == null) { // in case the repo is not initialized yet
             closeGeogit = true;
             geogit = newGeoGIT(Hints.readOnly());
         }
         try {
             Optional<String> unaliased = Optional.absent();
-            if (geogit.command(ResolveGeogitDir.class).call().isPresent()) {
+            if (geogit.command(ResolveGeogigDir.class).call().isPresent()) {
                 unaliased = geogit.command(ConfigGet.class).setName(configParam).call();
             }
             if (!unaliased.isPresent()) {
@@ -812,7 +812,7 @@ public class GeogitCLI {
         return this.progressListener;
     }
 
-    static void addShutdownHook(final GeogitCLI cli) {
+    static void addShutdownHook(final GeogigCLI cli) {
         // try to grafefully shutdown upon CTRL+C
         Runtime.getRuntime().addShutdownHook(new Thread() {
             @Override

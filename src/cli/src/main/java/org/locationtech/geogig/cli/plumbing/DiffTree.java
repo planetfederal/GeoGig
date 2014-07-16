@@ -12,7 +12,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.locationtech.geogig.api.GeoGIT;
+import org.locationtech.geogig.api.GeoGIG;
 import org.locationtech.geogig.api.NodeRef;
 import org.locationtech.geogig.api.RevFeature;
 import org.locationtech.geogig.api.RevFeatureType;
@@ -27,7 +27,7 @@ import org.locationtech.geogig.api.plumbing.diff.FeatureDiff;
 import org.locationtech.geogig.cli.AbstractCommand;
 import org.locationtech.geogig.cli.CLICommand;
 import org.locationtech.geogig.cli.CommandFailedException;
-import org.locationtech.geogig.cli.GeogitCLI;
+import org.locationtech.geogig.cli.GeogigCLI;
 import org.locationtech.geogig.cli.annotation.ReadOnly;
 import org.locationtech.geogig.storage.text.TextValueSerializer;
 import org.opengis.feature.type.PropertyDescriptor;
@@ -69,7 +69,7 @@ public class DiffTree extends AbstractCommand implements CLICommand {
      * Executes the diff-tree command with the specified options.
      */
     @Override
-    protected void runInternal(GeogitCLI cli) throws IOException {
+    protected void runInternal(GeogigCLI cli) throws IOException {
         if (refSpec.size() > 2) {
             throw new CommandFailedException("Tree refspecs list is too long :" + refSpec);
         }
@@ -79,7 +79,7 @@ public class DiffTree extends AbstractCommand implements CLICommand {
                     "Cannot use --describe and --tree-stats simultaneously");
         }
 
-        GeoGIT geogit = cli.getGeogit();
+        GeoGIG geogit = cli.getGeogit();
 
         org.locationtech.geogig.api.plumbing.DiffTree diff = geogit
                 .command(org.locationtech.geogig.api.plumbing.DiffTree.class);

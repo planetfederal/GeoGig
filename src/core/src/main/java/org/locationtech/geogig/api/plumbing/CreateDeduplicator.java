@@ -4,11 +4,11 @@
  */
 package org.locationtech.geogig.api.plumbing;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.storage.DeduplicationService;
 import org.locationtech.geogig.storage.Deduplicator;
 
-public class CreateDeduplicator extends AbstractGeoGitOp<Deduplicator> {
+public class CreateDeduplicator extends AbstractGeoGigOp<Deduplicator> {
 
     @Override
     protected  Deduplicator _call() {

@@ -5,7 +5,7 @@
 
 package org.locationtech.geogig.api.plumbing;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.Node;
 import org.locationtech.geogig.api.NodeRef;
 import org.locationtech.geogig.api.ObjectId;
@@ -25,7 +25,7 @@ import com.google.common.base.Preconditions;
  * @see RevParse
  * @see FindTreeChild
  */
-public class ResolveFeatureType extends AbstractGeoGitOp<Optional<RevFeatureType>> {
+public class ResolveFeatureType extends AbstractGeoGigOp<Optional<RevFeatureType>> {
 
     private String refSpec;
 

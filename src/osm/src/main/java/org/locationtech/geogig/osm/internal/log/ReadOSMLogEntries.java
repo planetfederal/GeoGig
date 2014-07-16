@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 
 import com.google.common.base.Charsets;
 import com.google.common.base.Throwables;
@@ -20,7 +20,7 @@ import com.google.common.io.LineProcessor;
 /**
  * Returns the set of entries of the OSM log in the current repository.
  */
-public class ReadOSMLogEntries extends AbstractGeoGitOp<List<OSMLogEntry>> {
+public class ReadOSMLogEntries extends AbstractGeoGigOp<List<OSMLogEntry>> {
 
     @Override
     protected List<OSMLogEntry> _call() {

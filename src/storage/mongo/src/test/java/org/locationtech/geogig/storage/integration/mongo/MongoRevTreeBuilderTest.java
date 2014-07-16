@@ -6,7 +6,7 @@ package org.locationtech.geogig.storage.integration.mongo;
 
 import org.junit.Test;
 import org.locationtech.geogig.api.Context;
-import org.locationtech.geogig.di.GeogitModule;
+import org.locationtech.geogig.di.GeogigModule;
 
 import com.google.inject.Guice;
 import com.google.inject.util.Modules;
@@ -16,7 +16,7 @@ public class MongoRevTreeBuilderTest extends
     @Override
     protected Context createInjector() {
         return Guice.createInjector(
-                Modules.override(new GeogitModule()).with(new MongoTestStorageModule()))
+                Modules.override(new GeogigModule()).with(new MongoTestStorageModule()))
                 .getInstance(Context.class);
     }
 

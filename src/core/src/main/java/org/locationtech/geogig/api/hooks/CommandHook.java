@@ -8,10 +8,10 @@ import java.util.ServiceLoader;
 
 import javax.annotation.concurrent.ThreadSafe;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 
 /**
- * An interface that defines hooks for {@link AbstractGeoGitOp command} written in Java as opposed
+ * An interface that defines hooks for {@link AbstractGeoGigOp command} written in Java as opposed
  * to a scripting language.
  * <p>
  * Implementations of this interface are discovered using the standard Java {@link ServiceLoader}
@@ -24,10 +24,10 @@ import org.locationtech.geogig.api.AbstractGeoGitOp;
 @ThreadSafe
 public interface CommandHook {
 
-    public <C extends AbstractGeoGitOp<?>> C pre(C command)
-            throws CannotRunGeogitOperationException;
+    public <C extends AbstractGeoGigOp<?>> C pre(C command)
+            throws CannotRunGeogigOperationException;
 
-    public <T> T post(AbstractGeoGitOp<T> command, Object retVal, boolean success) throws Exception;
+    public <T> T post(AbstractGeoGigOp<T> command, Object retVal, boolean success) throws Exception;
 
-    public boolean appliesTo(Class<? extends AbstractGeoGitOp<?>> clazz);
+    public boolean appliesTo(Class<? extends AbstractGeoGigOp<?>> clazz);
 }

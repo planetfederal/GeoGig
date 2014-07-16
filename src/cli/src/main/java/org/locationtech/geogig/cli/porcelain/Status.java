@@ -11,7 +11,7 @@ import jline.console.ConsoleReader;
 
 import org.fusesource.jansi.Ansi;
 import org.fusesource.jansi.Ansi.Color;
-import org.locationtech.geogig.api.GeoGIT;
+import org.locationtech.geogig.api.GeoGIG;
 import org.locationtech.geogig.api.NodeRef;
 import org.locationtech.geogig.api.Ref;
 import org.locationtech.geogig.api.SymRef;
@@ -23,7 +23,7 @@ import org.locationtech.geogig.api.porcelain.StatusOp;
 import org.locationtech.geogig.api.porcelain.StatusOp.StatusSummary;
 import org.locationtech.geogig.cli.AbstractCommand;
 import org.locationtech.geogig.cli.CLICommand;
-import org.locationtech.geogig.cli.GeogitCLI;
+import org.locationtech.geogig.cli.GeogigCLI;
 import org.locationtech.geogig.cli.annotation.ReadOnly;
 
 import com.beust.jcommander.Parameter;
@@ -58,11 +58,11 @@ public class Status extends AbstractCommand implements CLICommand {
      * Executes the status command using the provided options.
      */
     @Override
-    public void runInternal(GeogitCLI cli) throws IOException {
+    public void runInternal(GeogigCLI cli) throws IOException {
         checkParameter(limit >= 0, "Limit must be 0 or greater.");
 
         ConsoleReader console = cli.getConsole();
-        GeoGIT geogit = cli.getGeogit();
+        GeoGIG geogit = cli.getGeogit();
 
         StatusOp op = geogit.command(StatusOp.class);
         StatusSummary summary = op.call();

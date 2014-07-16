@@ -10,9 +10,9 @@ import static org.locationtech.geogig.metrics.MetricsModule.METRICS_LOGGER;
 
 import java.util.concurrent.TimeUnit;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.Platform;
-import org.locationtech.geogig.api.hooks.CannotRunGeogitOperationException;
+import org.locationtech.geogig.api.hooks.CannotRunGeogigOperationException;
 import org.locationtech.geogig.api.hooks.CommandHook;
 import org.locationtech.geogig.api.porcelain.ConfigException;
 import org.locationtech.geogig.api.porcelain.ConfigException.StatusCode;
@@ -26,13 +26,13 @@ public class MeteredCommandHook implements CommandHook {
      * @return {@code true}, applies to all ops
      */
     @Override
-    public boolean appliesTo(Class<? extends AbstractGeoGitOp<?>> clazz) {
+    public boolean appliesTo(Class<? extends AbstractGeoGigOp<?>> clazz) {
         return true;
     }
 
     @Override
-    public <C extends AbstractGeoGitOp<?>> C pre(C command)
-            throws CannotRunGeogitOperationException {
+    public <C extends AbstractGeoGigOp<?>> C pre(C command)
+            throws CannotRunGeogigOperationException {
         Boolean enabled;
         if (command.context().repository() == null) {
             return command;
@@ -62,7 +62,7 @@ public class MeteredCommandHook implements CommandHook {
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> T post(AbstractGeoGitOp<T> command, Object retVal, boolean success) throws Exception {
+    public <T> T post(AbstractGeoGigOp<T> command, Object retVal, boolean success) throws Exception {
 
         CallStack stack = (CallStack) command.getClientData().get("metrics.callStack");
         if (stack == null || command.context().repository() == null) {

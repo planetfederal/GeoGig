@@ -7,13 +7,13 @@ package org.locationtech.geogig.cli.porcelain;
 
 import java.util.List;
 
-import org.locationtech.geogig.api.GeoGIT;
+import org.locationtech.geogig.api.GeoGIG;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.plumbing.RevParse;
 import org.locationtech.geogig.api.porcelain.CherryPickOp;
 import org.locationtech.geogig.cli.AbstractCommand;
 import org.locationtech.geogig.cli.CLICommand;
-import org.locationtech.geogig.cli.GeogitCLI;
+import org.locationtech.geogig.cli.GeogigCLI;
 
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
@@ -41,8 +41,8 @@ public class CherryPick extends AbstractCommand implements CLICommand {
     private List<String> commits = Lists.newArrayList();
 
     @Override
-    public void runInternal(GeogitCLI cli) {
-        final GeoGIT geogit = cli.getGeogit();
+    public void runInternal(GeogigCLI cli) {
+        final GeoGIG geogit = cli.getGeogit();
         checkParameter(commits.size() > 0, "No commits specified.");
         checkParameter(commits.size() < 2, "Too many commits specified.");
 

@@ -64,10 +64,10 @@ import com.vividsolutions.jts.geom.Envelope;
 /**
  *
  */
-class GeogitFeatureReader<T extends FeatureType, F extends Feature> implements FeatureReader<T, F>,
+class GeogigFeatureReader<T extends FeatureType, F extends Feature> implements FeatureReader<T, F>,
         Iterator<F> {
 
-    private static final Logger LOGGER = Logging.getLogger(GeogitFeatureReader.class);
+    private static final Logger LOGGER = Logging.getLogger(GeogigFeatureReader.class);
 
     private SimpleFeatureType schema;
 
@@ -146,7 +146,7 @@ class GeogitFeatureReader<T extends FeatureType, F extends Feature> implements F
      * @param filter
      * @param queryBounds
      */
-    public GeogitFeatureReader(final Context commandLocator, final SimpleFeatureType schema,
+    public GeogigFeatureReader(final Context commandLocator, final SimpleFeatureType schema,
             final Filter origFilter, final String typeTreePath, @Nullable final String headRef,
             @Nullable Integer offset, @Nullable Integer maxFeatures) {
 

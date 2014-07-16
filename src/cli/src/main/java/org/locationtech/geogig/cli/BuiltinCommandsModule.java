@@ -49,7 +49,7 @@ import org.locationtech.geogig.cli.porcelain.Version;
 import com.google.inject.AbstractModule;
 
 /**
- * Guice module providing builtin commands for the {@link GeogitCLI CLI} app.
+ * Guice module providing builtin commands for the {@link GeogigCLI CLI} app.
  * 
  * @see Add
  * @see Apply

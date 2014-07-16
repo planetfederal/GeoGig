@@ -12,7 +12,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.geotools.feature.simple.SimpleFeatureBuilder;
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.NodeRef;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.RevFeature;
@@ -50,7 +50,7 @@ import com.vividsolutions.jts.geom.Point;
  * Updates the raw OSM data of the repository (stored in the "node" and "way" trees), with the data
  * in a tree that represents a mapped version of that raw data
  */
-public class OSMUnmapOp extends AbstractGeoGitOp<RevTree> {
+public class OSMUnmapOp extends AbstractGeoGigOp<RevTree> {
 
     /**
      * To avoid having to create a feature from the revFeature object when the unmapped feature

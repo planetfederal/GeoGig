@@ -22,7 +22,7 @@ import java.util.List;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.Platform;
 import org.locationtech.geogig.api.RevObject;
-import org.locationtech.geogig.api.plumbing.ResolveGeogitDir;
+import org.locationtech.geogig.api.plumbing.ResolveGeogigDir;
 import org.locationtech.geogig.repository.RepositoryConnectionException;
 import org.locationtech.geogig.storage.AbstractObjectDatabase;
 import org.locationtech.geogig.storage.BulkOpListener;
@@ -98,7 +98,7 @@ public class FileObjectDatabase extends AbstractObjectDatabase implements Object
         if (isOpen()) {
             return;
         }
-        final Optional<URL> repoUrl = new ResolveGeogitDir(platform).call();
+        final Optional<URL> repoUrl = new ResolveGeogigDir(platform).call();
         checkState(repoUrl.isPresent(), "Can't find geogit repository home");
 
         try {

@@ -5,7 +5,7 @@
 
 package org.locationtech.geogig.api.plumbing;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.RevFeatureType;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.PropertyDescriptor;
@@ -16,7 +16,7 @@ import com.google.common.collect.ImmutableSet;
 /**
  * Retrieves the set of property descriptors for the given feature type.
  */
-public class DescribeFeatureType extends AbstractGeoGitOp<ImmutableSet<PropertyDescriptor>> {
+public class DescribeFeatureType extends AbstractGeoGigOp<ImmutableSet<PropertyDescriptor>> {
 
     private RevFeatureType featureType;
 

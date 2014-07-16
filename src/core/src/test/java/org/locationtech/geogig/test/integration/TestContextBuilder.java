@@ -8,7 +8,7 @@ import org.locationtech.geogig.api.Context;
 import org.locationtech.geogig.api.ContextBuilder;
 import org.locationtech.geogig.api.MemoryModule;
 import org.locationtech.geogig.api.Platform;
-import org.locationtech.geogig.di.GeogitModule;
+import org.locationtech.geogig.di.GeogigModule;
 import org.locationtech.geogig.repository.Hints;
 
 import com.google.inject.Guice;
@@ -25,7 +25,7 @@ public class TestContextBuilder extends ContextBuilder {
     @Override
     public Context build(Hints hints) {
         return Guice.createInjector(
-                Modules.override(new GeogitModule()).with(new MemoryModule(platform),
+                Modules.override(new GeogigModule()).with(new MemoryModule(platform),
                         new HintsModule(hints))).getInstance(Context.class);
     }
 

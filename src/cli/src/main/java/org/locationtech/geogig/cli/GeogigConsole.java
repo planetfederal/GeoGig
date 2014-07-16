@@ -24,11 +24,11 @@ import jline.console.completer.ArgumentCompleter;
 import jline.console.completer.Completer;
 import jline.console.completer.StringsCompleter;
 
-import org.locationtech.geogig.api.GeoGIT;
+import org.locationtech.geogig.api.GeoGIG;
 import org.locationtech.geogig.api.Ref;
 import org.locationtech.geogig.api.SymRef;
 import org.locationtech.geogig.api.plumbing.RefParse;
-import org.locationtech.geogig.api.plumbing.ResolveGeogitDir;
+import org.locationtech.geogig.api.plumbing.ResolveGeogigDir;
 import org.locationtech.geogig.repository.Hints;
 
 import com.beust.jcommander.JCommander;
@@ -40,7 +40,7 @@ import com.google.common.base.Throwables;
  * Provides the ability to execute several commands in succession without re-initializing GeoGit or
  * the command line interface.
  */
-public class GeogitConsole {
+public class GeogigConsole {
 
     private boolean interactive;
 
@@ -53,9 +53,9 @@ public class GeogitConsole {
         Logging.tryConfigureLogging();
         try {
             if (args.length == 1) {
-                new GeogitConsole().runFile(args[0]);
+                new GeogigConsole().runFile(args[0]);
             } else if (args.length == 0) {
-                new GeogitConsole().run();
+                new GeogigConsole().run();
             } else {
                 System.out.println("Too many arguments.\nUsage: geogit-console [batch_file]");
             }
@@ -109,7 +109,7 @@ public class GeogitConsole {
         // needed for CTRL+C not to let the console broken
         consoleReader.getTerminal().setEchoEnabled(interactive);
 
-        final GeogitCLI cli = new GeogitCLI(consoleReader);
+        final GeogigCLI cli = new GeogigCLI(consoleReader);
         if (interactive) {
             addCommandCompleter(consoleReader, cli);
         } else {
@@ -117,7 +117,7 @@ public class GeogitConsole {
             cli.disableProgressListener();
         }
 
-        GeogitCLI.addShutdownHook(cli);
+        GeogigCLI.addShutdownHook(cli);
 
         setPrompt(cli);
         cli.close();
@@ -140,7 +140,7 @@ public class GeogitConsole {
         }
     }
 
-    private void addCommandCompleter(ConsoleReader consoleReader, final GeogitCLI cli) {
+    private void addCommandCompleter(ConsoleReader consoleReader, final GeogigCLI cli) {
         final JCommander globalCommandParser = cli.newCommandParser();
 
         final Map<String, JCommander> commands = globalCommandParser.getCommands();
@@ -175,20 +175,20 @@ public class GeogitConsole {
      * 
      * @throws IOException
      */
-    private void setPrompt(GeogitCLI cli) throws IOException {
+    private void setPrompt(GeogigCLI cli) throws IOException {
         if (!interactive) {
             return;
         }
         String currentDir = new File(".").getCanonicalPath();
         String currentHead = "";
-        GeoGIT geogit;
+        GeoGIG geogit;
         try {
             geogit = cli.newGeoGIT(Hints.readOnly());
         } catch (Exception e) {
             geogit = null;
         }
         if (geogit != null) {
-            Optional<URL> dir = geogit.command(ResolveGeogitDir.class).call();
+            Optional<URL> dir = geogit.command(ResolveGeogigDir.class).call();
             if (dir.isPresent()) {
                 try {
                     Optional<Ref> ref = geogit.command(RefParse.class).setName(Ref.HEAD).call();
@@ -213,7 +213,7 @@ public class GeogitConsole {
         cli.getConsole().setPrompt(prompt);
     }
 
-    private void runInternal(final GeogitCLI cli) throws IOException {
+    private void runInternal(final GeogigCLI cli) throws IOException {
 
         final ConsoleReader consoleReader = cli.getConsole();
         while (true) {

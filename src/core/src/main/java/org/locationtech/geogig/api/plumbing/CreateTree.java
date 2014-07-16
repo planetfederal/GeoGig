@@ -5,7 +5,7 @@
 
 package org.locationtech.geogig.api.plumbing;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.RevTreeBuilder;
 import org.locationtech.geogig.api.plumbing.diff.MutableTree;
 import org.locationtech.geogig.storage.ObjectDatabase;
@@ -15,7 +15,7 @@ import org.locationtech.geogig.storage.StagingDatabase;
  * Creates a new {@link RevTreeBuilder} backed by the specified object database (the repository's by
  * default, or the staging area object database if so indicated)
  */
-public class CreateTree extends AbstractGeoGitOp<RevTreeBuilder> {
+public class CreateTree extends AbstractGeoGigOp<RevTreeBuilder> {
 
     private boolean index;
 

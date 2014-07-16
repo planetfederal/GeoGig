@@ -15,7 +15,7 @@ import java.util.List;
 
 import org.geotools.util.Range;
 import org.locationtech.geogig.api.Context;
-import org.locationtech.geogig.api.GeoGIT;
+import org.locationtech.geogig.api.GeoGIG;
 import org.locationtech.geogig.api.NodeRef;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.RevCommit;
@@ -329,7 +329,7 @@ public class Log extends AbstractWebAPICommand {
 
     }
 
-    private void writeCSV(GeoGIT geogit, Writer out, Iterator<RevCommit> log) throws Exception {
+    private void writeCSV(GeoGIG geogit, Writer out, Iterator<RevCommit> log) throws Exception {
         String response = "ChangeType,FeatureId,CommitId,Parent CommitIds,Author Name,Author Email,Author Commit Time,Committer Name,Committer Email,Committer Commit Time,Commit Message";
         out.write(response);
         response = "";

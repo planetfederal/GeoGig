@@ -8,7 +8,7 @@ package org.locationtech.geogig.api.data;
 import java.util.Iterator;
 import java.util.List;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.NodeRef;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.plumbing.LsTreeOp;
@@ -22,7 +22,7 @@ import com.google.common.collect.Iterators;
 /**
  * 
  */
-public class FindFeatureTypeTrees extends AbstractGeoGitOp<List<NodeRef>> {
+public class FindFeatureTypeTrees extends AbstractGeoGigOp<List<NodeRef>> {
 
     private String refSpec;
 

@@ -10,7 +10,7 @@ import java.net.URL;
 
 import javax.annotation.Nullable;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.Platform;
 
 import com.google.common.base.Optional;
@@ -25,15 +25,15 @@ import com.google.common.base.Throwables;
  * {@code .geogit} directory is found.
  * 
  */
-public class ResolveGeogitDir extends AbstractGeoGitOp<Optional<URL>> {
+public class ResolveGeogigDir extends AbstractGeoGigOp<Optional<URL>> {
 
     private Platform platform;
 
-    public ResolveGeogitDir() {
+    public ResolveGeogigDir() {
         //
     }
 
-    public ResolveGeogitDir(Platform platform) {
+    public ResolveGeogigDir(Platform platform) {
         this.platform = platform;
     }
 
@@ -53,12 +53,12 @@ public class ResolveGeogitDir extends AbstractGeoGitOp<Optional<URL>> {
     /**
      * @return the location of the {@code .geogit} repository environment directory or {@code null}
      *         if not inside a working directory
-     * @see org.locationtech.geogig.api.AbstractGeoGitOp#call()
+     * @see org.locationtech.geogig.api.AbstractGeoGigOp#call()
      */
     @Override
     protected Optional<URL> _call() {
         File pwd = platform().pwd();
-        Optional<URL> repoLocation = ResolveGeogitDir.lookup(pwd);
+        Optional<URL> repoLocation = ResolveGeogigDir.lookup(pwd);
         return repoLocation;
     }
 

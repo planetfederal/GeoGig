@@ -7,7 +7,7 @@ package org.locationtech.geogig.api.porcelain;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.FeatureBuilder;
 import org.locationtech.geogig.api.NodeRef;
 import org.locationtech.geogig.api.ObjectId;
@@ -30,7 +30,7 @@ import com.google.common.collect.Maps;
  * Creates a patch that represents the differences between to version of the repository *
  * 
  */
-public class CreatePatchOp extends AbstractGeoGitOp<Patch> {
+public class CreatePatchOp extends AbstractGeoGigOp<Patch> {
 
     /**
      * The differences between the two version of the repository that are to be stored in a patch

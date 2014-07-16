@@ -12,7 +12,7 @@ import java.util.List;
 import org.locationtech.geogig.cli.AbstractCommand;
 import org.locationtech.geogig.cli.CLICommand;
 import org.locationtech.geogig.cli.CommandFailedException;
-import org.locationtech.geogig.cli.GeogitCLI;
+import org.locationtech.geogig.cli.GeogigCLI;
 import org.locationtech.geogig.osm.internal.OSMApplyDiffOp;
 import org.locationtech.geogig.osm.internal.OSMReport;
 
@@ -31,7 +31,7 @@ public class OSMApplyDiff extends AbstractCommand implements CLICommand {
     public List<String> diffFilepath = Lists.newArrayList();
 
     @Override
-    protected void runInternal(GeogitCLI cli) throws IOException {
+    protected void runInternal(GeogigCLI cli) throws IOException {
         checkParameter(diffFilepath != null && diffFilepath.size() == 1,
                 "One file must be specified");
         File diffFile = new File(diffFilepath.get(0));

@@ -10,12 +10,12 @@ import java.util.List;
 
 import jline.console.ConsoleReader;
 
-import org.locationtech.geogig.api.GeoGIT;
+import org.locationtech.geogig.api.GeoGIG;
 import org.locationtech.geogig.api.Ref;
 import org.locationtech.geogig.api.plumbing.ForEachRef;
 import org.locationtech.geogig.cli.AbstractCommand;
 import org.locationtech.geogig.cli.CLICommand;
-import org.locationtech.geogig.cli.GeogitCLI;
+import org.locationtech.geogig.cli.GeogigCLI;
 import org.locationtech.geogig.cli.annotation.ReadOnly;
 
 import com.beust.jcommander.Parameter;
@@ -39,10 +39,10 @@ public class ShowRef extends AbstractCommand implements CLICommand {
     private List<String> patterns = new ArrayList<String>();
 
     @Override
-    public void runInternal(GeogitCLI cli) throws IOException {
+    public void runInternal(GeogigCLI cli) throws IOException {
 
         ConsoleReader console = cli.getConsole();
-        GeoGIT geogit = cli.getGeogit();
+        GeoGIG geogit = cli.getGeogit();
 
         ForEachRef op = geogit.command(ForEachRef.class);
         if (!patterns.isEmpty()) {

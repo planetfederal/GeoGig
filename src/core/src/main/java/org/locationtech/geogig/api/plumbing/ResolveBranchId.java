@@ -7,7 +7,7 @@ package org.locationtech.geogig.api.plumbing;
 
 import javax.annotation.Nullable;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.Ref;
 
@@ -20,7 +20,7 @@ import com.google.common.collect.ImmutableSet;
  * Given an id, returns the ref that points to that id, if it exists
  * 
  */
-public class ResolveBranchId extends AbstractGeoGitOp<Optional<Ref>> {
+public class ResolveBranchId extends AbstractGeoGigOp<Optional<Ref>> {
 
     private ObjectId id;
 

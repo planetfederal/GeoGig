@@ -11,10 +11,10 @@ import java.util.Map;
 
 import org.locationtech.geogig.api.Context;
 import org.locationtech.geogig.api.DefaultPlatform;
-import org.locationtech.geogig.api.GeoGIT;
+import org.locationtech.geogig.api.GeoGIG;
 import org.locationtech.geogig.api.GlobalContextBuilder;
 import org.locationtech.geogig.api.Platform;
-import org.locationtech.geogig.api.plumbing.ResolveGeogitDir;
+import org.locationtech.geogig.api.plumbing.ResolveGeogigDir;
 import org.locationtech.geogig.cli.CLIContextBuilder;
 import org.locationtech.geogig.rest.repository.CommandResource;
 import org.locationtech.geogig.rest.repository.FixedEncoder;
@@ -45,7 +45,7 @@ public class Main extends Application {
         super();
     }
 
-    public Main(GeoGIT geogit) {
+    public Main(GeoGIG geogit) {
         super();
         this.repoProvider = new SingleRepositoryProvider(geogit);
     }
@@ -57,9 +57,9 @@ public class Main extends Application {
 
         Map<String, Object> attributes = context.getAttributes();
 
-        GeoGIT geogit;
+        GeoGIG geogit;
         if (attributes.containsKey("geogit")) {
-            geogit = (GeoGIT) attributes.get("geogit");
+            geogit = (GeoGIG) attributes.get("geogit");
         } else {
             // revisit, not used at all
             // ServletContext sc = (ServletContext) dispatcher.getContext()
@@ -119,13 +119,13 @@ public class Main extends Application {
         return decoder;
     }
 
-    static GeoGIT loadGeoGIT(String repo) {
+    static GeoGIG loadGeoGIT(String repo) {
         Platform platform = new DefaultPlatform();
         platform.setWorkingDir(new File(repo));
         Context inj = GlobalContextBuilder.builder.build();
-        GeoGIT geogit = new GeoGIT(inj, platform.pwd());
+        GeoGIG geogit = new GeoGIG(inj, platform.pwd());
 
-        if (geogit.command(ResolveGeogitDir.class).call().isPresent()) {
+        if (geogit.command(ResolveGeogigDir.class).call().isPresent()) {
             geogit.getRepository();
             return geogit;
         }
@@ -134,7 +134,7 @@ public class Main extends Application {
     }
 
     static void startServer(String repo) throws Exception {
-        GeoGIT geogit = loadGeoGIT(repo);
+        GeoGIG geogit = loadGeoGIT(repo);
         org.restlet.Context context = new org.restlet.Context();
         Application application = new Main(geogit);
         application.setContext(context);

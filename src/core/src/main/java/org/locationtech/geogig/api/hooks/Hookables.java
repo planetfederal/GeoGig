@@ -12,7 +12,7 @@ import java.util.ServiceLoader;
 
 import javax.annotation.Nullable;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.Context;
 
 import com.google.common.base.Optional;
@@ -40,7 +40,7 @@ public class Hookables {
      * @return the string to be used as filename for storing the script files for the corresponding
      *         hook
      */
-    public static Optional<String> getFilename(Class<? extends AbstractGeoGitOp<?>> clazz) {
+    public static Optional<String> getFilename(Class<? extends AbstractGeoGigOp<?>> clazz) {
         Hookable annotation = clazz.getAnnotation(Hookable.class);
         if (annotation != null) {
             return Optional.of(annotation.name());
@@ -55,7 +55,7 @@ public class Hookables {
         return SPIHooks;
     }
 
-    public static boolean hasClasspathHooks(Class<? extends AbstractGeoGitOp<?>> commandClass) {
+    public static boolean hasClasspathHooks(Class<? extends AbstractGeoGigOp<?>> commandClass) {
         for (CommandHook hook : classPathHooks) {
             if (hook.appliesTo(commandClass)) {
                 return true;
@@ -64,10 +64,10 @@ public class Hookables {
         return false;
     }
 
-    public static List<CommandHook> findHooksFor(AbstractGeoGitOp<?> operation) {
+    public static List<CommandHook> findHooksFor(AbstractGeoGigOp<?> operation) {
 
         @SuppressWarnings("unchecked")
-        final Class<? extends AbstractGeoGitOp<?>> clazz = (Class<? extends AbstractGeoGitOp<?>>) operation.getClass();
+        final Class<? extends AbstractGeoGigOp<?>> clazz = (Class<? extends AbstractGeoGigOp<?>>) operation.getClass();
 
         List<CommandHook> hooks = Lists.newLinkedList();
         /*
@@ -122,7 +122,7 @@ public class Hookables {
      *         repository has no {@code hooks} directory at all.
      */
     @Nullable
-    private static File findHooksDirectory(AbstractGeoGitOp<?> operation) {
+    private static File findHooksDirectory(AbstractGeoGigOp<?> operation) {
         if (operation.context().repository() == null
                 || operation.context().repository().getLocation() == null) {
             return null;

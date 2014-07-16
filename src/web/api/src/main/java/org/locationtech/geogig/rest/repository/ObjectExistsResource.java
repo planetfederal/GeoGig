@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.List;
 
-import org.locationtech.geogig.api.GeoGIT;
+import org.locationtech.geogig.api.GeoGIG;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.repository.Repository;
 import org.restlet.Context;
@@ -49,10 +49,10 @@ public class ObjectExistsResource extends Resource {
 
             ObjectId oid = ObjectId.valueOf(options.getFirstValue("oid", ObjectId.NULL.toString()));
             Request request = getRequest();
-            Optional<GeoGIT> ggit = getGeogit(request);
+            Optional<GeoGIG> ggit = getGeogit(request);
             Preconditions.checkState(ggit.isPresent());
 
-            GeoGIT geogit = ggit.get();
+            GeoGIG geogit = ggit.get();
             Repository repository = geogit.getRepository();
             boolean blobExists = repository.blobExists(oid);
 

@@ -8,7 +8,7 @@ package org.locationtech.geogig.api.plumbing;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.NodeRef;
 import org.locationtech.geogig.api.RevFeature;
 import org.locationtech.geogig.api.RevFeatureType;
@@ -24,7 +24,7 @@ import com.google.common.base.Supplier;
  * point to the same path.
  * 
  */
-public class DiffFeature extends AbstractGeoGitOp<FeatureDiff> {
+public class DiffFeature extends AbstractGeoGigOp<FeatureDiff> {
 
     private NodeRef oldNodeRef;
 

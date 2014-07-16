@@ -9,7 +9,7 @@ import java.util.Iterator;
 
 import javax.annotation.Nullable;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.Ref;
 import org.locationtech.geogig.api.RevTree;
@@ -26,7 +26,7 @@ import com.google.common.base.Supplier;
  * Compares the features in the {@link WorkingTree working tree} and the {@link StagingArea index}
  * or a given root tree-ish.
  */
-public class DiffWorkTree extends AbstractGeoGitOp<Iterator<DiffEntry>> implements
+public class DiffWorkTree extends AbstractGeoGigOp<Iterator<DiffEntry>> implements
         Supplier<Iterator<DiffEntry>> {
 
     private String pathFilter;

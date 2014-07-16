@@ -13,7 +13,7 @@ import org.locationtech.geogig.api.porcelain.SynchronizationException;
 import org.locationtech.geogig.cli.AbstractCommand;
 import org.locationtech.geogig.cli.CLICommand;
 import org.locationtech.geogig.cli.CommandFailedException;
-import org.locationtech.geogig.cli.GeogitCLI;
+import org.locationtech.geogig.cli.GeogigCLI;
 
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
@@ -43,7 +43,7 @@ public class Push extends AbstractCommand implements CLICommand {
      * Executes the push command using the provided options.
      */
     @Override
-    public void runInternal(GeogitCLI cli) throws IOException {
+    public void runInternal(GeogigCLI cli) throws IOException {
 
         PushOp push = cli.getGeogit().command(PushOp.class);
         push.setProgressListener(cli.getProgressListener());

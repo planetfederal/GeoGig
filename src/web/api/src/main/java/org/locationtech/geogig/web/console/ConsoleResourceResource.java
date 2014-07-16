@@ -19,11 +19,11 @@ import jline.UnsupportedTerminal;
 import jline.console.ConsoleReader;
 
 import org.locationtech.geogig.api.Context;
-import org.locationtech.geogig.api.GeoGIT;
+import org.locationtech.geogig.api.GeoGIG;
 import org.locationtech.geogig.api.Platform;
 import org.locationtech.geogig.api.porcelain.ConfigGet;
 import org.locationtech.geogig.cli.ArgumentTokenizer;
-import org.locationtech.geogig.cli.GeogitCLI;
+import org.locationtech.geogig.cli.GeogigCLI;
 import org.locationtech.geogig.rest.repository.RESTUtils;
 import org.restlet.data.MediaType;
 import org.restlet.data.Request;
@@ -89,9 +89,9 @@ public class ConsoleResourceResource extends Resource {
             throw Throwables.propagate(e);
         }
         Preconditions.checkArgument("2.0".equals(json.get("jsonrpc").getAsString()));
-        Optional<GeoGIT> providedGeogit = RESTUtils.getGeogit(request);
+        Optional<GeoGIG> providedGeogit = RESTUtils.getGeogit(request);
         checkArgument(providedGeogit.isPresent());
-        final GeoGIT geogit = providedGeogit.get();
+        final GeoGIG geogit = providedGeogit.get();
         JsonObject response;
         if (!checkConsoleEnabled(geogit.getContext())) {
             response = serviceDisabled(json);
@@ -101,7 +101,7 @@ public class ConsoleResourceResource extends Resource {
         getResponse().setEntity(response.toString(), MediaType.APPLICATION_JSON);
     }
 
-    private JsonObject processRequest(JsonObject json, final GeoGIT geogit) {
+    private JsonObject processRequest(JsonObject json, final GeoGIG geogit) {
         JsonObject response;
         final String command = json.get("method").getAsString();
         final String queryId = json.get("id").getAsString();
@@ -117,7 +117,7 @@ public class ConsoleResourceResource extends Resource {
                     new UnsupportedTerminal());
             Platform platform = geogit.getPlatform();
 
-            GeogitCLI geogitCLI = new GeogitCLI(geogit, console);
+            GeogigCLI geogitCLI = new GeogigCLI(geogit, console);
             geogitCLI.setPlatform(platform);
             geogitCLI.disableProgressListener();
 

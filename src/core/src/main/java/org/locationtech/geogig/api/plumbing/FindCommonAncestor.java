@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.RevCommit;
 import org.locationtech.geogig.storage.GraphDatabase;
@@ -26,7 +26,7 @@ import com.google.common.base.Preconditions;
 /**
  * Finds the common {@link RevCommit commit} ancestor of two commits.
  */
-public class FindCommonAncestor extends AbstractGeoGitOp<Optional<ObjectId>> {
+public class FindCommonAncestor extends AbstractGeoGigOp<Optional<ObjectId>> {
 
     private ObjectId left;
 

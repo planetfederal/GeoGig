@@ -12,7 +12,7 @@ import java.util.List;
 import org.locationtech.geogig.cli.AbstractCommand;
 import org.locationtech.geogig.cli.CLICommand;
 import org.locationtech.geogig.cli.CommandFailedException;
-import org.locationtech.geogig.cli.GeogitCLI;
+import org.locationtech.geogig.cli.GeogigCLI;
 import org.locationtech.geogig.osm.internal.EmptyOSMDownloadException;
 import org.locationtech.geogig.osm.internal.Mapping;
 import org.locationtech.geogig.osm.internal.OSMImportOp;
@@ -45,7 +45,7 @@ public class OSMImport extends AbstractCommand implements CLICommand {
     public String message;
 
     @Override
-    protected void runInternal(GeogitCLI cli) throws IOException {
+    protected void runInternal(GeogigCLI cli) throws IOException {
         checkParameter(apiUrl != null && apiUrl.size() == 1, "One file must be specified");
         File importFile = new File(apiUrl.get(0));
         checkParameter(importFile.exists(), "The specified OSM data file does not exist");

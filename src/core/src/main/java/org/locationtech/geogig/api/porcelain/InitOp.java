@@ -20,14 +20,14 @@ import java.util.Map.Entry;
 
 import javax.annotation.Nullable;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.Platform;
 import org.locationtech.geogig.api.Ref;
 import org.locationtech.geogig.api.RevTree;
 import org.locationtech.geogig.api.hooks.Hookables;
 import org.locationtech.geogig.api.plumbing.RefParse;
-import org.locationtech.geogig.api.plumbing.ResolveGeogitDir;
+import org.locationtech.geogig.api.plumbing.ResolveGeogigDir;
 import org.locationtech.geogig.api.plumbing.UpdateRef;
 import org.locationtech.geogig.api.plumbing.UpdateSymRef;
 import org.locationtech.geogig.di.CanRunDuringConflict;
@@ -56,13 +56,13 @@ import com.google.inject.Inject;
  * <p>
  * If no repository directory is found, then a new one is created on the current directory.
  * 
- * @see ResolveGeogitDir
+ * @see ResolveGeogigDir
  * @see RefParse
  * @see UpdateRef
  * @see UpdateSymRef
  */
 @CanRunDuringConflict
-public class InitOp extends AbstractGeoGitOp<Repository> {
+public class InitOp extends AbstractGeoGigOp<Repository> {
 
     private Map<String, String> config;
 
@@ -108,7 +108,7 @@ public class InitOp extends AbstractGeoGitOp<Repository> {
      * @return the initialized repository
      * @throws IllegalStateException if a repository cannot be created on the current directory or
      *         re-initialized in the current dir or one if its parents as determined by
-     *         {@link ResolveGeogitDir}
+     *         {@link ResolveGeogigDir}
      */
     @Override
     protected Repository _call() {
@@ -135,7 +135,7 @@ public class InitOp extends AbstractGeoGitOp<Repository> {
     private Repository callInternal() {
         final Platform platform = platform();
         final File workingDirectory = platform.pwd();
-        final Optional<URL> repoUrl = new ResolveGeogitDir(platform).call();
+        final Optional<URL> repoUrl = new ResolveGeogigDir(platform).call();
 
         final boolean repoExisted = repoUrl.isPresent();
         final File envHome;
@@ -169,7 +169,7 @@ public class InitOp extends AbstractGeoGitOp<Repository> {
                     throw new FileNotFoundException("No filter file found at " + filterFile + ".");
                 }
 
-                Optional<URL> envHomeURL = new ResolveGeogitDir(platform).call();
+                Optional<URL> envHomeURL = new ResolveGeogigDir(platform).call();
                 Preconditions.checkState(envHomeURL.isPresent(), "Not inside a geogit directory");
                 final URL url = envHomeURL.get();
                 if (!"file".equals(url.getProtocol())) {
@@ -198,7 +198,7 @@ public class InitOp extends AbstractGeoGitOp<Repository> {
 
         try {
             Preconditions.checkState(envHome.toURI().toURL()
-                    .equals(new ResolveGeogitDir(platform).call().get()));
+                    .equals(new ResolveGeogigDir(platform).call().get()));
         } catch (MalformedURLException e) {
             Throwables.propagate(e);
         }

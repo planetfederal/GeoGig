@@ -10,7 +10,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.Ref;
 import org.locationtech.geogig.api.RevTree;
@@ -25,7 +25,7 @@ import com.google.common.collect.Lists;
 /**
  * Compares content and metadata links of blobs between the index and repository
  */
-public class DiffIndex extends AbstractGeoGitOp<Iterator<DiffEntry>> implements
+public class DiffIndex extends AbstractGeoGigOp<Iterator<DiffEntry>> implements
         Supplier<Iterator<DiffEntry>> {
 
     private String refSpec;

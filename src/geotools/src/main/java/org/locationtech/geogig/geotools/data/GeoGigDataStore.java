@@ -21,8 +21,8 @@ import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.data.store.ContentState;
 import org.geotools.feature.NameImpl;
 import org.locationtech.geogig.api.Context;
-import org.locationtech.geogig.api.GeoGIT;
-import org.locationtech.geogig.api.GeogitTransaction;
+import org.locationtech.geogig.api.GeoGIG;
+import org.locationtech.geogig.api.GeogigTransaction;
 import org.locationtech.geogig.api.NodeRef;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.Ref;
@@ -67,8 +67,8 @@ import com.google.common.collect.Lists;
  * <p>
  * Every read operation (like in {@link #getFeatureSource(Name)}) reads committed features out of
  * the configured "head" branch. Write operations are only supported if a {@link Transaction} is
- * set, in which case a {@link GeogitTransaction} is tied to the geotools transaction by means of a
- * {@link GeogitTransactionState}. During the transaction, read operations will read from the
+ * set, in which case a {@link GeogigTransaction} is tied to the geotools transaction by means of a
+ * {@link GeogigTransactionState}. During the transaction, read operations will read from the
  * transaction's {@link WorkingTree} in order to "see" features that haven't been committed yet.
  * <p>
  * When the transaction is committed, the changes made inside that transaction are merged onto the
@@ -77,9 +77,9 @@ import com.google.common.collect.Lists;
  * provides for optimistic locking and reduces thread contention.
  * 
  */
-public class GeoGitDataStore extends ContentDataStore implements DataStore {
+public class GeoGigDataStore extends ContentDataStore implements DataStore {
 
-    private final GeoGIT geogit;
+    private final GeoGIG geogit;
 
     /** @see #setHead(String) */
     private String refspec;
@@ -87,7 +87,7 @@ public class GeoGitDataStore extends ContentDataStore implements DataStore {
     /** When the configured head is not a branch, we disallow transactions */
     private boolean allowTransactions = true;
 
-    public GeoGitDataStore(GeoGIT geogit) {
+    public GeoGigDataStore(GeoGIG geogit) {
         super();
         Preconditions.checkNotNull(geogit);
         Preconditions.checkNotNull(geogit.getRepository(), "No repository exists at %s", geogit
@@ -160,7 +160,7 @@ public class GeoGitDataStore extends ContentDataStore implements DataStore {
         return getCheckedOutBranch();
     }
 
-    public GeoGIT getGeogit() {
+    public GeoGIG getGeogit() {
         return geogit;
     }
 
@@ -231,9 +231,9 @@ public class GeoGitDataStore extends ContentDataStore implements DataStore {
         Context commandLocator = null;
 
         if (transaction != null && !Transaction.AUTO_COMMIT.equals(transaction)) {
-            GeogitTransactionState state;
-            state = (GeogitTransactionState) transaction.getState(GeogitTransactionState.class);
-            Optional<GeogitTransaction> geogitTransaction = state.getGeogitTransaction();
+            GeogigTransactionState state;
+            state = (GeogigTransactionState) transaction.getState(GeogigTransactionState.class);
+            Optional<GeogigTransaction> geogitTransaction = state.getGeogitTransaction();
             if (geogitTransaction.isPresent()) {
                 commandLocator = geogitTransaction.get();
             }
@@ -315,7 +315,7 @@ public class GeoGitDataStore extends ContentDataStore implements DataStore {
 
     @Override
     protected ContentFeatureSource createFeatureSource(ContentEntry entry) throws IOException {
-        return new GeogitFeatureStore(entry);
+        return new GeogigFeatureStore(entry);
     }
 
     /**
@@ -332,7 +332,7 @@ public class GeoGitDataStore extends ContentDataStore implements DataStore {
             throw new IllegalStateException("Configured head " + refspec
                     + " is not a branch; transactions are not supported.");
         }
-        GeogitTransaction tx = getCommandLocator(null).command(TransactionBegin.class).call();
+        GeogigTransaction tx = getCommandLocator(null).command(TransactionBegin.class).call();
         boolean abort = false;
         try {
             String treePath = featureType.getName().getLocalPart();

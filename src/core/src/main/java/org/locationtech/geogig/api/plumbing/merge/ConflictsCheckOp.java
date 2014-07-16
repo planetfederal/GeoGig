@@ -6,15 +6,15 @@ package org.locationtech.geogig.api.plumbing.merge;
 
 import java.net.URL;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
-import org.locationtech.geogig.api.plumbing.ResolveGeogitDir;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
+import org.locationtech.geogig.api.plumbing.ResolveGeogigDir;
 
 import com.google.common.base.Optional;
 
-public class ConflictsCheckOp extends AbstractGeoGitOp<Boolean> {
+public class ConflictsCheckOp extends AbstractGeoGigOp<Boolean> {
     @Override
     protected  Boolean _call() {
-        final Optional<URL> repoUrl = command(ResolveGeogitDir.class).call();
+        final Optional<URL> repoUrl = command(ResolveGeogigDir.class).call();
         Boolean hasConflicts = Boolean.FALSE;
 
         if (repoUrl.isPresent()) {

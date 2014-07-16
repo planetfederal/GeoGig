@@ -49,7 +49,7 @@ public abstract class AbstractCommand implements CLICommand {
     public ColorArg color = ColorArg.auto;
 
     @Override
-    public void run(GeogitCLI cli) throws InvalidParameterException, CommandFailedException {
+    public void run(GeogigCLI cli) throws InvalidParameterException, CommandFailedException {
         checkNotNull(cli, "No GeogitCLI provided");
         if (help) {
             printUsage(cli);
@@ -99,23 +99,23 @@ public abstract class AbstractCommand implements CLICommand {
 
     /**
      * Subclasses shall implement to do the real work, will not be called if the command was invoked
-     * with {@code --help}. Also, {@link GeogitCLI#getGeogit() cli.getGeogit()} is guaranteed to be
+     * with {@code --help}. Also, {@link GeogigCLI#getGeogit() cli.getGeogit()} is guaranteed to be
      * non null (e.g. there's a working repository) if the implementation class is marked with the
      * {@link RequiresRepository @RequiresRepository} annotation.
      * 
-     * @throws InvalidParameterException as per {@link CLICommand#run(GeogitCLI)}
-     * @throws CommandFailedException as per {@link CLICommand#run(GeogitCLI)}
+     * @throws InvalidParameterException as per {@link CLICommand#run(GeogigCLI)}
+     * @throws CommandFailedException as per {@link CLICommand#run(GeogigCLI)}
      * @throws IOException <b>only</b> propagated back if the IOException was thrown while writing
-     *         to the {@link GeogitCLI#getConsole() console}.
+     *         to the {@link GeogigCLI#getConsole() console}.
      * @param cli
      */
-    protected abstract void runInternal(GeogitCLI cli) throws InvalidParameterException,
+    protected abstract void runInternal(GeogigCLI cli) throws InvalidParameterException,
             CommandFailedException, IOException;
 
     /**
      * Prints the JCommander usage for this command.
      */
-    public void printUsage(GeogitCLI cli) {
+    public void printUsage(GeogigCLI cli) {
         JCommander jc = new JCommander(this);
         String commandName = this.getClass().getAnnotation(Parameters.class).commandNames()[0];
         jc.setProgramName("geogit " + commandName);

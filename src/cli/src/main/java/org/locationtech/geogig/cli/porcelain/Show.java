@@ -14,7 +14,7 @@ import jline.console.ConsoleReader;
 
 import org.fusesource.jansi.Ansi;
 import org.fusesource.jansi.Ansi.Color;
-import org.locationtech.geogig.api.GeoGIT;
+import org.locationtech.geogig.api.GeoGIG;
 import org.locationtech.geogig.api.Platform;
 import org.locationtech.geogig.api.RevCommit;
 import org.locationtech.geogig.api.RevFeature;
@@ -27,7 +27,7 @@ import org.locationtech.geogig.api.plumbing.ResolveFeatureType;
 import org.locationtech.geogig.api.plumbing.RevObjectParse;
 import org.locationtech.geogig.cli.AbstractCommand;
 import org.locationtech.geogig.cli.CLICommand;
-import org.locationtech.geogig.cli.GeogitCLI;
+import org.locationtech.geogig.cli.GeogigCLI;
 import org.locationtech.geogig.cli.annotation.ReadOnly;
 import org.locationtech.geogig.storage.FieldType;
 import org.locationtech.geogig.storage.text.CrsTextSerializer;
@@ -62,10 +62,10 @@ public class Show extends AbstractCommand implements CLICommand {
 
     /**
      * @param cli
-     * @see org.locationtech.geogig.cli.CLICommand#run(org.locationtech.geogig.cli.GeogitCLI)
+     * @see org.locationtech.geogig.cli.CLICommand#run(org.locationtech.geogig.cli.GeogigCLI)
      */
     @Override
-    public void runInternal(GeogitCLI cli) throws IOException {
+    public void runInternal(GeogigCLI cli) throws IOException {
         checkParameter(!refs.isEmpty(), "A refspec must be specified");
         if (raw) {
             printRaw(cli);
@@ -75,9 +75,9 @@ public class Show extends AbstractCommand implements CLICommand {
 
     }
 
-    private void printRaw(GeogitCLI cli) throws IOException {
+    private void printRaw(GeogigCLI cli) throws IOException {
         ConsoleReader console = cli.getConsole();
-        GeoGIT geogit = cli.getGeogit();
+        GeoGIG geogit = cli.getGeogit();
         for (String ref : refs) {
             Optional<RevObject> obj = geogit.command(RevObjectParse.class).setRefSpec(ref).call();
             if (!obj.isPresent()) {
@@ -128,9 +128,9 @@ public class Show extends AbstractCommand implements CLICommand {
         }
     }
 
-    public void printFormatted(GeogitCLI cli) throws IOException {
+    public void printFormatted(GeogigCLI cli) throws IOException {
         ConsoleReader console = cli.getConsole();
-        GeoGIT geogit = cli.getGeogit();
+        GeoGIG geogit = cli.getGeogit();
         for (String ref : refs) {
             Optional<RevObject> obj = geogit.command(RevObjectParse.class).setRefSpec(ref).call();
             if (!obj.isPresent()) {

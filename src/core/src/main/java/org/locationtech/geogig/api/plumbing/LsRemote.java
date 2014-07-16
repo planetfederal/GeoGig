@@ -7,7 +7,7 @@ package org.locationtech.geogig.api.plumbing;
 
 import java.io.IOException;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.GlobalContextBuilder;
 import org.locationtech.geogig.api.Ref;
 import org.locationtech.geogig.api.Remote;
@@ -29,7 +29,7 @@ import com.google.common.collect.ImmutableSet;
  * Connects to the specified remote, retrieves its {@link Ref refs}, closes the remote connection
  * and returns the list of remote references.
  */
-public class LsRemote extends AbstractGeoGitOp<ImmutableSet<Ref>> {
+public class LsRemote extends AbstractGeoGigOp<ImmutableSet<Ref>> {
 
     private Supplier<Optional<Remote>> remote;
 

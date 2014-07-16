@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.locationtech.geogig.cli.CLICommand;
-import org.locationtech.geogig.cli.GeogitCLI;
+import org.locationtech.geogig.cli.GeogigCLI;
 import org.locationtech.geogig.cli.annotation.ReadOnly;
 import org.locationtech.geogig.cli.annotation.RequiresRepository;
 
@@ -39,10 +39,10 @@ public class Help implements CLICommand {
      * Executes the help command.
      * 
      * @param cli
-     * @see org.locationtech.geogig.cli.CLICommand#run(org.locationtech.geogig.cli.GeogitCLI)
+     * @see org.locationtech.geogig.cli.CLICommand#run(org.locationtech.geogig.cli.GeogigCLI)
      */
     // @Override
-    public void run(GeogitCLI cli) {
+    public void run(GeogigCLI cli) {
 
         JCommander jc = cli.newCommandParser();
 

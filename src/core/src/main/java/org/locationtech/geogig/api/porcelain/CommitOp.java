@@ -14,7 +14,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.CommitBuilder;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.Ref;
@@ -50,7 +50,7 @@ import com.google.common.collect.Lists;
  * 
  */
 @Hookable(name = "commit")
-public class CommitOp extends AbstractGeoGitOp<RevCommit> {
+public class CommitOp extends AbstractGeoGigOp<RevCommit> {
 
     private Optional<String> authorName;
 
@@ -224,7 +224,7 @@ public class CommitOp extends AbstractGeoGitOp<RevCommit> {
      * 
      * @return the commit just applied, or {@code null} if
      *         {@code getProgressListener().isCanceled()}
-     * @see org.locationtech.geogig.api.AbstractGeoGitOp#call()
+     * @see org.locationtech.geogig.api.AbstractGeoGigOp#call()
      * @throws NothingToCommitException if there are no staged changes by comparing the index
      *         staging tree and the repository HEAD tree.
      */

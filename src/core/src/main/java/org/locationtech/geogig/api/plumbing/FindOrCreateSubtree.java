@@ -7,7 +7,7 @@ package org.locationtech.geogig.api.plumbing;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.NodeRef;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.RevObject.TYPE;
@@ -29,7 +29,7 @@ import com.google.common.base.Suppliers;
  * 
  * @see RevTree
  */
-public class FindOrCreateSubtree extends AbstractGeoGitOp<RevTree> {
+public class FindOrCreateSubtree extends AbstractGeoGigOp<RevTree> {
 
     private Supplier<Optional<RevTree>> parentSupplier;
 

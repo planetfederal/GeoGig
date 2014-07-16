@@ -9,8 +9,8 @@ import java.util.concurrent.TimeoutException;
 
 import javax.annotation.Nullable;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
-import org.locationtech.geogig.api.GeogitTransaction;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
+import org.locationtech.geogig.api.GeogigTransaction;
 import org.locationtech.geogig.api.Ref;
 import org.locationtech.geogig.api.SymRef;
 import org.locationtech.geogig.api.hooks.Hookable;
@@ -27,7 +27,7 @@ import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableSet;
 
 /**
- * Finishes a {@link GeogitTransaction} by merging all refs that have been changed.
+ * Finishes a {@link GeogigTransaction} by merging all refs that have been changed.
  * <p>
  * If a given ref has not been changed on the repsoitory, it will simply update the repository's ref
  * to the value of the transaction ref.
@@ -35,14 +35,14 @@ import com.google.common.collect.ImmutableSet;
  * If the repository ref was updated while the transaction occurred, the changes will be brought
  * together via a merge or rebase operation and the new ref will be updated to the result.
  * 
- * @see GeogitTransaction
+ * @see GeogigTransaction
  */
 @Hookable(name = "transaction-end")
-public class TransactionEnd extends AbstractGeoGitOp<Boolean> {
+public class TransactionEnd extends AbstractGeoGigOp<Boolean> {
 
     private boolean cancel = false;
 
-    private GeogitTransaction transaction = null;
+    private GeogigTransaction transaction = null;
 
     private boolean rebase = false;
 
@@ -64,7 +64,7 @@ public class TransactionEnd extends AbstractGeoGitOp<Boolean> {
      * @param transaction the transaction to end
      * @return {@code this}
      */
-    public TransactionEnd setTransaction(GeogitTransaction transaction) {
+    public TransactionEnd setTransaction(GeogigTransaction transaction) {
         this.transaction = transaction;
         return this;
     }
@@ -97,7 +97,7 @@ public class TransactionEnd extends AbstractGeoGitOp<Boolean> {
      */
     @Override
     protected Boolean _call() {
-        Preconditions.checkState(!(context instanceof GeogitTransaction),
+        Preconditions.checkState(!(context instanceof GeogigTransaction),
                 "Cannot end a transaction within a transaction!");
         Preconditions.checkArgument(transaction != null, "No transaction was specified!");
 

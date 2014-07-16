@@ -50,27 +50,27 @@ import com.google.common.collect.Lists;
 /**
  *
  */
-class GeogitFeatureStore extends ContentFeatureStore {
+class GeogigFeatureStore extends ContentFeatureStore {
 
     /**
      * geogit feature source to delegate to, we do this b/c we can't inherit from both
-     * ContentFeatureStore and {@link GeogitFeatureSource} at the same time
+     * ContentFeatureStore and {@link GeogigFeatureSource} at the same time
      */
-    private GeogitFeatureSource delegate;
+    private GeogigFeatureSource delegate;
 
     /**
      * @param entry
      * @param query
      */
-    public GeogitFeatureStore(ContentEntry entry) {
+    public GeogigFeatureStore(ContentEntry entry) {
         super(entry, (Query) null);
-        delegate = new GeogitFeatureSource(entry, query) {
+        delegate = new GeogigFeatureSource(entry, query) {
             @Override
             public void setTransaction(Transaction transaction) {
                 super.setTransaction(transaction);
 
                 // keep this feature store in sync
-                GeogitFeatureStore.this.setTransaction(transaction);
+                GeogigFeatureStore.this.setTransaction(transaction);
             }
         };
 
@@ -82,11 +82,11 @@ class GeogitFeatureStore extends ContentFeatureStore {
     }
 
     @Override
-    public GeoGitDataStore getDataStore() {
+    public GeoGigDataStore getDataStore() {
         return delegate.getDataStore();
     }
 
-    public GeogitFeatureSource getFeatureSource() {
+    public GeogigFeatureSource getFeatureSource() {
         return delegate;
     }
 
@@ -130,11 +130,11 @@ class GeogitFeatureStore extends ContentFeatureStore {
             delegate.setTransaction(transaction);
         }
         if (!Transaction.AUTO_COMMIT.equals(transaction)) {
-            GeogitTransactionState geogitTx;
-            geogitTx = (GeogitTransactionState) transaction.getState(GeogitTransactionState.class);
+            GeogigTransactionState geogitTx;
+            geogitTx = (GeogigTransactionState) transaction.getState(GeogigTransactionState.class);
             if (geogitTx == null) {
-                geogitTx = new GeogitTransactionState(getEntry());
-                transaction.putState(GeogitTransactionState.class, geogitTx);
+                geogitTx = new GeogigTransactionState(getEntry());
+                transaction.putState(GeogigTransactionState.class, geogitTx);
             }
         }
     }
@@ -213,11 +213,11 @@ class GeogitFeatureStore extends ContentFeatureStore {
         String path = delegate.getTypeTreePath();
         WorkingTree wtree = getFeatureSource().getWorkingTree();
 
-        GeoGitFeatureWriter writer;
+        GeoGigFeatureWriter writer;
         if ((flags | WRITER_ADD) == WRITER_ADD) {
-            writer = GeoGitFeatureWriter.createAppendable(features, path, wtree);
+            writer = GeoGigFeatureWriter.createAppendable(features, path, wtree);
         } else {
-            writer = GeoGitFeatureWriter.create(features, path, wtree);
+            writer = GeoGigFeatureWriter.create(features, path, wtree);
         }
         return writer;
     }

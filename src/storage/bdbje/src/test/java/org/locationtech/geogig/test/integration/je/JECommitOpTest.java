@@ -11,7 +11,7 @@ import org.junit.rules.TemporaryFolder;
 import org.locationtech.geogig.api.Context;
 import org.locationtech.geogig.api.Platform;
 import org.locationtech.geogig.api.TestPlatform;
-import org.locationtech.geogig.di.GeogitModule;
+import org.locationtech.geogig.di.GeogigModule;
 
 import com.google.common.base.Throwables;
 import com.google.inject.Guice;
@@ -31,7 +31,7 @@ public class JECommitOpTest extends org.locationtech.geogig.test.integration.Com
         }
         Platform testPlatform = new TestPlatform(workingDirectory);
         return Guice.createInjector(
-                Modules.override(new GeogitModule()).with(new JETestStorageModule(),
+                Modules.override(new GeogigModule()).with(new JETestStorageModule(),
                         new TestModule(testPlatform))).getInstance(Context.class);
     }
 

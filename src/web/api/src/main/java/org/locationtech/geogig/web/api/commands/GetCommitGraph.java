@@ -7,7 +7,7 @@ package org.locationtech.geogig.web.api.commands;
 import java.util.Iterator;
 import java.util.List;
 
-import org.locationtech.geogig.api.GeoGIT;
+import org.locationtech.geogig.api.GeoGIG;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.RevCommit;
 import org.locationtech.geogig.web.api.AbstractWebAPICommand;
@@ -82,7 +82,7 @@ public class GetCommitGraph extends AbstractWebAPICommand {
         if (commitId.equals(ObjectId.NULL.toString())) {
             throw new CommandSpecException("No commitId was given.");
         }
-        final GeoGIT geogit = context.getGeoGIT();
+        final GeoGIG geogit = context.getGeoGIT();
         RevCommit commit = geogit.getRepository().getCommit(ObjectId.valueOf(commitId));
         final List<RevCommit> history = Lists.newLinkedList();
 

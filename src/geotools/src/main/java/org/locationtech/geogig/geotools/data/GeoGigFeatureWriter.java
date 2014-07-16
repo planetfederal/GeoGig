@@ -20,7 +20,7 @@ import com.google.common.base.Preconditions;
 /**
  *
  */
-class GeoGitFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleFeature> {
+class GeoGigFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleFeature> {
 
     private FeatureReader<SimpleFeatureType, SimpleFeature> reader;
 
@@ -30,23 +30,23 @@ class GeoGitFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleFeat
 
     private String typePath;
 
-    private GeoGitFeatureWriter(FeatureReader<SimpleFeatureType, SimpleFeature> reader,
+    private GeoGigFeatureWriter(FeatureReader<SimpleFeatureType, SimpleFeature> reader,
             String typePath, WorkingTree workingTree) {
         this.reader = reader;
         this.typePath = typePath;
         this.workingTree = workingTree;
     }
 
-    public static GeoGitFeatureWriter create(
+    public static GeoGigFeatureWriter create(
             FeatureReader<SimpleFeatureType, SimpleFeature> reader, String typePath,
             WorkingTree workingTree) {
-        return new GeoGitFeatureWriter(reader, typePath, workingTree);
+        return new GeoGigFeatureWriter(reader, typePath, workingTree);
     }
 
-    public static GeoGitFeatureWriter createAppendable(
+    public static GeoGigFeatureWriter createAppendable(
             FeatureReader<SimpleFeatureType, SimpleFeature> reader, String typePath,
             WorkingTree workingTree) {
-        return new GeoGitFeatureWriter(new InfiniteFeatureReader(reader), typePath, workingTree);
+        return new GeoGigFeatureWriter(new InfiniteFeatureReader(reader), typePath, workingTree);
     }
 
     @Override

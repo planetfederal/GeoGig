@@ -18,7 +18,7 @@ import org.locationtech.geogig.api.porcelain.RemoveOp;
 import org.locationtech.geogig.cli.AbstractCommand;
 import org.locationtech.geogig.cli.CLICommand;
 import org.locationtech.geogig.cli.CommandFailedException;
-import org.locationtech.geogig.cli.GeogitCLI;
+import org.locationtech.geogig.cli.GeogigCLI;
 import org.locationtech.geogig.cli.annotation.ObjectDatabaseReadOnly;
 import org.locationtech.geogig.repository.Repository;
 
@@ -45,7 +45,7 @@ public class Remove extends AbstractCommand implements CLICommand {
     private List<String> pathsToRemove = new ArrayList<String>();
 
     @Override
-    public void runInternal(GeogitCLI cli) throws IOException {
+    public void runInternal(GeogigCLI cli) throws IOException {
 
         ConsoleReader console = cli.getConsole();
 

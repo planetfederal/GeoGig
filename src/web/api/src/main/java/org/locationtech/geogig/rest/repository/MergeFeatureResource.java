@@ -20,7 +20,7 @@ import java.util.UUID;
 
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.WKTReader2;
-import org.locationtech.geogig.api.GeoGIT;
+import org.locationtech.geogig.api.GeoGIG;
 import org.locationtech.geogig.api.NodeRef;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.RevCommit;
@@ -69,7 +69,7 @@ public class MergeFeatureResource extends Resource {
         return true;
     }
 
-    private Optional<NodeRef> parseID(ObjectId commitId, String path, GeoGIT geogit) {
+    private Optional<NodeRef> parseID(ObjectId commitId, String path, GeoGIG geogit) {
         Optional<RevObject> object = geogit.command(RevObjectParse.class).setObjectId(commitId)
                 .call();
         RevCommit commit = null;
@@ -95,7 +95,7 @@ public class MergeFeatureResource extends Resource {
 
         try {
             input = getRequest().getEntity().getStream();
-            final GeoGIT ggit = getGeogit(getRequest()).get();
+            final GeoGIG ggit = getGeogit(getRequest()).get();
             final Reader body = new InputStreamReader(input);
             final JsonParser parser = new JsonParser();
             final JsonElement conflictJson = parser.parse(body);

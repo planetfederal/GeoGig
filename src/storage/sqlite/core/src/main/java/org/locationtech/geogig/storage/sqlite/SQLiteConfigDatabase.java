@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.locationtech.geogig.api.Platform;
-import org.locationtech.geogig.api.plumbing.ResolveGeogitDir;
+import org.locationtech.geogig.api.plumbing.ResolveGeogigDir;
 import org.locationtech.geogig.api.porcelain.ConfigException;
 import org.locationtech.geogig.api.porcelain.ConfigException.StatusCode;
 import org.locationtech.geogig.storage.ConfigDatabase;
@@ -139,7 +139,7 @@ public abstract class SQLiteConfigDatabase implements ConfigDatabase {
 
     Config local() {
         if (local == null || !lastWorkingDir.equals(platform.pwd())) {
-            final Optional<URL> url = new ResolveGeogitDir(platform).call();
+            final Optional<URL> url = new ResolveGeogigDir(platform).call();
 
             if (!url.isPresent()) {
                 throw new ConfigException(StatusCode.INVALID_LOCATION);

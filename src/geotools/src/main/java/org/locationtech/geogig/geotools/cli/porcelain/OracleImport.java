@@ -10,7 +10,7 @@ import org.geotools.data.DataStore;
 import org.locationtech.geogig.api.ProgressListener;
 import org.locationtech.geogig.cli.CLICommand;
 import org.locationtech.geogig.cli.CommandFailedException;
-import org.locationtech.geogig.cli.GeogitCLI;
+import org.locationtech.geogig.cli.GeogigCLI;
 import org.locationtech.geogig.cli.annotation.ObjectDatabaseReadOnly;
 import org.locationtech.geogig.geotools.plumbing.GeoToolsOpException;
 import org.locationtech.geogig.geotools.plumbing.ImportOp;
@@ -70,10 +70,10 @@ public class OracleImport extends AbstractOracleCommand implements CLICommand {
      * Executes the import command using the provided options.
      * 
      * @param cli
-     * @see org.geogit.cli.AbstractOracleCommand#runInternal(org.locationtech.geogig.cli.GeogitCLI)
+     * @see org.geogit.cli.AbstractOracleCommand#runInternal(org.locationtech.geogig.cli.GeogigCLI)
      */
     @Override
-    protected void runInternal(GeogitCLI cli) throws IOException {
+    protected void runInternal(GeogigCLI cli) throws IOException {
 
         DataStore dataStore = getDataStore();
 

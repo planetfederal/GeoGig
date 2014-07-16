@@ -9,10 +9,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 
 /**
- * An annotation to indicate that a {@link AbstractGeoGitOp GeoGit operation} allows hooks
+ * An annotation to indicate that a {@link AbstractGeoGigOp GeoGit operation} allows hooks
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)

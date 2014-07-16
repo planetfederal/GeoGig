@@ -16,7 +16,7 @@ import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.RevObject.TYPE;
 import org.locationtech.geogig.api.RevTree;
 import org.locationtech.geogig.api.RevTreeBuilder;
-import org.locationtech.geogig.di.GeogitModule;
+import org.locationtech.geogig.di.GeogigModule;
 import org.locationtech.geogig.repository.DepthSearch;
 import org.locationtech.geogig.storage.ObjectDatabase;
 import org.locationtech.geogig.storage.StagingDatabase;
@@ -38,7 +38,7 @@ public class WriteBackTest extends Assert {
 
     @Before
     public void setUp() {
-        Context injector = Guice.createInjector(Modules.override(new GeogitModule()).with(
+        Context injector = Guice.createInjector(Modules.override(new GeogigModule()).with(
                 new MemoryModule(null))).getInstance(Context.class);
 
         odb = injector.objectDatabase();

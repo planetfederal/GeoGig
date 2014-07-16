@@ -5,7 +5,7 @@
 
 package org.locationtech.geogig.api.plumbing;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.Ref;
 import org.locationtech.geogig.api.hooks.Hookable;
@@ -19,7 +19,7 @@ import com.google.common.base.Preconditions;
  * 
  */
 @Hookable(name = "update-sym-ref")
-public class UpdateSymRef extends AbstractGeoGitOp<Optional<Ref>> {
+public class UpdateSymRef extends AbstractGeoGigOp<Optional<Ref>> {
 
     private String name;
 

@@ -47,14 +47,14 @@ import com.google.common.base.Preconditions;
 /**
  *
  */
-class GeogitFeatureSource extends ContentFeatureSource {
+class GeogigFeatureSource extends ContentFeatureSource {
 
     /**
      * <b>Precondition</b>: {@code entry.getDataStore() instanceof GeoGitDataStore}
      * 
      * @param entry
      */
-    public GeogitFeatureSource(ContentEntry entry) {
+    public GeogigFeatureSource(ContentEntry entry) {
         this(entry, (Query) null);
     }
 
@@ -64,9 +64,9 @@ class GeogitFeatureSource extends ContentFeatureSource {
      * @param entry
      * @param query optional "definition query" making this feature source a "view"
      */
-    public GeogitFeatureSource(ContentEntry entry, @Nullable Query query) {
+    public GeogigFeatureSource(ContentEntry entry, @Nullable Query query) {
         super(entry, query);
-        Preconditions.checkArgument(entry.getDataStore() instanceof GeoGitDataStore);
+        Preconditions.checkArgument(entry.getDataStore() instanceof GeoGigDataStore);
     }
 
     /**
@@ -117,8 +117,8 @@ class GeogitFeatureSource extends ContentFeatureSource {
     }
 
     @Override
-    public GeoGitDataStore getDataStore() {
-        return (GeoGitDataStore) super.getDataStore();
+    public GeoGigDataStore getDataStore() {
+        return (GeoGigDataStore) super.getDataStore();
     }
 
     @Override
@@ -287,12 +287,12 @@ class GeogitFeatureSource extends ContentFeatureSource {
         return false;
     }
 
-    private GeogitFeatureReader<SimpleFeatureType, SimpleFeature> getNativeReader(Filter filter,
+    private GeogigFeatureReader<SimpleFeatureType, SimpleFeature> getNativeReader(Filter filter,
             @Nullable Integer offset, @Nullable Integer maxFeatures) {
 
         filter = (Filter) filter.accept(new SimplifyingFilterVisitor(), null);
 
-        GeogitFeatureReader<SimpleFeatureType, SimpleFeature> nativeReader;
+        GeogigFeatureReader<SimpleFeatureType, SimpleFeature> nativeReader;
 
         final String rootRef = getRootRef();
         final String featureTypeTreePath = getTypeTreePath();
@@ -301,7 +301,7 @@ class GeogitFeatureSource extends ContentFeatureSource {
 
         final Context commandLocator = getCommandLocator();
 
-        nativeReader = new GeogitFeatureReader<SimpleFeatureType, SimpleFeature>(commandLocator,
+        nativeReader = new GeogigFeatureReader<SimpleFeatureType, SimpleFeature>(commandLocator,
                 schema, filter, featureTypeTreePath, rootRef, offset, maxFeatures);
 
         return nativeReader;
@@ -358,7 +358,7 @@ class GeogitFeatureSource extends ContentFeatureSource {
      * @return
      */
     NodeRef getTypeRef() {
-        GeoGitDataStore dataStore = getDataStore();
+        GeoGigDataStore dataStore = getDataStore();
         Name name = getName();
         Transaction transaction = getTransaction();
         return dataStore.findTypeRef(name, transaction);
@@ -377,7 +377,7 @@ class GeogitFeatureSource extends ContentFeatureSource {
     }
 
     private String getRootRef() {
-        GeoGitDataStore dataStore = getDataStore();
+        GeoGigDataStore dataStore = getDataStore();
         Transaction transaction = getTransaction();
         return dataStore.getRootRef(transaction);
     }

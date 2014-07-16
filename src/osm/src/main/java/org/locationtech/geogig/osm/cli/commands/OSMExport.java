@@ -15,7 +15,7 @@ import javax.annotation.Nullable;
 
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.locationtech.geogig.api.Bounded;
-import org.locationtech.geogig.api.GeoGIT;
+import org.locationtech.geogig.api.GeoGIG;
 import org.locationtech.geogig.api.NodeRef;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.RevFeature;
@@ -29,7 +29,7 @@ import org.locationtech.geogig.api.plumbing.RevParse;
 import org.locationtech.geogig.cli.AbstractCommand;
 import org.locationtech.geogig.cli.CLICommand;
 import org.locationtech.geogig.cli.CommandFailedException;
-import org.locationtech.geogig.cli.GeogitCLI;
+import org.locationtech.geogig.cli.GeogigCLI;
 import org.locationtech.geogig.cli.annotation.ReadOnly;
 import org.locationtech.geogig.geotools.plumbing.ExportOp;
 import org.locationtech.geogig.osm.internal.EntityConverter;
@@ -76,13 +76,13 @@ public class OSMExport extends AbstractCommand implements CLICommand {
     @Parameter(names = { "--bbox", "-b" }, description = "The bounding box to use as filter (S W N E).", arity = 4)
     private List<String> bbox;
 
-    private GeoGIT geogit;
+    private GeoGIG geogit;
 
     /**
      * Executes the export command using the provided options.
      */
     @Override
-    protected void runInternal(GeogitCLI cli) throws IOException {
+    protected void runInternal(GeogigCLI cli) throws IOException {
         if (args.size() < 1 || args.size() > 2) {
             printUsage(cli);
             throw new CommandFailedException();

@@ -7,7 +7,7 @@ package org.locationtech.geogig.rest.repository;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
-import org.locationtech.geogig.api.GeoGIT;
+import org.locationtech.geogig.api.GeoGIG;
 import org.restlet.data.Request;
 
 import com.google.common.base.Optional;
@@ -16,9 +16,9 @@ import com.google.common.base.Throwables;
 
 public class RESTUtils {
 
-    public static Optional<GeoGIT> getGeogit(Request request) {
+    public static Optional<GeoGIG> getGeogit(Request request) {
         RepositoryProvider provider = repositoryProvider(request);
-        Optional<GeoGIT> geogit = provider.getGeogit(request);
+        Optional<GeoGIG> geogit = provider.getGeogit(request);
         return geogit;
     }
 

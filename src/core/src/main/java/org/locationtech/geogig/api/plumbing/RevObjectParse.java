@@ -5,7 +5,7 @@
 
 package org.locationtech.geogig.api.plumbing;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.RevObject;
 
@@ -19,7 +19,7 @@ import com.google.common.base.Preconditions;
  * @see RevParse
  * @see ResolveObjectType
  */
-public class RevObjectParse extends AbstractGeoGitOp<Optional<RevObject>> {
+public class RevObjectParse extends AbstractGeoGigOp<Optional<RevObject>> {
 
     private ObjectId objectId;
 

@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.GlobalContextBuilder;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.ProgressListener;
@@ -42,7 +42,7 @@ import com.google.common.collect.Lists;
  * Fetches named heads or tags from one or more other repositories, along with the objects necessary
  * to complete them.
  */
-public class FetchOp extends AbstractGeoGitOp<FetchResult> {
+public class FetchOp extends AbstractGeoGigOp<FetchResult> {
 
     private boolean all;
 
@@ -124,7 +124,7 @@ public class FetchOp extends AbstractGeoGitOp<FetchResult> {
      * Executes the fetch operation.
      * 
      * @return {@code null}
-     * @see org.locationtech.geogig.api.AbstractGeoGitOp#call()
+     * @see org.locationtech.geogig.api.AbstractGeoGigOp#call()
      */
     @Override
     protected  FetchResult _call() {

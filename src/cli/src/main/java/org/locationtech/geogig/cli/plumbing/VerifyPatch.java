@@ -21,7 +21,7 @@ import org.locationtech.geogig.api.plumbing.diff.PatchSerializer;
 import org.locationtech.geogig.api.plumbing.diff.VerifyPatchOp;
 import org.locationtech.geogig.api.plumbing.diff.VerifyPatchResults;
 import org.locationtech.geogig.cli.AbstractCommand;
-import org.locationtech.geogig.cli.GeogitCLI;
+import org.locationtech.geogig.cli.GeogigCLI;
 import org.locationtech.geogig.cli.annotation.ReadOnly;
 
 import com.beust.jcommander.Parameter;
@@ -46,7 +46,7 @@ public class VerifyPatch extends AbstractCommand {
     private boolean reverse;
 
     @Override
-    public void runInternal(GeogitCLI cli) throws IOException {
+    public void runInternal(GeogigCLI cli) throws IOException {
         checkParameter(patchFiles.size() < 2, "Only one single patch file accepted");
         checkParameter(!patchFiles.isEmpty(), "No patch file specified");
 

@@ -6,7 +6,7 @@ package org.locationtech.geogig.api.porcelain;
 
 import java.util.List;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.Ref;
 import org.locationtech.geogig.api.Remote;
 import org.locationtech.geogig.api.plumbing.LsRemote;
@@ -23,7 +23,7 @@ import com.google.common.collect.ImmutableSet;
  * 
  * @see ConfigDatabase
  */
-public class RemoteRemoveOp extends AbstractGeoGitOp<Remote> {
+public class RemoteRemoveOp extends AbstractGeoGigOp<Remote> {
 
     private String name;
 

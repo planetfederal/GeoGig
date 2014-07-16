@@ -10,7 +10,7 @@ import java.util.Iterator;
 
 import org.locationtech.geogig.api.Bucket;
 import org.locationtech.geogig.api.Context;
-import org.locationtech.geogig.api.GeoGIT;
+import org.locationtech.geogig.api.GeoGIG;
 import org.locationtech.geogig.api.Node;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.Ref;
@@ -42,7 +42,7 @@ import com.google.common.collect.ImmutableSet;
  */
 class LocalRemoteRepo extends AbstractRemoteRepo {
 
-    private GeoGIT remoteGeoGit;
+    private GeoGIG remoteGeoGit;
 
     private Context injector;
 
@@ -63,7 +63,7 @@ class LocalRemoteRepo extends AbstractRemoteRepo {
     /**
      * @param geogit manually set a geogit for this remote repository
      */
-    public void setGeoGit(GeoGIT geogit) {
+    public void setGeoGit(GeoGIG geogit) {
         this.remoteGeoGit = geogit;
     }
 
@@ -75,7 +75,7 @@ class LocalRemoteRepo extends AbstractRemoteRepo {
     @Override
     public void open() throws IOException {
         if (remoteGeoGit == null) {
-            remoteGeoGit = new GeoGIT(injector, workingDirectory);
+            remoteGeoGit = new GeoGIG(injector, workingDirectory);
             remoteGeoGit.getRepository();
         }
 

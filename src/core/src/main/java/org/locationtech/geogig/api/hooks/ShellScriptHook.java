@@ -8,7 +8,7 @@ import java.io.File;
 
 import javax.annotation.Nullable;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 
 class ShellScriptHook implements CommandHook {
 
@@ -22,8 +22,8 @@ class ShellScriptHook implements CommandHook {
     }
 
     @Override
-    public <C extends AbstractGeoGitOp<?>> C pre(C command)
-            throws CannotRunGeogitOperationException {
+    public <C extends AbstractGeoGigOp<?>> C pre(C command)
+            throws CannotRunGeogigOperationException {
 
         if (preScript == null) {
             return command;
@@ -36,7 +36,7 @@ class ShellScriptHook implements CommandHook {
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> T post(AbstractGeoGitOp<T> command, Object retVal, boolean success) throws Exception {
+    public <T> T post(AbstractGeoGigOp<T> command, Object retVal, boolean success) throws Exception {
 
         if (postScript == null) {
             return (T) retVal;
@@ -49,7 +49,7 @@ class ShellScriptHook implements CommandHook {
     }
 
     @Override
-    public boolean appliesTo(Class<? extends AbstractGeoGitOp<?>> clazz) {
+    public boolean appliesTo(Class<? extends AbstractGeoGigOp<?>> clazz) {
         return true;
     }
 

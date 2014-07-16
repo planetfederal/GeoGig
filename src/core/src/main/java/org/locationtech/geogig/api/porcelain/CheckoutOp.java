@@ -14,7 +14,7 @@ import java.util.Set;
 
 import javax.annotation.Nullable;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.NodeRef;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.Ref;
@@ -51,7 +51,7 @@ import com.google.common.collect.Sets;
  */
 @CanRunDuringConflict
 @Hookable(name = "checkout")
-public class CheckoutOp extends AbstractGeoGitOp<CheckoutResult> {
+public class CheckoutOp extends AbstractGeoGigOp<CheckoutResult> {
 
     private String branchOrCommit;
 

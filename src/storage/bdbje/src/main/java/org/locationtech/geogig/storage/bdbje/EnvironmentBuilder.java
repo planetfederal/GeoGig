@@ -11,7 +11,7 @@ import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
 import org.locationtech.geogig.api.Platform;
-import org.locationtech.geogig.api.plumbing.ResolveGeogitDir;
+import org.locationtech.geogig.api.plumbing.ResolveGeogigDir;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Throwables;
@@ -63,7 +63,7 @@ public class EnvironmentBuilder implements Provider<Environment> {
     @Override
     public synchronized Environment get() {
 
-        final Optional<URL> repoUrl = new ResolveGeogitDir(platform).call();
+        final Optional<URL> repoUrl = new ResolveGeogigDir(platform).call();
         if (!repoUrl.isPresent() && absolutePath == null) {
             throw new IllegalStateException("Can't find geogit repository home");
         }

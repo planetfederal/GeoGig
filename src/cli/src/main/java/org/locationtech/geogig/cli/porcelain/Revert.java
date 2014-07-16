@@ -7,7 +7,7 @@ package org.locationtech.geogig.cli.porcelain;
 import java.io.IOException;
 import java.util.List;
 
-import org.locationtech.geogig.api.GeoGIT;
+import org.locationtech.geogig.api.GeoGIG;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.plumbing.RevParse;
 import org.locationtech.geogig.api.porcelain.RevertConflictsException;
@@ -15,7 +15,7 @@ import org.locationtech.geogig.api.porcelain.RevertOp;
 import org.locationtech.geogig.cli.AbstractCommand;
 import org.locationtech.geogig.cli.CLICommand;
 import org.locationtech.geogig.cli.CommandFailedException;
-import org.locationtech.geogig.cli.GeogitCLI;
+import org.locationtech.geogig.cli.GeogigCLI;
 
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
@@ -57,11 +57,11 @@ public class Revert extends AbstractCommand implements CLICommand {
      * Executes the revert command.
      */
     @Override
-    protected void runInternal(GeogitCLI cli) throws IOException {
+    protected void runInternal(GeogigCLI cli) throws IOException {
         checkParameter(commits.size() > 0 || abort || continueRevert,
                 "nothing specified for reverting");
 
-        final GeoGIT geogit = cli.getGeogit();
+        final GeoGIG geogit = cli.getGeogit();
         RevertOp revert = geogit.command(RevertOp.class);
 
         for (String st : commits) {

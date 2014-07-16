@@ -8,7 +8,7 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.NodeRef;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.Ref;
@@ -39,7 +39,7 @@ import com.google.common.collect.ImmutableList;
  * the current branch without overwriting changes. It classifies the changes of the commit in
  * conflicting or unconflicting, so they can be applied partially
  */
-public class ReportCommitConflictsOp extends AbstractGeoGitOp<MergeScenarioReport> {
+public class ReportCommitConflictsOp extends AbstractGeoGigOp<MergeScenarioReport> {
 
     private RevCommit commit;
 

@@ -13,7 +13,7 @@ import jline.console.ConsoleReader;
 
 import org.fusesource.jansi.Ansi;
 import org.fusesource.jansi.Ansi.Color;
-import org.locationtech.geogig.api.GeoGIT;
+import org.locationtech.geogig.api.GeoGIG;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.Ref;
 import org.locationtech.geogig.api.RevCommit;
@@ -29,7 +29,7 @@ import org.locationtech.geogig.api.porcelain.ResetOp.ResetMode;
 import org.locationtech.geogig.cli.AbstractCommand;
 import org.locationtech.geogig.cli.CLICommand;
 import org.locationtech.geogig.cli.CommandFailedException;
-import org.locationtech.geogig.cli.GeogitCLI;
+import org.locationtech.geogig.cli.GeogigCLI;
 
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
@@ -75,12 +75,12 @@ public class Merge extends AbstractCommand implements CLICommand {
      * Executes the merge command using the provided options.
      */
     @Override
-    public void runInternal(GeogitCLI cli) throws IOException {
+    public void runInternal(GeogigCLI cli) throws IOException {
         checkParameter(commits.size() > 0 || abort, "No commits provided to merge.");
 
         ConsoleReader console = cli.getConsole();
 
-        final GeoGIT geogit = cli.getGeogit();
+        final GeoGIG geogit = cli.getGeogit();
 
         Ansi ansi = newAnsi(console.getTerminal());
 

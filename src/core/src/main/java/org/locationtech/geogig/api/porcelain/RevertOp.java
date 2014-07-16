@@ -14,7 +14,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.CommitBuilder;
 import org.locationtech.geogig.api.NodeRef;
 import org.locationtech.geogig.api.ObjectId;
@@ -25,7 +25,7 @@ import org.locationtech.geogig.api.SymRef;
 import org.locationtech.geogig.api.plumbing.DiffTree;
 import org.locationtech.geogig.api.plumbing.FindTreeChild;
 import org.locationtech.geogig.api.plumbing.RefParse;
-import org.locationtech.geogig.api.plumbing.ResolveGeogitDir;
+import org.locationtech.geogig.api.plumbing.ResolveGeogigDir;
 import org.locationtech.geogig.api.plumbing.UpdateRef;
 import org.locationtech.geogig.api.plumbing.UpdateSymRef;
 import org.locationtech.geogig.api.plumbing.WriteTree;
@@ -53,7 +53,7 @@ import com.google.common.io.Files;
  * 
  */
 @CanRunDuringConflict
-public class RevertOp extends AbstractGeoGitOp<Boolean> {
+public class RevertOp extends AbstractGeoGigOp<Boolean> {
 
     private List<ObjectId> commits;
 
@@ -205,7 +205,7 @@ public class RevertOp extends AbstractGeoGitOp<Boolean> {
     }
 
     private File getRevertFolder() {
-        URL dir = command(ResolveGeogitDir.class).call().get();
+        URL dir = command(ResolveGeogigDir.class).call().get();
         File revertFolder = new File(dir.getFile(), "revert");
         if (!revertFolder.exists()) {
             Preconditions.checkState(revertFolder.mkdirs(), "Cannot create 'revert' folder");

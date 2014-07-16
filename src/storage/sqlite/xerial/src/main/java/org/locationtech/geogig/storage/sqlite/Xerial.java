@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import javax.sql.DataSource;
 
 import org.locationtech.geogig.api.Context;
-import org.locationtech.geogig.di.GeogitModule;
+import org.locationtech.geogig.di.GeogigModule;
 import org.slf4j.Logger;
 import org.sqlite.SQLiteConfig.SynchronousMode;
 import org.sqlite.SQLiteDataSource;
@@ -72,7 +72,7 @@ public class Xerial {
      * Creates the injector to enable xerial sqlite storage.
      */
     public static Context injector() {
-        return Guice.createInjector(Modules.override(new GeogitModule()).with(
+        return Guice.createInjector(Modules.override(new GeogigModule()).with(
                 new XerialSQLiteModule())).getInstance(Context.class);
     }
 

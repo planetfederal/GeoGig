@@ -6,7 +6,7 @@ package org.locationtech.geogig.api.porcelain;
 
 import static com.google.common.base.Preconditions.checkState;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.Ref;
 import org.locationtech.geogig.api.SymRef;
 import org.locationtech.geogig.api.plumbing.RefParse;
@@ -25,7 +25,7 @@ import com.google.common.base.Optional;
  * the other branch to that name.
  * 
  */
-public class BranchRenameOp extends AbstractGeoGitOp<Ref> {
+public class BranchRenameOp extends AbstractGeoGigOp<Ref> {
 
     private boolean force;
 

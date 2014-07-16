@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 
-import org.locationtech.geogig.api.GeoGIT;
+import org.locationtech.geogig.api.GeoGIG;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.RevObject;
 import org.locationtech.geogig.repository.Repository;
@@ -40,13 +40,13 @@ public class ObjectFinder extends Finder {
     public Resource findTarget(Request request, Response response) {
 
         if (request.getAttributes().containsKey("id")) {
-            final Optional<GeoGIT> ggit = getGeogit(request);
+            final Optional<GeoGIG> ggit = getGeogit(request);
             Preconditions.checkState(ggit.isPresent());
 
             final String id = (String) request.getAttributes().get("id");
             final ObjectId oid = ObjectId.valueOf(id);
 
-            GeoGIT geogit = ggit.get();
+            GeoGIG geogit = ggit.get();
             Repository repository = geogit.getRepository();
             boolean blobExists = repository.blobExists(oid);
             if (blobExists) {
@@ -63,9 +63,9 @@ public class ObjectFinder extends Finder {
 
         private ObjectId oid;
 
-        private GeoGIT geogit;
+        private GeoGIG geogit;
 
-        public ObjectResource(ObjectId oid, GeoGIT geogit) {
+        public ObjectResource(ObjectId oid, GeoGIG geogit) {
             this.oid = oid;
             this.geogit = geogit;
         }
@@ -84,9 +84,9 @@ public class ObjectFinder extends Finder {
 
         private static final ObjectSerializingFactory serialFac = DataStreamSerializationFactoryV1.INSTANCE;
 
-        private final GeoGIT ggit;
+        private final GeoGIG ggit;
 
-        public RevObjectBinaryRepresentation(ObjectId oid, GeoGIT ggit) {
+        public RevObjectBinaryRepresentation(ObjectId oid, GeoGIG ggit) {
             super(MediaType.APPLICATION_OCTET_STREAM);
             this.oid = oid;
             this.ggit = ggit;

@@ -10,12 +10,12 @@ import java.util.List;
 
 import jline.console.ConsoleReader;
 
-import org.locationtech.geogig.api.GeoGIT;
+import org.locationtech.geogig.api.GeoGIG;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.cli.AbstractCommand;
 import org.locationtech.geogig.cli.CLICommand;
 import org.locationtech.geogig.cli.CommandFailedException;
-import org.locationtech.geogig.cli.GeogitCLI;
+import org.locationtech.geogig.cli.GeogigCLI;
 import org.locationtech.geogig.osm.internal.OSMUnmapOp;
 
 import com.beust.jcommander.Parameter;
@@ -33,13 +33,13 @@ public class OSMUnmap extends AbstractCommand implements CLICommand {
     @Parameter(description = "<path>")
     public List<String> args;
 
-    private GeoGIT geogit;
+    private GeoGIG geogit;
 
     /**
      * Executes the map command using the provided options.
      */
     @Override
-    protected void runInternal(GeogitCLI cli) throws IOException {
+    protected void runInternal(GeogigCLI cli) throws IOException {
 
         if (args == null || args.isEmpty() || args.size() != 1) {
             printUsage(cli);

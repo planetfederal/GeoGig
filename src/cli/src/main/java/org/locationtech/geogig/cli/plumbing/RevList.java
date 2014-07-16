@@ -13,7 +13,7 @@ import java.util.List;
 import jline.console.ConsoleReader;
 
 import org.geotools.util.Range;
-import org.locationtech.geogig.api.GeoGIT;
+import org.locationtech.geogig.api.GeoGIG;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.RevCommit;
 import org.locationtech.geogig.api.RevPerson;
@@ -24,7 +24,7 @@ import org.locationtech.geogig.api.porcelain.DiffOp;
 import org.locationtech.geogig.api.porcelain.LogOp;
 import org.locationtech.geogig.cli.AbstractCommand;
 import org.locationtech.geogig.cli.CLICommand;
-import org.locationtech.geogig.cli.GeogitCLI;
+import org.locationtech.geogig.cli.GeogigCLI;
 import org.locationtech.geogig.cli.annotation.ReadOnly;
 
 import com.beust.jcommander.Parameters;
@@ -45,7 +45,7 @@ public class RevList extends AbstractCommand implements CLICommand {
     @ParametersDelegate
     public final RevListArgs args = new RevListArgs();
 
-    private GeoGIT geogit;
+    private GeoGIG geogit;
 
     private ConsoleReader console;
 
@@ -53,7 +53,7 @@ public class RevList extends AbstractCommand implements CLICommand {
      * Executes the revlist command using the provided options.
      */
     @Override
-    public void runInternal(GeogitCLI cli) throws IOException {
+    public void runInternal(GeogigCLI cli) throws IOException {
         checkParameter(!args.commits.isEmpty(), "No starting commit provided");
 
         geogit = cli.getGeogit();

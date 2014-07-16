@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.Ref;
 import org.locationtech.geogig.api.RevCommit;
@@ -33,7 +33,7 @@ import com.google.common.collect.Iterators;
  * 
  */
 @CanRunDuringConflict
-public class ResetOp extends AbstractGeoGitOp<Boolean> {
+public class ResetOp extends AbstractGeoGigOp<Boolean> {
 
     /**
      * Enumeration of the possible reset modes.

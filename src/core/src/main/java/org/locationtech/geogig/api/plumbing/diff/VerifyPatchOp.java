@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.FeatureInfo;
 import org.locationtech.geogig.api.NodeRef;
 import org.locationtech.geogig.api.ObjectId;
@@ -34,7 +34,7 @@ import com.google.common.collect.ImmutableList;
  * @see WorkingTree
  * @see Patch
  */
-public class VerifyPatchOp extends AbstractGeoGitOp<VerifyPatchResults> {
+public class VerifyPatchOp extends AbstractGeoGigOp<VerifyPatchResults> {
 
     private Patch patch;
 

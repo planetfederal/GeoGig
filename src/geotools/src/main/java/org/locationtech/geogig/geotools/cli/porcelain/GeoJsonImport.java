@@ -13,7 +13,7 @@ import org.locationtech.geogig.api.RevFeatureType;
 import org.locationtech.geogig.api.plumbing.RevObjectParse;
 import org.locationtech.geogig.cli.CLICommand;
 import org.locationtech.geogig.cli.CommandFailedException;
-import org.locationtech.geogig.cli.GeogitCLI;
+import org.locationtech.geogig.cli.GeogigCLI;
 import org.locationtech.geogig.cli.InvalidParameterException;
 import org.locationtech.geogig.geotools.plumbing.GeoToolsOpException;
 import org.locationtech.geogig.geotools.plumbing.ImportOp;
@@ -77,7 +77,7 @@ public class GeoJsonImport extends AbstractGeoJsonCommand implements CLICommand 
     String fidAttribute;
 
     @Override
-    protected void runInternal(GeogitCLI cli) throws InvalidParameterException,
+    protected void runInternal(GeogigCLI cli) throws InvalidParameterException,
             CommandFailedException, IOException {
         checkParameter(geoJSONList != null && !geoJSONList.isEmpty(), "No GeoJSON specified");
         checkParameter(geomName == null || !geomNameAuto,

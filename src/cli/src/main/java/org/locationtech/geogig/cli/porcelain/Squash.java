@@ -7,14 +7,14 @@ package org.locationtech.geogig.cli.porcelain;
 
 import java.util.List;
 
-import org.locationtech.geogig.api.GeoGIT;
+import org.locationtech.geogig.api.GeoGIG;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.RevCommit;
 import org.locationtech.geogig.api.plumbing.RevParse;
 import org.locationtech.geogig.api.porcelain.SquashOp;
 import org.locationtech.geogig.cli.AbstractCommand;
 import org.locationtech.geogig.cli.CLICommand;
-import org.locationtech.geogig.cli.GeogitCLI;
+import org.locationtech.geogig.cli.GeogigCLI;
 
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
@@ -46,10 +46,10 @@ public class Squash extends AbstractCommand implements CLICommand {
      * Executes the squash command using the provided options.
      */
     @Override
-    public void runInternal(GeogitCLI cli) {
+    public void runInternal(GeogigCLI cli) {
         checkParameter(commits.size() == 2, "2 commit references must be supplied");
 
-        final GeoGIT geogit = cli.getGeogit();
+        final GeoGIG geogit = cli.getGeogit();
 
         Optional<ObjectId> sinceId = geogit.command(RevParse.class).setRefSpec(commits.get(0))
                 .call();

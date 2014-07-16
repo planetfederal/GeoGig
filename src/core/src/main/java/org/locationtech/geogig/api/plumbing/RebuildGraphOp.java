@@ -8,7 +8,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.Ref;
 import org.locationtech.geogig.api.RevCommit;
@@ -24,7 +24,7 @@ import com.google.common.collect.ImmutableList;
  * Rebuilds the {@link GraphDatabase} and returns a list of {@link ObjectId}s that were found to be
  * missing or incomplete.
  */
-public class RebuildGraphOp extends AbstractGeoGitOp<ImmutableList<ObjectId>> {
+public class RebuildGraphOp extends AbstractGeoGigOp<ImmutableList<ObjectId>> {
 
     /**
      * Executes the {@code RebuildGraphOp} operation.

@@ -20,7 +20,7 @@ import java.util.Set;
 import jline.console.ConsoleReader;
 
 import org.fusesource.jansi.Ansi;
-import org.locationtech.geogig.api.GeoGIT;
+import org.locationtech.geogig.api.GeoGIG;
 import org.locationtech.geogig.api.NodeRef;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.RevFeature;
@@ -50,14 +50,14 @@ interface DiffPrinter {
      * @param entry
      * @throws IOException
      */
-    void print(GeoGIT geogit, ConsoleReader console, DiffEntry entry) throws IOException;
+    void print(GeoGIG geogit, ConsoleReader console, DiffEntry entry) throws IOException;
 
 }
 
 class SummaryDiffPrinter implements DiffPrinter {
 
     @Override
-    public void print(GeoGIT geogit, ConsoleReader console, DiffEntry entry) throws IOException {
+    public void print(GeoGIG geogit, ConsoleReader console, DiffEntry entry) throws IOException {
 
         Ansi ansi = AnsiDecorator.newAnsi(console.getTerminal().isAnsiSupported());
 
@@ -126,7 +126,7 @@ class FullDiffPrinter implements DiffPrinter {
     }
 
     @Override
-    public void print(GeoGIT geogit, ConsoleReader console, DiffEntry diffEntry) throws IOException {
+    public void print(GeoGIG geogit, ConsoleReader console, DiffEntry diffEntry) throws IOException {
 
         if (!noHeader) {
             summaryPrinter.print(geogit, console, diffEntry);

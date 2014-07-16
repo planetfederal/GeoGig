@@ -16,7 +16,7 @@ import jline.console.ConsoleReader;
 import org.fusesource.jansi.Ansi;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
-import org.locationtech.geogig.api.GeoGIT;
+import org.locationtech.geogig.api.GeoGIG;
 import org.locationtech.geogig.api.Ref;
 import org.locationtech.geogig.api.plumbing.DiffBounds;
 import org.locationtech.geogig.api.plumbing.DiffCount;
@@ -27,7 +27,7 @@ import org.locationtech.geogig.api.porcelain.DiffOp;
 import org.locationtech.geogig.cli.AbstractCommand;
 import org.locationtech.geogig.cli.AnsiDecorator;
 import org.locationtech.geogig.cli.CLICommand;
-import org.locationtech.geogig.cli.GeogitCLI;
+import org.locationtech.geogig.cli.GeogigCLI;
 import org.locationtech.geogig.cli.InvalidParameterException;
 import org.locationtech.geogig.cli.annotation.ReadOnly;
 import org.opengis.geometry.BoundingBox;
@@ -87,14 +87,14 @@ public class Diff extends AbstractCommand implements CLICommand {
      * Executes the diff command with the specified options.
      */
     @Override
-    protected void runInternal(GeogitCLI cli) throws IOException {
+    protected void runInternal(GeogigCLI cli) throws IOException {
         checkParameter(refSpec.size() <= 2, "Commit list is too long :%s", refSpec);
         checkParameter(!(nogeom && summary), "Only one printing mode allowed");
         checkParameter(!(bounds && count), "Only one of --bounds or --count is allowed");
         checkParameter(!(cached && refSpec.size() > 1),
                 "--cached allows zero or one ref specs to compare the index with.");
 
-        GeoGIT geogit = cli.getGeogit();
+        GeoGIG geogit = cli.getGeogit();
 
         String oldVersion = resolveOldVersion();
         String newVersion = resolveNewVersion();
@@ -197,7 +197,7 @@ public class Diff extends AbstractCommand implements CLICommand {
 
     private static final class BoundsDiffPrinter {
 
-        public static void print(GeoGIT geogit, ConsoleReader console,
+        public static void print(GeoGIG geogit, ConsoleReader console,
                 DiffSummary<BoundingBox, BoundingBox> diffBounds) throws IOException {
 
             BoundingBox left = diffBounds.getLeft();

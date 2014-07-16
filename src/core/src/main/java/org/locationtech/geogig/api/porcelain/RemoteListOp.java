@@ -7,7 +7,7 @@ package org.locationtech.geogig.api.porcelain;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.Remote;
 import org.locationtech.geogig.storage.ConfigDatabase;
 
@@ -19,7 +19,7 @@ import com.google.common.collect.ImmutableList;
  * 
  * @see ConfigDatabase
  */
-public class RemoteListOp extends AbstractGeoGitOp<ImmutableList<Remote>> {
+public class RemoteListOp extends AbstractGeoGigOp<ImmutableList<Remote>> {
 
     /**
      * Executes the remote-list operation.

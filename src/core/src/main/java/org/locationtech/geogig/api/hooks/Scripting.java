@@ -21,7 +21,7 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.plumbing.ResolveRepository;
 import org.locationtech.geogig.repository.Repository;
 import org.slf4j.Logger;
@@ -53,11 +53,11 @@ public class Scripting {
      * @param operation the operation triggering the script, to provide context for the script. This
      *        object might get modified if the script modifies it to alter how the command is called
      *        (for instance, changing the commit message in a commit operation)
-     * @throws CannotRunGeogitOperationException
+     * @throws CannotRunGeogigOperationException
      */
     @SuppressWarnings("unchecked")
-    public static void runJVMScript(AbstractGeoGitOp<?> operation, File scriptFile)
-            throws CannotRunGeogitOperationException {
+    public static void runJVMScript(AbstractGeoGigOp<?> operation, File scriptFile)
+            throws CannotRunGeogigOperationException {
 
         checkArgument(scriptFile.exists(), "Script file does not exist %s", scriptFile.getPath());
 
@@ -71,7 +71,7 @@ public class Scripting {
             Map<String, Object> params = getParamMap(operation);
             engine.put(PARAMS, params);
             Repository repo = operation.command(ResolveRepository.class).call();
-            GeoGitAPI api = new GeoGitAPI(repo);
+            GeoGigAPI api = new GeoGigAPI(repo);
             engine.put(GEOGIT, api);
             engine.eval(new FileReader(scriptFile));
             Object map = engine.get(PARAMS);
@@ -81,12 +81,12 @@ public class Scripting {
             // TODO: improve this hack to check exception type
             if (cause != e) {
                 String msg = cause.getMessage();
-                msg = msg.substring(CannotRunGeogitOperationException.class.getName().length() + 2,
+                msg = msg.substring(CannotRunGeogigOperationException.class.getName().length() + 2,
                         msg.lastIndexOf("(")).trim();
                 msg += " (command aborted by .geogit/hooks/" + scriptFile.getName() + ")";
-                throw new CannotRunGeogitOperationException(msg);
+                throw new CannotRunGeogigOperationException(msg);
             } else {
-                throw new CannotRunGeogitOperationException(String.format(
+                throw new CannotRunGeogigOperationException(String.format(
                         "Script %s threw an exception: '%s'", scriptFile, e.getMessage()), e);
             }
         } catch (Exception e) {
@@ -94,7 +94,7 @@ public class Scripting {
     }
 
     public static void runShellScript(final File scriptFile)
-            throws CannotRunGeogitOperationException {
+            throws CannotRunGeogigOperationException {
 
         LOGGER.info("Running shell script {}", scriptFile.getAbsolutePath());
 
@@ -133,7 +133,7 @@ public class Scripting {
                 // the script exited with non-zero code, so we indicate it throwing the
                 // corresponding exception.
                 // TODO: get message?
-                throw new CannotRunGeogitOperationException(
+                throw new CannotRunGeogigOperationException(
                         "Hook script exited with non-zero error code");
             }
         } catch (IOException e) {
@@ -158,7 +158,7 @@ public class Scripting {
      * @param param the name of the parameter
      * @return the value of the parameter
      */
-    public static Map<String, Object> getParamMap(AbstractGeoGitOp<?> operation) {
+    public static Map<String, Object> getParamMap(AbstractGeoGigOp<?> operation) {
         Map<String, Object> map = Maps.newHashMap();
         try {
             Field[] fields = operation.getClass().getDeclaredFields();
@@ -188,7 +188,7 @@ public class Scripting {
      * 
      * @param a map of new field values. Keys are field names
      */
-    public static void setParamMap(Map<String, Object> map, AbstractGeoGitOp<?> operation) {
+    public static void setParamMap(Map<String, Object> map, AbstractGeoGigOp<?> operation) {
         try {
             Field[] fields = operation.getClass().getDeclaredFields();
             Set<String> keys = map.keySet();

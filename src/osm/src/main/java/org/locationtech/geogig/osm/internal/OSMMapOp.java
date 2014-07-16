@@ -11,7 +11,7 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.FeatureBuilder;
 import org.locationtech.geogig.api.NodeRef;
 import org.locationtech.geogig.api.ObjectId;
@@ -42,7 +42,7 @@ import com.google.common.collect.Iterators;
  * The source data used is the working tree data in the "node" and "way" trees.
  * 
  */
-public class OSMMapOp extends AbstractGeoGitOp<RevTree> {
+public class OSMMapOp extends AbstractGeoGigOp<RevTree> {
 
     /**
      * The mapping to use

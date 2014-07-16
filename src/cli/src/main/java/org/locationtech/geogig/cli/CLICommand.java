@@ -18,11 +18,11 @@ import com.beust.jcommander.ParameterException;
  * <p>
  * Command classes that require a live geogit repository to exist in order to be run are encouraged
  * to be marked with the {@link RequiresRepository @RequiresRepository} annotation, to be sure
- * {@link #run(GeogitCLI)} is only going to be called with a valid repository in place.
+ * {@link #run(GeogigCLI)} is only going to be called with a valid repository in place.
  * <p>
  * Commands that don't necessarily require a repository to run (e.g. {@link Init init}, {@link Help
  * help}, {@link Config config}, etc} shall not be annotated with {@link RequiresRepository
- * @RequiresRepository}, although they're free to check {@link GeogitCLI#getGeogit()} for nullity if
+ * @RequiresRepository}, although they're free to check {@link GeogigCLI#getGeogit()} for nullity if
  * they need to perform one or another task depending on the precense or not of a repository.
  * 
  */
@@ -45,6 +45,6 @@ public interface CLICommand {
      * @throws RuntimeException for any other unknown cause of failure to execute the operation,
      *         generally propagated back from it.
      */
-    void run(GeogitCLI cli) throws InvalidParameterException, CommandFailedException;
+    void run(GeogigCLI cli) throws InvalidParameterException, CommandFailedException;
 
 }

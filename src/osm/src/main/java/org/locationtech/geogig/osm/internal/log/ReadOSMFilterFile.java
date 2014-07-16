@@ -11,7 +11,7 @@ import java.util.List;
 
 import jline.internal.Preconditions;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 
 import com.google.common.base.Charsets;
 import com.google.common.base.Joiner;
@@ -22,7 +22,7 @@ import com.google.common.io.Files;
 /**
  * Reads the file filter associated to a previously executed OSM import operation.
  */
-public class ReadOSMFilterFile extends AbstractGeoGitOp<Optional<String>> {
+public class ReadOSMFilterFile extends AbstractGeoGigOp<Optional<String>> {
 
     private OSMLogEntry entry;
 

@@ -10,7 +10,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.FeatureInfo;
 import org.locationtech.geogig.api.NodeRef;
 import org.locationtech.geogig.api.ObjectId;
@@ -43,7 +43,7 @@ import com.google.common.collect.Lists;
  * Merge two or more histories together.
  * 
  */
-public class MergeOp extends AbstractGeoGitOp<MergeOp.MergeReport> {
+public class MergeOp extends AbstractGeoGigOp<MergeOp.MergeReport> {
 
     private List<ObjectId> commits = new ArrayList<ObjectId>();;
 

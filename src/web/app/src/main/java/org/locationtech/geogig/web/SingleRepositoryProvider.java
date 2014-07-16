@@ -4,7 +4,7 @@
  */
 package org.locationtech.geogig.web;
 
-import org.locationtech.geogig.api.GeoGIT;
+import org.locationtech.geogig.api.GeoGIG;
 import org.locationtech.geogig.rest.repository.RepositoryProvider;
 import org.restlet.data.Request;
 
@@ -12,14 +12,14 @@ import com.google.common.base.Optional;
 
 public class SingleRepositoryProvider implements RepositoryProvider {
 
-    private GeoGIT geogit;
+    private GeoGIG geogit;
 
-    public SingleRepositoryProvider(GeoGIT geogit) {
+    public SingleRepositoryProvider(GeoGIG geogit) {
         this.geogit = geogit;
     }
 
     @Override
-    public Optional<GeoGIT> getGeogit(Request request) {
+    public Optional<GeoGIG> getGeogit(Request request) {
         return Optional.fromNullable(geogit);
     }
 

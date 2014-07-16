@@ -11,7 +11,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.RevTree;
 import org.locationtech.geogig.api.plumbing.diff.DiffCountConsumer;
@@ -30,7 +30,7 @@ import com.google.common.collect.Lists;
  * 
  * @see DiffCountConsumer
  */
-public class DiffCount extends AbstractGeoGitOp<DiffObjectCount> {
+public class DiffCount extends AbstractGeoGigOp<DiffObjectCount> {
 
     private final List<String> pathFilters = Lists.newLinkedList();
 

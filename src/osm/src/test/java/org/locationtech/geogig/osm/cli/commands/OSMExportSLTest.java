@@ -24,7 +24,7 @@ import org.locationtech.geogig.api.GlobalContextBuilder;
 import org.locationtech.geogig.api.RevTree;
 import org.locationtech.geogig.api.TestPlatform;
 import org.locationtech.geogig.api.plumbing.RevObjectParse;
-import org.locationtech.geogig.cli.GeogitCLI;
+import org.locationtech.geogig.cli.GeogigCLI;
 import org.locationtech.geogig.cli.test.functional.general.CLITestContextBuilder;
 import org.locationtech.geogig.osm.internal.OSMImportOp;
 import org.spatialite.SQLiteConfig;
@@ -33,7 +33,7 @@ import com.google.common.base.Optional;
 
 public class OSMExportSLTest extends Assert {
 
-    private GeogitCLI cli;
+    private GeogigCLI cli;
 
     @Rule
     public TemporaryFolder tempFolder = new TemporaryFolder();
@@ -42,7 +42,7 @@ public class OSMExportSLTest extends Assert {
     public void setUp() throws Exception {
         ConsoleReader consoleReader = new ConsoleReader(System.in, System.out,
                 new UnsupportedTerminal());
-        cli = new GeogitCLI(consoleReader);
+        cli = new GeogigCLI(consoleReader);
         File workingDirectory = tempFolder.getRoot();
         TestPlatform platform = new TestPlatform(workingDirectory);
         GlobalContextBuilder.builder = new CLITestContextBuilder(platform);

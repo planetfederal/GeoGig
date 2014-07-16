@@ -7,7 +7,7 @@ package org.locationtech.geogig.api.porcelain;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkState;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.Ref;
 import org.locationtech.geogig.api.SymRef;
 import org.locationtech.geogig.api.plumbing.RefParse;
@@ -21,7 +21,7 @@ import com.google.common.base.Optional;
  * If trying to delete the current branch (i.e. HEAD points to that same branch), the operation
  * fails.
  */
-public class BranchDeleteOp extends AbstractGeoGitOp<Optional<? extends Ref>> {
+public class BranchDeleteOp extends AbstractGeoGigOp<Optional<? extends Ref>> {
 
     private String branchName;
 

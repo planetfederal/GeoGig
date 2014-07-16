@@ -8,7 +8,7 @@ import java.io.IOException;
 
 import javax.annotation.Nullable;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.GlobalContextBuilder;
 import org.locationtech.geogig.api.Ref;
 import org.locationtech.geogig.api.Remote;
@@ -33,7 +33,7 @@ import com.google.common.collect.ImmutableSet;
  * Clones a remote repository to a given directory.
  * 
  */
-public class CloneOp extends AbstractGeoGitOp<Void> {
+public class CloneOp extends AbstractGeoGigOp<Void> {
 
     private Optional<String> branch = Optional.absent();
 
@@ -96,7 +96,7 @@ public class CloneOp extends AbstractGeoGitOp<Void> {
      * Executes the clone operation.
      * 
      * @return {@code null}
-     * @see org.locationtech.geogig.api.AbstractGeoGitOp#call()
+     * @see org.locationtech.geogig.api.AbstractGeoGigOp#call()
      */
     @Override
     protected  Void _call() {

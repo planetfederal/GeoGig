@@ -5,7 +5,7 @@
 package org.locationtech.geogig.test.performance.je;
 
 import org.locationtech.geogig.api.Context;
-import org.locationtech.geogig.di.GeogitModule;
+import org.locationtech.geogig.di.GeogigModule;
 import org.locationtech.geogig.storage.bdbje.JEStorageModule;
 import org.locationtech.geogig.test.performance.RevTreeBuilderPerformanceTest;
 
@@ -16,7 +16,7 @@ public class JERevTreeBuilderPerformanceTest extends RevTreeBuilderPerformanceTe
     @Override
     protected Context createInjector() {
         return Guice.createInjector(
-                Modules.override(new GeogitModule()).with(new JEStorageModule())).getInstance(
+                Modules.override(new GeogigModule()).with(new JEStorageModule())).getInstance(
                 Context.class);
     }
 }

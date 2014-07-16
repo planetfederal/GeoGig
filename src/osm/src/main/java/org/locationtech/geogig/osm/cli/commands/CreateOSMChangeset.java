@@ -12,10 +12,10 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
-import org.locationtech.geogig.api.GeoGIT;
+import org.locationtech.geogig.api.GeoGIG;
 import org.locationtech.geogig.cli.AbstractCommand;
 import org.locationtech.geogig.cli.CLICommand;
-import org.locationtech.geogig.cli.GeogitCLI;
+import org.locationtech.geogig.cli.GeogigCLI;
 import org.locationtech.geogig.osm.internal.CreateOSMChangesetOp;
 import org.openstreetmap.osmosis.core.container.v0_6.ChangeContainer;
 import org.openstreetmap.osmosis.xml.v0_6.XmlChangeWriter;
@@ -43,11 +43,11 @@ public class CreateOSMChangeset extends AbstractCommand implements CLICommand {
      * Executes the command with the specified options.
      */
     @Override
-    protected void runInternal(GeogitCLI cli) throws IOException {
+    protected void runInternal(GeogigCLI cli) throws IOException {
 
         checkParameter(refSpec.size() < 3, "Commit list is too long :" + refSpec);
 
-        GeoGIT geogit = cli.getGeogit();
+        GeoGIG geogit = cli.getGeogit();
 
         CreateOSMChangesetOp op = geogit.command(CreateOSMChangesetOp.class);
 

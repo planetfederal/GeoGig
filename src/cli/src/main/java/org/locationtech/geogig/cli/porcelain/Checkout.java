@@ -10,14 +10,14 @@ import java.util.List;
 
 import jline.console.ConsoleReader;
 
-import org.locationtech.geogig.api.GeoGIT;
+import org.locationtech.geogig.api.GeoGIG;
 import org.locationtech.geogig.api.porcelain.CheckoutException;
 import org.locationtech.geogig.api.porcelain.CheckoutOp;
 import org.locationtech.geogig.api.porcelain.CheckoutResult;
 import org.locationtech.geogig.cli.AbstractCommand;
 import org.locationtech.geogig.cli.CLICommand;
 import org.locationtech.geogig.cli.CommandFailedException;
-import org.locationtech.geogig.cli.GeogitCLI;
+import org.locationtech.geogig.cli.GeogigCLI;
 import org.locationtech.geogig.cli.annotation.ObjectDatabaseReadOnly;
 
 import com.beust.jcommander.Parameter;
@@ -65,8 +65,8 @@ public class Checkout extends AbstractCommand implements CLICommand {
     private boolean theirs;
 
     @Override
-    public void runInternal(GeogitCLI cli) throws IOException {
-        final GeoGIT geogit = cli.getGeogit();
+    public void runInternal(GeogigCLI cli) throws IOException {
+        final GeoGIG geogit = cli.getGeogit();
         checkParameter(branchOrStartPoint.size() != 0 || !paths.isEmpty(),
                 "no branch or paths specified");
         checkParameter(branchOrStartPoint.size() < 2, "too many arguments");

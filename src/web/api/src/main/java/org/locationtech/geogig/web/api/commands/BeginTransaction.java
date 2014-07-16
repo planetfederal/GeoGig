@@ -4,8 +4,8 @@
  */
 package org.locationtech.geogig.web.api.commands;
 
-import org.locationtech.geogig.api.GeoGIT;
-import org.locationtech.geogig.api.GeogitTransaction;
+import org.locationtech.geogig.api.GeoGIG;
+import org.locationtech.geogig.api.GeogigTransaction;
 import org.locationtech.geogig.api.plumbing.TransactionBegin;
 import org.locationtech.geogig.web.api.AbstractWebAPICommand;
 import org.locationtech.geogig.web.api.CommandContext;
@@ -33,9 +33,9 @@ public class BeginTransaction extends AbstractWebAPICommand {
         if (this.getTransactionId() != null) {
             throw new CommandSpecException("Tried to start a transaction within a transaction.");
         }
-        final GeoGIT geogit = context.getGeoGIT();
+        final GeoGIG geogit = context.getGeoGIT();
 
-        final GeogitTransaction transaction = geogit.command(TransactionBegin.class).call();
+        final GeogigTransaction transaction = geogit.command(TransactionBegin.class).call();
 
         context.setResponseContent(new CommandResponse() {
 

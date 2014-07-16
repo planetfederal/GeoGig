@@ -13,7 +13,7 @@ import java.util.List;
 
 import org.locationtech.geogig.cli.AbstractCommand;
 import org.locationtech.geogig.cli.CLICommand;
-import org.locationtech.geogig.cli.GeogitCLI;
+import org.locationtech.geogig.cli.GeogigCLI;
 import org.locationtech.geogig.osm.internal.OSMDownloadOp;
 import org.locationtech.geogig.osm.internal.OSMReport;
 import org.locationtech.geogig.osm.internal.OSMUpdateOp;
@@ -71,7 +71,7 @@ public class OSMDownload extends AbstractCommand implements CLICommand {
     private String osmAPIUrl;
 
     @Override
-    protected void runInternal(GeogitCLI cli) throws IOException {
+    protected void runInternal(GeogigCLI cli) throws IOException {
         checkParameter(filterFile != null ^ bbox != null || update,
                 "You must specify a filter file or a bounding box");
         checkParameter((filterFile != null || bbox != null) ^ update,

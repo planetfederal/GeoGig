@@ -14,7 +14,7 @@ import org.geotools.data.Transaction;
 import org.geotools.data.Transaction.State;
 import org.geotools.data.store.ContentEntry;
 import org.locationtech.geogig.api.Context;
-import org.locationtech.geogig.api.GeogitTransaction;
+import org.locationtech.geogig.api.GeogigTransaction;
 import org.locationtech.geogig.api.plumbing.DiffIndex;
 import org.locationtech.geogig.api.plumbing.TransactionBegin;
 import org.locationtech.geogig.api.plumbing.diff.DiffEntry;
@@ -30,7 +30,7 @@ import com.google.common.base.Preconditions;
 /**
  *
  */
-class GeogitTransactionState implements State {
+class GeogigTransactionState implements State {
 
     /** VERSIONING_COMMIT_AUTHOR */
     static final String VERSIONING_COMMIT_AUTHOR = "VersioningCommitAuthor";
@@ -40,18 +40,18 @@ class GeogitTransactionState implements State {
 
     private ContentEntry entry;
 
-    private GeogitTransaction geogitTx;
+    private GeogigTransaction geogitTx;
 
     private Transaction tx;
 
     /**
      * @param entry
      */
-    public GeogitTransactionState(ContentEntry entry) {
+    public GeogigTransactionState(ContentEntry entry) {
         this.entry = entry;
     }
 
-    public Optional<GeogitTransaction> getGeogitTransaction() {
+    public Optional<GeogigTransaction> getGeogitTransaction() {
         return Optional.fromNullable(this.geogitTx);
     }
 
@@ -79,7 +79,7 @@ class GeogitTransactionState implements State {
             if (this.geogitTx != null) {
                 geogitTx.abort();
             }
-            GeoGitDataStore dataStore = (GeoGitDataStore) entry.getDataStore();
+            GeoGigDataStore dataStore = (GeoGigDataStore) entry.getDataStore();
             Context commandLocator = dataStore.getCommandLocator(this.tx);
             this.geogitTx = commandLocator.command(TransactionBegin.class).call();
             // checkout the working branch

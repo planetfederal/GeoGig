@@ -16,7 +16,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.locationtech.geogig.api.porcelain.CommitOp;
 import org.locationtech.geogig.cli.CommandFailedException;
-import org.locationtech.geogig.cli.GeogitCLI;
+import org.locationtech.geogig.cli.GeogigCLI;
 import org.locationtech.geogig.cli.InvalidParameterException;
 import org.locationtech.geogig.test.integration.RepositoryTestCase;
 
@@ -25,13 +25,13 @@ public class ShpExportTest extends RepositoryTestCase {
     @Rule
     public ExpectedException exception = ExpectedException.none();
 
-    private GeogitCLI cli;
+    private GeogigCLI cli;
 
     @Override
     public void setUpInternal() throws Exception {
         ConsoleReader consoleReader = new ConsoleReader(System.in, System.out,
                 new UnsupportedTerminal());
-        cli = new GeogitCLI(consoleReader);
+        cli = new GeogigCLI(consoleReader);
 
         cli.setGeogit(geogit);
 

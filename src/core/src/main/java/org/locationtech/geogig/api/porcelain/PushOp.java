@@ -14,7 +14,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.GlobalContextBuilder;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.Ref;
@@ -46,7 +46,7 @@ import com.google.common.collect.ImmutableSet;
  * conflicting changes when pushing a branch that has non conflicting changes at both sides. This
  * needs to be revisited once we get more merge tools.
  */
-public class PushOp extends AbstractGeoGitOp<Boolean> {
+public class PushOp extends AbstractGeoGigOp<Boolean> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PushOp.class);
 
@@ -98,7 +98,7 @@ public class PushOp extends AbstractGeoGitOp<Boolean> {
      * Executes the push operation.
      * 
      * @return {@code null}
-     * @see org.locationtech.geogig.api.AbstractGeoGitOp#call()
+     * @see org.locationtech.geogig.api.AbstractGeoGigOp#call()
      */
     @Override
     protected Boolean _call() {

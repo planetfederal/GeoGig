@@ -12,7 +12,7 @@ import java.util.List;
 
 import org.locationtech.geogig.api.CommitBuilder;
 import org.locationtech.geogig.api.Context;
-import org.locationtech.geogig.api.GeoGIT;
+import org.locationtech.geogig.api.GeoGIG;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.Ref;
 import org.locationtech.geogig.api.RevCommit;
@@ -46,7 +46,7 @@ import com.google.common.collect.ImmutableSet;
  */
 public class LocalMappedRemoteRepo extends AbstractMappedRemoteRepo {
 
-    private GeoGIT remoteGeoGit;
+    private GeoGIG remoteGeoGit;
 
     private Context injector;
 
@@ -68,7 +68,7 @@ public class LocalMappedRemoteRepo extends AbstractMappedRemoteRepo {
     /**
      * @param geogit manually set a geogit for this remote repository
      */
-    public void setGeoGit(GeoGIT geogit) {
+    public void setGeoGit(GeoGIG geogit) {
         this.remoteGeoGit = geogit;
     }
 
@@ -80,7 +80,7 @@ public class LocalMappedRemoteRepo extends AbstractMappedRemoteRepo {
     @Override
     public void open() throws IOException {
         if (remoteGeoGit == null) {
-            remoteGeoGit = new GeoGIT(injector, workingDirectory);
+            remoteGeoGit = new GeoGIG(injector, workingDirectory);
             remoteGeoGit.getRepository();
         }
 

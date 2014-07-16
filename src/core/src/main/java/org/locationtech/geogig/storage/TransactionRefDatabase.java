@@ -13,7 +13,7 @@ import java.util.UUID;
 import java.util.concurrent.TimeoutException;
 
 import org.locationtech.geogig.api.Context;
-import org.locationtech.geogig.api.GeogitTransaction;
+import org.locationtech.geogig.api.GeogigTransaction;
 import org.locationtech.geogig.api.Ref;
 import org.locationtech.geogig.api.plumbing.TransactionBegin;
 import org.locationtech.geogig.api.plumbing.TransactionEnd;
@@ -24,13 +24,13 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 
 /**
- * A {@link RefDatabase} decorator for a specific {@link GeogitTransaction transaction}.
+ * A {@link RefDatabase} decorator for a specific {@link GeogigTransaction transaction}.
  * <p>
  * This decorator creates a transaction specific namespace under the
  * {@code transactions/<transaction id>} path, and maps all query and storage methods to that
  * namespace.
  * <p>
- * This is so that every command created through the {@link GeogitTransaction transaction} used as a
+ * This is so that every command created through the {@link GeogigTransaction transaction} used as a
  * {@link Context}, as well as the transaction specific {@link Index} and {@link WorkingTree}
  * , are given this instance of {@code RefDatabase} and can do its work without ever noticing its
  * "running inside a transaction". For the command nothing changes.
@@ -40,7 +40,7 @@ import com.google.common.collect.Maps;
  * there, and {@link TransactionRefDatabase#close() close()} for the transaction refs namespace to
  * be deleted.
  * 
- * @see GeogitTransaction
+ * @see GeogigTransaction
  * @see TransactionBegin
  * @see TransactionEnd
  */
@@ -56,7 +56,7 @@ public class TransactionRefDatabase implements RefDatabase {
 
     public TransactionRefDatabase(final RefDatabase refDb, final UUID transactionId) {
         this.refDb = refDb;
-        this.txRootNamespace = append(GeogitTransaction.TRANSACTIONS_NAMESPACE,
+        this.txRootNamespace = append(GeogigTransaction.TRANSACTIONS_NAMESPACE,
                 transactionId.toString());
         this.txNamespace = append(txRootNamespace, "changed");
         this.txOrigNamespace = append(txRootNamespace, "orig");

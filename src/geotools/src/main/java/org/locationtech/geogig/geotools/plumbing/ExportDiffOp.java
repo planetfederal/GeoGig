@@ -22,7 +22,7 @@ import org.geotools.feature.collection.BaseFeatureCollection;
 import org.geotools.feature.collection.DelegateFeatureIterator;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.NodeRef;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.ProgressListener;
@@ -57,7 +57,7 @@ import com.google.common.collect.UnmodifiableIterator;
  * 
  */
 
-public class ExportDiffOp extends AbstractGeoGitOp<SimpleFeatureStore> {
+public class ExportDiffOp extends AbstractGeoGigOp<SimpleFeatureStore> {
 
     private static final Function<Feature, Optional<Feature>> IDENTITY = new Function<Feature, Optional<Feature>>() {
 

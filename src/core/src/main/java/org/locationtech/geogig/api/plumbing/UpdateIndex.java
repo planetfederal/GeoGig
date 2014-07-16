@@ -5,7 +5,7 @@
 
 package org.locationtech.geogig.api.plumbing;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.porcelain.AddOp;
 
 /**
@@ -32,7 +32,7 @@ import org.locationtech.geogig.api.porcelain.AddOp;
  * <li>cacheinfo <mode> <object> <path> Directly insert the specified info into the index.
  * </ul>
  */
-public class UpdateIndex extends AbstractGeoGitOp<Void> {
+public class UpdateIndex extends AbstractGeoGigOp<Void> {
 
     @Override
     protected Void _call() {

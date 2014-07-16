@@ -794,13 +794,13 @@ public class SparseCloneTest extends RemoteRepositoryTestCase {
 
     }
 
-    private void assertExists(GeogitContainer geogit, ObjectId... features) {
+    private void assertExists(GeogigContainer geogit, ObjectId... features) {
         for (ObjectId object : features) {
             assertTrue(geogit.geogit.getRepository().blobExists(object));
         }
     }
 
-    private void assertNotExists(GeogitContainer geogit, ObjectId... features) {
+    private void assertNotExists(GeogigContainer geogit, ObjectId... features) {
         for (ObjectId object : features) {
             assertFalse(geogit.geogit.getRepository().blobExists(object));
         }

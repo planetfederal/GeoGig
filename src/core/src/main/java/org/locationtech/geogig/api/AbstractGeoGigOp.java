@@ -24,7 +24,7 @@ import org.locationtech.geogig.storage.StagingDatabase;
  * 
  * @param <T> the type of the result of the execution of the command
  */
-public abstract class AbstractGeoGitOp<T> {
+public abstract class AbstractGeoGigOp<T> {
 
     private static final ProgressListener NULL_PROGRESS_LISTENER = new DefaultProgressListener();
 
@@ -37,21 +37,21 @@ public abstract class AbstractGeoGitOp<T> {
     private Map<Serializable, Serializable> metadata;
 
     public static interface CommandListener {
-        public void preCall(AbstractGeoGitOp<?> command);
+        public void preCall(AbstractGeoGigOp<?> command);
 
-        public void postCall(AbstractGeoGitOp<?> command, Object result, boolean success);
+        public void postCall(AbstractGeoGigOp<?> command, Object result, boolean success);
     }
 
     /**
      * Constructs a new abstract operation.
      */
-    public AbstractGeoGitOp() {
+    public AbstractGeoGigOp() {
         //
     }
 
     public void addListener(CommandListener l) {
         if (listeners == null) {
-            listeners = new ArrayList<AbstractGeoGitOp.CommandListener>(2);
+            listeners = new ArrayList<AbstractGeoGigOp.CommandListener>(2);
         }
         listeners.add(l);
     }
@@ -72,14 +72,14 @@ public abstract class AbstractGeoGitOp<T> {
      * @param commandClass the kind of command to locate and instantiate
      * @return a new instance of the requested command class, with its dependencies resolved
      */
-    public <C extends AbstractGeoGitOp<?>> C command(Class<C> commandClass) {
+    public <C extends AbstractGeoGigOp<?>> C command(Class<C> commandClass) {
         return context.command(commandClass);
     }
 
     /**
      * @param locator the command locator to use when finding commands
      */
-    public AbstractGeoGitOp<?> setContext(Context locator) {
+    public AbstractGeoGigOp<?> setContext(Context locator) {
         this.context = locator;
         return this;
     }
@@ -92,7 +92,7 @@ public abstract class AbstractGeoGitOp<T> {
      * @param listener the progress listener to use
      * @return {@code this}
      */
-    public AbstractGeoGitOp<T> setProgressListener(final ProgressListener listener) {
+    public AbstractGeoGigOp<T> setProgressListener(final ProgressListener listener) {
         this.progressListener = listener == null ? NULL_PROGRESS_LISTENER : listener;
         return this;
     }

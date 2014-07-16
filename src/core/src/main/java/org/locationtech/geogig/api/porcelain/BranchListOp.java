@@ -7,7 +7,7 @@ package org.locationtech.geogig.api.porcelain;
 import java.util.Collections;
 import java.util.List;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.Ref;
 import org.locationtech.geogig.api.plumbing.ForEachRef;
 
@@ -23,7 +23,7 @@ import com.google.common.collect.Lists;
  * @TODO: support branch descriptions
  * @TODO: support setting up the branch to track a remote branch
  */
-public class BranchListOp extends AbstractGeoGitOp<ImmutableList<Ref>> {
+public class BranchListOp extends AbstractGeoGigOp<ImmutableList<Ref>> {
 
     private boolean remotes;
 

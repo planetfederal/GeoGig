@@ -14,7 +14,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.geotools.util.Range;
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.NodeRef;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.Ref;
@@ -51,7 +51,7 @@ import com.google.common.collect.Sets;
  * 
  */
 @CanRunDuringConflict
-public class LogOp extends AbstractGeoGitOp<Iterator<RevCommit>> {
+public class LogOp extends AbstractGeoGigOp<Iterator<RevCommit>> {
 
     private static final Range<Long> ALWAYS = new Range<Long>(Long.class, 0L, true, Long.MAX_VALUE,
             true);
@@ -221,7 +221,7 @@ public class LogOp extends AbstractGeoGitOp<Iterator<RevCommit>> {
      * Executes the log operation.
      * 
      * @return the list of commits that satisfy the query criteria, most recent first.
-     * @see org.locationtech.geogig.api.AbstractGeoGitOp#call()
+     * @see org.locationtech.geogig.api.AbstractGeoGigOp#call()
      */
     @Override
     protected Iterator<RevCommit> _call() {

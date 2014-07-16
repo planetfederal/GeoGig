@@ -10,7 +10,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import java.util.Iterator;
 import java.util.List;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.Ref;
 import org.locationtech.geogig.api.RevCommit;
@@ -34,7 +34,7 @@ import com.google.common.base.Suppliers;
  * Updates the OSM data using the existing filter.
  * 
  */
-public class OSMUpdateOp extends AbstractGeoGitOp<Optional<OSMReport>> {
+public class OSMUpdateOp extends AbstractGeoGigOp<Optional<OSMReport>> {
 
     private String apiUrl;
 

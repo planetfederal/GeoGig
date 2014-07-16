@@ -6,7 +6,7 @@ package org.locationtech.geogig.api.porcelain;
 
 import java.util.Map;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.porcelain.ConfigOp.ConfigAction;
 import org.locationtech.geogig.api.porcelain.ConfigOp.ConfigScope;
 import org.locationtech.geogig.di.CanRunDuringConflict;
@@ -23,7 +23,7 @@ import com.google.common.base.Optional;
  * @see ConfigOp
  */
 @CanRunDuringConflict
-public class ConfigGet extends AbstractGeoGitOp<Optional<String>> {
+public class ConfigGet extends AbstractGeoGigOp<Optional<String>> {
 
     private boolean global;
 

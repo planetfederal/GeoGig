@@ -9,7 +9,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.Ref;
 import org.locationtech.geogig.api.Remote;
@@ -27,7 +27,7 @@ import com.google.common.base.Suppliers;
  * Incorporates changes from a remote repository into the current branch.
  * 
  */
-public class PullOp extends AbstractGeoGitOp<PullResult> {
+public class PullOp extends AbstractGeoGigOp<PullResult> {
 
     private boolean all;
 
@@ -133,7 +133,7 @@ public class PullOp extends AbstractGeoGitOp<PullResult> {
      * Executes the pull operation.
      * 
      * @return {@code null}
-     * @see org.locationtech.geogig.api.AbstractGeoGitOp#call()
+     * @see org.locationtech.geogig.api.AbstractGeoGigOp#call()
      */
     @Override
     protected PullResult _call() {

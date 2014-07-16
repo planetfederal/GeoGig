@@ -13,7 +13,7 @@ import org.locationtech.geogig.api.porcelain.RemoteException;
 import org.locationtech.geogig.cli.AbstractCommand;
 import org.locationtech.geogig.cli.CLICommand;
 import org.locationtech.geogig.cli.CommandFailedException;
-import org.locationtech.geogig.cli.GeogitCLI;
+import org.locationtech.geogig.cli.GeogigCLI;
 import org.locationtech.geogig.cli.annotation.ReadOnly;
 
 import com.beust.jcommander.Parameter;
@@ -55,7 +55,7 @@ public class RemoteAdd extends AbstractCommand implements CLICommand {
      * Executes the remote add command using the provided options.
      */
     @Override
-    public void runInternal(GeogitCLI cli) {
+    public void runInternal(GeogigCLI cli) {
         if (params == null || params.size() != 2) {
             printUsage(cli);
             throw new CommandFailedException();

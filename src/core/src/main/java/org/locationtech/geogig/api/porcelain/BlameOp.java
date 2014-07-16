@@ -7,7 +7,7 @@ package org.locationtech.geogig.api.porcelain;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.Ref;
 import org.locationtech.geogig.api.RevCommit;
@@ -35,7 +35,7 @@ import com.google.common.base.Suppliers;
  * 
  */
 @CanRunDuringConflict
-public class BlameOp extends AbstractGeoGitOp<BlameReport> {
+public class BlameOp extends AbstractGeoGigOp<BlameReport> {
 
     private String path;
 

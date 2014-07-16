@@ -4,11 +4,11 @@
  */
 package org.locationtech.geogig.api.hooks;
 
-public class CannotRunGeogitOperationException extends RuntimeException {
+public class CannotRunGeogigOperationException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
 
-    public CannotRunGeogitOperationException() {
+    public CannotRunGeogigOperationException() {
         // default constructor, needed by jdk6
     }
 
@@ -17,11 +17,11 @@ public class CannotRunGeogitOperationException extends RuntimeException {
      * 
      * @param msg the message for the exception
      */
-    public CannotRunGeogitOperationException(String msg) {
+    public CannotRunGeogigOperationException(String msg) {
         super(msg);
     }
 
-    public CannotRunGeogitOperationException(String message, Throwable cause) {
+    public CannotRunGeogigOperationException(String message, Throwable cause) {
         super(message, cause);
     }
 

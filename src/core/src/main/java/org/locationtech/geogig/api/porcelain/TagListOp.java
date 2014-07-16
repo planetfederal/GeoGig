@@ -6,7 +6,7 @@ package org.locationtech.geogig.api.porcelain;
 
 import java.util.List;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.Ref;
 import org.locationtech.geogig.api.RevTag;
 import org.locationtech.geogig.api.plumbing.ForEachRef;
@@ -21,7 +21,7 @@ import com.google.common.collect.Lists;
  * Returns a list of all tags
  * 
  */
-public class TagListOp extends AbstractGeoGitOp<ImmutableList<RevTag>> {
+public class TagListOp extends AbstractGeoGigOp<ImmutableList<RevTag>> {
 
     @Override
     protected ImmutableList<RevTag> _call() {

@@ -13,7 +13,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.RevTree;
 import org.locationtech.geogig.api.plumbing.diff.DiffEntry;
@@ -29,7 +29,7 @@ import com.google.common.collect.Lists;
  * Compares the content and metadata links of blobs found via two tree objects on the repository's
  * {@link ObjectDatabase}
  */
-public class DiffTree extends AbstractGeoGitOp<Iterator<DiffEntry>> implements
+public class DiffTree extends AbstractGeoGigOp<Iterator<DiffEntry>> implements
         Supplier<Iterator<DiffEntry>> {
 
     private final List<String> pathFilters = Lists.newLinkedList();

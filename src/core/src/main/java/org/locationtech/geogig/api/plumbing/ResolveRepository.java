@@ -4,14 +4,14 @@
  */
 package org.locationtech.geogig.api.plumbing;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.repository.Repository;
 
 /**
  * Resolves the current repository
  * 
  */
-public class ResolveRepository extends AbstractGeoGitOp<Repository> {
+public class ResolveRepository extends AbstractGeoGigOp<Repository> {
 
     @Override
     protected Repository _call() {

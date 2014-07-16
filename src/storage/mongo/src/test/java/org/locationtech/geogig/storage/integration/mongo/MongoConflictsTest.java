@@ -15,7 +15,7 @@ import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.Platform;
 import org.locationtech.geogig.api.TestPlatform;
 import org.locationtech.geogig.api.plumbing.merge.Conflict;
-import org.locationtech.geogig.di.GeogitModule;
+import org.locationtech.geogig.di.GeogigModule;
 import org.locationtech.geogig.storage.StagingDatabase;
 import org.locationtech.geogig.test.integration.RepositoryTestCase;
 
@@ -43,7 +43,7 @@ public class MongoConflictsTest extends RepositoryTestCase {
         }
         Platform testPlatform = new TestPlatform(workingDirectory);
         return Guice.createInjector(
-                Modules.override(new GeogitModule()).with(new MongoTestStorageModule(),
+                Modules.override(new GeogigModule()).with(new MongoTestStorageModule(),
                         new TestModule(testPlatform))).getInstance(Context.class);
     }
 

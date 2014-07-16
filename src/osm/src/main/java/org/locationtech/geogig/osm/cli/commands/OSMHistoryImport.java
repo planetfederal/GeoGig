@@ -35,7 +35,7 @@ import jline.console.ConsoleReader;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.locationtech.geogig.api.DefaultProgressListener;
 import org.locationtech.geogig.api.FeatureBuilder;
-import org.locationtech.geogig.api.GeoGIT;
+import org.locationtech.geogig.api.GeoGIG;
 import org.locationtech.geogig.api.NodeRef;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.ProgressListener;
@@ -49,7 +49,7 @@ import org.locationtech.geogig.api.SymRef;
 import org.locationtech.geogig.api.plumbing.DiffCount;
 import org.locationtech.geogig.api.plumbing.FindTreeChild;
 import org.locationtech.geogig.api.plumbing.RefParse;
-import org.locationtech.geogig.api.plumbing.ResolveGeogitDir;
+import org.locationtech.geogig.api.plumbing.ResolveGeogigDir;
 import org.locationtech.geogig.api.plumbing.ResolveTreeish;
 import org.locationtech.geogig.api.plumbing.RevObjectParse;
 import org.locationtech.geogig.api.plumbing.diff.DiffObjectCount;
@@ -58,7 +58,7 @@ import org.locationtech.geogig.api.porcelain.CommitOp;
 import org.locationtech.geogig.cli.AbstractCommand;
 import org.locationtech.geogig.cli.CLICommand;
 import org.locationtech.geogig.cli.CommandFailedException;
-import org.locationtech.geogig.cli.GeogitCLI;
+import org.locationtech.geogig.cli.GeogigCLI;
 import org.locationtech.geogig.cli.InvalidParameterException;
 import org.locationtech.geogig.osm.internal.history.Change;
 import org.locationtech.geogig.osm.internal.history.Changeset;
@@ -105,7 +105,7 @@ public class OSMHistoryImport extends AbstractCommand implements CLICommand {
     public HistoryImportArgs args = new HistoryImportArgs();
 
     @Override
-    protected void runInternal(GeogitCLI cli) throws IOException {
+    protected void runInternal(GeogigCLI cli) throws IOException {
         checkParameter(args.numThreads > 0 && args.numThreads < 7,
                 "numthreads must be between 1 and 6");
 
@@ -116,7 +116,7 @@ public class OSMHistoryImport extends AbstractCommand implements CLICommand {
         final long startIndex;
         final long endIndex = args.endIndex;
         if (args.resume) {
-            GeoGIT geogit = cli.getGeogit();
+            GeoGIG geogit = cli.getGeogit();
             long lastChangeset = getCurrentBranchChangeset(geogit);
             startIndex = 1 + lastChangeset;
         } else {
@@ -230,12 +230,12 @@ public class OSMHistoryImport extends AbstractCommand implements CLICommand {
         return osmAPIUrl;
     }
 
-    private void importOsmHistory(GeogitCLI cli, ConsoleReader console,
+    private void importOsmHistory(GeogigCLI cli, ConsoleReader console,
             HistoryDownloader downloader, @Nullable Envelope featureFilter) throws IOException {
 
         Iterator<Changeset> changesets = downloader.fetchChangesets();
 
-        GeoGIT geogit = cli.getGeogit();
+        GeoGIG geogit = cli.getGeogit();
         WorkingTree workingTree = geogit.getContext().workingTree();
 
         while (changesets.hasNext()) {
@@ -283,13 +283,13 @@ public class OSMHistoryImport extends AbstractCommand implements CLICommand {
      * @param changeset
      * @throws IOException
      */
-    private void commit(GeogitCLI cli, Changeset changeset) throws IOException {
+    private void commit(GeogigCLI cli, Changeset changeset) throws IOException {
         Preconditions.checkArgument(!changeset.isOpen());
         ConsoleReader console = cli.getConsole();
         console.print("Committing changeset " + changeset.getId() + "...");
         console.flush();
 
-        GeoGIT geogit = cli.getGeogit();
+        GeoGIG geogit = cli.getGeogit();
         CommitOp command = geogit.command(CommitOp.class);
         command.setAllowEmpty(true);
         String message = "";
@@ -332,13 +332,13 @@ public class OSMHistoryImport extends AbstractCommand implements CLICommand {
      * @param id
      * @throws IOException
      */
-    private void updateBranchChangeset(GeoGIT geogit, long id) throws IOException {
+    private void updateBranchChangeset(GeoGIG geogit, long id) throws IOException {
         final File branchTrackingChangesetFile = getBranchTrackingFile(geogit);
         Preconditions.checkState(branchTrackingChangesetFile.exists());
         Files.write(String.valueOf(id), branchTrackingChangesetFile, Charset.forName("UTF-8"));
     }
 
-    private long getCurrentBranchChangeset(GeoGIT geogit) throws IOException {
+    private long getCurrentBranchChangeset(GeoGIG geogit) throws IOException {
         final File branchTrackingChangesetFile = getBranchTrackingFile(geogit);
         Preconditions.checkState(branchTrackingChangesetFile.exists());
         String line = Files.readFirstLine(branchTrackingChangesetFile, Charset.forName("UTF-8"));
@@ -349,10 +349,10 @@ public class OSMHistoryImport extends AbstractCommand implements CLICommand {
         return changeset;
     }
 
-    private File getBranchTrackingFile(GeoGIT geogit) throws IOException {
+    private File getBranchTrackingFile(GeoGIG geogit) throws IOException {
         final SymRef head = getHead(geogit);
         final String branch = head.getTarget();
-        final URL geogitDirUrl = geogit.command(ResolveGeogitDir.class).call().get();
+        final URL geogitDirUrl = geogit.command(ResolveGeogigDir.class).call().get();
         File repoDir;
         try {
             repoDir = new File(geogitDirUrl.toURI());
@@ -367,7 +367,7 @@ public class OSMHistoryImport extends AbstractCommand implements CLICommand {
         return branchTrackingFile;
     }
 
-    private SymRef getHead(GeoGIT geogit) {
+    private SymRef getHead(GeoGIG geogit) {
         final Ref currentHead = geogit.command(RefParse.class).setName(Ref.HEAD).call().get();
         if (!(currentHead instanceof SymRef)) {
             throw new CommandFailedException("Cannot run on a dettached HEAD");
@@ -381,10 +381,10 @@ public class OSMHistoryImport extends AbstractCommand implements CLICommand {
      * @param featureFilter
      * @throws IOException
      */
-    private long insertChanges(GeogitCLI cli, final Iterator<Change> changes,
+    private long insertChanges(GeogigCLI cli, final Iterator<Change> changes,
             @Nullable Envelope featureFilter) throws IOException {
 
-        final GeoGIT geogit = cli.getGeogit();
+        final GeoGIG geogit = cli.getGeogit();
         final Repository repository = geogit.getRepository();
         final WorkingTree workTree = repository.workingTree();
 
@@ -455,7 +455,7 @@ public class OSMHistoryImport extends AbstractCommand implements CLICommand {
      * @param thisChangePointCache
      * @return
      */
-    private Geometry parseGeometry(GeoGIT geogit, Primitive primitive,
+    private Geometry parseGeometry(GeoGIG geogit, Primitive primitive,
             Map<Long, Coordinate> thisChangePointCache) {
 
         if (primitive instanceof Relation) {

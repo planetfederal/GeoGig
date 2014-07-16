@@ -6,9 +6,9 @@ package org.locationtech.geogig.api.plumbing.merge;
 
 import java.util.List;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 
-public class ConflictsWriteOp extends AbstractGeoGitOp<Void> {
+public class ConflictsWriteOp extends AbstractGeoGigOp<Void> {
 
     private List<Conflict> conflicts;
 

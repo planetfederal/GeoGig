@@ -18,14 +18,14 @@ import java.util.Map;
 import jline.console.ConsoleReader;
 
 import org.fusesource.jansi.Ansi;
-import org.locationtech.geogig.api.GeoGIT;
+import org.locationtech.geogig.api.GeoGIG;
 import org.locationtech.geogig.api.RevCommit;
 import org.locationtech.geogig.api.porcelain.BlameException;
 import org.locationtech.geogig.api.porcelain.BlameOp;
 import org.locationtech.geogig.api.porcelain.BlameReport;
 import org.locationtech.geogig.api.porcelain.ValueAndCommit;
 import org.locationtech.geogig.cli.AbstractCommand;
-import org.locationtech.geogig.cli.GeogitCLI;
+import org.locationtech.geogig.cli.GeogigCLI;
 import org.locationtech.geogig.cli.InvalidParameterException;
 import org.locationtech.geogig.cli.annotation.ReadOnly;
 import org.locationtech.geogig.storage.text.TextValueSerializer;
@@ -56,12 +56,12 @@ public class Blame extends AbstractCommand {
     private boolean noValues = false;
 
     @Override
-    public void runInternal(GeogitCLI cli) throws IOException {
+    public void runInternal(GeogigCLI cli) throws IOException {
         checkParameter(paths.size() < 2, "Only one path allowed");
         checkParameter(!paths.isEmpty(), "A path must be specified");
 
         ConsoleReader console = cli.getConsole();
-        GeoGIT geogit = cli.getGeogit();
+        GeoGIG geogit = cli.getGeogit();
 
         String path = paths.get(0);
 

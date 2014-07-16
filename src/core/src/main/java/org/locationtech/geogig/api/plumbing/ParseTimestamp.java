@@ -12,7 +12,7 @@ import java.util.HashMap;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.Platform;
 
 import com.google.common.base.Preconditions;
@@ -29,7 +29,7 @@ import com.google.common.base.Preconditions;
  * </ul>
  * 
  */
-public class ParseTimestamp extends AbstractGeoGitOp<Long> {
+public class ParseTimestamp extends AbstractGeoGigOp<Long> {
 
     private String string;
 

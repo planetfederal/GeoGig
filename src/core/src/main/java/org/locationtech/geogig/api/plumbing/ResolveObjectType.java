@@ -5,7 +5,7 @@
 
 package org.locationtech.geogig.api.plumbing;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.RevObject;
 import org.locationtech.geogig.api.RevObject.TYPE;
@@ -13,7 +13,7 @@ import org.locationtech.geogig.api.RevObject.TYPE;
 /**
  * Gets the object type of the object that matches the given {@link ObjectId}.
  */
-public class ResolveObjectType extends AbstractGeoGitOp<RevObject.TYPE> {
+public class ResolveObjectType extends AbstractGeoGigOp<RevObject.TYPE> {
 
     private ObjectId oid;
 

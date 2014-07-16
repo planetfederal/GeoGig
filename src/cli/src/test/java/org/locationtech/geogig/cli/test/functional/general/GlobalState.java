@@ -25,13 +25,13 @@ import jline.console.ConsoleReader;
 import org.junit.rules.TemporaryFolder;
 import org.locationtech.geogig.api.Context;
 import org.locationtech.geogig.api.ContextBuilder;
-import org.locationtech.geogig.api.GeoGIT;
+import org.locationtech.geogig.api.GeoGIG;
 import org.locationtech.geogig.api.GlobalContextBuilder;
 import org.locationtech.geogig.api.Node;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.Platform;
 import org.locationtech.geogig.api.TestPlatform;
-import org.locationtech.geogig.cli.GeogitCLI;
+import org.locationtech.geogig.cli.GeogigCLI;
 import org.locationtech.geogig.repository.Hints;
 import org.locationtech.geogig.repository.Repository;
 import org.locationtech.geogig.repository.WorkingTree;
@@ -51,7 +51,7 @@ public class GlobalState {
     public static TemporaryFolder tempFolder;
 
     /**
-     * {@link GeogitCLI#execute(String...)} exit code, upadted every time a {@link #runCommand
+     * {@link GeogigCLI#execute(String...)} exit code, upadted every time a {@link #runCommand
      * command is ran}
      */
     public static int exitCode;
@@ -74,7 +74,7 @@ public class GlobalState {
 
     public static ByteArrayOutputStream stdOut;
 
-    public static GeogitCLI geogitCLI;
+    public static GeogigCLI geogitCLI;
 
     public static ConsoleReader consoleReader;
 
@@ -109,7 +109,7 @@ public class GlobalState {
             geogitCLI.close();
         }
 
-        geogitCLI = new GeogitCLI(GlobalState.consoleReader);
+        geogitCLI = new GeogigCLI(GlobalState.consoleReader);
         GlobalContextBuilder.builder = injectorBuilder;
         Platform platform = injector.platform();
         geogitCLI.setPlatform(platform);
@@ -146,7 +146,7 @@ public class GlobalState {
 
     /**
      * runs the command, does not fail fast, check {@link GlobalState#exitCode} for the exit code
-     * and {@link GeogitCLI#exception} for any caught exception
+     * and {@link GeogigCLI#exception} for any caught exception
      */
     public static void runCommand(String... command) throws Exception {
         runCommand(false, command);
@@ -182,7 +182,7 @@ public class GlobalState {
 
     public static void deleteAndReplaceFeatureType() throws Exception {
 
-        GeoGIT geogit = geogitCLI.newGeoGIT();
+        GeoGIG geogit = geogitCLI.newGeoGIT();
         try {
             final WorkingTree workTree = geogit.getRepository().workingTree();
             workTree.delete(points1.getType().getName());
@@ -219,7 +219,7 @@ public class GlobalState {
 
     public static List<ObjectId> insert(Feature... features) throws Exception {
         geogitCLI.close();
-        GeoGIT geogit = geogitCLI.newGeoGIT(Hints.readWrite());
+        GeoGIG geogit = geogitCLI.newGeoGIT(Hints.readWrite());
         Preconditions.checkNotNull(geogit);
         List<ObjectId> ids = Lists.newArrayListWithCapacity(features.length);
         try {
@@ -255,7 +255,7 @@ public class GlobalState {
     }
 
     public static boolean delete(Feature f) throws Exception {
-        GeoGIT geogit = geogitCLI.newGeoGIT();
+        GeoGIG geogit = geogitCLI.newGeoGIT();
         try {
             final WorkingTree workTree = geogit.getRepository().workingTree();
             Name name = f.getType().getName();

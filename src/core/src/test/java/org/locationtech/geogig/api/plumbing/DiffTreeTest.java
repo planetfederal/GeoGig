@@ -15,14 +15,14 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.rules.TemporaryFolder;
 import org.locationtech.geogig.api.Context;
-import org.locationtech.geogig.api.GeoGIT;
+import org.locationtech.geogig.api.GeoGIG;
 import org.locationtech.geogig.api.MemoryModule;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.Platform;
 import org.locationtech.geogig.api.Ref;
 import org.locationtech.geogig.api.TestPlatform;
 import org.locationtech.geogig.api.plumbing.diff.DiffEntry;
-import org.locationtech.geogig.di.GeogitModule;
+import org.locationtech.geogig.di.GeogigModule;
 
 import com.google.inject.Guice;
 import com.google.inject.util.Modules;
@@ -40,17 +40,17 @@ public class DiffTreeTest extends Assert {
 
     private DiffTree command;
 
-    private GeoGIT fakeGeogit;
+    private GeoGIG fakeGeogit;
 
     @Before
     public void setUp() {
 
         File workingDirectory = tempFolder.newFolder("mockWorkingDir");
         Platform testPlatform = new TestPlatform(workingDirectory);
-        Context injector = Guice.createInjector(Modules.override(new GeogitModule()).with(
+        Context injector = Guice.createInjector(Modules.override(new GeogigModule()).with(
                 new MemoryModule(testPlatform))).getInstance(org.locationtech.geogig.api.Context.class);
 
-        fakeGeogit = new GeoGIT(injector);
+        fakeGeogit = new GeoGIG(injector);
         assertNotNull(fakeGeogit.getOrCreateRepository());
         command = fakeGeogit.command(DiffTree.class);
     }

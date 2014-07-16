@@ -5,7 +5,7 @@
 package org.locationtech.geogig.web.api.commands;
 
 import org.locationtech.geogig.api.Context;
-import org.locationtech.geogig.api.GeogitTransaction;
+import org.locationtech.geogig.api.GeogigTransaction;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.RevCommit;
 import org.locationtech.geogig.api.plumbing.FindCommonAncestor;
@@ -59,7 +59,7 @@ public class EndTransaction extends AbstractWebAPICommand {
         TransactionEnd endTransaction = context.getGeoGIT().command(TransactionEnd.class);
         try {
             final boolean closed = endTransaction.setCancel(cancel)
-                    .setTransaction((GeogitTransaction) transaction).call();
+                    .setTransaction((GeogigTransaction) transaction).call();
 
             context.setResponseContent(new CommandResponse() {
                 @Override

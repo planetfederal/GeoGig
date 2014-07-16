@@ -6,17 +6,17 @@ package org.locationtech.geogig.test.integration;
 
 import org.junit.Test;
 import org.locationtech.geogig.api.NodeRef;
-import org.locationtech.geogig.api.hooks.GeoGitAPI;
+import org.locationtech.geogig.api.hooks.GeoGigAPI;
 import org.locationtech.geogig.api.porcelain.CommitOp;
 import org.opengis.feature.Feature;
 
-public class GeogitAPITest extends RepositoryTestCase {
+public class GeogigAPITest extends RepositoryTestCase {
 
-    private GeoGitAPI geogitAPI;
+    private GeoGigAPI geogitAPI;
 
     @Override
     protected void setUpInternal() throws Exception {
-        geogitAPI = new GeoGitAPI(this.repo);
+        geogitAPI = new GeoGigAPI(this.repo);
     }
 
     @Test

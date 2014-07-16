@@ -7,7 +7,7 @@ package org.locationtech.geogig.web.api;
 import java.util.UUID;
 
 import org.locationtech.geogig.api.Context;
-import org.locationtech.geogig.api.GeogitTransaction;
+import org.locationtech.geogig.api.GeogigTransaction;
 
 /**
  * An abstract command that allows WebAPICommands to support long transactions.
@@ -46,7 +46,7 @@ public abstract class AbstractWebAPICommand implements WebAPICommand {
      */
     public Context getCommandLocator(CommandContext context) {
         if (transactionId != null) {
-            return new GeogitTransaction(context.getGeoGIT().getContext(), transactionId);
+            return new GeogigTransaction(context.getGeoGIT().getContext(), transactionId);
         }
         return context.getGeoGIT().getContext();
     }

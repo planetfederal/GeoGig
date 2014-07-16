@@ -11,7 +11,7 @@ import static org.locationtech.geogig.api.RevObject.TYPE.FEATURETYPE;
 import static org.locationtech.geogig.api.RevObject.TYPE.TAG;
 import static org.locationtech.geogig.api.RevObject.TYPE.TREE;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.RevObject;
 
@@ -25,7 +25,7 @@ import com.google.common.hash.Hasher;
  * @see RevObject
  * @see ObjectId#HASH_FUNCTION
  */
-public class HashObject extends AbstractGeoGitOp<ObjectId> {
+public class HashObject extends AbstractGeoGigOp<ObjectId> {
 
     @SuppressWarnings("unchecked")
     private static final Funnel<? extends RevObject>[] FUNNELS = new Funnel[RevObject.TYPE.values().length];

@@ -15,7 +15,7 @@ import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureTypeImpl;
-import org.locationtech.geogig.api.GeoGIT;
+import org.locationtech.geogig.api.GeoGIG;
 import org.locationtech.geogig.api.NodeRef;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.RevFeatureType;
@@ -29,7 +29,7 @@ import org.locationtech.geogig.api.plumbing.RevObjectParse;
 import org.locationtech.geogig.api.plumbing.RevParse;
 import org.locationtech.geogig.cli.CLICommand;
 import org.locationtech.geogig.cli.CommandFailedException;
-import org.locationtech.geogig.cli.GeogitCLI;
+import org.locationtech.geogig.cli.GeogigCLI;
 import org.locationtech.geogig.cli.InvalidParameterException;
 import org.locationtech.geogig.cli.annotation.ReadOnly;
 import org.locationtech.geogig.geotools.plumbing.ExportOp;
@@ -71,7 +71,7 @@ public class SQLServerExport extends AbstractSQLServerCommand implements CLIComm
      * Executes the export command using the provided options.
      */
     @Override
-    protected void runInternal(GeogitCLI cli) throws IOException {
+    protected void runInternal(GeogigCLI cli) throws IOException {
         if (args.isEmpty()) {
             printUsage(cli);
             throw new CommandFailedException();
@@ -161,7 +161,7 @@ public class SQLServerExport extends AbstractSQLServerCommand implements CLIComm
 
     }
 
-    private SimpleFeatureType getFeatureType(String path, GeogitCLI cli) {
+    private SimpleFeatureType getFeatureType(String path, GeogigCLI cli) {
 
         checkParameter(path != null, "No path specified.");
 
@@ -174,7 +174,7 @@ public class SQLServerExport extends AbstractSQLServerCommand implements CLIComm
 
         checkParameter(!refspec.endsWith(":"), "No path specified.");
 
-        final GeoGIT geogit = cli.getGeogit();
+        final GeoGIG geogit = cli.getGeogit();
 
         Optional<ObjectId> rootTreeId = geogit.command(ResolveTreeish.class)
                 .setTreeish(refspec.split(":")[0]).call();

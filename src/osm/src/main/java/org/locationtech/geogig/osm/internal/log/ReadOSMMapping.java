@@ -10,7 +10,7 @@ import java.util.List;
 
 import jline.internal.Preconditions;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.osm.internal.Mapping;
 
 import com.google.common.base.Charsets;
@@ -22,7 +22,7 @@ import com.google.common.io.Files;
 /**
  * Reads the mapping associated to a previously executed OSM mapping operation.
  */
-public class ReadOSMMapping extends AbstractGeoGitOp<Optional<Mapping>> {
+public class ReadOSMMapping extends AbstractGeoGigOp<Optional<Mapping>> {
 
     private OSMMappingLogEntry entry;
 

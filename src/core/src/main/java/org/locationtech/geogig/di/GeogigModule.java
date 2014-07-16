@@ -53,7 +53,7 @@ import com.google.inject.multibindings.Multibinder;
  * @see DeduplicationService
  */
 
-public class GeogitModule extends AbstractModule {
+public class GeogigModule extends AbstractModule {
 
     /**
      * 

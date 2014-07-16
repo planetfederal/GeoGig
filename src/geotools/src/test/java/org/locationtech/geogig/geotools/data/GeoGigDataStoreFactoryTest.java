@@ -20,8 +20,8 @@
  */
 package org.locationtech.geogig.geotools.data;
 
-import static org.locationtech.geogig.geotools.data.GeoGitDataStoreFactory.CREATE;
-import static org.locationtech.geogig.geotools.data.GeoGitDataStoreFactory.REPOSITORY;
+import static org.locationtech.geogig.geotools.data.GeoGigDataStoreFactory.CREATE;
+import static org.locationtech.geogig.geotools.data.GeoGigDataStoreFactory.REPOSITORY;
 
 import java.io.File;
 import java.io.IOException;
@@ -37,24 +37,24 @@ import org.locationtech.geogig.test.integration.RepositoryTestCase;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterators;
 
-public class GeoGitDataStoreFactoryTest extends RepositoryTestCase {
+public class GeoGigDataStoreFactoryTest extends RepositoryTestCase {
 
-    private GeoGitDataStoreFactory factory;
+    private GeoGigDataStoreFactory factory;
 
     private File repoDirectory;
 
     @Override
     protected void setUpInternal() throws Exception {
-        factory = new GeoGitDataStoreFactory();
+        factory = new GeoGigDataStoreFactory();
         repoDirectory = geogit.getPlatform().pwd();
     }
 
     @Test
     public void testFactorySpi() {
-        Iterator<GeoGitDataStoreFactory> filtered = Iterators.filter(
-                DataStoreFinder.getAvailableDataStores(), GeoGitDataStoreFactory.class);
+        Iterator<GeoGigDataStoreFactory> filtered = Iterators.filter(
+                DataStoreFinder.getAvailableDataStores(), GeoGigDataStoreFactory.class);
         assertTrue(filtered.hasNext());
-        assertTrue(filtered.next() instanceof GeoGitDataStoreFactory);
+        assertTrue(filtered.next() instanceof GeoGigDataStoreFactory);
     }
 
     @Test
@@ -69,7 +69,7 @@ public class GeoGitDataStoreFactoryTest extends RepositoryTestCase {
         params = ImmutableMap.of(REPOSITORY.key, repoDirectory);
         dataStore = DataStoreFinder.getDataStore(params);
         assertNotNull(dataStore);
-        assertTrue(dataStore instanceof GeoGitDataStore);
+        assertTrue(dataStore instanceof GeoGigDataStore);
     }
 
     @Test
@@ -130,7 +130,7 @@ public class GeoGitDataStoreFactoryTest extends RepositoryTestCase {
 
         params = ImmutableMap.of(REPOSITORY.key, (Serializable) repoDirectory.getAbsolutePath());
 
-        GeoGitDataStore store = factory.createDataStore(params);
+        GeoGigDataStore store = factory.createDataStore(params);
         assertNotNull(store);
 
     }
@@ -143,7 +143,7 @@ public class GeoGitDataStoreFactoryTest extends RepositoryTestCase {
 
         params = ImmutableMap.of(REPOSITORY.key, (Serializable) newRepoDir);
 
-        GeoGitDataStore store = factory.createNewDataStore(params);
+        GeoGigDataStore store = factory.createNewDataStore(params);
         assertNotNull(store);
 
     }
@@ -156,7 +156,7 @@ public class GeoGitDataStoreFactoryTest extends RepositoryTestCase {
                 (Serializable) newRepoDir, CREATE.key, true);
 
         assertTrue(factory.canProcess(params));
-        GeoGitDataStore store = factory.createDataStore(params);
+        GeoGigDataStore store = factory.createDataStore(params);
         assertNotNull(store);
     }
 
@@ -167,7 +167,7 @@ public class GeoGitDataStoreFactoryTest extends RepositoryTestCase {
         Map<String, Serializable> params = ImmutableMap.of(REPOSITORY.key,
                 (Serializable) newRepoDir, CREATE.key, true);
         assertTrue(factory.canProcess(params));
-        GeoGitDataStore store = factory.createDataStore(params);
+        GeoGigDataStore store = factory.createDataStore(params);
         assertNotNull(store);
     }
 }

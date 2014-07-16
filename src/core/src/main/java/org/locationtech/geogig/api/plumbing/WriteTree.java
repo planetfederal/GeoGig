@@ -12,7 +12,7 @@ import java.util.Set;
 
 import javax.annotation.Nullable;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.Node;
 import org.locationtech.geogig.api.NodeRef;
 import org.locationtech.geogig.api.ObjectId;
@@ -53,7 +53,7 @@ import com.google.common.collect.Sets;
  * @see CreateTree
  * @see RevObjectParse
  */
-public class WriteTree extends AbstractGeoGitOp<ObjectId> {
+public class WriteTree extends AbstractGeoGigOp<ObjectId> {
 
     private Supplier<RevTree> oldRoot;
 

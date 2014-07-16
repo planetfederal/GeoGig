@@ -5,7 +5,7 @@
 package org.locationtech.geogig.test.integration.je;
 
 import org.locationtech.geogig.api.Context;
-import org.locationtech.geogig.di.GeogitModule;
+import org.locationtech.geogig.di.GeogigModule;
 
 import com.google.inject.Guice;
 import com.google.inject.util.Modules;
@@ -15,7 +15,7 @@ public class JECheckSparsePathTest extends
     @Override
     protected Context createInjector() {
         return Guice.createInjector(
-                Modules.override(new GeogitModule()).with(new JETestStorageModule())).getInstance(
+                Modules.override(new GeogigModule()).with(new JETestStorageModule())).getInstance(
                 Context.class);
     }
 }

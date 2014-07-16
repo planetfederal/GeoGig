@@ -7,7 +7,7 @@ package org.locationtech.geogig.api.porcelain;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkState;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.Platform;
 import org.locationtech.geogig.api.Ref;
@@ -26,7 +26,7 @@ import com.google.common.base.Preconditions;
  * Creates a new tag
  * 
  */
-public class TagCreateOp extends AbstractGeoGitOp<RevTag> {
+public class TagCreateOp extends AbstractGeoGigOp<RevTag> {
 
     private String name;
 

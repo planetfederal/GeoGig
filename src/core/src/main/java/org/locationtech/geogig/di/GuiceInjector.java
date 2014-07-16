@@ -5,7 +5,7 @@
 
 package org.locationtech.geogig.di;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.Context;
 import org.locationtech.geogig.api.Platform;
 import org.locationtech.geogig.repository.Repository;
@@ -25,7 +25,7 @@ import com.google.inject.Provider;
  * Provides a method for finding and creating instances of GeoGit operations.
  * 
  * @see Context
- * @see AbstractGeoGitOp
+ * @see AbstractGeoGigOp
  */
 public class GuiceInjector implements Context {
 
@@ -48,7 +48,7 @@ public class GuiceInjector implements Context {
      * @return a new instance of the requested command class, with its dependencies resolved
      */
     @Override
-    public <T extends AbstractGeoGitOp<?>> T command(Class<T> commandClass) {
+    public <T extends AbstractGeoGigOp<?>> T command(Class<T> commandClass) {
         T command = getInstance(commandClass);
         command.setContext(this);
         command = getDecoratedInstance(command);

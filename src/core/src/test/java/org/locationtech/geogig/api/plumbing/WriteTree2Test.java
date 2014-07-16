@@ -13,7 +13,7 @@ import javax.annotation.Nullable;
 import org.junit.Test;
 import org.locationtech.geogig.api.Bucket;
 import org.locationtech.geogig.api.CommitBuilder;
-import org.locationtech.geogig.api.GeoGIT;
+import org.locationtech.geogig.api.GeoGIG;
 import org.locationtech.geogig.api.Node;
 import org.locationtech.geogig.api.NodeRef;
 import org.locationtech.geogig.api.ObjectId;
@@ -56,7 +56,7 @@ public class WriteTree2Test extends RepositoryTestCase {
 
     private WriteTree2 command;
 
-    private GeoGIT geogit;
+    private GeoGIG geogit;
 
     private StagingDatabase indexDb;
 

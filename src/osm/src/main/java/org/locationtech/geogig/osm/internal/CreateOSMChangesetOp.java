@@ -9,7 +9,7 @@ import java.util.Iterator;
 import javax.annotation.Nullable;
 
 import org.geotools.feature.simple.SimpleFeatureBuilder;
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.NodeRef;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.RevFeature;
@@ -44,7 +44,7 @@ import com.google.common.collect.Iterators;
  * @see CreateOSMChangesetOp
  */
 @CanRunDuringConflict
-public class CreateOSMChangesetOp extends AbstractGeoGitOp<Iterator<ChangeContainer>> {
+public class CreateOSMChangesetOp extends AbstractGeoGigOp<Iterator<ChangeContainer>> {
 
     private String oldRefSpec;
 

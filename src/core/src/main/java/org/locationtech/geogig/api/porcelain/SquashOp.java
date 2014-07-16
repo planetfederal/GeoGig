@@ -14,7 +14,7 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.CommitBuilder;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.Platform;
@@ -44,7 +44,7 @@ import com.google.common.collect.Maps;
 /**
  * Operation to squash commits into one.
  */
-public class SquashOp extends AbstractGeoGitOp<ObjectId> {
+public class SquashOp extends AbstractGeoGigOp<ObjectId> {
 
     private RevCommit since;
 
@@ -91,7 +91,7 @@ public class SquashOp extends AbstractGeoGitOp<ObjectId> {
      * Executes the squash operation.
      * 
      * @return the new head after modifying the history squashing commits
-     * @see org.locationtech.geogig.api.AbstractGeoGitOp#call()
+     * @see org.locationtech.geogig.api.AbstractGeoGigOp#call()
      */
     @Override
     protected ObjectId _call() {

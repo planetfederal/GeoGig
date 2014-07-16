@@ -12,7 +12,7 @@ import java.util.UUID;
 
 import javax.annotation.Nullable;
 
-import org.locationtech.geogig.api.GeogitTransaction;
+import org.locationtech.geogig.api.GeogigTransaction;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.RevCommit;
 import org.locationtech.geogig.api.RevFeature;
@@ -27,13 +27,13 @@ import org.locationtech.geogig.api.plumbing.merge.Conflict;
 import com.google.common.base.Optional;
 
 /**
- * A {@link StagingDatabase} decorator for a specific {@link GeogitTransaction transaction}.
+ * A {@link StagingDatabase} decorator for a specific {@link GeogigTransaction transaction}.
  * <p>
  * This decorator creates a transaction specific namespace under the
  * {@code transactions/<transaction id>} path, and maps all query and storage methods to that
  * namespace.
  * 
- * @see GeogitTransaction
+ * @see GeogigTransaction
  * @see TransactionBegin
  * @see TransactionEnd
  */
@@ -52,7 +52,7 @@ public class TransactionStagingDatabase implements StagingDatabase {
     public TransactionStagingDatabase(final StagingDatabase database, final UUID transactionId) {
         this.database = database;
         this.txNamespace = append(
-                append(GeogitTransaction.TRANSACTIONS_NAMESPACE, transactionId.toString()),
+                append(GeogigTransaction.TRANSACTIONS_NAMESPACE, transactionId.toString()),
                 "conflicts");
     }
 

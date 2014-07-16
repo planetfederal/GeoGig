@@ -56,11 +56,11 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.vividsolutions.jts.geom.Polygon;
 
-public class GeoGitFeatureSourceTest extends RepositoryTestCase {
+public class GeoGigFeatureSourceTest extends RepositoryTestCase {
 
     private static final FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
 
-    private GeoGitDataStore dataStore;
+    private GeoGigDataStore dataStore;
 
     private SimpleFeatureSource pointsSource;
 
@@ -68,7 +68,7 @@ public class GeoGitFeatureSourceTest extends RepositoryTestCase {
 
     @Override
     protected void setUpInternal() throws Exception {
-        dataStore = new GeoGitDataStore(geogit);
+        dataStore = new GeoGigDataStore(geogit);
         dataStore.createSchema(super.pointsType);
         dataStore.createSchema(super.linesType);
         insertAndAdd(points1, points2, points3, lines1, lines2, lines3);

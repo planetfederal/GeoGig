@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Nullable;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.Context;
 import org.locationtech.geogig.api.NodeRef;
 import org.locationtech.geogig.api.Platform;
@@ -60,7 +60,7 @@ import com.vividsolutions.jts.geom.PrecisionModel;
  * 
  */
 
-public class OSMApplyDiffOp extends AbstractGeoGitOp<Optional<OSMReport>> {
+public class OSMApplyDiffOp extends AbstractGeoGigOp<Optional<OSMReport>> {
 
     private static final PrecisionModel PRECISION_MODEL = new PrecisionModel(
             1D / FixedPrecisionCoordinateConvertor.convertToDouble(1));

@@ -19,7 +19,7 @@ import org.locationtech.geogig.api.plumbing.LsTreeOp.Strategy;
 import org.locationtech.geogig.api.plumbing.RevObjectParse;
 import org.locationtech.geogig.cli.AbstractCommand;
 import org.locationtech.geogig.cli.CLICommand;
-import org.locationtech.geogig.cli.GeogitCLI;
+import org.locationtech.geogig.cli.GeogigCLI;
 import org.locationtech.geogig.cli.annotation.ReadOnly;
 
 import com.beust.jcommander.Parameter;
@@ -52,7 +52,7 @@ public class LsTree extends AbstractCommand implements CLICommand {
     private boolean verbose;
 
     @Override
-    public void runInternal(final GeogitCLI cli) throws IOException {
+    public void runInternal(final GeogigCLI cli) throws IOException {
         String ref;
         if (refList.isEmpty()) {
             ref = null;

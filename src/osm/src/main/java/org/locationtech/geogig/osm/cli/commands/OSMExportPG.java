@@ -16,7 +16,7 @@ import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.locationtech.geogig.cli.CLICommand;
 import org.locationtech.geogig.cli.CommandFailedException;
-import org.locationtech.geogig.cli.GeogitCLI;
+import org.locationtech.geogig.cli.GeogigCLI;
 import org.locationtech.geogig.cli.annotation.ReadOnly;
 import org.locationtech.geogig.geotools.cli.porcelain.AbstractPGCommand;
 import org.locationtech.geogig.geotools.plumbing.ExportOp;
@@ -54,7 +54,7 @@ public class OSMExportPG extends AbstractPGCommand implements CLICommand {
      * Executes the export command using the provided options.
      */
     @Override
-    protected void runInternal(GeogitCLI cli) {
+    protected void runInternal(GeogigCLI cli) {
         Preconditions.checkNotNull(mappingFile != null, "A data mapping file must be specified");
 
         final Mapping mapping = Mapping.fromFile(mappingFile);

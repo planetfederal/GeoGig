@@ -10,11 +10,11 @@ import javax.annotation.Nullable;
 
 import jline.console.ConsoleReader;
 
-import org.locationtech.geogig.api.GeoGIT;
+import org.locationtech.geogig.api.GeoGIG;
 import org.locationtech.geogig.api.porcelain.VersionInfo;
 import org.locationtech.geogig.api.porcelain.VersionOp;
 import org.locationtech.geogig.cli.CLICommand;
-import org.locationtech.geogig.cli.GeogitCLI;
+import org.locationtech.geogig.cli.GeogigCLI;
 import org.locationtech.geogig.cli.annotation.ReadOnly;
 import org.locationtech.geogig.cli.annotation.RequiresRepository;
 
@@ -42,12 +42,12 @@ public class Version implements CLICommand {
      * Executes the version command.
      * 
      * @param cli
-     * @see org.locationtech.geogig.cli.CLICommand#run(org.locationtech.geogig.cli.GeogitCLI)
+     * @see org.locationtech.geogig.cli.CLICommand#run(org.locationtech.geogig.cli.GeogigCLI)
      */
-    public void run(GeogitCLI cli) {
-        GeoGIT geogit = cli.getGeogit();
+    public void run(GeogigCLI cli) {
+        GeoGIG geogit = cli.getGeogit();
         if (geogit == null) {
-            geogit = new GeoGIT();
+            geogit = new GeoGIG();
         }
         this.console = cli.getConsole();
         VersionInfo info = geogit.command(VersionOp.class).call();

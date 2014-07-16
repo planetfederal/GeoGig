@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Nullable;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.Bucket;
 import org.locationtech.geogig.api.Node;
 import org.locationtech.geogig.api.NodeRef;
@@ -44,7 +44,7 @@ import com.google.common.collect.Sets;
  * or from the repository database to the index database if {@link #setToIndex} is set to
  * {@code true}.
  */
-public class DeepMove extends AbstractGeoGitOp<ObjectId> {
+public class DeepMove extends AbstractGeoGigOp<ObjectId> {
 
     private boolean toIndex;
 

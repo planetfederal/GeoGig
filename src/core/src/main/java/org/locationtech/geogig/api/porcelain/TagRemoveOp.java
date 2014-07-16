@@ -6,7 +6,7 @@ package org.locationtech.geogig.api.porcelain;
 
 import static com.google.common.base.Preconditions.checkState;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.Ref;
 import org.locationtech.geogig.api.RevObject;
 import org.locationtech.geogig.api.RevTag;
@@ -20,7 +20,7 @@ import com.google.common.base.Preconditions;
  * Removes a tag
  * 
  */
-public class TagRemoveOp extends AbstractGeoGitOp<RevTag> {
+public class TagRemoveOp extends AbstractGeoGigOp<RevTag> {
 
     private String name;
 

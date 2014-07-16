@@ -10,7 +10,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.FeatureBuilder;
 import org.locationtech.geogig.api.NodeRef;
 import org.locationtech.geogig.api.RevFeature;
@@ -34,7 +34,7 @@ import com.google.inject.Inject;
  * by GeoGit, to give an easier and more detailed access to data and elements in the repository
  * 
  */
-public class GeoGitAPI {
+public class GeoGigAPI {
 
     private Repository repository;
 
@@ -42,7 +42,7 @@ public class GeoGitAPI {
      * @param repo the command locator to use when finding commands
      */
     @Inject
-    public GeoGitAPI(Repository repository) {
+    public GeoGigAPI(Repository repository) {
         this.repository = repository;
     }
 
@@ -50,10 +50,10 @@ public class GeoGitAPI {
      * A convenience method to throw an exception indicating that the operation after a hook script
      * should not be executed
      * 
-     * @throws CannotRunGeogitOperationException
+     * @throws CannotRunGeogigOperationException
      */
-    public void throwHookException(String msg) throws CannotRunGeogitOperationException {
-        throw new CannotRunGeogitOperationException(msg);
+    public void throwHookException(String msg) throws CannotRunGeogigOperationException {
+        throw new CannotRunGeogigOperationException(msg);
     }
 
     /**
@@ -147,9 +147,9 @@ public class GeoGitAPI {
     }
 
     /**
-     * Runs a {@link AbstractGeoGitOp command} given by its class name and map of arguments.
+     * Runs a {@link AbstractGeoGigOp command} given by its class name and map of arguments.
      * 
-     * @param className the name of the {@link AbstractGeoGitOp command} to run
+     * @param className the name of the {@link AbstractGeoGigOp command} to run
      * @param params expected an instanceo of {@code java.util.Map} or
      *        {@code sun.org.mozilla.javascript.internal.NativeObject} (which may or may not
      *        implement java.util.Map depending on the Java/JVM version)
@@ -203,15 +203,15 @@ public class GeoGitAPI {
     }
 
     /**
-     * Runs the {@link AbstractGeoGitOp command} given by its {@code className} with the provided
+     * Runs the {@link AbstractGeoGigOp command} given by its {@code className} with the provided
      * {@code parameters}
      */
     private Object runCommand(String className, Map<String, Object> parameters)
             throws ClassNotFoundException {
         @SuppressWarnings("unchecked")
-        Class<AbstractGeoGitOp<?>> clazz = (Class<AbstractGeoGitOp<?>>) Class.forName(className);
+        Class<AbstractGeoGigOp<?>> clazz = (Class<AbstractGeoGigOp<?>>) Class.forName(className);
 
-        AbstractGeoGitOp<?> operation = repository.command(clazz);
+        AbstractGeoGigOp<?> operation = repository.command(clazz);
         @SuppressWarnings("unused")
         Map<String, Object> oldParams = Scripting.getParamMap(operation);
         Scripting.setParamMap(parameters, operation);

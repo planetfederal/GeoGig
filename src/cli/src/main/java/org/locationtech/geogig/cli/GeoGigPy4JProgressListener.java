@@ -10,7 +10,7 @@ package org.locationtech.geogig.cli;
  * 
  * Implementation should be done on the Python side
  */
-public interface GeoGitPy4JProgressListener {
+public interface GeoGigPy4JProgressListener {
 
     public void setProgress(float i);
 

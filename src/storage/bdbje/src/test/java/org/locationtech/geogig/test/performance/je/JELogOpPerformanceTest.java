@@ -5,7 +5,7 @@
 package org.locationtech.geogig.test.performance.je;
 
 import org.locationtech.geogig.api.Context;
-import org.locationtech.geogig.di.GeogitModule;
+import org.locationtech.geogig.di.GeogigModule;
 import org.locationtech.geogig.test.integration.je.JETestStorageModule;
 import org.locationtech.geogig.test.performance.LogOpPerformanceTest;
 
@@ -16,7 +16,7 @@ public class JELogOpPerformanceTest extends LogOpPerformanceTest {
     @Override
     protected Context createInjector() {
         return Guice.createInjector(
-                Modules.override(new GeogitModule()).with(new JETestStorageModule())).getInstance(
+                Modules.override(new GeogigModule()).with(new JETestStorageModule())).getInstance(
                 Context.class);
     }
 }

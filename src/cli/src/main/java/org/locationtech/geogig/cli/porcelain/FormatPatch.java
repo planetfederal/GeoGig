@@ -11,7 +11,7 @@ import java.io.OutputStreamWriter;
 import java.util.Iterator;
 import java.util.List;
 
-import org.locationtech.geogig.api.GeoGIT;
+import org.locationtech.geogig.api.GeoGIG;
 import org.locationtech.geogig.api.plumbing.diff.DiffEntry;
 import org.locationtech.geogig.api.plumbing.diff.Patch;
 import org.locationtech.geogig.api.plumbing.diff.PatchSerializer;
@@ -19,7 +19,7 @@ import org.locationtech.geogig.api.porcelain.CreatePatchOp;
 import org.locationtech.geogig.api.porcelain.DiffOp;
 import org.locationtech.geogig.cli.AbstractCommand;
 import org.locationtech.geogig.cli.CLICommand;
-import org.locationtech.geogig.cli.GeogitCLI;
+import org.locationtech.geogig.cli.GeogigCLI;
 import org.locationtech.geogig.cli.annotation.ReadOnly;
 
 import com.beust.jcommander.Parameter;
@@ -55,10 +55,10 @@ public class FormatPatch extends AbstractCommand implements CLICommand {
      * Executes the format-patch command with the specified options.
      */
     @Override
-    protected void runInternal(GeogitCLI cli) throws IOException {
+    protected void runInternal(GeogigCLI cli) throws IOException {
         checkParameter(refSpec.size() < 3, "Commit list is too long :%s", refSpec);
 
-        GeoGIT geogit = cli.getGeogit();
+        GeoGIG geogit = cli.getGeogit();
         checkParameter(file != null, "Patch file not specified");
 
         DiffOp diff = geogit.command(DiffOp.class).setReportTrees(true);

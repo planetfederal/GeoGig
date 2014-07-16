@@ -15,7 +15,7 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.locationtech.geogig.api.GeoGIT;
+import org.locationtech.geogig.api.GeoGIG;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.plumbing.CreateDeduplicator;
 import org.locationtech.geogig.remote.BinaryPackedObjects;
@@ -107,7 +107,7 @@ public class BatchedObjectResource extends Finder {
             }
 
             Request request = getRequest();
-            final GeoGIT ggit = getGeogit(request).get();
+            final GeoGIG ggit = getGeogit(request).get();
             final Repository repository = ggit.getRepository();
             final Deduplicator deduplicator = ggit.command(CreateDeduplicator.class).call();
 

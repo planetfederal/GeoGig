@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Random;
 
 import org.locationtech.geogig.api.Platform;
-import org.locationtech.geogig.api.plumbing.ResolveGeogitDir;
+import org.locationtech.geogig.api.plumbing.ResolveGeogigDir;
 import org.locationtech.geogig.osm.internal.OSMCoordinateSequence;
 
 import com.google.common.base.Optional;
@@ -28,7 +28,7 @@ public class MappedPointCache implements PointCache {
     private MappedIndex index;
 
     public MappedPointCache(Platform platform) {
-        final Optional<File> geogitDir = new ResolveGeogitDir(platform).getFile();
+        final Optional<File> geogitDir = new ResolveGeogigDir(platform).getFile();
         checkState(geogitDir.isPresent());
         this.parentDir = new File(new File(geogitDir.get(), "tmp"), "pointcache_"
                 + Math.abs(RANDOM.nextInt()));

@@ -12,7 +12,7 @@ import java.util.Map;
 
 import org.geotools.data.DataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.geotools.plumbing.GeoToolsOpException.StatusCode;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
@@ -25,7 +25,7 @@ import com.google.common.base.Optional;
  * 
  * @see DataStore
  */
-public class DescribeOp extends AbstractGeoGitOp<Optional<Map<String, String>>> {
+public class DescribeOp extends AbstractGeoGigOp<Optional<Map<String, String>>> {
 
     private String table = null;
 

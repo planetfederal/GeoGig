@@ -16,7 +16,7 @@ import javax.annotation.Nullable;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.Bounded;
 import org.locationtech.geogig.api.Bucket;
 import org.locationtech.geogig.api.Node;
@@ -48,7 +48,7 @@ import com.vividsolutions.jts.geom.Envelope;
  * 
  */
 
-public class DiffBounds extends AbstractGeoGitOp<DiffSummary<BoundingBox, BoundingBox>> {
+public class DiffBounds extends AbstractGeoGigOp<DiffSummary<BoundingBox, BoundingBox>> {
 
     private String oldVersion;
 

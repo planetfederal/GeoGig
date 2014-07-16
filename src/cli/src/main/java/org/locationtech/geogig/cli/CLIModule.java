@@ -12,7 +12,7 @@ import com.google.inject.Module;
  * Marker interface for modules that provide extra CLI commands.
  * 
  * <p>
- * The {@link GeogitCLI CLI} app uses the standard {@link ServiceLoader}
+ * The {@link GeogigCLI CLI} app uses the standard {@link ServiceLoader}
  * "Service Provider Interface" mechanism to look for implementations of this interface on the
  * classpath.
  * <p>

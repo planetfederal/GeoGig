@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.RevCommit;
 import org.locationtech.geogig.api.RevObject.TYPE;
@@ -40,7 +40,7 @@ import com.google.common.collect.Sets;
  * It returns false in case there are no such issues, and the branches to be merged are completely
  * independent in their edits.
  */
-public class CheckMergeScenarioOp extends AbstractGeoGitOp<Boolean> {
+public class CheckMergeScenarioOp extends AbstractGeoGigOp<Boolean> {
 
     private List<RevCommit> commits;
 

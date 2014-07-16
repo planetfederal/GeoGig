@@ -23,7 +23,7 @@ import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.collection.BaseFeatureCollection;
 import org.geotools.feature.collection.DelegateFeatureIterator;
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.FeatureBuilder;
 import org.locationtech.geogig.api.NodeRef;
 import org.locationtech.geogig.api.ObjectId;
@@ -65,7 +65,7 @@ import com.google.common.collect.UnmodifiableIterator;
  * 
  */
 @Hookable(name = "export")
-public class ExportOp extends AbstractGeoGitOp<SimpleFeatureStore> {
+public class ExportOp extends AbstractGeoGigOp<SimpleFeatureStore> {
 
     private static final Function<Feature, Optional<Feature>> IDENTITY = new Function<Feature, Optional<Feature>>() {
 

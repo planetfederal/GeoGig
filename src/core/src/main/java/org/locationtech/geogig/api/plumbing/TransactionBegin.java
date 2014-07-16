@@ -8,33 +8,33 @@ package org.locationtech.geogig.api.plumbing;
 import java.util.UUID;
 import java.util.concurrent.TimeoutException;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
-import org.locationtech.geogig.api.GeogitTransaction;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
+import org.locationtech.geogig.api.GeogigTransaction;
 import org.locationtech.geogig.api.hooks.Hookable;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Throwables;
 
 /**
- * Creates a new {@link GeogitTransaction} and copies all of the repository refs for that
+ * Creates a new {@link GeogigTransaction} and copies all of the repository refs for that
  * transaction to use.
  * 
- * @see GeogitTransaction
+ * @see GeogigTransaction
  */
 @Hookable(name = "transaction-start")
-public class TransactionBegin extends AbstractGeoGitOp<GeogitTransaction> {
+public class TransactionBegin extends AbstractGeoGigOp<GeogigTransaction> {
 
     /**
      * Creates a new transaction and returns it.
      * 
-     * @return the {@link GeogitTransaction} that was created by the operation
+     * @return the {@link GeogigTransaction} that was created by the operation
      */
     @Override
-    protected GeogitTransaction _call() {
-        Preconditions.checkState(!(context instanceof GeogitTransaction),
+    protected GeogigTransaction _call() {
+        Preconditions.checkState(!(context instanceof GeogigTransaction),
                 "Cannot start a new transaction within a transaction!");
 
-        GeogitTransaction t = new GeogitTransaction(context, UUID.randomUUID());
+        GeogigTransaction t = new GeogigTransaction(context, UUID.randomUUID());
 
         // Lock the repository
         try {

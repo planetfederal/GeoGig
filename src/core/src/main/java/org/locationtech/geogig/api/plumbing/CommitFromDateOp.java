@@ -8,7 +8,7 @@ package org.locationtech.geogig.api.plumbing;
 import java.util.Date;
 import java.util.Iterator;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.RevCommit;
 import org.locationtech.geogig.api.porcelain.LogOp;
 
@@ -18,7 +18,7 @@ import com.google.common.base.Preconditions;
 /**
  * Returns the last commit in the current branch at a given date
  */
-public class CommitFromDateOp extends AbstractGeoGitOp<Optional<RevCommit>> {
+public class CommitFromDateOp extends AbstractGeoGigOp<Optional<RevCommit>> {
 
     private Date date;
 

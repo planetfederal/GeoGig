@@ -17,7 +17,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
-import org.locationtech.geogig.api.GeoGIT;
+import org.locationtech.geogig.api.GeoGIG;
 import org.locationtech.geogig.api.GlobalContextBuilder;
 import org.locationtech.geogig.api.NodeRef;
 import org.locationtech.geogig.api.RevFeature;
@@ -27,7 +27,7 @@ import org.locationtech.geogig.api.TestPlatform;
 import org.locationtech.geogig.api.plumbing.LsTreeOp;
 import org.locationtech.geogig.api.plumbing.ResolveFeatureType;
 import org.locationtech.geogig.api.plumbing.RevObjectParse;
-import org.locationtech.geogig.cli.GeogitCLI;
+import org.locationtech.geogig.cli.GeogigCLI;
 import org.locationtech.geogig.cli.test.functional.general.CLITestContextBuilder;
 import org.locationtech.geogig.osm.internal.OSMImportOp;
 
@@ -38,7 +38,7 @@ import com.vividsolutions.jts.geom.Polygon;
 
 public class OSMMapTest extends Assert {
 
-    private GeogitCLI cli;
+    private GeogigCLI cli;
 
     @Rule
     public TemporaryFolder tempFolder = new TemporaryFolder();
@@ -47,7 +47,7 @@ public class OSMMapTest extends Assert {
     public void setUp() throws Exception {
         ConsoleReader consoleReader = new ConsoleReader(System.in, System.out,
                 new UnsupportedTerminal());
-        cli = new GeogitCLI(consoleReader);
+        cli = new GeogigCLI(consoleReader);
         File workingDirectory = tempFolder.getRoot();
         TestPlatform platform = new TestPlatform(workingDirectory);
         GlobalContextBuilder.builder = new CLITestContextBuilder(platform);
@@ -68,7 +68,7 @@ public class OSMMapTest extends Assert {
         cli.execute("osm", "import", file.getAbsolutePath());
         cli.execute("add");
         cli.execute("commit", "-m", "message");
-        GeoGIT geogit = cli.newGeoGIT();
+        GeoGIG geogit = cli.newGeoGIT();
         Optional<RevTree> tree = geogit.command(RevObjectParse.class).setRefSpec("HEAD:node")
                 .call(RevTree.class);
         assertTrue(tree.isPresent());
@@ -151,7 +151,7 @@ public class OSMMapTest extends Assert {
         cli.execute("osm", "import", file.getAbsolutePath());
         cli.execute("add");
         cli.execute("commit", "-m", "message");
-        GeoGIT geogit = cli.newGeoGIT();
+        GeoGIG geogit = cli.newGeoGIT();
         Optional<RevTree> tree = geogit.command(RevObjectParse.class).setRefSpec("HEAD:node")
                 .call(RevTree.class);
         assertTrue(tree.isPresent());
@@ -225,7 +225,7 @@ public class OSMMapTest extends Assert {
         cli.execute("osm", "import", file.getAbsolutePath());
         cli.execute("add");
         cli.execute("commit", "-m", "message");
-        GeoGIT geogit = cli.newGeoGIT();
+        GeoGIG geogit = cli.newGeoGIT();
         Optional<RevTree> tree = geogit.command(RevObjectParse.class).setRefSpec("HEAD:node")
                 .call(RevTree.class);
         assertTrue(tree.isPresent());

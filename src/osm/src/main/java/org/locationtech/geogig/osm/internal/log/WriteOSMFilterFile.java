@@ -10,7 +10,7 @@ import java.net.URL;
 
 import jline.internal.Preconditions;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 
 import com.google.common.base.Charsets;
 import com.google.common.base.Throwables;
@@ -19,7 +19,7 @@ import com.google.common.io.Files;
 /**
  * Writes the file filter associated to an OSM import operation.
  */
-public class WriteOSMFilterFile extends AbstractGeoGitOp<Void> {
+public class WriteOSMFilterFile extends AbstractGeoGigOp<Void> {
 
     private OSMLogEntry entry;
 

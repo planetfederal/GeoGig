@@ -9,7 +9,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 
 import org.locationtech.geogig.api.Platform;
-import org.locationtech.geogig.api.plumbing.ResolveGeogitDir;
+import org.locationtech.geogig.api.plumbing.ResolveGeogigDir;
 
 import com.google.common.base.Optional;
 
@@ -33,7 +33,7 @@ public class SQLiteStorage {
      * Returns the .geogit directory for the platform object.
      */
     public static File geogitDir(Platform platform) {
-        Optional<URL> url = new ResolveGeogitDir(platform).call();
+        Optional<URL> url = new ResolveGeogigDir(platform).call();
         if (!url.isPresent()) {
             throw new RuntimeException("Unable to resolve .geogit directory");
         }

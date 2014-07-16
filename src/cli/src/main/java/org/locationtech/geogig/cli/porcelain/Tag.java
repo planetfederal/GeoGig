@@ -10,7 +10,7 @@ import java.util.List;
 
 import jline.console.ConsoleReader;
 
-import org.locationtech.geogig.api.GeoGIT;
+import org.locationtech.geogig.api.GeoGIG;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.Ref;
 import org.locationtech.geogig.api.RevTag;
@@ -20,7 +20,7 @@ import org.locationtech.geogig.api.porcelain.TagListOp;
 import org.locationtech.geogig.api.porcelain.TagRemoveOp;
 import org.locationtech.geogig.cli.AbstractCommand;
 import org.locationtech.geogig.cli.CLICommand;
-import org.locationtech.geogig.cli.GeogitCLI;
+import org.locationtech.geogig.cli.GeogigCLI;
 import org.locationtech.geogig.cli.annotation.StagingDatabaseReadOnly;
 
 import com.beust.jcommander.Parameter;
@@ -55,7 +55,7 @@ public class Tag extends AbstractCommand implements CLICommand {
      * Executes the commit command using the provided options.
      */
     @Override
-    public void runInternal(GeogitCLI cli) throws IOException {
+    public void runInternal(GeogigCLI cli) throws IOException {
         checkParameter((message != null && !message.trim().isEmpty()) || nameAndCommit.isEmpty()
                 || delete, "No tag message provided");
         checkParameter(nameAndCommit.size() < 2 || (nameAndCommit.size() == 2 && !delete),
@@ -73,7 +73,7 @@ public class Tag extends AbstractCommand implements CLICommand {
 
         ConsoleReader console = cli.getConsole();
 
-        final GeoGIT geogit = cli.getGeogit();
+        final GeoGIG geogit = cli.getGeogit();
 
         if (delete) {
             geogit.command(TagRemoveOp.class).setName(name).call();
@@ -88,9 +88,9 @@ public class Tag extends AbstractCommand implements CLICommand {
 
     }
 
-    private void listTags(GeogitCLI cli) {
+    private void listTags(GeogigCLI cli) {
 
-        GeoGIT geogit = cli.getGeogit();
+        GeoGIG geogit = cli.getGeogit();
         ImmutableList<RevTag> tags = geogit.command(TagListOp.class).call();
         for (RevTag tag : tags) {
             try {

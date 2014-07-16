@@ -10,7 +10,7 @@ import java.util.UUID;
 
 import javax.annotation.Nullable;
 
-import org.locationtech.geogig.api.GeogitTransaction;
+import org.locationtech.geogig.api.GeogigTransaction;
 import org.locationtech.geogig.api.Node;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.ProgressListener;
@@ -25,13 +25,13 @@ import org.locationtech.geogig.repository.StagingArea;
 import com.google.common.base.Optional;
 
 /**
- * A {@link StagingArea} decorator for a specific {@link GeogitTransaction transaction}.
+ * A {@link StagingArea} decorator for a specific {@link GeogigTransaction transaction}.
  * <p>
  * This decorator creates a transaction specific namespace under the
  * {@code transactions/<transaction id>} path, and maps all query and storage methods to that
  * namespace.
  * 
- * @see GeogitTransaction
+ * @see GeogigTransaction
  * @see TransactionBegin
  * @see TransactionEnd
  */

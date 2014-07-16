@@ -12,7 +12,7 @@ import java.util.List;
 
 import jline.console.ConsoleReader;
 
-import org.locationtech.geogig.api.GeoGIT;
+import org.locationtech.geogig.api.GeoGIG;
 import org.locationtech.geogig.api.NodeRef;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.Ref;
@@ -21,7 +21,7 @@ import org.locationtech.geogig.api.RevObject;
 import org.locationtech.geogig.api.plumbing.CatObject;
 import org.locationtech.geogig.api.plumbing.FindCommonAncestor;
 import org.locationtech.geogig.api.plumbing.RefParse;
-import org.locationtech.geogig.api.plumbing.ResolveGeogitDir;
+import org.locationtech.geogig.api.plumbing.ResolveGeogigDir;
 import org.locationtech.geogig.api.plumbing.RevObjectParse;
 import org.locationtech.geogig.api.plumbing.diff.DiffEntry;
 import org.locationtech.geogig.api.plumbing.merge.Conflict;
@@ -30,7 +30,7 @@ import org.locationtech.geogig.api.porcelain.FeatureNodeRefFromRefspec;
 import org.locationtech.geogig.api.porcelain.MergeOp;
 import org.locationtech.geogig.cli.AbstractCommand;
 import org.locationtech.geogig.cli.CLICommand;
-import org.locationtech.geogig.cli.GeogitCLI;
+import org.locationtech.geogig.cli.GeogigCLI;
 import org.locationtech.geogig.cli.annotation.ObjectDatabaseReadOnly;
 
 import com.beust.jcommander.Parameter;
@@ -64,10 +64,10 @@ public class Conflicts extends AbstractCommand implements CLICommand {
     @Parameter(names = { "--refspecs-only" }, description = "Just show refspecs of elements")
     private boolean refspecsOnly;
 
-    private GeoGIT geogit;
+    private GeoGIG geogit;
 
     @Override
-    public void runInternal(GeogitCLI cli) throws IOException {
+    public void runInternal(GeogigCLI cli) throws IOException {
         checkParameter(!(idsOnly && previewDiff),
                 "Cannot use --diff and --ids-only at the same time");
         checkParameter(!(refspecsOnly && previewDiff),
@@ -98,12 +98,12 @@ public class Conflicts extends AbstractCommand implements CLICommand {
     }
 
     private File getRebaseFolder() {
-        URL dir = geogit.command(ResolveGeogitDir.class).call().get();
+        URL dir = geogit.command(ResolveGeogigDir.class).call().get();
         File rebaseFolder = new File(dir.getFile(), "rebase-apply");
         return rebaseFolder;
     }
 
-    private void printRefspecs(Conflict conflict, ConsoleReader console, GeoGIT geogit)
+    private void printRefspecs(Conflict conflict, ConsoleReader console, GeoGIG geogit)
             throws IOException {
         ObjectId theirsHeadId;
         Optional<Ref> mergeHead = geogit.command(RefParse.class).setName(Ref.MERGE_HEAD).call();
@@ -143,7 +143,7 @@ public class Conflicts extends AbstractCommand implements CLICommand {
         console.println(sb.toString());
     }
 
-    private void printConflictDiff(Conflict conflict, ConsoleReader console, GeoGIT geogit)
+    private void printConflictDiff(Conflict conflict, ConsoleReader console, GeoGIG geogit)
             throws IOException {
         FullDiffPrinter diffPrinter = new FullDiffPrinter(false, true);
         console.println("---" + conflict.getPath() + "---");
@@ -193,7 +193,7 @@ public class Conflicts extends AbstractCommand implements CLICommand {
 
     }
 
-    private void printConflict(Conflict conflict, ConsoleReader console, GeoGIT geogit)
+    private void printConflict(Conflict conflict, ConsoleReader console, GeoGIG geogit)
             throws IOException {
 
         console.println(conflict.getPath());
@@ -207,7 +207,7 @@ public class Conflicts extends AbstractCommand implements CLICommand {
 
     }
 
-    private void printObject(String name, ObjectId id, ConsoleReader console, GeoGIT geogit)
+    private void printObject(String name, ObjectId id, ConsoleReader console, GeoGIG geogit)
             throws IOException {
 
         console.println(name + "\t" + id.toString());

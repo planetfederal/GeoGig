@@ -7,7 +7,7 @@ package org.locationtech.geogig.api.porcelain;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.porcelain.ConfigException.StatusCode;
 import org.locationtech.geogig.di.CanRunDuringConflict;
 import org.locationtech.geogig.storage.ConfigDatabase;
@@ -27,7 +27,7 @@ import com.google.common.base.Optional;
  * @see ConfigDatabase
  */
 @CanRunDuringConflict
-public class ConfigOp extends AbstractGeoGitOp<Optional<Map<String, String>>> {
+public class ConfigOp extends AbstractGeoGigOp<Optional<Map<String, String>>> {
 
     /**
      * Enumeration of the possible actions of this command.

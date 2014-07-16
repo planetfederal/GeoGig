@@ -12,7 +12,7 @@ import java.io.PrintWriter;
 import java.util.Iterator;
 import java.util.List;
 
-import org.locationtech.geogig.api.GeoGIT;
+import org.locationtech.geogig.api.GeoGIG;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.RevCommit;
 import org.locationtech.geogig.api.plumbing.diff.DiffEntry;
@@ -60,7 +60,7 @@ public class AffectedFeaturesResource extends Resource {
 
             Preconditions.checkState(commit.isPresent(), "No commit specified.");
 
-            GeoGIT ggit = getGeogit(request).get();
+            GeoGIG ggit = getGeogit(request).get();
 
             ObjectId commitId = ObjectId.valueOf(commit.get());
 

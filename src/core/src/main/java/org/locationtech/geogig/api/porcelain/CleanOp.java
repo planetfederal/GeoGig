@@ -8,7 +8,7 @@ import java.util.Iterator;
 
 import javax.annotation.Nullable;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.NodeRef;
 import org.locationtech.geogig.api.RevObject.TYPE;
 import org.locationtech.geogig.api.plumbing.DiffWorkTree;
@@ -29,7 +29,7 @@ import com.google.common.collect.Iterators;
  * 
  */
 @CanRunDuringConflict
-public class CleanOp extends AbstractGeoGitOp<WorkingTree> {
+public class CleanOp extends AbstractGeoGigOp<WorkingTree> {
 
     private String path;
 

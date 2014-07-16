@@ -13,7 +13,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.TimeZone;
 
-import org.locationtech.geogig.api.plumbing.ResolveGeogitDir;
+import org.locationtech.geogig.api.plumbing.ResolveGeogigDir;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
@@ -85,7 +85,7 @@ public class DefaultPlatform implements Platform {
 
     @Override
     public File getTempDir() {
-        Optional<URL> url = new ResolveGeogitDir(this).call();
+        Optional<URL> url = new ResolveGeogigDir(this).call();
         final File tmpDir;
         if (url.isPresent()) {
             try {

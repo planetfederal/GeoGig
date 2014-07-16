@@ -5,7 +5,7 @@
 package org.locationtech.geogig.storage.performance.mongo;
 
 import org.locationtech.geogig.api.Context;
-import org.locationtech.geogig.di.GeogitModule;
+import org.locationtech.geogig.di.GeogigModule;
 import org.locationtech.geogig.storage.integration.mongo.MongoTestStorageModule;
 import org.locationtech.geogig.test.performance.RevTreeBuilderPerformanceTest;
 
@@ -16,7 +16,7 @@ public class MongoRevTreeBuilderPerformanceTest extends RevTreeBuilderPerformanc
     @Override
     protected Context createInjector() {
         return Guice.createInjector(
-                Modules.override(new GeogitModule()).with(new MongoTestStorageModule()))
+                Modules.override(new GeogigModule()).with(new MongoTestStorageModule()))
                 .getInstance(Context.class);
     }
 }

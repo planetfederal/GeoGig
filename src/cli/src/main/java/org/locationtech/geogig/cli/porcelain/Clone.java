@@ -9,14 +9,14 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import org.locationtech.geogig.api.GeoGIT;
-import org.locationtech.geogig.api.plumbing.ResolveGeogitDir;
+import org.locationtech.geogig.api.GeoGIG;
+import org.locationtech.geogig.api.plumbing.ResolveGeogigDir;
 import org.locationtech.geogig.api.porcelain.CloneOp;
 import org.locationtech.geogig.api.porcelain.InitOp;
 import org.locationtech.geogig.cli.AbstractCommand;
 import org.locationtech.geogig.cli.CLICommand;
 import org.locationtech.geogig.cli.CommandFailedException;
-import org.locationtech.geogig.cli.GeogitCLI;
+import org.locationtech.geogig.cli.GeogigCLI;
 import org.locationtech.geogig.cli.annotation.RemotesReadOnly;
 import org.locationtech.geogig.cli.annotation.RequiresRepository;
 
@@ -75,7 +75,7 @@ public class Clone extends AbstractCommand implements CLICommand {
      * Executes the clone command using the provided options.
      */
     @Override
-    public void runInternal(GeogitCLI cli) throws IOException {
+    public void runInternal(GeogigCLI cli) throws IOException {
         checkParameter(args != null && args.size() > 0, "You must specify a repository to clone.");
         checkParameter(args.size() < 3, "Too many arguments provided.");
         if (filterFile != null) {
@@ -115,9 +115,9 @@ public class Clone extends AbstractCommand implements CLICommand {
             }
         }
 
-        GeoGIT geogit = new GeoGIT(cli.getGeogitInjector(), repoDir);
+        GeoGIG geogit = new GeoGIG(cli.getGeogitInjector(), repoDir);
 
-        checkParameter(!geogit.command(ResolveGeogitDir.class).call().isPresent(),
+        checkParameter(!geogit.command(ResolveGeogigDir.class).call().isPresent(),
                 "Destination path already exists and is not an empty directory.");
 
         geogit.command(InitOp.class).setConfig(Init.splitConfig(config)).setFilterFile(filterFile)

@@ -8,7 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 
 import com.google.common.base.Charsets;
 import com.google.common.base.Joiner;
@@ -19,7 +19,7 @@ import com.google.common.io.Files;
  * Downloads data from OSM and commits it to the repository.
  * 
  */
-public class OSMDownloadOp extends AbstractGeoGitOp<Optional<OSMReport>> {
+public class OSMDownloadOp extends AbstractGeoGigOp<Optional<OSMReport>> {
 
     private File mappingFile;
 

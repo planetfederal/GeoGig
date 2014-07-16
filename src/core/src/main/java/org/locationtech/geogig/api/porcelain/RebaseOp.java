@@ -13,7 +13,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.CommitBuilder;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.Platform;
@@ -25,7 +25,7 @@ import org.locationtech.geogig.api.plumbing.CatObject;
 import org.locationtech.geogig.api.plumbing.DiffTree;
 import org.locationtech.geogig.api.plumbing.FindCommonAncestor;
 import org.locationtech.geogig.api.plumbing.RefParse;
-import org.locationtech.geogig.api.plumbing.ResolveGeogitDir;
+import org.locationtech.geogig.api.plumbing.ResolveGeogigDir;
 import org.locationtech.geogig.api.plumbing.UpdateRef;
 import org.locationtech.geogig.api.plumbing.UpdateSymRef;
 import org.locationtech.geogig.api.plumbing.WriteTree;
@@ -73,7 +73,7 @@ import com.google.common.io.Files;
  */
 @CanRunDuringConflict
 @Hookable(name = "rebase")
-public class RebaseOp extends AbstractGeoGitOp<Boolean> {
+public class RebaseOp extends AbstractGeoGigOp<Boolean> {
 
     private Supplier<ObjectId> upstream;
 
@@ -344,7 +344,7 @@ public class RebaseOp extends AbstractGeoGitOp<Boolean> {
     }
 
     private File getRebaseFolder() {
-        URL dir = command(ResolveGeogitDir.class).call().get();
+        URL dir = command(ResolveGeogigDir.class).call().get();
         File rebaseFolder = new File(dir.getFile(), "rebase-apply");
         if (!rebaseFolder.exists()) {
             Preconditions.checkState(rebaseFolder.mkdirs(), "Cannot create 'rebase-apply' folder");

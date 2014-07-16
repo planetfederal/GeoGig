@@ -11,12 +11,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import org.locationtech.geogig.cli.CLICommand;
-import org.locationtech.geogig.cli.GeogitCLI;
+import org.locationtech.geogig.cli.GeogigCLI;
 
 /**
  * Annotation indicating that a given {@link CLICommand} can only be run if a proper geogit
- * repository is in place, and hence {@link CLICommand#run(GeogitCLI)} is guaranteed to be called
- * with a non null {@link GeogitCLI#getGeogit() geogit} instance.
+ * repository is in place, and hence {@link CLICommand#run(GeogigCLI)} is guaranteed to be called
+ * with a non null {@link GeogigCLI#getGeogit() geogit} instance.
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

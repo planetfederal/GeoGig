@@ -12,7 +12,7 @@ import static com.google.common.base.Preconditions.checkState;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.NodeRef;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.Ref;
@@ -27,7 +27,7 @@ import com.google.common.base.Optional;
  * Resolves the reference given by a ref spec to the {@link ObjectId} it finally points to,
  * dereferencing symbolic refs as necessary.
  */
-public class RevParse extends AbstractGeoGitOp<Optional<ObjectId>> {
+public class RevParse extends AbstractGeoGigOp<Optional<ObjectId>> {
 
     private static final char PARENT_DELIMITER = '^';
 

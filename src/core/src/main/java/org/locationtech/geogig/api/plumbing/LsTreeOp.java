@@ -9,7 +9,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 import java.util.Iterator;
 import java.util.List;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.Bounded;
 import org.locationtech.geogig.api.NodeRef;
 import org.locationtech.geogig.api.ObjectId;
@@ -38,7 +38,7 @@ import com.google.common.collect.Lists;
  * specified, the root of the current working tree is assumed.
  */
 @CanRunDuringConflict
-public class LsTreeOp extends AbstractGeoGitOp<Iterator<NodeRef>> implements
+public class LsTreeOp extends AbstractGeoGigOp<Iterator<NodeRef>> implements
         Supplier<Iterator<NodeRef>> {
 
     /**

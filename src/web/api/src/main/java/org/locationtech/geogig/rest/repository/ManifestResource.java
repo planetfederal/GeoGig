@@ -12,7 +12,7 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.List;
 
-import org.locationtech.geogig.api.GeoGIT;
+import org.locationtech.geogig.api.GeoGIG;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.Ref;
 import org.locationtech.geogig.api.RevTag;
@@ -58,9 +58,9 @@ public class ManifestResource extends Resource {
         public void write(OutputStream out) throws IOException {
             PrintWriter w = new PrintWriter(out);
 
-            Optional<GeoGIT> geogit = getGeogit(request);
+            Optional<GeoGIG> geogit = getGeogit(request);
             Preconditions.checkState(geogit.isPresent());
-            GeoGIT ggit = geogit.get();
+            GeoGIG ggit = geogit.get();
 
             Form options = request.getResourceRef().getQueryAsForm();
 

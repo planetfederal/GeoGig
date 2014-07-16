@@ -17,7 +17,7 @@ import jline.console.ConsoleReader;
 import org.fusesource.jansi.Ansi;
 import org.fusesource.jansi.Ansi.Color;
 import org.geotools.util.Range;
-import org.locationtech.geogig.api.GeoGIT;
+import org.locationtech.geogig.api.GeoGIG;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.Platform;
 import org.locationtech.geogig.api.Ref;
@@ -33,7 +33,7 @@ import org.locationtech.geogig.api.porcelain.DiffOp;
 import org.locationtech.geogig.api.porcelain.LogOp;
 import org.locationtech.geogig.cli.AbstractCommand;
 import org.locationtech.geogig.cli.CLICommand;
-import org.locationtech.geogig.cli.GeogitCLI;
+import org.locationtech.geogig.cli.GeogigCLI;
 import org.locationtech.geogig.cli.InvalidParameterException;
 import org.locationtech.geogig.cli.annotation.ReadOnly;
 
@@ -72,7 +72,7 @@ public class Log extends AbstractCommand implements CLICommand {
 
     private Map<ObjectId, String> refs;
 
-    private GeoGIT geogit;
+    private GeoGIG geogit;
 
     private ConsoleReader console;
 
@@ -81,10 +81,10 @@ public class Log extends AbstractCommand implements CLICommand {
      * 
      * @param cli
      * @throws IOException
-     * @see org.locationtech.geogig.cli.AbstractCommand#runInternal(org.locationtech.geogig.cli.GeogitCLI)
+     * @see org.locationtech.geogig.cli.AbstractCommand#runInternal(org.locationtech.geogig.cli.GeogigCLI)
      */
     @Override
-    public void runInternal(GeogitCLI cli) throws IOException {
+    public void runInternal(GeogigCLI cli) throws IOException {
         checkParameter(!(args.summary && args.oneline),
                 "--summary and --oneline cannot be used together");
         checkParameter(!(args.stats && args.oneline),

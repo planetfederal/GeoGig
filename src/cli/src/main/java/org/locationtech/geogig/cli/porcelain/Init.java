@@ -13,13 +13,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.locationtech.geogig.api.Context;
-import org.locationtech.geogig.api.GeoGIT;
-import org.locationtech.geogig.api.plumbing.ResolveGeogitDir;
+import org.locationtech.geogig.api.GeoGIG;
+import org.locationtech.geogig.api.plumbing.ResolveGeogigDir;
 import org.locationtech.geogig.api.porcelain.InitOp;
 import org.locationtech.geogig.cli.AbstractCommand;
 import org.locationtech.geogig.cli.CLICommand;
 import org.locationtech.geogig.cli.CommandFailedException;
-import org.locationtech.geogig.cli.GeogitCLI;
+import org.locationtech.geogig.cli.GeogigCLI;
 import org.locationtech.geogig.cli.annotation.RequiresRepository;
 import org.locationtech.geogig.repository.Repository;
 
@@ -56,7 +56,7 @@ public class Init extends AbstractCommand implements CLICommand {
      * Executes the init command.
      */
     @Override
-    public void runInternal(GeogitCLI cli) throws IOException {
+    public void runInternal(GeogigCLI cli) throws IOException {
         // argument location if provided, or current directory otherwise
         final File targetDirectory;
         {
@@ -75,10 +75,10 @@ public class Init extends AbstractCommand implements CLICommand {
         final boolean repoExisted;
         final Repository repository;
         {
-            GeoGIT geogit = cli.getGeogit();
+            GeoGIG geogit = cli.getGeogit();
             if (geogit == null) {
                 Context geogitInjector = cli.getGeogitInjector();
-                geogit = new GeoGIT(geogitInjector);
+                geogit = new GeoGIG(geogitInjector);
             }
             repoExisted = determineIfRepoExists(targetDirectory, geogit);
             final Map<String, String> suppliedConfiguration = splitConfig(config);
@@ -109,7 +109,7 @@ public class Init extends AbstractCommand implements CLICommand {
         cli.getConsole().println(message);
     }
 
-    private boolean determineIfRepoExists(final File targetDirectory, GeoGIT geogit) {
+    private boolean determineIfRepoExists(final File targetDirectory, GeoGIG geogit) {
         final boolean repoExisted;
 
         final File currentDirectory = geogit.getPlatform().pwd();
@@ -118,7 +118,7 @@ public class Init extends AbstractCommand implements CLICommand {
         } catch (IllegalArgumentException e) {
             return false;
         }
-        final Optional<URL> currentRepoUrl = geogit.command(ResolveGeogitDir.class).call();
+        final Optional<URL> currentRepoUrl = geogit.command(ResolveGeogigDir.class).call();
         repoExisted = currentRepoUrl.isPresent();
         geogit.getPlatform().setWorkingDir(currentDirectory);
         return repoExisted;

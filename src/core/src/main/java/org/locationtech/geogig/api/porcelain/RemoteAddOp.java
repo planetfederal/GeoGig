@@ -6,7 +6,7 @@ package org.locationtech.geogig.api.porcelain;
 
 import java.util.List;
 
-import org.locationtech.geogig.api.AbstractGeoGitOp;
+import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.Ref;
 import org.locationtech.geogig.api.Remote;
 import org.locationtech.geogig.api.porcelain.RemoteException.StatusCode;
@@ -18,7 +18,7 @@ import org.locationtech.geogig.storage.ConfigDatabase;
  * @see ConfigDatabase
  * @see Remote
  */
-public class RemoteAddOp extends AbstractGeoGitOp<Remote> {
+public class RemoteAddOp extends AbstractGeoGigOp<Remote> {
 
     private String name;
 
