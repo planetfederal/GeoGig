@@ -51,7 +51,7 @@ public class DepthSearchTest {
     @Rule
     public final TemporaryFolder tempFolder = new TemporaryFolder();
 
-    private GeoGIG fakeGeogit;
+    private GeoGIG fakeGeogig;
 
     private ObjectDatabase odb;
 
@@ -68,8 +68,8 @@ public class DepthSearchTest {
         Context injector = Guice.createInjector(Modules.override(new GeogigModule()).with(
                 new MemoryModule(testPlatform))).getInstance(Context.class);
 
-        fakeGeogit = new GeoGIG(injector);
-        Repository fakeRepo = fakeGeogit.getOrCreateRepository();
+        fakeGeogig = new GeoGIG(injector);
+        Repository fakeRepo = fakeGeogig.getOrCreateRepository();
         odb = fakeRepo.objectDatabase();
         search = new DepthSearch(odb);
 
@@ -102,11 +102,11 @@ public class DepthSearchTest {
         }
 
         RevTree subtree = subTreeBuilder.build();
-        WriteBack writeBack = fakeGeogit.command(WriteBack.class).setAncestor(root)
+        WriteBack writeBack = fakeGeogig.command(WriteBack.class).setAncestor(root)
                 .setChildPath(treePath).setTree(subtree).setMetadataId(fakeTreeMetadataId);
         ObjectId newRootId = writeBack.call();
 
-        return fakeGeogit.command(RevObjectParse.class).setObjectId(newRootId).call(RevTree.class)
+        return fakeGeogig.command(RevObjectParse.class).setObjectId(newRootId).call(RevTree.class)
                 .get().builder(odb);
     }
 

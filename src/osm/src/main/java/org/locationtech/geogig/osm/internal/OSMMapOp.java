@@ -36,7 +36,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterators;
 
 /**
- * Creates new data in a geogit repository, based on the current OSM data in the repository and a
+ * Creates new data in a geogig repository, based on the current OSM data in the repository and a
  * mapping that defines the schema to use for creating new features and the destination trees.
  * 
  * The source data used is the working tree data in the "node" and "way" trees.

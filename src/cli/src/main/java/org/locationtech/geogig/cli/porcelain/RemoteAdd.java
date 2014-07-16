@@ -30,7 +30,7 @@ import com.beust.jcommander.Parameters;
  * <p>
  * Usage:
  * <ul>
- * <li> {@code geogit remote add [-t <branch>] <name> <url>}
+ * <li> {@code geogig remote add [-t <branch>] <name> <url>}
  * </ul>
  * 
  * @see RemoteAddOp
@@ -62,7 +62,7 @@ public class RemoteAdd extends AbstractCommand implements CLICommand {
         }
 
         try {
-            cli.getGeogit().command(RemoteAddOp.class).setName(params.get(0)).setURL(params.get(1))
+            cli.getGeogig().command(RemoteAddOp.class).setName(params.get(0)).setURL(params.get(1))
                     .setBranch(branch).setUserName(username).setPassword(password).call();
         } catch (RemoteException e) {
             switch (e.statusCode) {

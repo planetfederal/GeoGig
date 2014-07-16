@@ -22,16 +22,16 @@ import com.beust.jcommander.Parameters;
 import com.google.common.base.Throwables;
 
 /**
- * This command displays the GeoGit version information.
+ * This command displays the GeoGig version information.
  * <p>
  * Usage:
  * <ul>
- * <li> {@code geogit [--]version}
+ * <li> {@code geogig [--]version}
  * </ul>
  */
 @ReadOnly
 @RequiresRepository(false)
-@Parameters(commandNames = { "--version", "version" }, commandDescription = "Display GeoGit version information")
+@Parameters(commandNames = { "--version", "version" }, commandDescription = "Display GeoGig version information")
 public class Version implements CLICommand {
 
     private ConsoleReader console;
@@ -45,12 +45,12 @@ public class Version implements CLICommand {
      * @see org.locationtech.geogig.cli.CLICommand#run(org.locationtech.geogig.cli.GeogigCLI)
      */
     public void run(GeogigCLI cli) {
-        GeoGIG geogit = cli.getGeogit();
-        if (geogit == null) {
-            geogit = new GeoGIG();
+        GeoGIG geogig = cli.getGeogig();
+        if (geogig == null) {
+            geogig = new GeoGIG();
         }
         this.console = cli.getConsole();
-        VersionInfo info = geogit.command(VersionOp.class).call();
+        VersionInfo info = geogig.command(VersionOp.class).call();
 
         try {
             printVersionProperty("Project Version", info.getProjectVersion());

@@ -1,12 +1,12 @@
 Feature: "revert" command
 	In order to undo committed changes
-	As a Geogit user
+	As a Geogig user
 	I want to revert a series of commits and commit those changes
 	
-  Scenario: Try to revert something while not in a geogit repository
+  Scenario: Try to revert something while not in a geogig repository
   	Given I am in an empty directory
   	  And I run the command "revert master"
-  	 Then the response should contain "Not in a geogit repository"
+  	 Then the response should contain "Not in a geogig repository"
   	  And it should exit with non-zero exit code
   	 
   Scenario: Try to revert with nothing specified for reverting

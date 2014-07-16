@@ -13,7 +13,7 @@ import org.locationtech.geogig.di.Singleton;
 import com.google.common.base.Optional;
 
 /**
- * Provides an interface for implementations of config databases, which manage GeoGit config files.
+ * Provides an interface for implementations of config databases, which manage GeoGig config files.
  */
 @Singleton
 public interface ConfigDatabase {

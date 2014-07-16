@@ -29,7 +29,7 @@ public class CreatePatchOpTest extends RepositoryTestCase {
     @Test
     public void testCreatePatch() throws Exception {
         insertAndAdd(points1, points2);
-        geogit.command(CommitOp.class).setAll(true).call();
+        geogig.command(CommitOp.class).setAll(true).call();
 
         final String featureId = points1.getIdentifier().getID();
         final Feature modifiedFeature = feature((SimpleFeatureType) points1.getType(), featureId,
@@ -38,8 +38,8 @@ public class CreatePatchOpTest extends RepositoryTestCase {
         insert(points3);
         delete(points2);
 
-        Iterator<DiffEntry> diffs = geogit.command(DiffOp.class).call();
-        Patch patch = geogit.command(CreatePatchOp.class).setDiffs(diffs).call();
+        Iterator<DiffEntry> diffs = geogig.command(DiffOp.class).call();
+        Patch patch = geogig.command(CreatePatchOp.class).setDiffs(diffs).call();
 
         assertEquals(3, patch.count());
         assertEquals(1, patch.getAddedFeatures().size());
@@ -56,7 +56,7 @@ public class CreatePatchOpTest extends RepositoryTestCase {
     @Test
     public void testCreatePatchUsingIndex() throws Exception {
         insertAndAdd(points1, points2);
-        geogit.command(CommitOp.class).setAll(true).call();
+        geogig.command(CommitOp.class).setAll(true).call();
 
         final String featureId = points1.getIdentifier().getID();
         final Feature modifiedFeature = feature((SimpleFeatureType) points1.getType(), featureId,
@@ -66,10 +66,10 @@ public class CreatePatchOpTest extends RepositoryTestCase {
         insertAndAdd(points3);
         deleteAndAdd(points2);
         delete(points3);
-        DiffOp op = geogit.command(DiffOp.class);
+        DiffOp op = geogig.command(DiffOp.class);
         op.setCompareIndex(true);
         Iterator<DiffEntry> diffs = op.call();
-        Patch patch = geogit.command(CreatePatchOp.class).setDiffs(diffs).call();
+        Patch patch = geogig.command(CreatePatchOp.class).setDiffs(diffs).call();
 
         assertEquals(3, patch.count());
         assertEquals(1, patch.getAddedFeatures().size());
@@ -85,28 +85,28 @@ public class CreatePatchOpTest extends RepositoryTestCase {
     @Test
     public void testCreatePatchWithNoChanges() throws Exception {
         insertAndAdd(points1, points2);
-        geogit.command(CommitOp.class).setAll(true).call();
-        Iterator<DiffEntry> diffs = geogit.command(DiffOp.class).call();
-        Patch patch = geogit.command(CreatePatchOp.class).setDiffs(diffs).call();
+        geogig.command(CommitOp.class).setAll(true).call();
+        Iterator<DiffEntry> diffs = geogig.command(DiffOp.class).call();
+        Patch patch = geogig.command(CreatePatchOp.class).setDiffs(diffs).call();
         assertEquals(0, patch.count());
     }
 
     @Test
     public void testCreatePatchAddNewFeatureToEmptyRepo() throws Exception {
         insert(points1);
-        DiffOp op = geogit.command(DiffOp.class);
+        DiffOp op = geogig.command(DiffOp.class);
         Iterator<DiffEntry> diffs = op.call();
-        Patch patch = geogit.command(CreatePatchOp.class).setDiffs(diffs).call();
+        Patch patch = geogig.command(CreatePatchOp.class).setDiffs(diffs).call();
         assertEquals(1, patch.getAddedFeatures().size());
     }
 
     @Test
     public void testCreatePatchAddNewEmptyFeatureTypeToEmptyRepo() throws Exception {
-        WorkingTree workingTree = geogit.getRepository().workingTree();
+        WorkingTree workingTree = geogig.getRepository().workingTree();
         workingTree.createTypeTree(linesName, linesType);
-        DiffOp op = geogit.command(DiffOp.class).setReportTrees(true);
+        DiffOp op = geogig.command(DiffOp.class).setReportTrees(true);
         Iterator<DiffEntry> diffs = op.call();
-        Patch patch = geogit.command(CreatePatchOp.class).setDiffs(diffs).call();
+        Patch patch = geogig.command(CreatePatchOp.class).setDiffs(diffs).call();
         assertEquals(1, patch.getAlteredTrees().size());
         assertEquals(ObjectId.NULL, patch.getAlteredTrees().get(0).getOldFeatureType());
         assertEquals(RevFeatureTypeImpl.build(linesType).getId(), patch.getAlteredTrees().get(0)
@@ -116,13 +116,13 @@ public class CreatePatchOpTest extends RepositoryTestCase {
 
     @Test
     public void testCreatePatchRemoveEmptyFeatureType() throws Exception {
-        WorkingTree workingTree = geogit.getRepository().workingTree();
+        WorkingTree workingTree = geogig.getRepository().workingTree();
         workingTree.createTypeTree(linesName, linesType);
-        geogit.command(AddOp.class).setUpdateOnly(false).call();
+        geogig.command(AddOp.class).setUpdateOnly(false).call();
         workingTree.delete(linesName);
-        DiffOp op = geogit.command(DiffOp.class).setReportTrees(true);
+        DiffOp op = geogig.command(DiffOp.class).setReportTrees(true);
         Iterator<DiffEntry> diffs = op.call();
-        Patch patch = geogit.command(CreatePatchOp.class).setDiffs(diffs).call();
+        Patch patch = geogig.command(CreatePatchOp.class).setDiffs(diffs).call();
         assertEquals(1, patch.getAlteredTrees().size());
         assertEquals(RevFeatureTypeImpl.build(linesType).getId(), patch.getAlteredTrees().get(0)
                 .getOldFeatureType());
@@ -132,13 +132,13 @@ public class CreatePatchOpTest extends RepositoryTestCase {
 
     @Test
     public void testCreatePatchModifyFeatureType() throws Exception {
-        DiffOp op = geogit.command(DiffOp.class).setReportTrees(true);
+        DiffOp op = geogig.command(DiffOp.class).setReportTrees(true);
 
         insertAndAdd(points1, points2);
-        geogit.getRepository().workingTree().updateTypeTree(pointsName, modifiedPointsType);
+        geogig.getRepository().workingTree().updateTypeTree(pointsName, modifiedPointsType);
 
         Iterator<DiffEntry> diffs = op.call();
-        Patch patch = geogit.command(CreatePatchOp.class).setDiffs(diffs).call();
+        Patch patch = geogig.command(CreatePatchOp.class).setDiffs(diffs).call();
         assertEquals(1, patch.getAlteredTrees().size());
         assertEquals(RevFeatureTypeImpl.build(pointsType).getId(), patch.getAlteredTrees().get(0)
                 .getOldFeatureType());
@@ -151,10 +151,10 @@ public class CreatePatchOpTest extends RepositoryTestCase {
     public void testCreatePatchAddNewEmptyPath() throws Exception {
         insert(points1);
         delete(points1);
-        DiffOp op = geogit.command(DiffOp.class).setReportTrees(true);
+        DiffOp op = geogig.command(DiffOp.class).setReportTrees(true);
         Iterator<DiffEntry> diffs = op.call();
         // ArrayList<DiffEntry> list = Lists.newArrayList(diffs);
-        Patch patch = geogit.command(CreatePatchOp.class).setDiffs(diffs).call();
+        Patch patch = geogig.command(CreatePatchOp.class).setDiffs(diffs).call();
         assertEquals(1, patch.getAlteredTrees().size());
     }
 

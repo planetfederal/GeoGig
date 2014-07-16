@@ -1,6 +1,6 @@
 Feature: "sl export" command
-    In order to export data from Geogit
-    As a Geogit User
+    In order to export data from Geogig
+    As a Geogig User
     I want to export from the repository into a SpatiaLite database
  
   Scenario: Try exporting a table from HEAD  
@@ -13,7 +13,7 @@ Feature: "sl export" command
   Scenario: Try exporting from an empty directory
     Given I am in an empty directory
      When I run the command "sl export Points Points" on the SpatiaLite database
-     Then the response should start with "Not in a geogit repository"
+     Then the response should start with "Not in a geogig repository"
      
   Scenario: Try exporting a feature type
     Given I have a repository
@@ -30,6 +30,6 @@ Feature: "sl export" command
 Scenario: Try exporting to a table that already exists
   	Given I have a repository
       And I stage 6 features
-     When I run the command "sl export Points geogit_pg_test" on the SpatiaLite database
+     When I run the command "sl export Points geogig_pg_test" on the SpatiaLite database
      Then the response should contain "The selected table already exists. Use -o to overwrite"     
            

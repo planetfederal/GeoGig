@@ -38,17 +38,17 @@ public abstract class AbstractWebAPICommand implements WebAPICommand {
     }
 
     /**
-     * This function either builds a GeoGitTransaction to run commands off of if there is a
-     * transactionId to build off of or the GeoGit commandLocator otherwise.
+     * This function either builds a GeoGigTransaction to run commands off of if there is a
+     * transactionId to build off of or the GeoGig commandLocator otherwise.
      * 
      * @param context - the context to get the information needed to get the commandLocator
      * @return
      */
     public Context getCommandLocator(CommandContext context) {
         if (transactionId != null) {
-            return new GeogigTransaction(context.getGeoGIT().getContext(), transactionId);
+            return new GeogigTransaction(context.getGeoGIG().getContext(), transactionId);
         }
-        return context.getGeoGIT().getContext();
+        return context.getGeoGIG().getContext();
     }
 
     public abstract void run(CommandContext context);

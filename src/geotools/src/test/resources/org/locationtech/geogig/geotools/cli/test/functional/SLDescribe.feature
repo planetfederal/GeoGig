@@ -1,12 +1,12 @@
 Feature: "sl describe" command
     In order to understand the structure of a table in a SpatiaLite database
-    As a Geogit User
-    I want Geogit to describe the table
+    As a Geogig User
+    I want Geogig to describe the table
 
   Scenario: Try describing a SpatiaLite table from an empty directory
     Given I am in an empty directory
      When I run the command "sl describe --table Regions" on the SpatiaLite database
-     Then the response should start with "Not in a geogit repository"
+     Then the response should start with "Not in a geogig repository"
       
   Scenario: Try describing a SpatiaLite table
     Given I have a repository

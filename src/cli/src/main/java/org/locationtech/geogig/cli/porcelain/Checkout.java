@@ -37,8 +37,8 @@ import com.google.common.collect.Lists;
  * <p>
  * Usage:
  * <ul>
- * <li> {@code geogit checkout [-f] [<branchName>]}
- * <li> {@code geogit checkout [<branchOrCommitName>] [-p <paths>...]}
+ * <li> {@code geogig checkout [-f] [<branchName>]}
+ * <li> {@code geogig checkout [<branchOrCommitName>] [-p <paths>...]}
  * </ul>
  * 
  * @see CheckoutOp
@@ -66,7 +66,7 @@ public class Checkout extends AbstractCommand implements CLICommand {
 
     @Override
     public void runInternal(GeogigCLI cli) throws IOException {
-        final GeoGIG geogit = cli.getGeogit();
+        final GeoGIG geogig = cli.getGeogig();
         checkParameter(branchOrStartPoint.size() != 0 || !paths.isEmpty(),
                 "no branch or paths specified");
         checkParameter(branchOrStartPoint.size() < 2, "too many arguments");
@@ -76,7 +76,7 @@ public class Checkout extends AbstractCommand implements CLICommand {
             String branchOrCommit = (branchOrStartPoint.size() > 0 ? branchOrStartPoint.get(0)
                     : null);
 
-            CheckoutResult result = geogit.command(CheckoutOp.class).setForce(force)
+            CheckoutResult result = geogig.command(CheckoutOp.class).setForce(force)
                     .setSource(branchOrCommit).addPaths(paths).setOurs(ours).setTheirs(theirs)
                     .call();
 

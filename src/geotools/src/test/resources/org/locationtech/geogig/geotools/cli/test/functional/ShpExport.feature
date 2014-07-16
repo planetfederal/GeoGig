@@ -1,12 +1,12 @@
 Feature: "shp export" command
-    In order to export data to Geogit
-    As a Geogit User
+    In order to export data to Geogig
+    As a Geogig User
     I want to export from the repository to a shapefile
 
   Scenario: Try exporting from an empty directory
     Given I am in an empty directory
      When I run the command "shp export Points Points.shp" 
-     Then the response should start with "Not in a geogit repository"
+     Then the response should start with "Not in a geogig repository"
      
   Scenario: Try exporting a feature type
     Given I have a repository

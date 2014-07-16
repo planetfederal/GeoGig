@@ -89,14 +89,14 @@ public class SQLServerExport extends AbstractSQLServerCommand implements CLIComm
             SimpleFeatureType outputFeatureType;
             if (sFeatureTypeId != null) {
                 // Check the feature type id string is a correct id
-                Optional<ObjectId> id = cli.getGeogit().command(RevParse.class)
+                Optional<ObjectId> id = cli.getGeogig().command(RevParse.class)
                         .setRefSpec(sFeatureTypeId).call();
                 checkParameter(id.isPresent(), "Invalid feature type reference", sFeatureTypeId);
-                TYPE type = cli.getGeogit().command(ResolveObjectType.class).setObjectId(id.get())
+                TYPE type = cli.getGeogig().command(ResolveObjectType.class).setObjectId(id.get())
                         .call();
                 checkParameter(type.equals(TYPE.FEATURETYPE),
                         "Provided reference does not resolve to a feature type: ", sFeatureTypeId);
-                outputFeatureType = (SimpleFeatureType) cli.getGeogit()
+                outputFeatureType = (SimpleFeatureType) cli.getGeogig()
                         .command(RevObjectParse.class).setObjectId(id.get())
                         .call(RevFeatureType.class).get().type();
                 featureTypeId = id.get();
@@ -135,7 +135,7 @@ public class SQLServerExport extends AbstractSQLServerCommand implements CLIComm
                 throw new CommandFailedException("Error accessing table: " + e.getMessage(), e);
             }
         }
-        ExportOp op = cli.getGeogit().command(ExportOp.class).setFeatureStore(featureStore)
+        ExportOp op = cli.getGeogig().command(ExportOp.class).setFeatureStore(featureStore)
                 .setPath(path).setFilterFeatureTypeId(featureTypeId).setAlter(alter);
         if (defaultType) {
             op.exportDefaultFeatureType();
@@ -174,22 +174,22 @@ public class SQLServerExport extends AbstractSQLServerCommand implements CLIComm
 
         checkParameter(!refspec.endsWith(":"), "No path specified.");
 
-        final GeoGIG geogit = cli.getGeogit();
+        final GeoGIG geogig = cli.getGeogig();
 
-        Optional<ObjectId> rootTreeId = geogit.command(ResolveTreeish.class)
+        Optional<ObjectId> rootTreeId = geogig.command(ResolveTreeish.class)
                 .setTreeish(refspec.split(":")[0]).call();
 
         checkParameter(rootTreeId.isPresent(), "Couldn't resolve '" + refspec
                 + "' to a treeish object");
 
-        RevTree rootTree = geogit.getRepository().getTree(rootTreeId.get());
-        Optional<NodeRef> featureTypeTree = geogit.command(FindTreeChild.class)
+        RevTree rootTree = geogig.getRepository().getTree(rootTreeId.get());
+        Optional<NodeRef> featureTypeTree = geogig.command(FindTreeChild.class)
                 .setChildPath(refspec.split(":")[1]).setParent(rootTree).setIndex(true).call();
 
         checkParameter(featureTypeTree.isPresent(), "pathspec '" + refspec.split(":")[1]
                 + "' did not match any valid path");
 
-        Optional<RevObject> revObject = cli.getGeogit().command(RevObjectParse.class)
+        Optional<RevObject> revObject = cli.getGeogig().command(RevObjectParse.class)
                 .setObjectId(featureTypeTree.get().getMetadataId()).call();
         if (revObject.isPresent() && revObject.get() instanceof RevFeatureType) {
             RevFeatureType revFeatureType = (RevFeatureType) revObject.get();

@@ -1,6 +1,6 @@
 Feature: "log" command
     In order to know the history of commits on a repository
-    As a Geogit User
+    As a Geogig User
     I want to log them to the console
   Scenario: Try to show a log of a repository with a single commit.
     Given I have a repository
@@ -75,7 +75,7 @@ Feature: "log" command
   Scenario: Try to show a log from an empty directory
     Given I am in an empty directory
      When I run the command "log"
-     Then the response should start with "Not in a geogit repository"
+     Then the response should start with "Not in a geogig repository"
       And it should exit with non-zero exit code
 
   Scenario: Try to show a log of all branches

@@ -48,7 +48,7 @@ public class PatchSerializer {
     private static TextSerializationFactory factory = new TextSerializationFactory();
 
     /**
-     * Creates a patch object to apply on a GeoGit working tree
+     * Creates a patch object to apply on a GeoGig working tree
      * 
      * @param reader the read from where to read the patch description
      * @return a Patch

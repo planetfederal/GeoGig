@@ -44,7 +44,7 @@ public class OSMExportShpTest extends Assert {
         cli.execute("init");
         cli.execute("config", "user.name", "Gabriel Roldan");
         cli.execute("config", "user.email", "groldan@opengeo.org");
-        assertTrue(new File(workingDirectory, ".geogit").exists());
+        assertTrue(new File(workingDirectory, ".geogig").exists());
 
     }
 
@@ -55,11 +55,11 @@ public class OSMExportShpTest extends Assert {
         cli.execute("osm", "import", file.getAbsolutePath());
         cli.execute("add");
         cli.execute("commit", "-m", "message");
-        Optional<RevTree> tree = cli.getGeogit().command(RevObjectParse.class)
+        Optional<RevTree> tree = cli.getGeogig().command(RevObjectParse.class)
                 .setRefSpec("HEAD:node").call(RevTree.class);
         assertTrue(tree.isPresent());
         assertTrue(tree.get().size() > 0);
-        tree = cli.getGeogit().command(RevObjectParse.class).setRefSpec("HEAD:way")
+        tree = cli.getGeogig().command(RevObjectParse.class).setRefSpec("HEAD:way")
                 .call(RevTree.class);
         assertTrue(tree.isPresent());
         assertTrue(tree.get().size() > 0);
@@ -70,7 +70,7 @@ public class OSMExportShpTest extends Assert {
                 mappingFile.getAbsolutePath());
         assertTrue(exportFile.exists());
         cli.execute("shp", "import", "-d", "mapped", exportFile.getAbsolutePath());
-        long unstaged = cli.getGeogit().getRepository().workingTree().countUnstaged("mapped")
+        long unstaged = cli.getGeogig().getRepository().workingTree().countUnstaged("mapped")
                 .count();
         assertTrue(unstaged > 0);
     }
@@ -82,11 +82,11 @@ public class OSMExportShpTest extends Assert {
         cli.execute("osm", "import", file.getAbsolutePath());
         cli.execute("add");
         cli.execute("commit", "-m", "message");
-        Optional<RevTree> tree = cli.getGeogit().command(RevObjectParse.class)
+        Optional<RevTree> tree = cli.getGeogig().command(RevObjectParse.class)
                 .setRefSpec("HEAD:node").call(RevTree.class);
         assertTrue(tree.isPresent());
         assertTrue(tree.get().size() > 0);
-        tree = cli.getGeogit().command(RevObjectParse.class).setRefSpec("HEAD:way")
+        tree = cli.getGeogig().command(RevObjectParse.class).setRefSpec("HEAD:way")
                 .call(RevTree.class);
         assertTrue(tree.isPresent());
         assertTrue(tree.get().size() > 0);

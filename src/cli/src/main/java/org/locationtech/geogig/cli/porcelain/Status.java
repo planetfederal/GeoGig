@@ -33,12 +33,12 @@ import com.google.common.base.Optional;
 /**
  * Displays features that have differences between the index and the current HEAD commit and
  * features that have differences between the working tree and the index file. The first are what
- * you would commit by running geogit commit; the second are what you could commit by running geogit
- * add before running geogit commit.
+ * you would commit by running geogig commit; the second are what you could commit by running geogig
+ * add before running geogig commit.
  * <p>
  * Usage:
  * <ul>
- * <li> {@code geogit status [<options>]}
+ * <li> {@code geogig status [<options>]}
  * </ul>
  * 
  * @see Commit
@@ -62,12 +62,12 @@ public class Status extends AbstractCommand implements CLICommand {
         checkParameter(limit >= 0, "Limit must be 0 or greater.");
 
         ConsoleReader console = cli.getConsole();
-        GeoGIG geogit = cli.getGeogit();
+        GeoGIG geogig = cli.getGeogig();
 
-        StatusOp op = geogit.command(StatusOp.class);
+        StatusOp op = geogig.command(StatusOp.class);
         StatusSummary summary = op.call();
 
-        final Optional<Ref> currHead = geogit.command(RefParse.class).setName(Ref.HEAD).call();
+        final Optional<Ref> currHead = geogig.command(RefParse.class).setName(Ref.HEAD).call();
         checkParameter(currHead.isPresent(), "Repository has no HEAD.");
 
         if (currHead.get() instanceof SymRef) {
@@ -92,7 +92,7 @@ public class Status extends AbstractCommand implements CLICommand {
 
         if (countStaged > 0) {
             console.println("# Changes to be committed:");
-            console.println("#   (use \"geogit reset HEAD <path/to/fid>...\" to unstage)");
+            console.println("#   (use \"geogig reset HEAD <path/to/fid>...\" to unstage)");
             console.println("#");
             print(console, summary.getStaged().get(), Color.GREEN, countStaged);
             console.println("#");
@@ -100,15 +100,15 @@ public class Status extends AbstractCommand implements CLICommand {
 
         if (countConflicted > 0) {
             console.println("# Unmerged paths:");
-            console.println("#   (use \"geogit add/rm <path/to/fid>...\" as appropriate to mark resolution");
+            console.println("#   (use \"geogig add/rm <path/to/fid>...\" as appropriate to mark resolution");
             console.println("#");
             printUnmerged(console, summary.getConflicts().get(), Color.RED, countConflicted);
         }
 
         if (countUnstaged > 0) {
             console.println("# Changes not staged for commit:");
-            console.println("#   (use \"geogit add <path/to/fid>...\" to update what will be committed");
-            console.println("#   (use \"geogit checkout -- <path/to/fid>...\" to discard changes in working directory");
+            console.println("#   (use \"geogig add <path/to/fid>...\" to update what will be committed");
+            console.println("#   (use \"geogig checkout -- <path/to/fid>...\" to discard changes in working directory");
             console.println("#");
             print(console, summary.getUnstaged().get(), Color.RED, countUnstaged);
         }

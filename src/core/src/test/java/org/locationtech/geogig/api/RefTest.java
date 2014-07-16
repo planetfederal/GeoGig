@@ -24,7 +24,7 @@ public class RefTest extends RepositoryTestCase {
     @Test
     public void testConstructor() throws Exception {
         insertAndAdd(points1);
-        RevCommit oid = geogit.command(CommitOp.class).call();
+        RevCommit oid = geogig.command(CommitOp.class).call();
 
         Ref testRef = new Ref(Ref.REFS_PREFIX + "commit1", oid.getId());
 
@@ -37,7 +37,7 @@ public class RefTest extends RepositoryTestCase {
     @Test
     public void testToString() throws Exception {
         insertAndAdd(points1);
-        RevCommit oid = geogit.command(CommitOp.class).call();
+        RevCommit oid = geogig.command(CommitOp.class).call();
 
         Ref testRef = new Ref(Ref.REFS_PREFIX + "commit1", oid.getId());
 
@@ -48,12 +48,12 @@ public class RefTest extends RepositoryTestCase {
     @Test
     public void testEquals() throws Exception {
         insertAndAdd(points1);
-        RevCommit oid = geogit.command(CommitOp.class).call();
+        RevCommit oid = geogig.command(CommitOp.class).call();
 
         Ref testRef = new Ref(Ref.REFS_PREFIX + "commit1", oid.getId());
 
         insertAndAdd(lines1);
-        RevCommit oid2 = geogit.command(CommitOp.class).call();
+        RevCommit oid2 = geogig.command(CommitOp.class).call();
 
         Ref testRef2 = new Ref(Ref.REFS_PREFIX + "commit2", oid2.getId());
 
@@ -71,12 +71,12 @@ public class RefTest extends RepositoryTestCase {
     @Test
     public void testCompare() throws Exception {
         insertAndAdd(points1);
-        RevCommit oid = geogit.command(CommitOp.class).call();
+        RevCommit oid = geogig.command(CommitOp.class).call();
 
         Ref testRef = new Ref(Ref.REFS_PREFIX + "commit1", oid.getId());
 
         insertAndAdd(lines1);
-        RevCommit oid2 = geogit.command(CommitOp.class).call();
+        RevCommit oid2 = geogig.command(CommitOp.class).call();
 
         Ref testRef2 = new Ref(Ref.REFS_PREFIX + "commit2", oid2.getId());
 

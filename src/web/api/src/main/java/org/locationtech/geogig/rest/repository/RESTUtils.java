@@ -16,10 +16,10 @@ import com.google.common.base.Throwables;
 
 public class RESTUtils {
 
-    public static Optional<GeoGIG> getGeogit(Request request) {
+    public static Optional<GeoGIG> getGeogig(Request request) {
         RepositoryProvider provider = repositoryProvider(request);
-        Optional<GeoGIG> geogit = provider.getGeogit(request);
-        return geogit;
+        Optional<GeoGIG> geogig = provider.getGeogig(request);
+        return geogig;
     }
 
     public static RepositoryProvider repositoryProvider(Request request) {

@@ -49,7 +49,7 @@ public class RevParse extends AbstractGeoGigOp<Optional<ObjectId>> {
     }
 
     /**
-     * Parses a geogit revision string and return an object id.
+     * Parses a geogig revision string and return an object id.
      * <p>
      * Combinations of these operators are supported:
      * <ul>

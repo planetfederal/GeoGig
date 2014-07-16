@@ -13,7 +13,7 @@ import org.locationtech.geogig.web.api.CommandResponse;
 import org.locationtech.geogig.web.api.ResponseWriter;
 
 /**
- * Interface for the Push operation in GeoGit.
+ * Interface for the Push operation in GeoGig.
  * 
  * Web interface for {@link PushOp}
  */
@@ -58,9 +58,9 @@ public class PushWebOp extends AbstractWebAPICommand {
      */
     @Override
     public void run(CommandContext context) {
-        final Context geogit = this.getCommandLocator(context);
+        final Context geogig = this.getCommandLocator(context);
 
-        PushOp command = geogit.command(PushOp.class);
+        PushOp command = geogig.command(PushOp.class);
 
         if (refSpec != null) {
             command.addRefSpec(refSpec);

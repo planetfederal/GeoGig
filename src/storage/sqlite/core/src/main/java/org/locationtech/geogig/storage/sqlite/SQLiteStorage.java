@@ -30,17 +30,17 @@ public class SQLiteStorage {
     public static final String VERSION = "0.1";
 
     /**
-     * Returns the .geogit directory for the platform object.
+     * Returns the .geogig directory for the platform object.
      */
-    public static File geogitDir(Platform platform) {
+    public static File geogigDir(Platform platform) {
         Optional<URL> url = new ResolveGeogigDir(platform).call();
         if (!url.isPresent()) {
-            throw new RuntimeException("Unable to resolve .geogit directory");
+            throw new RuntimeException("Unable to resolve .geogig directory");
         }
         try {
             return new File(url.get().toURI());
         } catch (URISyntaxException e) {
-            throw new RuntimeException("Error resolving .geogit directory", e);
+            throw new RuntimeException("Error resolving .geogig directory", e);
         }
     }
 }

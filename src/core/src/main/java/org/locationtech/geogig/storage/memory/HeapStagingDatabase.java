@@ -26,7 +26,7 @@ import com.google.common.collect.UnmodifiableIterator;
 import com.google.inject.Inject;
 
 /**
- * Provides an implementation of a GeoGit staging database that utilizes the heap for the storage of
+ * Provides an implementation of a GeoGig staging database that utilizes the heap for the storage of
  * objects.
  * 
  * @see AbstractObjectDatabase

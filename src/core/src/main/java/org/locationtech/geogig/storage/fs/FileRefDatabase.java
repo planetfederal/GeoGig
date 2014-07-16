@@ -34,7 +34,7 @@ import com.google.common.io.Files;
 import com.google.inject.Inject;
 
 /**
- * Provides an implementation of a GeoGit ref database that utilizes the file system for the storage
+ * Provides an implementation of a GeoGig ref database that utilizes the file system for the storage
  * of refs.
  */
 public class FileRefDatabase extends AbstractRefDatabase {
@@ -62,7 +62,7 @@ public class FileRefDatabase extends AbstractRefDatabase {
     @Override
     public void create() {
         Optional<URL> envHome = new ResolveGeogigDir(platform).call();
-        checkState(envHome.isPresent(), "Not inside a geogit directory");
+        checkState(envHome.isPresent(), "Not inside a geogig directory");
 
         final URL envURL = envHome.get();
         if (!"file".equals(envURL.getProtocol())) {
@@ -351,6 +351,6 @@ public class FileRefDatabase extends AbstractRefDatabase {
     @Override
     public String toString() {
         Optional<URL> envHome = new ResolveGeogigDir(platform).call();
-        return String.format("%s[geogit dir: %s]", getClass().getSimpleName(), envHome.orNull());
+        return String.format("%s[geogig dir: %s]", getClass().getSimpleName(), envHome.orNull());
     }
 }

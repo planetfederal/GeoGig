@@ -59,7 +59,7 @@ public class OSMHistoryImportTest extends Assert {
         GlobalContextBuilder.builder = new CLITestContextBuilder(platform);
         cli.setPlatform(platform);
         cli.execute("init");
-        assertTrue(new File(workingDirectory, ".geogit").exists());
+        assertTrue(new File(workingDirectory, ".geogig").exists());
     }
 
     @After
@@ -75,8 +75,8 @@ public class OSMHistoryImportTest extends Assert {
         cli.execute("config", "user.email", "groldan@opengeo.org");
         cli.execute("osm", "import-history", fakeOsmApiUrl, "--to", "10");
 
-        GeoGIG geogit = cli.getGeogit();
-        List<DiffEntry> changes = ImmutableList.copyOf(geogit.command(DiffOp.class)
+        GeoGIG geogig = cli.getGeogig();
+        List<DiffEntry> changes = ImmutableList.copyOf(geogig.command(DiffOp.class)
                 .setOldVersion("HEAD~2").setNewVersion("HEAD~1").call());
         assertEquals(1, changes.size());
         DiffEntry entry = changes.get(0);
@@ -84,14 +84,14 @@ public class OSMHistoryImportTest extends Assert {
         assertEquals("node/20", entry.getOldObject().path());
         assertEquals("node/20", entry.getNewObject().path());
 
-        Optional<RevFeature> oldRevFeature = geogit.command(RevObjectParse.class)
+        Optional<RevFeature> oldRevFeature = geogig.command(RevObjectParse.class)
                 .setObjectId(entry.getOldObject().objectId()).call(RevFeature.class);
-        Optional<RevFeature> newRevFeature = geogit.command(RevObjectParse.class)
+        Optional<RevFeature> newRevFeature = geogig.command(RevObjectParse.class)
                 .setObjectId(entry.getNewObject().objectId()).call(RevFeature.class);
         assertTrue(oldRevFeature.isPresent());
         assertTrue(newRevFeature.isPresent());
 
-        Optional<RevFeatureType> type = geogit.command(RevObjectParse.class)
+        Optional<RevFeatureType> type = geogig.command(RevObjectParse.class)
                 .setObjectId(entry.getOldObject().getMetadataId()).call(RevFeatureType.class);
         assertTrue(type.isPresent());
 

@@ -19,7 +19,7 @@ public class MongoGraphDatabaseTest extends GraphDatabaseTest {
     protected MongoGraphDatabase createDatabase(Platform platform) throws Exception {
         final IniMongoProperties properties = new IniMongoProperties();
         final String uri = properties.get("mongodb.uri", String.class).or("mongodb://localhost:27017/"); 
-        final String database = properties.get("mongodb.database", String.class).or("geogit");
+        final String database = properties.get("mongodb.database", String.class).or("geogig");
         MongoClient client = new MongoClient(new MongoClientURI(uri));
         DB db = client.getDB(database);
         db.dropDatabase();

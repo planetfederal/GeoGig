@@ -14,7 +14,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSortedMap;
 
 /**
- * Provides an interface for accessing and managing GeoGit revision trees.
+ * Provides an interface for accessing and managing GeoGig revision trees.
  * 
  * @see Node
  */

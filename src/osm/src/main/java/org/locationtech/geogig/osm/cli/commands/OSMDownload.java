@@ -59,7 +59,7 @@ public class OSMDownload extends AbstractCommand implements CLICommand {
     @Parameter(names = { "--keep-files", "-k" }, description = "If specified, downloaded files are kept in the --saveto folder")
     public boolean keepFiles = false;
 
-    @Parameter(names = { "--update", "-u" }, description = "Update the OSM data currently in the geogit repository")
+    @Parameter(names = { "--update", "-u" }, description = "Update the OSM data currently in the geogig repository")
     public boolean update = false;
 
     @Parameter(names = { "--rebase" }, description = "Use rebase instead of merge when updating")
@@ -76,8 +76,8 @@ public class OSMDownload extends AbstractCommand implements CLICommand {
                 "You must specify a filter file or a bounding box");
         checkParameter((filterFile != null || bbox != null) ^ update,
                 "Filters cannot be used when updating");
-        checkState(cli.getGeogit().getRepository().index().isClean()
-                && cli.getGeogit().getRepository().workingTree().isClean(),
+        checkState(cli.getGeogig().getRepository().index().isClean()
+                && cli.getGeogig().getRepository().workingTree().isClean(),
                 "Working tree and index are not clean");
 
         checkParameter(!rebase || update, "--rebase switch can only be used when updating");
@@ -90,11 +90,11 @@ public class OSMDownload extends AbstractCommand implements CLICommand {
 
         Optional<OSMReport> report;
         if (update) {
-            report = cli.getGeogit().command(OSMUpdateOp.class).setAPIUrl(osmAPIUrl)
+            report = cli.getGeogig().command(OSMUpdateOp.class).setAPIUrl(osmAPIUrl)
                     .setRebase(rebase).setMessage(message)
                     .setProgressListener(cli.getProgressListener()).call();
         } else {
-            report = cli.getGeogit().command(OSMDownloadOp.class).setBbox(bbox)
+            report = cli.getGeogig().command(OSMDownloadOp.class).setBbox(bbox)
                     .setFilterFile(filterFile).setKeepFiles(keepFiles).setMessage(message)
                     .setMappingFile(mappingFile).setOsmAPIUrl(osmAPIUrl).setSaveFile(saveFile)
                     .setProgressListener(cli.getProgressListener()).call();

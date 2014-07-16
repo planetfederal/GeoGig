@@ -80,7 +80,7 @@ import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 
 /**
- * Provides a wrapper for writing common GeoGit objects to a provided {@link XMLStreamWriter}.
+ * Provides a wrapper for writing common GeoGig objects to a provided {@link XMLStreamWriter}.
  */
 public class ResponseWriter {
 
@@ -707,7 +707,7 @@ public class ResponseWriter {
         out.writeEndElement();
     }
 
-    public void writePullResponse(PullResult result, Iterator<DiffEntry> iter, Context geogit)
+    public void writePullResponse(PullResult result, Iterator<DiffEntry> iter, Context geogig)
             throws XMLStreamException {
         out.writeStartElement("Pull");
         writeFetchResponse(result.getFetchResult());
@@ -735,7 +735,7 @@ public class ResponseWriter {
                 && result.getMergeReport().get().getReport().isPresent()) {
             MergeReport report = result.getMergeReport().get();
             writeMergeResponse(Optional.fromNullable(report.getMergeCommit()), report.getReport()
-                    .get(), geogit, report.getOurs(), report.getPairs().get(0).getTheirs(), report
+                    .get(), geogig, report.getOurs(), report.getPairs().get(0).getTheirs(), report
                     .getPairs().get(0).getAncestor());
         }
         out.writeEndElement();
@@ -790,11 +790,11 @@ public class ResponseWriter {
     /**
      * Writes the response for a set of diffs while also supplying the geometry.
      * 
-     * @param geogit - a CommandLocator to call commands from
+     * @param geogig - a CommandLocator to call commands from
      * @param diff - a DiffEntry iterator to build the response from
      * @throws XMLStreamException
      */
-    public void writeGeometryChanges(final Context geogit, Iterator<DiffEntry> diff, int page,
+    public void writeGeometryChanges(final Context geogig, Iterator<DiffEntry> diff, int page,
             int elementsPerPage) throws XMLStreamException {
 
         Iterators.advance(diff, page * elementsPerPage);
@@ -811,16 +811,16 @@ public class ResponseWriter {
                         GeometryChange change = null;
                         if (input.changeType() == ChangeType.ADDED
                                 || input.changeType() == ChangeType.MODIFIED) {
-                            feature = geogit.command(RevObjectParse.class)
+                            feature = geogig.command(RevObjectParse.class)
                                     .setObjectId(input.newObjectId()).call();
-                            type = geogit.command(RevObjectParse.class)
+                            type = geogig.command(RevObjectParse.class)
                                     .setObjectId(input.getNewObject().getMetadataId()).call();
                             path = input.getNewObject().path();
 
                         } else if (input.changeType() == ChangeType.REMOVED) {
-                            feature = geogit.command(RevObjectParse.class)
+                            feature = geogig.command(RevObjectParse.class)
                                     .setObjectId(input.oldObjectId()).call();
-                            type = geogit.command(RevObjectParse.class)
+                            type = geogig.command(RevObjectParse.class)
                                     .setObjectId(input.getOldObject().getMetadataId()).call();
                             path = input.getOldObject().path();
                         }
@@ -892,11 +892,11 @@ public class ResponseWriter {
     /**
      * Writes the response for a set of conflicts while also supplying the geometry.
      * 
-     * @param geogit - a CommandLocator to call commands from
+     * @param geogig - a CommandLocator to call commands from
      * @param conflicts - a Conflict iterator to build the response from
      * @throws XMLStreamException
      */
-    public void writeConflicts(final Context geogit, Iterator<Conflict> conflicts,
+    public void writeConflicts(final Context geogig, Iterator<Conflict> conflicts,
             final ObjectId ours, final ObjectId theirs) throws XMLStreamException {
         Iterator<GeometryConflict> conflictIterator = Iterators.transform(conflicts,
                 new Function<Conflict, GeometryConflict>() {
@@ -906,7 +906,7 @@ public class ResponseWriter {
                         if (input.getOurs().equals(ObjectId.NULL)) {
                             commitId = theirs;
                         }
-                        Optional<RevObject> object = geogit.command(RevObjectParse.class)
+                        Optional<RevObject> object = geogig.command(RevObjectParse.class)
                                 .setObjectId(commitId).call();
                         RevCommit commit = null;
                         if (object.isPresent() && object.get() instanceof RevCommit) {
@@ -916,12 +916,12 @@ public class ResponseWriter {
                                     + commitId.toString() + " to a commit");
                         }
 
-                        object = geogit.command(RevObjectParse.class)
+                        object = geogig.command(RevObjectParse.class)
                                 .setObjectId(commit.getTreeId()).call();
                         Optional<NodeRef> node = Optional.absent();
                         if (object.isPresent()) {
                             RevTree tree = (RevTree) object.get();
-                            node = geogit.command(FindTreeChild.class).setParent(tree)
+                            node = geogig.command(FindTreeChild.class).setParent(tree)
                                     .setChildPath(input.getPath()).call();
                         } else {
                             throw new CommandSpecException("Couldn't resolve commit's treeId");
@@ -931,7 +931,7 @@ public class ResponseWriter {
                         RevFeature feature = null;
 
                         if (node.isPresent()) {
-                            object = geogit.command(RevObjectParse.class)
+                            object = geogig.command(RevObjectParse.class)
                                     .setObjectId(node.get().getMetadataId()).call();
                             if (object.isPresent() && object.get() instanceof RevFeatureType) {
                                 type = (RevFeatureType) object.get();
@@ -939,7 +939,7 @@ public class ResponseWriter {
                                 throw new CommandSpecException(
                                         "Couldn't resolve newCommit's featureType");
                             }
-                            object = geogit.command(RevObjectParse.class)
+                            object = geogig.command(RevObjectParse.class)
                                     .setObjectId(node.get().objectId()).call();
                             if (object.isPresent() && object.get() instanceof RevFeature) {
                                 feature = (RevFeature) object.get();
@@ -1014,11 +1014,11 @@ public class ResponseWriter {
     /**
      * Writes the response for a set of merged features while also supplying the geometry.
      * 
-     * @param geogit - a CommandLocator to call commands from
+     * @param geogig - a CommandLocator to call commands from
      * @param features - a FeatureInfo iterator to build the response from
      * @throws XMLStreamException
      */
-    public void writeMerged(final Context geogit, Iterator<FeatureInfo> features)
+    public void writeMerged(final Context geogig, Iterator<FeatureInfo> features)
             throws XMLStreamException {
         Iterator<GeometryChange> changeIterator = Iterators.transform(features,
                 new Function<FeatureInfo, GeometryChange>() {

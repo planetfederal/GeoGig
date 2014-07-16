@@ -1,6 +1,6 @@
 Feature: "show" command
     In order to know about a given element
-    As a Geogit User
+    As a Geogig User
     I want to display information about it
 
 Scenario: Try to show the description of a feature using only its path

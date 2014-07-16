@@ -16,7 +16,7 @@ import org.locationtech.geogig.web.api.ResponseWriter;
 import com.google.common.base.Optional;
 
 /**
- * Interface for the RefParse command in GeoGit
+ * Interface for the RefParse command in GeoGig
  * 
  * Web interface for {@link RefParse}
  */
@@ -47,11 +47,11 @@ public class RefParseWeb extends AbstractWebAPICommand {
             throw new CommandSpecException("No name was given.");
         }
 
-        final Context geogit = this.getCommandLocator(context);
+        final Context geogig = this.getCommandLocator(context);
         Optional<Ref> ref;
 
         try {
-            ref = geogit.command(RefParse.class).setName(refSpec).call();
+            ref = geogig.command(RefParse.class).setName(refSpec).call();
         } catch (Exception e) {
             context.setResponseContent(CommandResponse.error("Aborting UpdateRef: "
                     + e.getMessage()));

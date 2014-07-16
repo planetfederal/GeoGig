@@ -39,38 +39,38 @@ import com.google.common.io.Resources;
 class Logging {
     private static final Logger LOGGER = LoggerFactory.getLogger(Logging.class);
 
-    private static File geogitDirLoggingConfiguration;
+    private static File geogigDirLoggingConfiguration;
 
     static void tryConfigureLogging() {
         tryConfigureLogging(new DefaultPlatform());
     }
 
     static void tryConfigureLogging(Platform platform) {
-        // instantiate and call ResolveGeogitDir directly to avoid calling getGeogit() and hence get
+        // instantiate and call ResolveGeogigDir directly to avoid calling getGeogig() and hence get
         // some logging events before having configured logging
-        final Optional<URL> geogitDirUrl = new ResolveGeogigDir(platform).call();
-        if (!geogitDirUrl.isPresent() || !"file".equalsIgnoreCase(geogitDirUrl.get().getProtocol())) {
+        final Optional<URL> geogigDirUrl = new ResolveGeogigDir(platform).call();
+        if (!geogigDirUrl.isPresent() || !"file".equalsIgnoreCase(geogigDirUrl.get().getProtocol())) {
             // redirect java.util.logging to SLF4J anyways
             SLF4JBridgeHandler.removeHandlersForRootLogger();
             SLF4JBridgeHandler.install();
             return;
         }
 
-        final File geogitDir;
+        final File geogigDir;
         try {
-            geogitDir = new File(geogitDirUrl.get().toURI());
+            geogigDir = new File(geogigDirUrl.get().toURI());
         } catch (URISyntaxException e) {
             throw Throwables.propagate(e);
         }
 
-        if (geogitDir.equals(geogitDirLoggingConfiguration)) {
+        if (geogigDir.equals(geogigDirLoggingConfiguration)) {
             return;
         }
 
-        if (!geogitDir.exists() || !geogitDir.isDirectory()) {
+        if (!geogigDir.exists() || !geogigDir.isDirectory()) {
             return;
         }
-        final URL loggingFile = getOrCreateLoggingConfigFile(geogitDir);
+        final URL loggingFile = getOrCreateLoggingConfigFile(geogigDir);
 
         if (loggingFile == null) {
             return;
@@ -80,10 +80,10 @@ class Logging {
             LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
             loggerContext.reset();
             /*
-             * Set the geogitdir variable for the config file can resolve the default location
-             * ${geogitdir}/log/geogit.log
+             * Set the geogigdir variable for the config file can resolve the default location
+             * ${geogigdir}/log/geogig.log
              */
-            loggerContext.putProperty("geogitdir", geogitDir.getAbsolutePath());
+            loggerContext.putProperty("geogigdir", geogigDir.getAbsolutePath());
             JoranConfigurator configurator = new JoranConfigurator();
             configurator.setContext(loggerContext);
             configurator.doConfigure(loggingFile);
@@ -91,7 +91,7 @@ class Logging {
             // redirect java.util.logging to SLF4J
             SLF4JBridgeHandler.removeHandlersForRootLogger();
             SLF4JBridgeHandler.install();
-            geogitDirLoggingConfiguration = geogitDir;
+            geogigDirLoggingConfiguration = geogigDir;
         } catch (JoranException e) {
             LOGGER.error("Error configuring logging from file {}. '{}'", loggingFile,
                     e.getMessage(), e);
@@ -99,9 +99,9 @@ class Logging {
     }
 
     @Nullable
-    private static URL getOrCreateLoggingConfigFile(final File geogitdir) {
+    private static URL getOrCreateLoggingConfigFile(final File geogigdir) {
 
-        final File logsDir = new File(geogitdir, "log");
+        final File logsDir = new File(geogigdir, "log");
         if (!logsDir.exists() && !logsDir.mkdir()) {
             return null;
         }

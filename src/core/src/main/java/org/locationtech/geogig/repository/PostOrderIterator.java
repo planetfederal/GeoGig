@@ -24,8 +24,8 @@ import org.locationtech.geogig.storage.ObjectDatabase;
 import com.google.common.collect.AbstractIterator;
 
 /**
- * The PostOrderIterator class provides utilities for traversing a GeoGit revision history graph in
- * postorder or depth-first order. In the context of a GeoGit revision this means that if objects A
+ * The PostOrderIterator class provides utilities for traversing a GeoGig revision history graph in
+ * postorder or depth-first order. In the context of a GeoGig revision this means that if objects A
  * and B are both in the subgraph being traversed and A references B, then B will be visited before
  * A.
  * 
@@ -154,7 +154,7 @@ public class PostOrderIterator extends AbstractIterator<RevObject> {
 
     /**
      * The Successors interface defines a pluggable strategy for finding successors of (nodes
-     * reachable from) a GeoGit history object. We follow a combinatorial approach in defining
+     * reachable from) a GeoGig history object. We follow a combinatorial approach in defining
      * Successors - a few immutable basic Successors definitions are provided, and some tools for
      * combining them to produce more complex strategies.
      */

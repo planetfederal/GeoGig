@@ -21,7 +21,7 @@ import org.locationtech.geogig.web.api.ResponseWriter;
 import com.google.common.base.Optional;
 
 /**
- * Interface for the UpdateRef operation in the GeoGit.
+ * Interface for the UpdateRef operation in the GeoGig.
  * 
  * Web interface for {@link UpdateRef}, {@link UpdateSymRef}
  */
@@ -77,30 +77,30 @@ public class UpdateRefWeb extends AbstractWebAPICommand {
                     "Nothing specified to update with, must specify either deletion or new value to update to.");
         }
 
-        final Context geogit = this.getCommandLocator(context);
+        final Context geogig = this.getCommandLocator(context);
         Optional<Ref> ref;
 
         try {
-            ref = geogit.command(RefParse.class).setName(name).call();
+            ref = geogig.command(RefParse.class).setName(name).call();
 
             if (!ref.isPresent()) {
                 throw new CommandSpecException("Invalid name: " + name);
             }
 
             if (ref.get() instanceof SymRef) {
-                Optional<Ref> target = geogit.command(RefParse.class).setName(newValue).call();
+                Optional<Ref> target = geogig.command(RefParse.class).setName(newValue).call();
                 if (target.isPresent() && !(target.get() instanceof SymRef)) {
-                    ref = geogit.command(UpdateSymRef.class).setDelete(delete).setName(name)
+                    ref = geogig.command(UpdateSymRef.class).setDelete(delete).setName(name)
                             .setNewValue(target.get().getName()).call();
                 } else {
                     throw new CommandSpecException("Invalid new target: " + newValue);
                 }
 
             } else {
-                Optional<ObjectId> target = geogit.command(RevParse.class).setRefSpec(newValue)
+                Optional<ObjectId> target = geogig.command(RevParse.class).setRefSpec(newValue)
                         .call();
                 if (target.isPresent()) {
-                    ref = geogit.command(UpdateRef.class).setDelete(delete)
+                    ref = geogig.command(UpdateRef.class).setDelete(delete)
                             .setName(ref.get().getName()).setNewValue(target.get()).call();
                 } else {
                     throw new CommandSpecException("Invalid new value: " + newValue);

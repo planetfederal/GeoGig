@@ -16,7 +16,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 
 /**
- * Provides an implementation of a GeoGit ref database that utilizes the heap for the storage of
+ * Provides an implementation of a GeoGig ref database that utilizes the heap for the storage of
  * refs.
  */
 public class HeapRefDatabase extends AbstractRefDatabase {

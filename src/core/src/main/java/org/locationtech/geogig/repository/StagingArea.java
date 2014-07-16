@@ -21,7 +21,7 @@ import org.locationtech.geogig.storage.StagingDatabase;
 import com.google.common.base.Optional;
 
 /**
- * Serves as an interface for the index of the GeoGit repository.
+ * Serves as an interface for the index of the GeoGig repository.
  * 
  * @see StagingDatabase
  */

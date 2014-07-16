@@ -61,7 +61,7 @@ public class IniFileConfigDatabase implements ConfigDatabase {
                     throw new ConfigException(StatusCode.USERHOME_NOT_SET);
                 }
 
-                File globalConfig = new File(home.getPath(), ".geogitconfig");
+                File globalConfig = new File(home.getPath(), ".geogigconfig");
                 try {
                     globalConfig.createNewFile();
                 } catch (IOException e) {

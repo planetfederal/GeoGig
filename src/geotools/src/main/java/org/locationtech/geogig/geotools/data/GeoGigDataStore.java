@@ -52,17 +52,17 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 
 /**
- * A GeoTools {@link DataStore} that serves and edits {@link SimpleFeature}s in a geogit repository.
+ * A GeoTools {@link DataStore} that serves and edits {@link SimpleFeature}s in a geogig repository.
  * <p>
  * Multiple instances of this kind of data store may be created against the same repository,
  * possibly working against different {@link #setHead(String) heads}.
  * <p>
- * A head is any commit in GeoGit. If a head has a branch pointing at it then the store allows
+ * A head is any commit in GeoGig. If a head has a branch pointing at it then the store allows
  * transactions, otherwise no data modifications may be made.
  * 
- * A branch in Geogit is a separate line of history that may or may not share a common ancestor with
+ * A branch in Geogig is a separate line of history that may or may not share a common ancestor with
  * another branch. In the later case the branch is called "orphan" and by convention the default
- * branch is called "master", which is created when the geogit repo is first initialized, but does
+ * branch is called "master", which is created when the geogig repo is first initialized, but does
  * not necessarily exist.
  * <p>
  * Every read operation (like in {@link #getFeatureSource(Name)}) reads committed features out of
@@ -79,7 +79,7 @@ import com.google.common.collect.Lists;
  */
 public class GeoGigDataStore extends ContentDataStore implements DataStore {
 
-    private final GeoGIG geogit;
+    private final GeoGIG geogig;
 
     /** @see #setHead(String) */
     private String refspec;
@@ -87,19 +87,19 @@ public class GeoGigDataStore extends ContentDataStore implements DataStore {
     /** When the configured head is not a branch, we disallow transactions */
     private boolean allowTransactions = true;
 
-    public GeoGigDataStore(GeoGIG geogit) {
+    public GeoGigDataStore(GeoGIG geogig) {
         super();
-        Preconditions.checkNotNull(geogit);
-        Preconditions.checkNotNull(geogit.getRepository(), "No repository exists at %s", geogit
+        Preconditions.checkNotNull(geogig);
+        Preconditions.checkNotNull(geogig.getRepository(), "No repository exists at %s", geogig
                 .getPlatform().pwd());
 
-        this.geogit = geogit;
+        this.geogig = geogig;
     }
 
     @Override
     public void dispose() {
         super.dispose();
-        geogit.close();
+        geogig.close();
     }
 
     /**
@@ -160,8 +160,8 @@ public class GeoGigDataStore extends ContentDataStore implements DataStore {
         return getCheckedOutBranch();
     }
 
-    public GeoGIG getGeogit() {
-        return geogit;
+    public GeoGIG getGeogig() {
+        return geogig;
     }
 
     /**
@@ -233,14 +233,14 @@ public class GeoGigDataStore extends ContentDataStore implements DataStore {
         if (transaction != null && !Transaction.AUTO_COMMIT.equals(transaction)) {
             GeogigTransactionState state;
             state = (GeogigTransactionState) transaction.getState(GeogigTransactionState.class);
-            Optional<GeogigTransaction> geogitTransaction = state.getGeogitTransaction();
-            if (geogitTransaction.isPresent()) {
-                commandLocator = geogitTransaction.get();
+            Optional<GeogigTransaction> geogigTransaction = state.getGeogigTransaction();
+            if (geogigTransaction.isPresent()) {
+                commandLocator = geogigTransaction.get();
             }
         }
 
         if (commandLocator == null) {
-            commandLocator = geogit.getContext();
+            commandLocator = geogig.getContext();
         }
         return commandLocator;
     }
@@ -323,7 +323,7 @@ public class GeoGigDataStore extends ContentDataStore implements DataStore {
      * <p>
      * Implementation detail: the operation is the homologous to starting a transaction, checking
      * out the current/configured branch, creating the type tree inside the transaction, issueing a
-     * geogit commit, and committing the transaction for the created tree to be merged onto the
+     * geogig commit, and committing the transaction for the created tree to be merged onto the
      * configured branch.
      */
     @Override
@@ -363,7 +363,7 @@ public class GeoGigDataStore extends ContentDataStore implements DataStore {
     // @Override
     public void removeSchema(Name name) throws IOException {
         throw new UnsupportedOperationException(
-                "removeSchema not yet supported by geogit DataStore");
+                "removeSchema not yet supported by geogig DataStore");
     }
 
     // Deliberately leaving the @Override annotation commented out so that the class builds
@@ -371,6 +371,6 @@ public class GeoGigDataStore extends ContentDataStore implements DataStore {
     // @Override
     public void removeSchema(String name) throws IOException {
         throw new UnsupportedOperationException(
-                "removeSchema not yet supported by geogit DataStore");
+                "removeSchema not yet supported by geogig DataStore");
     }
 }

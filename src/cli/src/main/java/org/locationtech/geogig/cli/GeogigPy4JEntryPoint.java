@@ -25,7 +25,7 @@ import com.google.common.base.Splitter;
 import com.google.common.base.Throwables;
 
 /**
- * Provides an entry point using the py4j library, to expose GeoGit functionality to python
+ * Provides an entry point using the py4j library, to expose GeoGig functionality to python
  * applications
  */
 public class GeogigPy4JEntryPoint {
@@ -33,7 +33,7 @@ public class GeogigPy4JEntryPoint {
     ConsoleReader consoleReader;
 
     /**
-     * A class to parse and store console output of GeoGit commands
+     * A class to parse and store console output of GeoGig commands
      */
     public class ToStringOutputStream extends OutputStream {
 
@@ -146,7 +146,7 @@ public class GeogigPy4JEntryPoint {
         return next;
     }
 
-    public boolean isGeoGitServer() {
+    public boolean isGeoGigServer() {
         return true;
     }
 
@@ -154,7 +154,7 @@ public class GeogigPy4JEntryPoint {
      * Shutdowns the server
      */
     public void shutdown() {
-        System.out.println("Shutting down GeoGit server.");
+        System.out.println("Shutting down GeoGig server.");
         System.exit(0);
     }
 
@@ -179,19 +179,19 @@ public class GeogigPy4JEntryPoint {
         int port = GatewayServer.DEFAULT_PORT;
         if (args.length != 0) {
             if (args.length > 1) {
-                System.out.println("Too many arguments.\n Usage: geogit-gateway [port]");
+                System.out.println("Too many arguments.\n Usage: geogig-gateway [port]");
                 return;
             }
             try {
                 port = Integer.parseInt(args[0]);
             } catch (NumberFormatException e) {
-                System.out.println("Wrong argument: " + args[0] + "\nUsage: geogit-gateway [port]");
+                System.out.println("Wrong argument: " + args[0] + "\nUsage: geogig-gateway [port]");
                 return;
             }
         }
         GatewayServer gatewayServer = new GatewayServer(new GeogigPy4JEntryPoint(), port);
         gatewayServer.start();
-        System.out.println("GeoGit server correctly started and waiting for conections at port "
+        System.out.println("GeoGig server correctly started and waiting for conections at port "
                 + Integer.toString(port));
     }
 }

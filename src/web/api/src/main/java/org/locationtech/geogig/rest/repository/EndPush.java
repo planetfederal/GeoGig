@@ -5,7 +5,7 @@
 
 package org.locationtech.geogig.rest.repository;
 
-import static org.locationtech.geogig.rest.repository.RESTUtils.getGeogit;
+import static org.locationtech.geogig.rest.repository.RESTUtils.getGeogig;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -55,11 +55,11 @@ public class EndPush extends Resource {
             Request request = getRequest();
             try {
                 ClientInfo info = request.getClientInfo();
-                Optional<GeoGIG> ggit = getGeogit(request);
+                Optional<GeoGIG> ggit = getGeogig(request);
                 Preconditions.checkState(ggit.isPresent());
                 Form options = request.getResourceRef().getQueryAsForm();
 
-                final GeoGIG geogit = ggit.get();
+                final GeoGIG geogig = ggit.get();
 
                 // make a combined ip address to handle requests from multiple machines in the same
                 // external network.
@@ -74,7 +74,7 @@ public class EndPush extends Resource {
                 final ObjectId originalRefValue = ObjectId.valueOf(options.getFirstValue(
                         "originalRefValue", ObjectId.NULL.toString()));
 
-                Optional<Ref> currentRef = geogit.command(RefParse.class).setName(refspec).call();
+                Optional<Ref> currentRef = geogig.command(RefParse.class).setName(refspec).call();
                 ObjectId currentRefId = currentRef.isPresent() ? currentRef.get().getObjectId()
                         : ObjectId.NULL;
                 if (!currentRefId.isNull() && !currentRefId.equals(originalRefValue)) {
@@ -84,7 +84,7 @@ public class EndPush extends Resource {
                     w.flush();
                 } else {
                     PushManager pushManager = PushManager.get();
-                    pushManager.connectionSucceeded(geogit, ipAddress, refspec, oid);
+                    pushManager.connectionSucceeded(geogig, ipAddress, refspec, oid);
                     w.write("Push succeeded for address: " + ipAddress);
                     w.flush();
                 }

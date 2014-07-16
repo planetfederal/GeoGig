@@ -25,11 +25,11 @@ import com.beust.jcommander.Parameters;
 
 /**
  * Clones a repository into a newly created directory, creates remote-tracking branches for each
- * branch in the cloned repository (visible using {@code geogit branch -r}), and creates and checks
+ * branch in the cloned repository (visible using {@code geogig branch -r}), and creates and checks
  * out an initial branch that is forked from the cloned repository's currently active branch.
  * <p>
- * After the clone, a plain {@code geogit fetch} without arguments will update all the
- * remote-tracking branches, and a {@code geogit pull} without arguments will in addition merge the
+ * After the clone, a plain {@code geogig fetch} without arguments will update all the
+ * remote-tracking branches, and a {@code geogig pull} without arguments will in addition merge the
  * remote master branch into the current master branch, if any.
  * <p>
  * This default configuration is achieved by creating references to the remote branch heads under
@@ -40,7 +40,7 @@ import com.beust.jcommander.Parameters;
  * <p>
  * Usage:
  * <ul>
- * <li> {@code geogit clone [--branch <name>] <repository> [<directory>]}
+ * <li> {@code geogig clone [--branch <name>] <repository> [<directory>]}
  * </ul>
  * 
  * @see CloneOp
@@ -115,20 +115,20 @@ public class Clone extends AbstractCommand implements CLICommand {
             }
         }
 
-        GeoGIG geogit = new GeoGIG(cli.getGeogitInjector(), repoDir);
+        GeoGIG geogig = new GeoGIG(cli.getGeogigInjector(), repoDir);
 
-        checkParameter(!geogit.command(ResolveGeogigDir.class).call().isPresent(),
+        checkParameter(!geogig.command(ResolveGeogigDir.class).call().isPresent(),
                 "Destination path already exists and is not an empty directory.");
 
-        geogit.command(InitOp.class).setConfig(Init.splitConfig(config)).setFilterFile(filterFile)
+        geogig.command(InitOp.class).setConfig(Init.splitConfig(config)).setFilterFile(filterFile)
                 .call();
 
-        cli.setGeogit(geogit);
+        cli.setGeogig(geogig);
         cli.getPlatform().setWorkingDir(repoDir);
 
         cli.getConsole().println("Cloning into '" + cli.getPlatform().pwd().getName() + "'...");
 
-        CloneOp clone = cli.getGeogit().command(CloneOp.class);
+        CloneOp clone = cli.getGeogig().command(CloneOp.class);
         clone.setProgressListener(cli.getProgressListener());
         clone.setBranch(branch).setRepositoryURL(repoURL);
         clone.setUserName(username).setPassword(password);

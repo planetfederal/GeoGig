@@ -45,19 +45,19 @@ import com.google.common.collect.ImmutableList;
 interface DiffPrinter {
 
     /**
-     * @param geogit
+     * @param geogig
      * @param console
      * @param entry
      * @throws IOException
      */
-    void print(GeoGIG geogit, ConsoleReader console, DiffEntry entry) throws IOException;
+    void print(GeoGIG geogig, ConsoleReader console, DiffEntry entry) throws IOException;
 
 }
 
 class SummaryDiffPrinter implements DiffPrinter {
 
     @Override
-    public void print(GeoGIG geogit, ConsoleReader console, DiffEntry entry) throws IOException {
+    public void print(GeoGIG geogig, ConsoleReader console, DiffEntry entry) throws IOException {
 
         Ansi ansi = AnsiDecorator.newAnsi(console.getTerminal().isAnsiSupported());
 
@@ -126,14 +126,14 @@ class FullDiffPrinter implements DiffPrinter {
     }
 
     @Override
-    public void print(GeoGIG geogit, ConsoleReader console, DiffEntry diffEntry) throws IOException {
+    public void print(GeoGIG geogig, ConsoleReader console, DiffEntry diffEntry) throws IOException {
 
         if (!noHeader) {
-            summaryPrinter.print(geogit, console, diffEntry);
+            summaryPrinter.print(geogig, console, diffEntry);
         }
 
         if (diffEntry.changeType() == ChangeType.MODIFIED) {
-            FeatureDiff diff = geogit.command(DiffFeature.class)
+            FeatureDiff diff = geogig.command(DiffFeature.class)
                     .setNewVersion(Suppliers.ofInstance(diffEntry.getNewObject()))
                     .setOldVersion(Suppliers.ofInstance(diffEntry.getOldObject())).call();
 
@@ -189,9 +189,9 @@ class FullDiffPrinter implements DiffPrinter {
             console.println(ansi.toString());
         } else if (diffEntry.changeType() == ChangeType.ADDED) {
             NodeRef noderef = diffEntry.getNewObject();
-            RevFeatureType featureType = geogit.command(RevObjectParse.class)
+            RevFeatureType featureType = geogig.command(RevObjectParse.class)
                     .setObjectId(noderef.getMetadataId()).call(RevFeatureType.class).get();
-            Optional<RevObject> obj = geogit.command(RevObjectParse.class)
+            Optional<RevObject> obj = geogig.command(RevObjectParse.class)
                     .setObjectId(noderef.objectId()).call();
             RevFeature feature = (RevFeature) obj.get();
             ImmutableList<Optional<Object>> values = feature.getValues();

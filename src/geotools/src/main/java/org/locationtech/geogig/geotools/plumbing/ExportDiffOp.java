@@ -184,7 +184,7 @@ public class ExportDiffOp extends AbstractGeoGigOp<SimpleFeatureStore> {
                     Object value = values.get(i).orNull();
                     featureBuilder.set(name, value);
                 }
-                featureBuilder.set("geogit_fid", nodeRef.name());
+                featureBuilder.set("geogig_fid", nodeRef.name());
                 Feature feature = featureBuilder.buildFeature(nodeRef.name());
                 feature.getUserData().put(Hints.USE_PROVIDED_FID, true);
                 feature.getUserData().put(RevFeature.class, revFeature);
@@ -209,7 +209,7 @@ public class ExportDiffOp extends AbstractGeoGigOp<SimpleFeatureStore> {
     private static SimpleFeatureType addFidAttribute(RevFeatureType revFType) {
         SimpleFeatureType featureType = (SimpleFeatureType) revFType.type();
         SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
-        builder.add("geogit_fid", String.class);
+        builder.add("geogig_fid", String.class);
         for (AttributeDescriptor descriptor : featureType.getAttributeDescriptors()) {
             builder.add(descriptor);
         }
@@ -265,7 +265,7 @@ public class ExportDiffOp extends AbstractGeoGigOp<SimpleFeatureStore> {
      * 
      * @param featureStore the feature store to use for exporting The schema of the feature store
      *        must be equal to the one of the layer whose diffs are to be exported, plus an
-     *        additional "geogit_fid" field of type String, which is used to include the id of each
+     *        additional "geogig_fid" field of type String, which is used to include the id of each
      *        feature.
      * 
      * @return

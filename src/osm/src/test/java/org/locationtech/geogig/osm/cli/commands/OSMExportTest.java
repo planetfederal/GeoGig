@@ -49,7 +49,7 @@ public class OSMExportTest extends Assert {
         cli.execute("init");
         cli.execute("config", "user.name", "Gabriel Roldan");
         cli.execute("config", "user.email", "groldan@opengeo.org");
-        assertTrue(new File(workingDirectory, ".geogit").exists());
+        assertTrue(new File(workingDirectory, ".geogig").exists());
 
     }
 
@@ -60,7 +60,7 @@ public class OSMExportTest extends Assert {
         cli.execute("osm", "import", file.getAbsolutePath());
         cli.execute("add");
         cli.execute("commit", "-m", "message");
-        Optional<RevTree> tree = cli.getGeogit().command(RevObjectParse.class)
+        Optional<RevTree> tree = cli.getGeogig().command(RevObjectParse.class)
                 .setRefSpec("HEAD:node").call(RevTree.class);
         assertTrue(tree.isPresent());
         assertTrue(tree.get().size() > 0);
@@ -75,10 +75,10 @@ public class OSMExportTest extends Assert {
         cli.execute("osm", "import", filterFile.getAbsolutePath());
         cli.execute("add");
         cli.execute("commit", "-m", "message");
-        Optional<ObjectId> id = cli.getGeogit().command(RevParse.class).setRefSpec("HEAD:node")
+        Optional<ObjectId> id = cli.getGeogig().command(RevParse.class).setRefSpec("HEAD:node")
                 .call();
         assertTrue(id.isPresent());
-        id = cli.getGeogit().command(RevParse.class).setRefSpec("HEAD:way").call();
+        id = cli.getGeogig().command(RevParse.class).setRefSpec("HEAD:way").call();
         assertTrue(id.isPresent());
         File file = new File(tempFolder.getRoot(), "export.xml");
         cli.execute("osm", "export", file.getAbsolutePath());
@@ -86,22 +86,22 @@ public class OSMExportTest extends Assert {
         cli.execute("rm", "-r", "way");
         cli.execute("add");
         cli.execute("commit", "-m", "Deleted OSM data");
-        id = cli.getGeogit().command(RevParse.class).setRefSpec("HEAD:node").call();
+        id = cli.getGeogig().command(RevParse.class).setRefSpec("HEAD:node").call();
         assertFalse(id.isPresent());
-        id = cli.getGeogit().command(RevParse.class).setRefSpec("HEAD:way").call();
+        id = cli.getGeogig().command(RevParse.class).setRefSpec("HEAD:way").call();
         assertFalse(id.isPresent());
         cli.execute("osm", "import", file.getAbsolutePath());
         cli.execute("add");
         cli.execute("commit", "-m", "reimport");
-        Optional<RevTree> tree = cli.getGeogit().command(RevObjectParse.class)
+        Optional<RevTree> tree = cli.getGeogig().command(RevObjectParse.class)
                 .setRefSpec("HEAD:node").call(RevTree.class);
         assertTrue(tree.isPresent());
         assertTrue(tree.get().size() > 0);
-        tree = cli.getGeogit().command(RevObjectParse.class).setRefSpec("HEAD:way")
+        tree = cli.getGeogig().command(RevObjectParse.class).setRefSpec("HEAD:way")
                 .call(RevTree.class);
         assertTrue(tree.isPresent());
         assertTrue(tree.get().size() > 0);
-        Iterator<DiffEntry> diffs = cli.getGeogit().command(DiffOp.class).setNewVersion("HEAD")
+        Iterator<DiffEntry> diffs = cli.getGeogig().command(DiffOp.class).setNewVersion("HEAD")
                 .setOldVersion("HEAD~2").call();
         assertFalse(diffs.hasNext());
     }
@@ -113,11 +113,11 @@ public class OSMExportTest extends Assert {
         cli.execute("osm", "import", file.getAbsolutePath());
         cli.execute("add");
         cli.execute("commit", "-m", "message");
-        Optional<RevTree> tree = cli.getGeogit().command(RevObjectParse.class)
+        Optional<RevTree> tree = cli.getGeogig().command(RevObjectParse.class)
                 .setRefSpec("HEAD:node").call(RevTree.class);
         assertTrue(tree.isPresent());
         assertTrue(tree.get().size() > 0);
-        tree = cli.getGeogit().command(RevObjectParse.class).setRefSpec("HEAD:way")
+        tree = cli.getGeogig().command(RevObjectParse.class).setRefSpec("HEAD:way")
                 .call(RevTree.class);
         assertTrue(tree.isPresent());
         assertTrue(tree.get().size() > 0);
@@ -125,18 +125,18 @@ public class OSMExportTest extends Assert {
         cli.execute("osm", "export", exportFile.getAbsolutePath(), "WORK_HEAD");
         cli.execute("rm", "-r", "node");
         cli.execute("rm", "-r", "way");
-        tree = cli.getGeogit().command(RevObjectParse.class).setRefSpec("WORK_HEAD:node")
+        tree = cli.getGeogig().command(RevObjectParse.class).setRefSpec("WORK_HEAD:node")
                 .call(RevTree.class);
         assertFalse(tree.isPresent());
-        tree = cli.getGeogit().command(RevObjectParse.class).setRefSpec("WORK_HEAD:way")
+        tree = cli.getGeogig().command(RevObjectParse.class).setRefSpec("WORK_HEAD:way")
                 .call(RevTree.class);
         assertFalse(tree.isPresent());
         cli.execute("osm", "import", exportFile.getAbsolutePath());
-        tree = cli.getGeogit().command(RevObjectParse.class).setRefSpec("HEAD:node")
+        tree = cli.getGeogig().command(RevObjectParse.class).setRefSpec("HEAD:node")
                 .call(RevTree.class);
         assertTrue(tree.isPresent());
         assertTrue(tree.get().size() > 0);
-        tree = cli.getGeogit().command(RevObjectParse.class).setRefSpec("HEAD:way")
+        tree = cli.getGeogig().command(RevObjectParse.class).setRefSpec("HEAD:way")
                 .call(RevTree.class);
         assertTrue(tree.isPresent());
         assertTrue(tree.get().size() > 0);
@@ -149,10 +149,10 @@ public class OSMExportTest extends Assert {
         cli.execute("osm", "import", filterFile.getAbsolutePath());
         cli.execute("add");
         cli.execute("commit", "-m", "message");
-        Optional<ObjectId> id = cli.getGeogit().command(RevParse.class).setRefSpec("HEAD:node")
+        Optional<ObjectId> id = cli.getGeogig().command(RevParse.class).setRefSpec("HEAD:node")
                 .call();
         assertTrue(id.isPresent());
-        id = cli.getGeogit().command(RevParse.class).setRefSpec("HEAD:way").call();
+        id = cli.getGeogig().command(RevParse.class).setRefSpec("HEAD:way").call();
         assertTrue(id.isPresent());
         File file = new File(tempFolder.getRoot(), "export.pbf");
         cli.execute("osm", "export", file.getAbsolutePath());
@@ -160,18 +160,18 @@ public class OSMExportTest extends Assert {
         cli.execute("rm", "-r", "way");
         cli.execute("add");
         cli.execute("commit", "-m", "Deleted OSM data");
-        id = cli.getGeogit().command(RevParse.class).setRefSpec("HEAD:node").call();
+        id = cli.getGeogig().command(RevParse.class).setRefSpec("HEAD:node").call();
         assertFalse(id.isPresent());
-        id = cli.getGeogit().command(RevParse.class).setRefSpec("HEAD:way").call();
+        id = cli.getGeogig().command(RevParse.class).setRefSpec("HEAD:way").call();
         assertFalse(id.isPresent());
         cli.execute("osm", "import", file.getAbsolutePath());
         cli.execute("add");
         cli.execute("commit", "-m", "reimport");
-        Optional<RevTree> tree = cli.getGeogit().command(RevObjectParse.class)
+        Optional<RevTree> tree = cli.getGeogig().command(RevObjectParse.class)
                 .setRefSpec("HEAD:node").call(RevTree.class);
         assertTrue(tree.isPresent());
         assertTrue(tree.get().size() > 0);
-        tree = cli.getGeogit().command(RevObjectParse.class).setRefSpec("HEAD:way")
+        tree = cli.getGeogig().command(RevObjectParse.class).setRefSpec("HEAD:way")
                 .call(RevTree.class);
         assertTrue(tree.isPresent());
         assertTrue(tree.get().size() > 0);

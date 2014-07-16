@@ -45,19 +45,19 @@ public class MergeBase extends AbstractCommand implements CLICommand {
         checkParameter(commits.size() == 2, "Two commit references must be provided");
 
         ConsoleReader console = cli.getConsole();
-        GeoGIG geogit = cli.getGeogit();
+        GeoGIG geogig = cli.getGeogig();
 
-        Optional<RevObject> left = geogit.command(RevObjectParse.class).setRefSpec(commits.get(0))
+        Optional<RevObject> left = geogig.command(RevObjectParse.class).setRefSpec(commits.get(0))
                 .call();
         checkParameter(left.isPresent(), commits.get(0) + " does not resolve to any object.");
         checkParameter(left.get() instanceof RevCommit, commits.get(0)
                 + " does not resolve to a commit");
-        Optional<RevObject> right = geogit.command(RevObjectParse.class).setRefSpec(commits.get(1))
+        Optional<RevObject> right = geogig.command(RevObjectParse.class).setRefSpec(commits.get(1))
                 .call();
         checkParameter(right.isPresent(), commits.get(1) + " does not resolve to any object.");
         checkParameter(right.get() instanceof RevCommit, commits.get(1)
                 + " does not resolve to a commit");
-        Optional<ObjectId> ancestor = geogit.command(FindCommonAncestor.class)
+        Optional<ObjectId> ancestor = geogig.command(FindCommonAncestor.class)
                 .setLeft((RevCommit) left.get()).setRight((RevCommit) right.get()).call();
         checkParameter(ancestor.isPresent(), "No common ancestor was found.");
 

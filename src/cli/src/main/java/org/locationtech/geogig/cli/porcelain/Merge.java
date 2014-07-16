@@ -45,7 +45,7 @@ import com.google.common.collect.Lists;
  * <p>
  * Usage:
  * <ul>
- * <li> {@code geogit merge [-m <msg>] [--ours] [--theirs] <commitish>...}
+ * <li> {@code geogig merge [-m <msg>] [--ours] [--theirs] <commitish>...}
  * </ul>
  * 
  * @see MergeOp
@@ -80,17 +80,17 @@ public class Merge extends AbstractCommand implements CLICommand {
 
         ConsoleReader console = cli.getConsole();
 
-        final GeoGIG geogit = cli.getGeogit();
+        final GeoGIG geogig = cli.getGeogig();
 
         Ansi ansi = newAnsi(console.getTerminal());
 
         if (abort) {
-            Optional<Ref> ref = geogit.command(RefParse.class).setName(Ref.ORIG_HEAD).call();
+            Optional<Ref> ref = geogig.command(RefParse.class).setName(Ref.ORIG_HEAD).call();
             if (!ref.isPresent()) {
                 throw new CommandFailedException("There is no merge to abort <ORIG_HEAD missing>.");
             }
 
-            geogit.command(ResetOp.class).setMode(ResetMode.HARD)
+            geogig.command(ResetOp.class).setMode(ResetMode.HARD)
                     .setCommit(Suppliers.ofInstance(ref.get().getObjectId())).call();
             console.println("Merge aborted successfully.");
             return;
@@ -98,12 +98,12 @@ public class Merge extends AbstractCommand implements CLICommand {
 
         RevCommit commit;
         try {
-            MergeOp merge = geogit.command(MergeOp.class);
+            MergeOp merge = geogig.command(MergeOp.class);
             merge.setOurs(ours).setTheirs(theirs).setNoCommit(noCommit);
             merge.setMessage(message).setProgressListener(cli.getProgressListener());
             for (String commitish : commits) {
                 Optional<ObjectId> commitId;
-                commitId = geogit.command(RevParse.class).setRefSpec(commitish).call();
+                commitId = geogig.command(RevParse.class).setRefSpec(commitish).call();
                 checkParameter(commitId.isPresent(), "Commit not found '%s'", commitish);
                 merge.addCommit(Suppliers.ofInstance(commitId.get()));
             }
@@ -121,7 +121,7 @@ public class Merge extends AbstractCommand implements CLICommand {
         console.println("[" + commit.getId() + "] " + commit.getMessage());
 
         console.print("Committed, counting objects...");
-        Iterator<DiffEntry> diff = geogit.command(DiffOp.class).setOldVersion(parentId)
+        Iterator<DiffEntry> diff = geogig.command(DiffOp.class).setOldVersion(parentId)
                 .setNewVersion(commit.getId()).call();
 
         int adds = 0, deletes = 0, changes = 0;

@@ -1,6 +1,6 @@
 Feature: "clean" command
     In order to remove unwanted changes
-    As a Geogit User
+    As a Geogig User
     I want to remove all untracked features
 
   Scenario: Try to remove all the untracked features

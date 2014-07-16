@@ -14,7 +14,7 @@ import org.locationtech.geogig.di.Singleton;
 import com.google.common.base.Optional;
 
 /**
- * Provides an interface for GeoGit staging databases.
+ * Provides an interface for GeoGig staging databases.
  * 
  */
 @Singleton

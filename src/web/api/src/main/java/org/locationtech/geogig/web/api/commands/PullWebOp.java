@@ -31,7 +31,7 @@ import org.locationtech.geogig.web.api.ResponseWriter;
 import com.google.common.base.Optional;
 
 /**
- * Interface for the Pull operation in GeoGit.
+ * Interface for the Pull operation in GeoGig.
  * 
  * Web interface for {@link PullOp}
  */
@@ -96,9 +96,9 @@ public class PullWebOp extends AbstractWebAPICommand {
      */
     @Override
     public void run(CommandContext context) {
-        final Context geogit = this.getCommandLocator(context);
+        final Context geogig = this.getCommandLocator(context);
 
-        PullOp command = geogit.command(PullOp.class)
+        PullOp command = geogig.command(PullOp.class)
                 .setAuthor(authorName.orNull(), authorEmail.orNull()).setRemote(remoteName)
                 .setAll(fetchAll).addRefSpec(refSpec);
         try {
@@ -109,11 +109,11 @@ public class PullWebOp extends AbstractWebAPICommand {
                 iter = null;
             } else {
                 if (result.getOldRef() == null) {
-                    iter = geogit.command(DiffOp.class)
+                    iter = geogig.command(DiffOp.class)
                             .setNewVersion(result.getNewRef().getObjectId())
                             .setOldVersion(ObjectId.NULL).call();
                 } else {
-                    iter = geogit.command(DiffOp.class)
+                    iter = geogig.command(DiffOp.class)
                             .setNewVersion(result.getNewRef().getObjectId())
                             .setOldVersion(result.getOldRef().getObjectId()).call();
                 }
@@ -123,7 +123,7 @@ public class PullWebOp extends AbstractWebAPICommand {
                 @Override
                 public void write(ResponseWriter out) throws Exception {
                     out.start();
-                    out.writePullResponse(result, iter, geogit);
+                    out.writePullResponse(result, iter, geogig);
                     out.finish();
                 }
             });
@@ -137,12 +137,12 @@ public class PullWebOp extends AbstractWebAPICommand {
         } catch (MergeConflictsException e) {
             String[] refs = refSpec.split(":");
             String remoteRef = Ref.REMOTES_PREFIX + remoteName + "/" + refs[0];
-            Optional<Ref> sourceRef = geogit.command(RefParse.class).setName(remoteRef).call();
+            Optional<Ref> sourceRef = geogig.command(RefParse.class).setName(remoteRef).call();
             String destinationref = "";
             if (refs.length == 2) {
                 destinationref = refs[1];
             } else {
-                final Optional<Ref> currHead = geogit.command(RefParse.class).setName(Ref.HEAD)
+                final Optional<Ref> currHead = geogig.command(RefParse.class).setName(Ref.HEAD)
                         .call();
                 if (!currHead.isPresent()) {
                     context.setResponseContent(CommandResponse
@@ -155,22 +155,22 @@ public class PullWebOp extends AbstractWebAPICommand {
                 destinationref = headRef.getTarget();
             }
 
-            Optional<Ref> destRef = geogit.command(RefParse.class).setName(destinationref).call();
-            final RevCommit theirs = context.getGeoGIT().getRepository()
+            Optional<Ref> destRef = geogig.command(RefParse.class).setName(destinationref).call();
+            final RevCommit theirs = context.getGeoGIG().getRepository()
                     .getCommit(sourceRef.get().getObjectId());
-            final RevCommit ours = context.getGeoGIT().getRepository()
+            final RevCommit ours = context.getGeoGIG().getRepository()
                     .getCommit(destRef.get().getObjectId());
-            final Optional<ObjectId> ancestor = geogit.command(FindCommonAncestor.class)
+            final Optional<ObjectId> ancestor = geogig.command(FindCommonAncestor.class)
                     .setLeft(ours).setRight(theirs).call();
             context.setResponseContent(new CommandResponse() {
-                final MergeScenarioReport report = geogit.command(ReportMergeScenarioOp.class)
+                final MergeScenarioReport report = geogig.command(ReportMergeScenarioOp.class)
                         .setMergeIntoCommit(ours).setToMergeCommit(theirs).call();
 
                 @Override
                 public void write(ResponseWriter out) throws Exception {
                     out.start();
                     Optional<RevCommit> mergeCommit = Optional.absent();
-                    out.writeMergeResponse(mergeCommit, report, geogit, ours.getId(),
+                    out.writeMergeResponse(mergeCommit, report, geogig, ours.getId(),
                             theirs.getId(), ancestor.get());
                     out.finish();
                 }

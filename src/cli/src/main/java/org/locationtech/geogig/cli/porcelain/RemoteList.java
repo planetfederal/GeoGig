@@ -29,7 +29,7 @@ import com.google.common.collect.ImmutableList;
  * <p>
  * Usage:
  * <ul>
- * <li> {@code geogit remote list [-v]}
+ * <li> {@code geogig remote list [-v]}
  * </ul>
  * 
  * @see RemoteListOp
@@ -49,7 +49,7 @@ public class RemoteList extends AbstractCommand implements CLICommand {
 
         final ImmutableList<Remote> remoteList;
         try {
-            remoteList = cli.getGeogit().command(RemoteListOp.class).call();
+            remoteList = cli.getGeogig().command(RemoteListOp.class).call();
         } catch (ConfigException e) {
             throw new CommandFailedException("Could not access the config database.", e);
         }

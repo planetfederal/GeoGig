@@ -22,7 +22,7 @@ public class JEGraphDatabaseV2StressTest extends GraphDatabaseStressTest {
     @Override
     protected GraphDatabase createDatabase(TestPlatform platform) {
         File root = platform.pwd();
-        Preconditions.checkState(new File(root, ".geogit").exists());
+        Preconditions.checkState(new File(root, ".geogig").exists());
 
         envProvider = new EnvironmentBuilder(platform);
 

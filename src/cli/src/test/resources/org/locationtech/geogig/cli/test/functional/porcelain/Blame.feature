@@ -1,6 +1,6 @@
 Feature: "blame" command
     In order to know the history of a single feature
-    As a Geogit User
+    As a Geogig User
     I want to see who edited each attribute of a feature
 
   Scenario: Try to run blame with a valid path
@@ -50,4 +50,4 @@ Feature: "blame" command
   Scenario: Try to reset from an empty directory
     Given I am in an empty directory
      When I run the command "blame"
-     Then the response should contain "Not in a geogit repository"          
+     Then the response should contain "Not in a geogig repository"          

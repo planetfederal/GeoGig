@@ -100,7 +100,7 @@ public class ShpImport extends AbstractShpCommand implements CLICommand {
                 cli.getConsole().println("Importing from shapefile " + shp);
 
                 ProgressListener progressListener = cli.getProgressListener();
-                ImportOp command = cli.getGeogit().command(ImportOp.class).setAll(true)
+                ImportOp command = cli.getGeogig().command(ImportOp.class).setAll(true)
                         .setTable(null).setAlter(alter).setOverwrite(!add)
                         .setDestinationPath(destTable).setDataStore(dataStore)
                         .setFidAttribute(fidAttribute)

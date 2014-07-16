@@ -71,18 +71,18 @@ public class PushManager {
      * {@code newCommit} object id, as well as the {@link Ref#WORK_HEAD WORK_HEAD} and
      * {@link Ref#STAGE_HEAD STAGE_HEAD} refs if {@code refSpec} is the current branch.
      * 
-     * @param geogit the geogit of the local repository
+     * @param geogig the geogig of the local repository
      * @param ipAddress the remote machine that is pushing objects
      */
-    public void connectionSucceeded(final GeoGIG geogit, final String ipAddress,
+    public void connectionSucceeded(final GeoGIG geogig, final String ipAddress,
             final String refspec, final ObjectId newCommit) {
 
         if (!incomingIPs.remove(ipAddress)) {// remove and check for existence in one shot
             throw new RuntimeException("Tried to end a connection that didn't exist.");
         }
 
-        // Do not use the geogit instance after this, but the tx one!
-        GeogigTransaction tx = geogit.command(TransactionBegin.class).call();
+        // Do not use the geogig instance after this, but the tx one!
+        GeogigTransaction tx = geogig.command(TransactionBegin.class).call();
         try {
             Optional<Ref> oldRef = tx.command(RefParse.class).setName(refspec).call();
             Optional<Ref> headRef = tx.command(RefParse.class).setName(Ref.HEAD).call();

@@ -1,6 +1,6 @@
 Feature: "rev-list" command
     In order to know the history of commits on a repository
-    As a Geogit User
+    As a Geogig User
     I want to see a list of commits
   
  Scenario: Try to show only a range of commits.
@@ -86,7 +86,7 @@ Scenario: Try to get commits list without starting commit
   Scenario: Try to show a log from an empty directory
     Given I am in an empty directory
      When I run the command "rev-list HEAD"
-     Then the response should start with "Not in a geogit repository"
+     Then the response should start with "Not in a geogig repository"
       And it should exit with non-zero exit code              
        
 

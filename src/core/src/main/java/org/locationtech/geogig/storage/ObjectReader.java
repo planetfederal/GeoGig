@@ -12,7 +12,7 @@ import org.locationtech.geogig.api.RevObject;
 import com.vividsolutions.jts.geom.GeometryFactory;
 
 /**
- * Provides a base interface for reading GeoGit objects from an {@link InputStream}.
+ * Provides a base interface for reading GeoGig objects from an {@link InputStream}.
  * 
  * @param <T> the type of the object to read
  */

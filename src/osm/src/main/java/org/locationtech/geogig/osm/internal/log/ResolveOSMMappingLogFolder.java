@@ -25,10 +25,10 @@ public class ResolveOSMMappingLogFolder extends AbstractGeoGigOp<File> {
 
     @Override
     protected File _call() {
-        final URL geogitDirUrl = command(ResolveGeogigDir.class).call().get();
+        final URL geogigDirUrl = command(ResolveGeogigDir.class).call().get();
         File repoDir;
         try {
-            repoDir = new File(geogitDirUrl.toURI());
+            repoDir = new File(geogigDirUrl.toURI());
         } catch (URISyntaxException e) {
             throw Throwables.propagate(e);
         }

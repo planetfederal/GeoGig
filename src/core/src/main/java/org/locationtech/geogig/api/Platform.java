@@ -8,7 +8,7 @@ package org.locationtech.geogig.api;
 import java.io.File;
 
 /**
- * Interface for a GeoGit platform.
+ * Interface for a GeoGig platform.
  */
 public interface Platform {
 

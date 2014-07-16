@@ -48,7 +48,7 @@ public class ResetOpTest extends RepositoryTestCase {
     @Test
     public void testResetAllMixed() throws Exception {
         ObjectId oId1 = insertAndAdd(points1);
-        geogit.command(CommitOp.class).setMessage("commit for " + idP1).call();
+        geogig.command(CommitOp.class).setMessage("commit for " + idP1).call();
 
         assertEquals(oId1, repo.index().findStaged(appendChild(pointsName, idP1)).get()
                 .getObjectId());
@@ -64,7 +64,7 @@ public class ResetOpTest extends RepositoryTestCase {
         assertEquals(oId3, repo.index().findStaged(appendChild(pointsName, idP3)).get()
                 .getObjectId());
 
-        geogit.command(ResetOp.class).call();
+        geogig.command(ResetOp.class).call();
 
         assertEquals(oId1, repo.index().findStaged(appendChild(pointsName, idP1)).get()
                 .getObjectId());
@@ -84,7 +84,7 @@ public class ResetOpTest extends RepositoryTestCase {
     @Test
     public void testResetPoints() throws Exception {
         ObjectId oId1 = insertAndAdd(points1);
-        geogit.command(CommitOp.class).setMessage("commit for " + idP1).call();
+        geogig.command(CommitOp.class).setMessage("commit for " + idP1).call();
 
         assertEquals(oId1, repo.index().findStaged(appendChild(pointsName, idP1)).get()
                 .getObjectId());
@@ -103,7 +103,7 @@ public class ResetOpTest extends RepositoryTestCase {
         assertEquals(oId4, repo.index().findStaged(appendChild(linesName, idL1)).get()
                 .getObjectId());
 
-        geogit.command(ResetOp.class).addPattern(pointsName).call();
+        geogig.command(ResetOp.class).addPattern(pointsName).call();
 
         assertEquals(oId1, repo.index().findStaged(appendChild(pointsName, idP1)).get()
                 .getObjectId());
@@ -126,7 +126,7 @@ public class ResetOpTest extends RepositoryTestCase {
     @Test
     public void testResetSingle() throws Exception {
         ObjectId oId1 = insertAndAdd(points1);
-        geogit.command(CommitOp.class).setMessage("commit for " + idP1).call();
+        geogig.command(CommitOp.class).setMessage("commit for " + idP1).call();
 
         assertEquals(oId1, repo.index().findStaged(appendChild(pointsName, idP1)).get()
                 .getObjectId());
@@ -142,7 +142,7 @@ public class ResetOpTest extends RepositoryTestCase {
         assertEquals(oId3, repo.index().findStaged(appendChild(pointsName, idP3)).get()
                 .getObjectId());
 
-        geogit.command(ResetOp.class).addPattern(appendChild(pointsName, idP2)).call();
+        geogig.command(ResetOp.class).addPattern(appendChild(pointsName, idP2)).call();
 
         assertEquals(oId1_modified, repo.index().findStaged(appendChild(pointsName, idP1)).get()
                 .getObjectId());
@@ -161,7 +161,7 @@ public class ResetOpTest extends RepositoryTestCase {
     @Test
     public void testResetHard() throws Exception {
         ObjectId oId1 = insertAndAdd(points1);
-        geogit.command(CommitOp.class).setMessage("commit for " + idP1).call();
+        geogig.command(CommitOp.class).setMessage("commit for " + idP1).call();
 
         assertEquals(oId1, repo.index().findStaged(appendChild(pointsName, idP1)).get()
                 .getObjectId());
@@ -177,7 +177,7 @@ public class ResetOpTest extends RepositoryTestCase {
         assertEquals(oId3, repo.index().findStaged(appendChild(pointsName, idP3)).get()
                 .getObjectId());
 
-        geogit.command(ResetOp.class).setMode(ResetMode.HARD).call();
+        geogig.command(ResetOp.class).setMode(ResetMode.HARD).call();
 
         assertEquals(oId1, repo.index().findStaged(appendChild(pointsName, idP1)).get()
                 .getObjectId());
@@ -194,7 +194,7 @@ public class ResetOpTest extends RepositoryTestCase {
     @Test
     public void testResetSoft() throws Exception {
         ObjectId oId1 = insertAndAdd(points1);
-        geogit.command(CommitOp.class).setMessage("commit for " + idP1).call();
+        geogig.command(CommitOp.class).setMessage("commit for " + idP1).call();
 
         assertEquals(oId1, repo.index().findStaged(appendChild(pointsName, idP1)).get()
                 .getObjectId());
@@ -210,9 +210,9 @@ public class ResetOpTest extends RepositoryTestCase {
         assertEquals(oId3, repo.index().findStaged(appendChild(pointsName, idP3)).get()
                 .getObjectId());
 
-        final Optional<Ref> currHead = geogit.command(RefParse.class).setName(Ref.HEAD).call();
+        final Optional<Ref> currHead = geogig.command(RefParse.class).setName(Ref.HEAD).call();
 
-        geogit.command(ResetOp.class).setCommit(Suppliers.ofInstance(currHead.get().getObjectId()))
+        geogig.command(ResetOp.class).setCommit(Suppliers.ofInstance(currHead.get().getObjectId()))
                 .setMode(ResetMode.SOFT).call();
 
         assertEquals(oId1_modified, repo.index().findStaged(appendChild(pointsName, idP1)).get()
@@ -235,7 +235,7 @@ public class ResetOpTest extends RepositoryTestCase {
     @Test
     public void testResetModePlusPatterns() throws Exception {
         ObjectId oId1 = insertAndAdd(points1);
-        geogit.command(CommitOp.class).setMessage("commit for " + idP1).call();
+        geogig.command(CommitOp.class).setMessage("commit for " + idP1).call();
 
         assertEquals(oId1, repo.index().findStaged(appendChild(pointsName, idP1)).get()
                 .getObjectId());
@@ -252,14 +252,14 @@ public class ResetOpTest extends RepositoryTestCase {
                 .getObjectId());
 
         exception.expect(IllegalStateException.class);
-        geogit.command(ResetOp.class).addPattern(pointsName).setMode(ResetMode.SOFT).call();
+        geogig.command(ResetOp.class).addPattern(pointsName).setMode(ResetMode.SOFT).call();
 
     }
 
     @Test
     public void testResetMerge() throws Exception {
         ObjectId oId1 = insertAndAdd(points1);
-        geogit.command(CommitOp.class).setMessage("commit for " + idP1).call();
+        geogig.command(CommitOp.class).setMessage("commit for " + idP1).call();
 
         assertEquals(oId1, repo.index().findStaged(appendChild(pointsName, idP1)).get()
                 .getObjectId());
@@ -276,14 +276,14 @@ public class ResetOpTest extends RepositoryTestCase {
                 .getObjectId());
 
         exception.expect(UnsupportedOperationException.class);
-        geogit.command(ResetOp.class).setMode(ResetMode.MERGE).call();
+        geogig.command(ResetOp.class).setMode(ResetMode.MERGE).call();
 
     }
 
     @Test
     public void testResetKeep() throws Exception {
         ObjectId oId1 = insertAndAdd(points1);
-        geogit.command(CommitOp.class).setMessage("commit for " + idP1).call();
+        geogig.command(CommitOp.class).setMessage("commit for " + idP1).call();
 
         assertEquals(oId1, repo.index().findStaged(appendChild(pointsName, idP1)).get()
                 .getObjectId());
@@ -300,14 +300,14 @@ public class ResetOpTest extends RepositoryTestCase {
                 .getObjectId());
 
         exception.expect(UnsupportedOperationException.class);
-        geogit.command(ResetOp.class).setCommit(null).setMode(ResetMode.KEEP).call();
+        geogig.command(ResetOp.class).setCommit(null).setMode(ResetMode.KEEP).call();
 
     }
 
     @Test
     public void testResetNoCommits() throws Exception {
         exception.expect(IllegalStateException.class);
-        geogit.command(ResetOp.class).call();
+        geogig.command(ResetOp.class).call();
 
     }
 
@@ -324,31 +324,31 @@ public class ResetOpTest extends RepositoryTestCase {
         Feature points1ModifiedB = feature(pointsType, idP1, "StringProp1_3", new Integer(2000),
                 "POINT(1 1)");
         insertAndAdd(points1);
-        RevCommit resetCommit = geogit.command(CommitOp.class).call();
-        geogit.command(BranchCreateOp.class).setName("TestBranch").call();
+        RevCommit resetCommit = geogig.command(CommitOp.class).call();
+        geogig.command(BranchCreateOp.class).setName("TestBranch").call();
         insertAndAdd(points1Modified);
-        geogit.command(CommitOp.class).call();
-        geogit.command(CheckoutOp.class).setSource("TestBranch").call();
+        geogig.command(CommitOp.class).call();
+        geogig.command(CheckoutOp.class).setSource("TestBranch").call();
         insertAndAdd(points1ModifiedB);
         insertAndAdd(points2);
-        geogit.command(CommitOp.class).call();
+        geogig.command(CommitOp.class).call();
 
-        geogit.command(CheckoutOp.class).setSource("master").call();
-        Ref branch = geogit.command(RefParse.class).setName("TestBranch").call().get();
+        geogig.command(CheckoutOp.class).setSource("master").call();
+        Ref branch = geogig.command(RefParse.class).setName("TestBranch").call().get();
         try {
-            geogit.command(MergeOp.class).addCommit(Suppliers.ofInstance(branch.getObjectId()))
+            geogig.command(MergeOp.class).addCommit(Suppliers.ofInstance(branch.getObjectId()))
                     .call();
             fail();
         } catch (MergeConflictsException e) {
             assertTrue(e.getMessage().contains("conflict"));
         }
 
-        geogit.command(ResetOp.class).setMode(ResetMode.HARD)
+        geogig.command(ResetOp.class).setMode(ResetMode.HARD)
                 .setCommit(Suppliers.ofInstance(resetCommit.getId())).call();
-        List<Conflict> conflicts = geogit.getRepository().stagingDatabase()
+        List<Conflict> conflicts = geogig.getRepository().stagingDatabase()
                 .getConflicts(null, null);
         assertTrue(conflicts.isEmpty());
-        Optional<Ref> ref = geogit.command(RefParse.class).setName(Ref.MERGE_HEAD).call();
+        Optional<Ref> ref = geogig.command(RefParse.class).setName(Ref.MERGE_HEAD).call();
         assertFalse(ref.isPresent());
     }
 
@@ -359,28 +359,28 @@ public class ResetOpTest extends RepositoryTestCase {
         Feature points1ModifiedB = feature(pointsType, idP1, "StringProp1_3", new Integer(2000),
                 "POINT(1 1)");
         insertAndAdd(points1);
-        RevCommit resetCommit = geogit.command(CommitOp.class).call();
-        geogit.command(BranchCreateOp.class).setName("TestBranch").call();
+        RevCommit resetCommit = geogig.command(CommitOp.class).call();
+        geogig.command(BranchCreateOp.class).setName("TestBranch").call();
         insertAndAdd(points1Modified);
-        geogit.command(CommitOp.class).call();
-        geogit.command(CheckoutOp.class).setSource("TestBranch").call();
+        geogig.command(CommitOp.class).call();
+        geogig.command(CheckoutOp.class).setSource("TestBranch").call();
         insertAndAdd(points1ModifiedB);
         insertAndAdd(points2);
-        geogit.command(CommitOp.class).call();
+        geogig.command(CommitOp.class).call();
 
-        geogit.command(CheckoutOp.class).setSource("master").call();
-        Ref branch = geogit.command(RefParse.class).setName("TestBranch").call().get();
+        geogig.command(CheckoutOp.class).setSource("master").call();
+        Ref branch = geogig.command(RefParse.class).setName("TestBranch").call().get();
         try {
-            geogit.command(MergeOp.class).addCommit(Suppliers.ofInstance(branch.getObjectId()))
+            geogig.command(MergeOp.class).addCommit(Suppliers.ofInstance(branch.getObjectId()))
                     .call();
             fail();
         } catch (MergeConflictsException e) {
             assertTrue(e.getMessage().contains("conflict"));
         }
 
-        geogit.command(ResetOp.class).addPattern(pointsName + "/" + idP1)
+        geogig.command(ResetOp.class).addPattern(pointsName + "/" + idP1)
                 .setCommit(Suppliers.ofInstance(resetCommit.getId())).call();
-        List<Conflict> conflicts = geogit.getRepository().stagingDatabase()
+        List<Conflict> conflicts = geogig.getRepository().stagingDatabase()
                 .getConflicts(null, null);
         assertTrue(conflicts.isEmpty());
     }
@@ -392,27 +392,27 @@ public class ResetOpTest extends RepositoryTestCase {
         Feature points1ModifiedB = feature(pointsType, idP1, "StringProp1_3", new Integer(2000),
                 "POINT(1 1)");
         insertAndAdd(points1);
-        geogit.command(CommitOp.class).call();
-        geogit.command(BranchCreateOp.class).setName("TestBranch").call();
+        geogig.command(CommitOp.class).call();
+        geogig.command(BranchCreateOp.class).setName("TestBranch").call();
         insertAndAdd(points1Modified);
-        geogit.command(CommitOp.class).call();
-        geogit.command(CheckoutOp.class).setSource("TestBranch").call();
+        geogig.command(CommitOp.class).call();
+        geogig.command(CheckoutOp.class).setSource("TestBranch").call();
         insertAndAdd(points1ModifiedB);
         insertAndAdd(points2);
-        geogit.command(CommitOp.class).call();
+        geogig.command(CommitOp.class).call();
 
-        geogit.command(CheckoutOp.class).setSource("master").call();
-        Ref branch = geogit.command(RefParse.class).setName("TestBranch").call().get();
+        geogig.command(CheckoutOp.class).setSource("master").call();
+        Ref branch = geogig.command(RefParse.class).setName("TestBranch").call().get();
         try {
-            geogit.command(MergeOp.class).addCommit(Suppliers.ofInstance(branch.getObjectId()))
+            geogig.command(MergeOp.class).addCommit(Suppliers.ofInstance(branch.getObjectId()))
                     .call();
             fail();
         } catch (MergeConflictsException e) {
             assertTrue(e.getMessage().contains("conflict"));
         }
 
-        geogit.command(ResetOp.class).addPattern(pointsName + "/" + idP1).call();
-        List<Conflict> conflicts = geogit.getRepository().stagingDatabase()
+        geogig.command(ResetOp.class).addPattern(pointsName + "/" + idP1).call();
+        List<Conflict> conflicts = geogig.getRepository().stagingDatabase()
                 .getConflicts(null, null);
         assertTrue(conflicts.isEmpty());
     }

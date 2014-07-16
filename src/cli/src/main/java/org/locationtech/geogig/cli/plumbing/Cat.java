@@ -54,18 +54,18 @@ public class Cat extends AbstractCommand {
         checkParameter(!paths.isEmpty(), "A refspec must be specified");
 
         ConsoleReader console = cli.getConsole();
-        GeoGIG geogit = cli.getGeogit();
+        GeoGIG geogig = cli.getGeogig();
 
         String path = paths.get(0);
 
-        Optional<RevObject> obj = geogit.command(RevObjectParse.class).setRefSpec(path).call();
+        Optional<RevObject> obj = geogig.command(RevObjectParse.class).setRefSpec(path).call();
         checkParameter(obj.isPresent(), "refspec did not resolve to any object.");
         if (binary) {
             ObjectSerializingFactory factory = DataStreamSerializationFactoryV1.INSTANCE;
             ObjectWriter<RevObject> writer = factory.createObjectWriter(obj.get().getType());
             writer.write(obj.get(), System.out);
         } else {
-            CharSequence s = geogit.command(CatObject.class)
+            CharSequence s = geogig.command(CatObject.class)
                     .setObject(Suppliers.ofInstance(obj.get())).call();
             console.println(s);
         }

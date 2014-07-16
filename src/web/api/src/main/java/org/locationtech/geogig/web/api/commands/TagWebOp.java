@@ -15,7 +15,7 @@ import org.locationtech.geogig.web.api.CommandResponse;
 import org.locationtech.geogig.web.api.ResponseWriter;
 
 /**
- * Interface for the Tag operations in GeoGit. Currently only supports the list option.
+ * Interface for the Tag operations in GeoGig. Currently only supports the list option.
  * 
  * Web interface for {@link TagListOp}
  */
@@ -41,8 +41,8 @@ public class TagWebOp extends AbstractWebAPICommand {
     @Override
     public void run(CommandContext context) {
         if (list) {
-            final Context geogit = this.getCommandLocator(context);
-            final List<RevTag> tags = geogit.command(TagListOp.class).call();
+            final Context geogig = this.getCommandLocator(context);
+            final List<RevTag> tags = geogig.command(TagListOp.class).call();
 
             context.setResponseContent(new CommandResponse() {
                 @Override

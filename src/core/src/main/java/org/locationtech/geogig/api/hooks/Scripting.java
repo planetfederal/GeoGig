@@ -33,7 +33,7 @@ import com.google.common.collect.Maps;
 import com.google.common.io.Files;
 
 /**
- * Utilities to execute scripts representing hooks for GeoGit operations
+ * Utilities to execute scripts representing hooks for GeoGig operations
  * 
  */
 public class Scripting {
@@ -42,7 +42,7 @@ public class Scripting {
 
     private static final String PARAMS = "params";
 
-    private static final String GEOGIT = "geogit";
+    private static final String GEOGIG = "geogig";
 
     private static ScriptEngineManager factory = new ScriptEngineManager();
 
@@ -72,7 +72,7 @@ public class Scripting {
             engine.put(PARAMS, params);
             Repository repo = operation.command(ResolveRepository.class).call();
             GeoGigAPI api = new GeoGigAPI(repo);
-            engine.put(GEOGIT, api);
+            engine.put(GEOGIG, api);
             engine.eval(new FileReader(scriptFile));
             Object map = engine.get(PARAMS);
             setParamMap((Map<String, Object>) map, operation);
@@ -83,7 +83,7 @@ public class Scripting {
                 String msg = cause.getMessage();
                 msg = msg.substring(CannotRunGeogigOperationException.class.getName().length() + 2,
                         msg.lastIndexOf("(")).trim();
-                msg += " (command aborted by .geogit/hooks/" + scriptFile.getName() + ")";
+                msg += " (command aborted by .geogig/hooks/" + scriptFile.getName() + ")";
                 throw new CannotRunGeogigOperationException(msg);
             } else {
                 throw new CannotRunGeogigOperationException(String.format(

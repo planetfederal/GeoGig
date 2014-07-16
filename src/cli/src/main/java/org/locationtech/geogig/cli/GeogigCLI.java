@@ -63,7 +63,7 @@ import com.google.inject.Module;
 //import org.python.core.exceptions;
 
 /**
- * Command Line Interface for geogit.
+ * Command Line Interface for geogig.
  * <p>
  * Looks up and executes {@link CLICommand} implementations provided by any {@link Guice}
  * {@link Module} that implements {@link CLIModule} declared in any classpath's
@@ -83,13 +83,13 @@ public class GeogigCLI {
         commandsInjector = Guice.createInjector(plugins);
     }
 
-    private Context geogitInjector;
+    private Context geogigInjector;
 
     private Platform platform;
 
-    private GeoGIG geogit;
+    private GeoGIG geogig;
 
-    private final GeoGIG providedGeogit;
+    private final GeoGIG providedGeogig;
 
     private final ConsoleReader consoleReader;
 
@@ -104,7 +104,7 @@ public class GeogigCLI {
     private boolean progressListenerDisabled;
 
     /**
-     * Construct a GeogitCLI with the given console reader.
+     * Construct a GeogigCLI with the given console reader.
      * 
      * @param consoleReader
      */
@@ -113,16 +113,16 @@ public class GeogigCLI {
     }
 
     /**
-     * Constructor to use the provided {@code GeoGIT} instance and never try to close it.
+     * Constructor to use the provided {@code GeoGIG} instance and never try to close it.
      */
-    public GeogigCLI(final GeoGIG geogit, final ConsoleReader consoleReader) {
+    public GeogigCLI(final GeoGIG geogig, final ConsoleReader consoleReader) {
         this.consoleReader = consoleReader;
         this.platform = new DefaultPlatform();
-        this.providedGeogit = geogit;
+        this.providedGeogig = geogig;
     }
 
     /**
-     * @return the platform being used by the geogit command line interface.
+     * @return the platform being used by the geogig command line interface.
      * @see Platform
      */
     public Platform getPlatform() {
@@ -145,43 +145,43 @@ public class GeogigCLI {
     }
 
     /**
-     * Provides a GeoGIT facade configured for the current repository if inside a repository,
+     * Provides a GeoGIG facade configured for the current repository if inside a repository,
      * {@code null} otherwise.
      * <p>
      * Note the repository is lazily loaded and cached afterwards to simplify the execution of
      * commands or command options that do not need a live repository.
      * 
-     * @return the GeoGIT facade associated with the current repository, or {@code null} if there's
+     * @return the GeoGIG facade associated with the current repository, or {@code null} if there's
      *         no repository in the current {@link Platform#pwd() working directory}
      * @see ResolveGeogigDir
      */
     @Nullable
-    public synchronized GeoGIG getGeogit() {
-        if (providedGeogit != null) {
-            return providedGeogit;
+    public synchronized GeoGIG getGeogig() {
+        if (providedGeogig != null) {
+            return providedGeogig;
         }
-        if (geogit == null) {
-            GeoGIG geogit = loadRepository();
-            setGeogit(geogit);
+        if (geogig == null) {
+            GeoGIG geogig = loadRepository();
+            setGeogig(geogig);
         }
-        return geogit;
+        return geogig;
     }
 
     @VisibleForTesting
-    public synchronized GeoGIG getGeogit(Hints hints) {
+    public synchronized GeoGIG getGeogig(Hints hints) {
         close();
-        GeoGIG geogit = loadRepository(hints);
-        setGeogit(geogit);
-        return geogit;
+        GeoGIG geogig = loadRepository(hints);
+        setGeogig(geogig);
+        return geogig;
     }
 
     /**
-     * Gives the command line interface a GeoGIT facade to use.
+     * Gives the command line interface a GeoGIG facade to use.
      * 
-     * @param geogit
+     * @param geogig
      */
-    public void setGeogit(@Nullable GeoGIG geogit) {
-        this.geogit = geogit;
+    public void setGeogig(@Nullable GeoGIG geogig) {
+        this.geogig = geogig;
     }
 
     /**
@@ -208,10 +208,10 @@ public class GeogigCLI {
     }
 
     /**
-     * Loads the repository _if_ inside a geogit repository and returns a configured {@link GeoGIG}
+     * Loads the repository _if_ inside a geogig repository and returns a configured {@link GeoGIG}
      * facade.
      * 
-     * @return a geogit for the current repository or {@code null} if not inside a geogit repository
+     * @return a geogig for the current repository or {@code null} if not inside a geogig repository
      *         directory.
      */
     @Nullable
@@ -221,57 +221,57 @@ public class GeogigCLI {
 
     @Nullable
     private GeoGIG loadRepository(Hints hints) {
-        GeoGIG geogit = newGeoGIT(hints);
+        GeoGIG geogig = newGeoGIG(hints);
 
-        if (geogit.command(ResolveGeogigDir.class).call().isPresent()) {
-            geogit.getRepository();
-            return geogit;
+        if (geogig.command(ResolveGeogigDir.class).call().isPresent()) {
+            geogig.getRepository();
+            return geogig;
         }
-        geogit.close();
+        geogig.close();
 
         return null;
     }
 
     /**
-     * Constructs and returns a new read-write geogit facade, which will not be managed by this
-     * GeogitCLI instance, so the calling code is responsible for closing/disposing it after usage
+     * Constructs and returns a new read-write geogig facade, which will not be managed by this
+     * GeogigCLI instance, so the calling code is responsible for closing/disposing it after usage
      * 
-     * @return the constructed GeoGIT.
+     * @return the constructed GeoGIG.
      */
-    public GeoGIG newGeoGIT() {
-        return newGeoGIT(Hints.readWrite());
+    public GeoGIG newGeoGIG() {
+        return newGeoGIG(Hints.readWrite());
     }
 
-    public GeoGIG newGeoGIT(Hints hints) {
-        Context inj = newGeogitInjector(hints);
-        GeoGIG geogit = new GeoGIG(inj, platform.pwd());
+    public GeoGIG newGeoGIG(Hints hints) {
+        Context inj = newGeogigInjector(hints);
+        GeoGIG geogig = new GeoGIG(inj, platform.pwd());
         try {
-            geogit.getRepository();
+            geogig.getRepository();
         } catch (Exception e) {
             throw Throwables.propagate(e);
         }
-        return geogit;
+        return geogig;
     }
 
     /**
      * @return the Guice injector being used by the command line interface. If one hasn't been made,
      *         it will be created.
      */
-    public Context getGeogitInjector() {
-        return getGeogitInjector(this.hints);
+    public Context getGeogigInjector() {
+        return getGeogigInjector(this.hints);
     }
 
-    private Context getGeogitInjector(Hints hints) {
-        if (this.geogitInjector == null || !Objects.equal(this.hints, hints)) {
+    private Context getGeogigInjector(Hints hints) {
+        if (this.geogigInjector == null || !Objects.equal(this.hints, hints)) {
             // System.err.println("Injector hints: " + hints);
-            geogitInjector = newGeogitInjector(hints);
+            geogigInjector = newGeogigInjector(hints);
         }
-        return geogitInjector;
+        return geogigInjector;
     }
 
-    private Context newGeogitInjector(Hints hints) {
-        Context geogitInjector = GlobalContextBuilder.builder.build(hints);
-        return geogitInjector;
+    private Context newGeogigInjector(Hints hints) {
+        Context geogigInjector = GlobalContextBuilder.builder.build(hints);
+        return geogigInjector;
     }
 
     /**
@@ -282,25 +282,25 @@ public class GeogigCLI {
     }
 
     /**
-     * Closes the GeoGIT facade if it exists.
+     * Closes the GeoGIG facade if it exists.
      */
     public synchronized void close() {
-        if (providedGeogit != null) {
+        if (providedGeogig != null) {
             return;
         }
-        if (geogit != null) {
-            geogit.close();
-            geogit = null;
+        if (geogig != null) {
+            geogig.close();
+            geogig = null;
         }
         this.hints = READ_WRITE;
-        this.geogitInjector = null;
+        this.geogigInjector = null;
     }
 
     /**
      * @return true if a command is being ran
      */
     public synchronized boolean isRunning() {
-        return geogit != null;
+        return geogig != null;
     }
 
     /**
@@ -352,7 +352,7 @@ public class GeogigCLI {
 
     public JCommander newCommandParser() {
         JCommander jc = new JCommander(this);
-        jc.setProgramName("geogit");
+        jc.setProgramName("geogig");
         for (Key<?> cmd : findCommands()) {
             Object obj = commandsInjector.getInstance(cmd);
             if (obj instanceof CLICommand || obj instanceof CLICommandExtension) {
@@ -380,7 +380,7 @@ public class GeogigCLI {
             return 0;
         } catch (ParameterException paramParseException) {
             exception = paramParseException;
-            consoleMessage = paramParseException.getMessage() + ". See geogit --help";
+            consoleMessage = paramParseException.getMessage() + ". See geogig --help";
 
         } catch (InvalidParameterException paramValidationError) {
             exception = paramValidationError;
@@ -448,7 +448,7 @@ public class GeogigCLI {
             JCommander commandParser = mainCommander.getCommands().get(commandName);
 
             if (commandParser == null) {
-                consoleReader.println(args[0] + " is not a geogit command. See geogit --help.");
+                consoleReader.println(args[0] + " is not a geogig command. See geogig --help.");
                 // check for similar commands
                 Map<String, JCommander> candidates = spellCheck(mainCommander.getCommands(),
                         commandName);
@@ -513,8 +513,8 @@ public class GeogigCLI {
                 } else {
                     workingDir = platform.pwd().getAbsolutePath();
                 }
-                if (getGeogit() == null) {
-                    throw new CommandFailedException("Not in a geogit repository: " + workingDir);
+                if (getGeogig() == null) {
+                    throw new CommandFailedException("Not in a geogig repository: " + workingDir);
                 }
             }
 
@@ -573,19 +573,19 @@ public class GeogigCLI {
     private String[] unalias(String[] args) {
         final String aliasedCommand = args[0];
         String configParam = "alias." + aliasedCommand;
-        boolean closeGeogit = false;
-        GeoGIG geogit = this.providedGeogit == null ? this.geogit : this.providedGeogit;
-        if (geogit == null) { // in case the repo is not initialized yet
-            closeGeogit = true;
-            geogit = newGeoGIT(Hints.readOnly());
+        boolean closeGeogig = false;
+        GeoGIG geogig = this.providedGeogig == null ? this.geogig : this.providedGeogig;
+        if (geogig == null) { // in case the repo is not initialized yet
+            closeGeogig = true;
+            geogig = newGeoGIG(Hints.readOnly());
         }
         try {
             Optional<String> unaliased = Optional.absent();
-            if (geogit.command(ResolveGeogigDir.class).call().isPresent()) {
-                unaliased = geogit.command(ConfigGet.class).setName(configParam).call();
+            if (geogig.command(ResolveGeogigDir.class).call().isPresent()) {
+                unaliased = geogig.command(ConfigGet.class).setName(configParam).call();
             }
             if (!unaliased.isPresent()) {
-                unaliased = geogit.command(ConfigGet.class).setGlobal(true).setName(configParam)
+                unaliased = geogig.command(ConfigGet.class).setGlobal(true).setName(configParam)
                         .call();
             }
             if (!unaliased.isPresent()) {
@@ -598,8 +598,8 @@ public class GeogigCLI {
         } catch (ConfigException e) {
             return args;
         } finally {
-            if (closeGeogit) {
-                geogit.close();
+            if (closeGeogig) {
+                geogig.close();
             }
         }
     }
@@ -666,9 +666,9 @@ public class GeogigCLI {
         }
         ConsoleReader console = getConsole();
         try {
-            console.println("usage: geogit <command> [<args>]");
+            console.println("usage: geogig <command> [<args>]");
             console.println();
-            console.println("The most commonly used geogit commands are:");
+            console.println("The most commonly used geogig commands are:");
             for (String cmd : commandNames) {
                 console.print(Strings.padEnd(cmd, longestCommandLenght, ' '));
                 console.print("\t");
@@ -696,7 +696,7 @@ public class GeogigCLI {
         }
         ConsoleReader console = getConsole();
         try {
-            console.println("usage: geogit <command> [<args>]");
+            console.println("usage: geogig <command> [<args>]");
             console.println();
             int i = 0;
             for (String cmd : commandNames) {
@@ -818,10 +818,10 @@ public class GeogigCLI {
             @Override
             public void run() {
                 if (cli.isRunning()) {
-                    System.err.println("Forced shut down, wait for geogit to be closed...");
+                    System.err.println("Forced shut down, wait for geogig to be closed...");
                     System.err.flush();
                     cli.close();
-                    System.err.println("geogit closed.");
+                    System.err.println("geogig closed.");
                     System.err.flush();
                 }
             }

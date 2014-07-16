@@ -47,8 +47,8 @@ public class XerialGraphDatabase extends SQLiteGraphDatabase<DataSource> {
     }
 
     @Override
-    protected DataSource connect(File geogitDir) {
-        return Xerial.newDataSource(new File(geogitDir, "graph.db"));
+    protected DataSource connect(File geogigDir) {
+        return Xerial.newDataSource(new File(geogigDir, "graph.db"));
     }
 
     @Override

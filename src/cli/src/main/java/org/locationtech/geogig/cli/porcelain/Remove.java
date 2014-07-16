@@ -60,7 +60,7 @@ public class Remove extends AbstractCommand implements CLICommand {
          * modifier is used
          */
         ArrayList<String> trees = new ArrayList<String>();
-        Repository repository = cli.getGeogit().getRepository();
+        Repository repository = cli.getGeogig().getRepository();
         for (String pathToRemove : pathsToRemove) {
             NodeRef.checkValidPath(pathToRemove);
 
@@ -79,7 +79,7 @@ public class Remove extends AbstractCommand implements CLICommand {
         int featuresCount = pathsToRemove.size() - trees.size();
 
         /* Perform the remove operation */
-        RemoveOp op = cli.getGeogit().command(RemoveOp.class);
+        RemoveOp op = cli.getGeogig().command(RemoveOp.class);
 
         for (String pathToRemove : pathsToRemove) {
             op.addPathToRemove(pathToRemove);

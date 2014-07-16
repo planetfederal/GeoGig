@@ -32,21 +32,21 @@ public class SQLServerExportTest extends RepositoryTestCase {
                 new UnsupportedTerminal());
         cli = new GeogigCLI(consoleReader);
 
-        cli.setGeogit(geogit);
+        cli.setGeogig(geogig);
 
         // Add points
         insertAndAdd(points1);
         insertAndAdd(points2);
         insertAndAdd(points3);
 
-        geogit.command(CommitOp.class).call();
+        geogig.command(CommitOp.class).call();
 
         // Add lines
         insertAndAdd(lines1);
         insertAndAdd(lines2);
         insertAndAdd(lines3);
 
-        geogit.command(CommitOp.class).call();
+        geogig.command(CommitOp.class).call();
     }
 
     @Override

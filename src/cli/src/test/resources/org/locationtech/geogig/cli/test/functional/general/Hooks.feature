@@ -1,6 +1,6 @@
 Feature: "hooks" functionality
-    In order to control how geogit commands are executed
-    As a Geogit User
+    In order to control how geogig commands are executed
+    As a Geogig User
     I want to set hooks in my repo
 
   Scenario: Set a pre-commit hook and perform a wrong commit

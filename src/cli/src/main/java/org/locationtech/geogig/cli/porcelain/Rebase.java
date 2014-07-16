@@ -30,8 +30,8 @@ import com.google.common.base.Suppliers;
 /**
  * Forward-port local commits to the updated upstream head.
  * <p>
- * If {@code <branch>} is specified, {@code geogit rebase} will perform an automatic
- * {@code geogit checkout <branch>} before doing anything else. Otherwise it remains on the current
+ * If {@code <branch>} is specified, {@code geogig rebase} will perform an automatic
+ * {@code geogig checkout <branch>} before doing anything else. Otherwise it remains on the current
  * branch.
  * <p>
  * All changes made by commits in the current branch but that are not in {@code <upstream>} are
@@ -47,7 +47,7 @@ import com.google.common.base.Suppliers;
  * <p>
  * Usage:
  * <ul>
- * <li> {@code geogit rebase [--onto <newbase>] [<upstream>] [<branch>]}
+ * <li> {@code geogig rebase [--onto <newbase>] [<upstream>] [<branch>]}
  * </ul>
  * 
  * @see RebaseOp
@@ -83,8 +83,8 @@ public class Rebase extends AbstractCommand implements CLICommand {
         checkParameter(!(skip && abort), "Cannot use both --skip and --abort");
         checkParameter(!(abort && continueRebase), "Cannot use both --abort and --continue");
 
-        GeoGIG geogit = cli.getGeogit();
-        RebaseOp rebase = geogit.command(RebaseOp.class).setSkip(skip).setContinue(continueRebase)
+        GeoGIG geogig = cli.getGeogig();
+        RebaseOp rebase = geogig.command(RebaseOp.class).setSkip(skip).setContinue(continueRebase)
                 .setAbort(abort).setSquashMessage(squash);
         rebase.setProgressListener(cli.getProgressListener());
 
@@ -98,26 +98,26 @@ public class Rebase extends AbstractCommand implements CLICommand {
             checkParameter(arguments.size() < 3, "Too many arguments specified.");
             if (arguments.size() == 2) {
                 // Make sure branch is valid
-                Optional<ObjectId> branchRef = geogit.command(RevParse.class)
+                Optional<ObjectId> branchRef = geogig.command(RevParse.class)
                         .setRefSpec(arguments.get(1)).call();
                 checkParameter(branchRef.isPresent(), "The branch reference could not be resolved.");
                 // Checkout <branch> prior to rebase
                 try {
-                    geogit.command(CheckoutOp.class).setSource(arguments.get(1)).call();
+                    geogig.command(CheckoutOp.class).setSource(arguments.get(1)).call();
                 } catch (CheckoutException e) {
                     throw new CommandFailedException(e.getMessage(), e);
                 }
 
             }
 
-            Optional<Ref> upstreamRef = geogit.command(RefParse.class).setName(arguments.get(0))
+            Optional<Ref> upstreamRef = geogig.command(RefParse.class).setName(arguments.get(0))
                     .call();
             checkParameter(upstreamRef.isPresent(), "The upstream reference could not be resolved.");
             rebase.setUpstream(Suppliers.ofInstance(upstreamRef.get().getObjectId()));
         }
 
         if (onto != null) {
-            Optional<ObjectId> ontoId = geogit.command(RevParse.class).setRefSpec(onto).call();
+            Optional<ObjectId> ontoId = geogig.command(RevParse.class).setRefSpec(onto).call();
             checkParameter(ontoId.isPresent(), "The onto reference could not be resolved.");
             rebase.setOnto(Suppliers.ofInstance(ontoId.get()));
         }
@@ -127,9 +127,9 @@ public class Rebase extends AbstractCommand implements CLICommand {
         } catch (RebaseConflictsException e) {
             StringBuilder sb = new StringBuilder();
             sb.append(e.getMessage() + "\n");
-            sb.append("When you have fixed this conflicts, run 'geogit rebase --continue' to continue rebasing.\n");
-            sb.append("If you would prefer to skip this commit, instead run 'geogit rebase --skip.\n");
-            sb.append("To check out the original branch and stop rebasing, run 'geogit rebase --abort'\n");
+            sb.append("When you have fixed this conflicts, run 'geogig rebase --continue' to continue rebasing.\n");
+            sb.append("If you would prefer to skip this commit, instead run 'geogig rebase --skip.\n");
+            sb.append("To check out the original branch and stop rebasing, run 'geogig rebase --abort'\n");
             throw new CommandFailedException(sb.toString());
         }
 

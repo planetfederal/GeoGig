@@ -34,7 +34,7 @@ import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 
 /**
- * The interface for the Add operation in GeoGit.
+ * The interface for the Add operation in GeoGig.
  * 
  * Web interface for {@link AddOp}
  */
@@ -71,19 +71,19 @@ public class ResolveConflict extends AbstractWebAPICommand {
             throw new CommandSpecException(
                     "No transaction was specified, add requires a transaction to preserve the stability of the repository.");
         }
-        final Context geogit = this.getCommandLocator(context);
+        final Context geogig = this.getCommandLocator(context);
 
-        RevTree revTree = geogit.workingTree().getTree();
+        RevTree revTree = geogig.workingTree().getTree();
 
-        Optional<NodeRef> nodeRef = geogit.command(FindTreeChild.class).setParent(revTree)
+        Optional<NodeRef> nodeRef = geogig.command(FindTreeChild.class).setParent(revTree)
                 .setChildPath(NodeRef.parentPath(path)).setIndex(true).call();
         Preconditions.checkArgument(nodeRef.isPresent(), "Invalid reference: %s",
                 NodeRef.parentPath(path));
 
-        RevFeatureType revFeatureType = geogit.command(RevObjectParse.class)
+        RevFeatureType revFeatureType = geogig.command(RevObjectParse.class)
                 .setObjectId(nodeRef.get().getMetadataId()).call(RevFeatureType.class).get();
 
-        RevFeature revFeature = geogit.command(RevObjectParse.class).setObjectId(objectId)
+        RevFeature revFeature = geogig.command(RevObjectParse.class).setObjectId(objectId)
                 .call(RevFeature.class).get();
 
         CoordinateReferenceSystem crs = revFeatureType.type().getCoordinateReferenceSystem();
@@ -105,31 +105,31 @@ public class ResolveConflict extends AbstractWebAPICommand {
         NodeRef node = new NodeRef(Node.create(NodeRef.nodeFromPath(path), objectId, ObjectId.NULL,
                 TYPE.FEATURE, bounds), NodeRef.parentPath(path), ObjectId.NULL);
 
-        Optional<NodeRef> parentNode = geogit.command(FindTreeChild.class)
-                .setParent(geogit.workingTree().getTree()).setChildPath(node.getParentPath())
+        Optional<NodeRef> parentNode = geogig.command(FindTreeChild.class)
+                .setParent(geogig.workingTree().getTree()).setChildPath(node.getParentPath())
                 .setIndex(true).call();
         RevTreeBuilder treeBuilder = null;
         ObjectId metadataId = ObjectId.NULL;
         if (parentNode.isPresent()) {
             metadataId = parentNode.get().getMetadataId();
-            Optional<RevTree> parsed = geogit.command(RevObjectParse.class)
+            Optional<RevTree> parsed = geogig.command(RevObjectParse.class)
                     .setObjectId(parentNode.get().getNode().getObjectId()).call(RevTree.class);
             checkState(parsed.isPresent(), "Parent tree couldn't be found in the repository.");
-            treeBuilder = new RevTreeBuilder(geogit.objectDatabase(), parsed.get());
+            treeBuilder = new RevTreeBuilder(geogig.objectDatabase(), parsed.get());
             treeBuilder.remove(node.getNode().getName());
         } else {
-            treeBuilder = new RevTreeBuilder(geogit.stagingDatabase());
+            treeBuilder = new RevTreeBuilder(geogig.stagingDatabase());
         }
         treeBuilder.put(node.getNode());
-        ObjectId newTreeId = geogit
+        ObjectId newTreeId = geogig
                 .command(WriteBack.class)
                 .setAncestor(
-                        geogit.workingTree().getTree().builder(geogit.stagingDatabase()))
+                        geogig.workingTree().getTree().builder(geogig.stagingDatabase()))
                 .setChildPath(node.getParentPath()).setToIndex(true).setTree(treeBuilder.build())
                 .setMetadataId(metadataId).call();
-        geogit.workingTree().updateWorkHead(newTreeId);
+        geogig.workingTree().updateWorkHead(newTreeId);
 
-        AddOp command = geogit.command(AddOp.class);
+        AddOp command = geogig.command(AddOp.class);
 
         command.addPattern(path);
 

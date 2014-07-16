@@ -50,7 +50,7 @@ public class OSMExportSLTest extends Assert {
         cli.execute("init");
         cli.execute("config", "user.name", "Gabriel Roldan");
         cli.execute("config", "user.email", "groldan@opengeo.org");
-        assertTrue(new File(workingDirectory, ".geogit").exists());
+        assertTrue(new File(workingDirectory, ".geogig").exists());
 
         // Use in-memory database to test whether we can load Spatialite extension
         Connection connection = null;
@@ -86,11 +86,11 @@ public class OSMExportSLTest extends Assert {
         cli.execute("osm", "import", file.getAbsolutePath());
         cli.execute("add");
         cli.execute("commit", "-m", "message");
-        Optional<RevTree> tree = cli.getGeogit().command(RevObjectParse.class)
+        Optional<RevTree> tree = cli.getGeogig().command(RevObjectParse.class)
                 .setRefSpec("HEAD:node").call(RevTree.class);
         assertTrue(tree.isPresent());
         assertTrue(tree.get().size() > 0);
-        tree = cli.getGeogit().command(RevObjectParse.class).setRefSpec("HEAD:way")
+        tree = cli.getGeogig().command(RevObjectParse.class).setRefSpec("HEAD:way")
                 .call(RevTree.class);
         assertTrue(tree.isPresent());
         assertTrue(tree.get().size() > 0);
@@ -102,7 +102,7 @@ public class OSMExportSLTest extends Assert {
         assertTrue(exportFile.exists());
         cli.execute("sl", "import", "-t", "onewaystreets", "--database",
                 exportFile.getAbsolutePath());
-        long unstaged = cli.getGeogit().getRepository().workingTree()
+        long unstaged = cli.getGeogig().getRepository().workingTree()
                 .countUnstaged("onewaystreets").count();
         assertTrue(unstaged > 0);
     }

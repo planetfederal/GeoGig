@@ -5,10 +5,10 @@
 package org.locationtech.geogig.cli.test;
 
 import static org.junit.Assert.assertTrue;
-import static org.locationtech.geogig.cli.test.functional.general.GlobalState.geogitCLI;
+import static org.locationtech.geogig.cli.test.functional.general.GlobalState.geogigCLI;
 import static org.locationtech.geogig.cli.test.functional.general.GlobalState.insert;
 import static org.locationtech.geogig.cli.test.functional.general.GlobalState.platform;
-import static org.locationtech.geogig.cli.test.functional.general.GlobalState.setupGeogit;
+import static org.locationtech.geogig.cli.test.functional.general.GlobalState.setupGeogig;
 import static org.locationtech.geogig.cli.test.functional.general.GlobalState.tempFolder;
 import static org.locationtech.geogig.cli.test.functional.general.TestFeatures.points1;
 import static org.locationtech.geogig.cli.test.functional.general.TestFeatures.points1_modified;
@@ -46,7 +46,7 @@ public class GeogigPy4JEntryPointTest {
 
     @Test
     public void testPy4JentryPoint() throws Exception {
-        setupGeogit();
+        setupGeogig();
         setupFeatures();
         String repoFolder = platform.pwd().getAbsolutePath();
         GeogigPy4JEntryPoint py4j = new GeogigPy4JEntryPoint();
@@ -58,8 +58,8 @@ public class GeogigPy4JEntryPointTest {
         insert(points1);
         insert(points2);
         insert(points3);
-        geogitCLI.getGeogit().command(AddOp.class).call();
-        geogitCLI.getGeogit().command(CommitOp.class).setMessage("message").call();
+        geogigCLI.getGeogig().command(AddOp.class).call();
+        geogigCLI.getGeogig().command(CommitOp.class).setMessage("message").call();
         py4j.runCommand(repoFolder, new String[] { "log" });
         String output = py4j.nextOutputPage();
         assertTrue(output.contains("message"));

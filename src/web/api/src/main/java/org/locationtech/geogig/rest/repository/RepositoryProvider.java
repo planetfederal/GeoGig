@@ -18,6 +18,6 @@ public interface RepositoryProvider {
      */
     String KEY = "__REPOSITORY_PROVIDER_KEY__";
 
-    public Optional<GeoGIG> getGeogit(Request request);
+    public Optional<GeoGIG> getGeogig(Request request);
 
 }

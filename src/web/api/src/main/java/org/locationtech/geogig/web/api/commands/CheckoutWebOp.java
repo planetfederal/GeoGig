@@ -18,7 +18,7 @@ import org.locationtech.geogig.web.api.ResponseWriter;
 import com.google.common.base.Optional;
 
 /**
- * The interface for the Checkout operation in GeoGit.
+ * The interface for the Checkout operation in GeoGig.
  * 
  * Web interface for {@link CheckoutOp}
  */
@@ -81,10 +81,10 @@ public class CheckoutWebOp extends AbstractWebAPICommand {
                     "No transaction was specified, checkout requires a transaction to preserve the stability of the repository.");
         }
 
-        final Context geogit = this.getCommandLocator(context);
-        CheckoutOp command = geogit.command(CheckoutOp.class);
+        final Context geogig = this.getCommandLocator(context);
+        CheckoutOp command = geogig.command(CheckoutOp.class);
         if (branchOrCommit != null) {
-            Optional<Ref> head = geogit.command(RefParse.class).setName(Ref.HEAD).call();
+            Optional<Ref> head = geogig.command(RefParse.class).setName(Ref.HEAD).call();
 
             if (!head.isPresent()) {
                 throw new CommandSpecException("Repository has no HEAD, can't merge.");

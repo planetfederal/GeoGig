@@ -5,14 +5,14 @@
 package org.locationtech.geogig.cli;
 
 /**
- * An exception to indicate that a GeoGit CLI command has failed and the CLI should exit with
+ * An exception to indicate that a GeoGig CLI command has failed and the CLI should exit with
  * non-zero code.
  * <p>
  * This exception is to be thrown when the execution of the core command the CLI command calls
  * actually failed, and shall contain as much information of the cause of the execution failure as
  * possible.
  * <p>
- * For other kinds of exceptions a CLI command may throw see {@link CLICommand#run(GeogitCLI)
+ * For other kinds of exceptions a CLI command may throw see {@link CLICommand#run(GeogigCLI)
  * CLICommand.run()}
  * <p>
  * The exception message for instances of this class are meant to be reported on the console. The

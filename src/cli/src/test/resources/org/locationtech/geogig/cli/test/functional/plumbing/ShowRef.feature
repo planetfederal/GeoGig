@@ -1,6 +1,6 @@
 Feature: "merge" command
-    In order to know the branches in a geogit repository
-    As a Geogit User
+    In order to know the branches in a geogig repository
+    As a Geogig User
     I want list all references
 
   Scenario: List all references

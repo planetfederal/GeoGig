@@ -1,6 +1,6 @@
 Feature: "merge" command
-    In order to combine two or more geogit histories into one
-    As a Geogit User
+    In order to combine two or more geogig histories into one
+    As a Geogig User
     I want to merge one or more commit histories into my current branch
 
   Scenario: Try to merge one branch to a parent branch
@@ -42,7 +42,7 @@ Feature: "merge" command
   Scenario: Try to merge from an empty directory
     Given I am in an empty directory
      When I run the command "merge branch1"
-     Then the response should start with "Not in a geogit repository"
+     Then the response should start with "Not in a geogig repository"
       And it should exit with non-zero exit code
 
   Scenario: Try to merge two conflicting branches

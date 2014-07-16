@@ -77,13 +77,13 @@ public abstract class RemoteRepositoryTestCase {
 
     protected static final String idP3 = "Points.3";
 
-    protected static final String pointsNs = "http://geogit.points";
+    protected static final String pointsNs = "http://geogig.points";
 
     protected static final String pointsName = "Points";
 
     protected static final String pointsTypeSpec = "sp:String,ip:Integer,pp:Point:srid=4326";
 
-    protected static final Name pointsTypeName = new NameImpl("http://geogit.points", pointsName);
+    protected static final Name pointsTypeName = new NameImpl("http://geogig.points", pointsName);
 
     protected SimpleFeatureType pointsType;
 
@@ -95,13 +95,13 @@ public abstract class RemoteRepositoryTestCase {
 
     protected Feature points3;
 
-    protected static final String linesNs = "http://geogit.lines";
+    protected static final String linesNs = "http://geogig.lines";
 
     protected static final String linesName = "Lines";
 
     protected static final String linesTypeSpec = "sp:String,ip:Integer,pp:LineString:srid=4326";
 
-    protected static final Name linesTypeName = new NameImpl("http://geogit.lines", linesName);
+    protected static final Name linesTypeName = new NameImpl("http://geogig.lines", linesName);
 
     protected SimpleFeatureType linesType;
 
@@ -115,7 +115,7 @@ public abstract class RemoteRepositoryTestCase {
     public final TemporaryFolder tempFolder = new TemporaryFolder();
 
     protected class GeogigContainer {
-        public GeoGIG geogit;
+        public GeoGIG geogig;
 
         public Repository repo;
 
@@ -131,8 +131,8 @@ public abstract class RemoteRepositoryTestCase {
             GlobalContextBuilder.builder = injectorBuilder;
             injector = injectorBuilder.build();
 
-            geogit = new GeoGIG(injector, envHome);
-            repo = geogit.getOrCreateRepository();
+            geogig = new GeoGIG(injector, envHome);
+            repo = geogig.getOrCreateRepository();
 
             repo.command(ConfigOp.class).setAction(ConfigAction.CONFIG_SET).setName("user.name")
                     .setValue("Gabriel Roldan").call();
@@ -158,9 +158,9 @@ public abstract class RemoteRepositoryTestCase {
         }
     }
 
-    public GeogigContainer localGeogit;
+    public GeogigContainer localGeogig;
 
-    public GeogigContainer remoteGeogit;
+    public GeogigContainer remoteGeogig;
 
     public IRemoteRepo remoteRepo;
 
@@ -178,15 +178,15 @@ public abstract class RemoteRepositoryTestCase {
     }
 
     protected final void doSetUp() throws IOException, SchemaException, ParseException, Exception {
-        localGeogit = new GeogigContainer("localtestrepository");
-        remoteGeogit = new GeogigContainer("remotetestrepository");
+        localGeogig = new GeogigContainer("localtestrepository");
+        remoteGeogig = new GeogigContainer("remotetestrepository");
 
-        LocalRemoteRepo remoteRepo = spy(new LocalRemoteRepo(remoteGeogit.getInjector(),
-                remoteGeogit.envHome.getCanonicalFile(), localGeogit.repo));
+        LocalRemoteRepo remoteRepo = spy(new LocalRemoteRepo(remoteGeogig.getInjector(),
+                remoteGeogig.envHome.getCanonicalFile(), localGeogig.repo));
 
         doNothing().when(remoteRepo).close();
 
-        remoteRepo.setGeoGit(remoteGeogit.geogit);
+        remoteRepo.setGeoGig(remoteGeogig.geogig);
         this.remoteRepo = remoteRepo;
 
         pointsType = DataUtilities.createType(pointsNs, pointsName, pointsTypeSpec);
@@ -210,7 +210,7 @@ public abstract class RemoteRepositoryTestCase {
     }
 
     protected LsRemote lsremote() {
-        LsRemote lsRemote = spy(localGeogit.geogit.command(LsRemote.class));
+        LsRemote lsRemote = spy(localGeogig.geogig.command(LsRemote.class));
 
         doReturn(Optional.of(remoteRepo)).when(lsRemote).getRemoteRepo(any(Remote.class));
 
@@ -218,7 +218,7 @@ public abstract class RemoteRepositoryTestCase {
     }
 
     protected FetchOp fetch() {
-        FetchOp remoteRepoFetch = spy(localGeogit.geogit.command(FetchOp.class));
+        FetchOp remoteRepoFetch = spy(localGeogig.geogig.command(FetchOp.class));
 
         doReturn(Optional.of(remoteRepo)).when(remoteRepoFetch).getRemoteRepo(any(Remote.class),
                 any(DeduplicationService.class));
@@ -229,7 +229,7 @@ public abstract class RemoteRepositoryTestCase {
     }
 
     protected CloneOp clone() {
-        CloneOp clone = spy(localGeogit.geogit.command(CloneOp.class));
+        CloneOp clone = spy(localGeogig.geogig.command(CloneOp.class));
         FetchOp fetch = fetch();
         // when(clone.command(FetchOp.class)).thenReturn(fetch);
         doReturn(fetch).when(clone).command(eq(FetchOp.class));
@@ -242,7 +242,7 @@ public abstract class RemoteRepositoryTestCase {
     }
 
     protected PullOp pull() {
-        PullOp pull = spy(localGeogit.geogit.command(PullOp.class));
+        PullOp pull = spy(localGeogig.geogig.command(PullOp.class));
         FetchOp fetch = fetch();
         // when(pull.command(eq(FetchOp.class))).thenReturn(fetch);
         doReturn(fetch).when(pull).command(eq(FetchOp.class));
@@ -255,7 +255,7 @@ public abstract class RemoteRepositoryTestCase {
     }
 
     protected PushOp push() {
-        PushOp push = spy(localGeogit.geogit.command(PushOp.class));
+        PushOp push = spy(localGeogig.geogig.command(PushOp.class));
         doReturn(Optional.of(remoteRepo)).when(push).getRemoteRepo(any(Remote.class));
 
         FetchOp fetch = fetch();
@@ -273,10 +273,10 @@ public abstract class RemoteRepositoryTestCase {
     public final void tearDown() throws Exception {
         setup = false;
         tearDownInternal();
-        localGeogit.tearDown();
-        remoteGeogit.tearDown();
-        localGeogit = null;
-        remoteGeogit = null;
+        localGeogig.tearDown();
+        remoteGeogig.tearDown();
+        localGeogig = null;
+        remoteGeogig = null;
         System.gc();
     }
 
@@ -307,26 +307,26 @@ public abstract class RemoteRepositoryTestCase {
         return builder.buildFeature(id);
     }
 
-    protected List<RevCommit> populate(GeoGIG geogit, boolean oneCommitPerFeature,
+    protected List<RevCommit> populate(GeoGIG geogig, boolean oneCommitPerFeature,
             Feature... features) throws Exception {
-        return populate(geogit, oneCommitPerFeature, Arrays.asList(features));
+        return populate(geogig, oneCommitPerFeature, Arrays.asList(features));
     }
 
-    protected List<RevCommit> populate(GeoGIG geogit, boolean oneCommitPerFeature,
+    protected List<RevCommit> populate(GeoGIG geogig, boolean oneCommitPerFeature,
             List<Feature> features) throws Exception {
 
         List<RevCommit> commits = new ArrayList<RevCommit>();
 
         for (Feature f : features) {
-            insertAndAdd(geogit, f);
+            insertAndAdd(geogig, f);
             if (oneCommitPerFeature) {
-                RevCommit commit = geogit.command(CommitOp.class).call();
+                RevCommit commit = geogig.command(CommitOp.class).call();
                 commits.add(commit);
             }
         }
 
         if (!oneCommitPerFeature) {
-            RevCommit commit = geogit.command(CommitOp.class).call();
+            RevCommit commit = geogig.command(CommitOp.class).call();
             commits.add(commit);
         }
 
@@ -336,18 +336,18 @@ public abstract class RemoteRepositoryTestCase {
     /**
      * Inserts the Feature to the index and stages it to be committed.
      */
-    protected ObjectId insertAndAdd(GeoGIG geogit, Feature f) throws Exception {
-        ObjectId objectId = insert(geogit, f);
+    protected ObjectId insertAndAdd(GeoGIG geogig, Feature f) throws Exception {
+        ObjectId objectId = insert(geogig, f);
 
-        geogit.command(AddOp.class).call();
+        geogig.command(AddOp.class).call();
         return objectId;
     }
 
     /**
      * Inserts the feature to the index but does not stages it to be committed
      */
-    protected ObjectId insert(GeoGIG geogit, Feature f) throws Exception {
-        final WorkingTree workTree = geogit.getRepository().workingTree();
+    protected ObjectId insert(GeoGIG geogig, Feature f) throws Exception {
+        final WorkingTree workTree = geogig.getRepository().workingTree();
         Name name = f.getType().getName();
         String parentPath = name.getLocalPart();
         Node ref = workTree.insert(parentPath, f);
@@ -355,14 +355,14 @@ public abstract class RemoteRepositoryTestCase {
         return objectId;
     }
 
-    protected void insertAndAdd(GeoGIG geogit, Feature... features) throws Exception {
-        insert(geogit, features);
-        geogit.command(AddOp.class).call();
+    protected void insertAndAdd(GeoGIG geogig, Feature... features) throws Exception {
+        insert(geogig, features);
+        geogig.command(AddOp.class).call();
     }
 
-    protected void insert(GeoGIG geogit, Feature... features) throws Exception {
+    protected void insert(GeoGIG geogig, Feature... features) throws Exception {
         for (Feature f : features) {
-            insert(geogit, f);
+            insert(geogig, f);
         }
     }
 
@@ -373,17 +373,17 @@ public abstract class RemoteRepositoryTestCase {
      * @return
      * @throws Exception
      */
-    protected boolean deleteAndAdd(GeoGIG geogit, Feature f) throws Exception {
-        boolean existed = delete(geogit, f);
+    protected boolean deleteAndAdd(GeoGIG geogig, Feature f) throws Exception {
+        boolean existed = delete(geogig, f);
         if (existed) {
-            geogit.command(AddOp.class).call();
+            geogig.command(AddOp.class).call();
         }
 
         return existed;
     }
 
-    protected boolean delete(GeoGIG geogit, Feature f) throws Exception {
-        final WorkingTree workTree = geogit.getRepository().workingTree();
+    protected boolean delete(GeoGIG geogig, Feature f) throws Exception {
+        final WorkingTree workTree = geogig.getRepository().workingTree();
         Name name = f.getType().getName();
         String localPart = name.getLocalPart();
         String id = f.getIdentifier().getID();

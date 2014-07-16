@@ -5,7 +5,7 @@
 
 package org.locationtech.geogig.rest.repository;
 
-import static org.locationtech.geogig.rest.repository.RESTUtils.getGeogit;
+import static org.locationtech.geogig.rest.repository.RESTUtils.getGeogig;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -58,9 +58,9 @@ public class ManifestResource extends Resource {
         public void write(OutputStream out) throws IOException {
             PrintWriter w = new PrintWriter(out);
 
-            Optional<GeoGIG> geogit = getGeogit(request);
-            Preconditions.checkState(geogit.isPresent());
-            GeoGIG ggit = geogit.get();
+            Optional<GeoGIG> geogig = getGeogig(request);
+            Preconditions.checkState(geogig.isPresent());
+            GeoGIG ggit = geogig.get();
 
             Form options = request.getResourceRef().getQueryAsForm();
 

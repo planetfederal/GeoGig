@@ -18,6 +18,6 @@ public class IniOracleProperties extends OnlineTestProperties {
     };
 
     public IniOracleProperties() {
-        super(".geogit-oracle-tests.properties", DEFAULTS);
+        super(".geogig-oracle-tests.properties", DEFAULTS);
     }
 }

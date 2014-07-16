@@ -65,7 +65,7 @@ public class EnvironmentBuilder implements Provider<Environment> {
 
         final Optional<URL> repoUrl = new ResolveGeogigDir(platform).call();
         if (!repoUrl.isPresent() && absolutePath == null) {
-            throw new IllegalStateException("Can't find geogit repository home");
+            throw new IllegalStateException("Can't find geogig repository home");
         }
         final File storeDirectory;
 

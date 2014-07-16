@@ -26,7 +26,7 @@ public class HooksTest extends RepositoryTestCase {
 
     @Override
     protected void setUpInternal() throws Exception {
-        File hooksFolder = new File(geogit.getPlatform().pwd(), ".geogit/hooks");
+        File hooksFolder = new File(geogig.getPlatform().pwd(), ".geogig/hooks");
         File[] files = hooksFolder.listFiles();
         for (File file : files) {
             file.delete();
@@ -37,14 +37,14 @@ public class HooksTest extends RepositoryTestCase {
     @Test
     public void testHookWithError() throws Exception {
         CharSequence wrongHookCode = "this is a syntactically wrong sentence";
-        File hooksFolder = new File(geogit.getPlatform().pwd(), ".geogit/hooks");
+        File hooksFolder = new File(geogig.getPlatform().pwd(), ".geogig/hooks");
         File commitPreHookFile = new File(hooksFolder, "pre_commit.js");
 
         Files.write(wrongHookCode, commitPreHookFile, Charsets.UTF_8);
 
         insertAndAdd(points1);
         try {
-            geogit.command(CommitOp.class).setMessage("A message").call();
+            geogig.command(CommitOp.class).setMessage("A message").call();
             fail();
         } catch (Exception e) {
             assertTrue(true);
@@ -55,20 +55,20 @@ public class HooksTest extends RepositoryTestCase {
     public void testHook() throws Exception {
         // a hook that only accepts commit messages longer with at least 4 words, and converts
         // message to lower case
-        CharSequence commitPreHookCode = "exception = Packages.org.locationtech.geogig.api.hooks.CannotRunGeogitOperationException;\n"
+        CharSequence commitPreHookCode = "exception = Packages.org.locationtech.geogig.api.hooks.CannotRunGeogigOperationException;\n"
                 + "msg = params.get(\"message\");\n"
                 + "if (msg.length() < 30){\n"
                 + "\tthrow new exception(\"Commit messages must have at least 30 characters\");\n}"
                 + "params.put(\"message\", msg.toLowerCase());";
 
-        File hooksFolder = new File(geogit.getPlatform().pwd(), ".geogit/hooks");
+        File hooksFolder = new File(geogig.getPlatform().pwd(), ".geogig/hooks");
         File commitPreHookFile = new File(hooksFolder, "pre_commit.js");
 
         Files.write(commitPreHookCode, commitPreHookFile, Charsets.UTF_8);
 
         insertAndAdd(points1);
         try {
-            geogit.command(CommitOp.class).setMessage("A short message").call();
+            geogig.command(CommitOp.class).setMessage("A short message").call();
             fail();
         } catch (Exception e) {
             String javaVersion = System.getProperty("java.version");
@@ -85,14 +85,14 @@ public class HooksTest extends RepositoryTestCase {
         }
 
         String longMessage = "THIS IS A LONG UPPERCASE COMMIT MESSAGE";
-        RevCommit commit = geogit.command(CommitOp.class).setMessage(longMessage).call();
+        RevCommit commit = geogig.command(CommitOp.class).setMessage(longMessage).call();
         assertEquals(longMessage.toLowerCase(), commit.getMessage());
 
     }
 
     @Test
     public void testExecutableScriptFileHook() throws Exception {
-        File hooksFolder = new File(geogit.getPlatform().pwd(), ".geogit/hooks");
+        File hooksFolder = new File(geogig.getPlatform().pwd(), ".geogig/hooks");
         File commitPreHookFile;
         String commitPreHookCode;
         // a hook that returns non-zero
@@ -107,7 +107,7 @@ public class HooksTest extends RepositoryTestCase {
 
         insertAndAdd(points1);
         try {
-            geogit.command(CommitOp.class).setMessage("Message").call();
+            geogig.command(CommitOp.class).setMessage("Message").call();
             fail();
         } catch (Exception e) {
             assertTrue(e instanceof CannotRunGeogigOperationException);
@@ -123,21 +123,21 @@ public class HooksTest extends RepositoryTestCase {
         Files.write(commitPreHookCode, commitPreHookFile, Charsets.UTF_8);
         commitPreHookFile.setExecutable(true);
 
-        geogit.command(CommitOp.class).setMessage("Message").call();
+        geogig.command(CommitOp.class).setMessage("Message").call();
 
     }
 
     @Test
     public void testFailingPostPostProcessHook() throws Exception {
-        CharSequence postHookCode = "exception = Packages.org.geogit.api.hooks.CannotRunGeogitOperationException;\n"
+        CharSequence postHookCode = "exception = Packages.org.geogig.api.hooks.CannotRunGeogigOperationException;\n"
                 + "throw new exception();";
-        File hooksFolder = new File(geogit.getPlatform().pwd(), ".geogit/hooks");
+        File hooksFolder = new File(geogig.getPlatform().pwd(), ".geogig/hooks");
         File commitPostHookFile = new File(hooksFolder, "post_commit.js");
 
         Files.write(postHookCode, commitPostHookFile, Charsets.UTF_8);
 
         insertAndAdd(points1);
-        geogit.command(CommitOp.class).setMessage("A message").call();
+        geogig.command(CommitOp.class).setMessage("A message").call();
 
     }
 
@@ -193,7 +193,7 @@ public class HooksTest extends RepositoryTestCase {
 
     /**
      * This command hook is discoverable through the {@link ServiceLoader} SPI as there's a
-     * {@code org.geogit.api.hooks.CommandHook} file in {@code src/test/resources/META-INF/services}
+     * {@code org.geogig.api.hooks.CommandHook} file in {@code src/test/resources/META-INF/services}
      * but the static ENABLED flag must be set by the test case for it to be run.
      */
     public static final class ClasspathHookTest implements CommandHook {

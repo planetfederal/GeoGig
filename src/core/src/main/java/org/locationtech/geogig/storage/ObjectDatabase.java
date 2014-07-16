@@ -21,7 +21,7 @@ import org.locationtech.geogig.di.Singleton;
 import org.locationtech.geogig.repository.RepositoryConnectionException;
 
 /**
- * Provides an interface for implementations of GeoGit object databases.
+ * Provides an interface for implementations of GeoGig object databases.
  */
 @Singleton
 public interface ObjectDatabase extends Closeable {

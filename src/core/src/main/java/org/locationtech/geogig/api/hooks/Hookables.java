@@ -21,7 +21,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
 /**
- * A class for managing GeoGit operations that can be hooked and the filenames of the corresponding
+ * A class for managing GeoGig operations that can be hooked and the filenames of the corresponding
  * hooks. It also includes additional related utilities.
  * 
  */
@@ -33,7 +33,7 @@ public class Hookables {
     }
 
     /**
-     * Returns the filename to be used for a script corresponding to the hook for a given GeoGit
+     * Returns the filename to be used for a script corresponding to the hook for a given GeoGig
      * operation. Returns {@link Optional.absent} if the specified operation does not allows hooks
      * 
      * @param class the operation

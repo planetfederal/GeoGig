@@ -1,6 +1,6 @@
 Feature: "rebase" command
-    In order to linearize the geogit history
-    As a Geogit User
+    In order to linearize the geogig history
+    As a Geogig User
     I want to rebase my local commits onto an existing branch
 
   Scenario: Try to rebase one branch to a parent branch
@@ -61,7 +61,7 @@ Feature: "rebase" command
   Scenario: Try to rebase from an empty directory
     Given I am in an empty directory
      When I run the command "rebase master branch1"
-     Then the response should start with "Not in a geogit repository"
+     Then the response should start with "Not in a geogig repository"
       And it should exit with non-zero exit code    
    
   Scenario: Try to rebase with conflicts and skip

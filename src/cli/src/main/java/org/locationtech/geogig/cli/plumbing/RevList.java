@@ -45,7 +45,7 @@ public class RevList extends AbstractCommand implements CLICommand {
     @ParametersDelegate
     public final RevListArgs args = new RevListArgs();
 
-    private GeoGIG geogit;
+    private GeoGIG geogig;
 
     private ConsoleReader console;
 
@@ -56,9 +56,9 @@ public class RevList extends AbstractCommand implements CLICommand {
     public void runInternal(GeogigCLI cli) throws IOException {
         checkParameter(!args.commits.isEmpty(), "No starting commit provided");
 
-        geogit = cli.getGeogit();
+        geogig = cli.getGeogig();
 
-        LogOp op = geogit.command(LogOp.class).setTopoOrder(args.topo)
+        LogOp op = geogig.command(LogOp.class).setTopoOrder(args.topo)
                 .setFirstParentOnly(args.firstParent);
 
         for (String commit : args.commits) {
@@ -81,21 +81,21 @@ public class RevList extends AbstractCommand implements CLICommand {
                 }
                 if (sinceRefSpec != null) {
                     Optional<ObjectId> since;
-                    since = geogit.command(RevParse.class).setRefSpec(sinceRefSpec).call();
+                    since = geogig.command(RevParse.class).setRefSpec(sinceRefSpec).call();
                     checkParameter(since.isPresent(), "Object not found '%s'", sinceRefSpec);
                     op.setSince(since.get());
                 }
                 if (untilRefSpec != null) {
                     Optional<ObjectId> until;
-                    until = geogit.command(RevParse.class).setRefSpec(untilRefSpec).call();
+                    until = geogig.command(RevParse.class).setRefSpec(untilRefSpec).call();
                     checkParameter(until.isPresent(), "Object not found '%s'", sinceRefSpec);
                     op.setUntil(until.get());
                 }
             } else {
-                Optional<ObjectId> commitId = geogit.command(RevParse.class).setRefSpec(commit)
+                Optional<ObjectId> commitId = geogig.command(RevParse.class).setRefSpec(commit)
                         .call();
                 checkParameter(commitId.isPresent(), "Object not found '%s'", commit);
-                checkParameter(geogit.getRepository().commitExists(commitId.get()),
+                checkParameter(geogig.getRepository().commitExists(commitId.get()),
                         "%s does not resolve to a commit", commit);
                 op.addCommit(commitId.get());
             }
@@ -116,10 +116,10 @@ public class RevList extends AbstractCommand implements CLICommand {
             Date since = new Date(0);
             Date until = new Date();
             if (args.since != null) {
-                since = new Date(geogit.command(ParseTimestamp.class).setString(args.since).call());
+                since = new Date(geogig.command(ParseTimestamp.class).setString(args.since).call());
             }
             if (args.until != null) {
-                until = new Date(geogit.command(ParseTimestamp.class).setString(args.until).call());
+                until = new Date(geogig.command(ParseTimestamp.class).setString(args.until).call());
             }
             op.setTimeRange(new Range<Date>(Date.class, since, until));
         }
@@ -165,7 +165,7 @@ public class RevList extends AbstractCommand implements CLICommand {
                 sb.append('\n');
             }
             if (showChanges) {
-                Iterator<DiffEntry> diff = geogit.command(DiffOp.class)
+                Iterator<DiffEntry> diff = geogig.command(DiffOp.class)
                         .setOldVersion(commit.parentN(0).or(ObjectId.NULL))
                         .setNewVersion(commit.getId()).call();
                 DiffEntry diffEntry;

@@ -116,8 +116,8 @@ public class OSMHistoryImport extends AbstractCommand implements CLICommand {
         final long startIndex;
         final long endIndex = args.endIndex;
         if (args.resume) {
-            GeoGIG geogit = cli.getGeogit();
-            long lastChangeset = getCurrentBranchChangeset(geogit);
+            GeoGIG geogig = cli.getGeogig();
+            long lastChangeset = getCurrentBranchChangeset(geogig);
             startIndex = 1 + lastChangeset;
         } else {
             startIndex = args.startIndex;
@@ -235,8 +235,8 @@ public class OSMHistoryImport extends AbstractCommand implements CLICommand {
 
         Iterator<Changeset> changesets = downloader.fetchChangesets();
 
-        GeoGIG geogit = cli.getGeogit();
-        WorkingTree workingTree = geogit.getContext().workingTree();
+        GeoGIG geogig = cli.getGeogig();
+        WorkingTree workingTree = geogig.getContext().workingTree();
 
         while (changesets.hasNext()) {
             Changeset changeset = changesets.next();
@@ -250,7 +250,7 @@ public class OSMHistoryImport extends AbstractCommand implements CLICommand {
 
             Optional<Iterator<Change>> opchanges = changeset.getChanges().get();
             if (!opchanges.isPresent()) {
-                updateBranchChangeset(geogit, changeset.getId());
+                updateBranchChangeset(geogig, changeset.getId());
                 console.println(" does not apply.");
                 console.flush();
                 continue;
@@ -265,11 +265,11 @@ public class OSMHistoryImport extends AbstractCommand implements CLICommand {
             console.flush();
             ObjectId afterTreeId = workingTree.getTree().getId();
 
-            DiffObjectCount diffCount = geogit.command(DiffCount.class)
+            DiffObjectCount diffCount = geogig.command(DiffCount.class)
                     .setOldVersion(workTreeId.toString()).setNewVersion(afterTreeId.toString())
                     .call();
 
-            geogit.command(AddOp.class).call();
+            geogig.command(AddOp.class).call();
             console.println(String.format("done. %,d changes actually applied.",
                     diffCount.featureCount()));
             console.flush();
@@ -289,8 +289,8 @@ public class OSMHistoryImport extends AbstractCommand implements CLICommand {
         console.print("Committing changeset " + changeset.getId() + "...");
         console.flush();
 
-        GeoGIG geogit = cli.getGeogit();
-        CommitOp command = geogit.command(CommitOp.class);
+        GeoGIG geogig = cli.getGeogig();
+        CommitOp command = geogig.command(CommitOp.class);
         command.setAllowEmpty(true);
         String message = "";
         if (changeset.getComment().isPresent()) {
@@ -316,9 +316,9 @@ public class OSMHistoryImport extends AbstractCommand implements CLICommand {
         command.setProgressListener(listener);
         try {
             RevCommit commit = command.call();
-            Ref head = geogit.command(RefParse.class).setName(Ref.HEAD).call().get();
+            Ref head = geogig.command(RefParse.class).setName(Ref.HEAD).call().get();
             Preconditions.checkState(commit.getId().equals(head.getObjectId()));
-            updateBranchChangeset(geogit, changeset.getId());
+            updateBranchChangeset(geogig, changeset.getId());
             listener.complete();
             console.println("Commit " + commit.getId().toString());
             console.flush();
@@ -328,18 +328,18 @@ public class OSMHistoryImport extends AbstractCommand implements CLICommand {
     }
 
     /**
-     * @param geogit
+     * @param geogig
      * @param id
      * @throws IOException
      */
-    private void updateBranchChangeset(GeoGIG geogit, long id) throws IOException {
-        final File branchTrackingChangesetFile = getBranchTrackingFile(geogit);
+    private void updateBranchChangeset(GeoGIG geogig, long id) throws IOException {
+        final File branchTrackingChangesetFile = getBranchTrackingFile(geogig);
         Preconditions.checkState(branchTrackingChangesetFile.exists());
         Files.write(String.valueOf(id), branchTrackingChangesetFile, Charset.forName("UTF-8"));
     }
 
-    private long getCurrentBranchChangeset(GeoGIG geogit) throws IOException {
-        final File branchTrackingChangesetFile = getBranchTrackingFile(geogit);
+    private long getCurrentBranchChangeset(GeoGIG geogig) throws IOException {
+        final File branchTrackingChangesetFile = getBranchTrackingFile(geogig);
         Preconditions.checkState(branchTrackingChangesetFile.exists());
         String line = Files.readFirstLine(branchTrackingChangesetFile, Charset.forName("UTF-8"));
         if (line == null) {
@@ -349,13 +349,13 @@ public class OSMHistoryImport extends AbstractCommand implements CLICommand {
         return changeset;
     }
 
-    private File getBranchTrackingFile(GeoGIG geogit) throws IOException {
-        final SymRef head = getHead(geogit);
+    private File getBranchTrackingFile(GeoGIG geogig) throws IOException {
+        final SymRef head = getHead(geogig);
         final String branch = head.getTarget();
-        final URL geogitDirUrl = geogit.command(ResolveGeogigDir.class).call().get();
+        final URL geogigDirUrl = geogig.command(ResolveGeogigDir.class).call().get();
         File repoDir;
         try {
-            repoDir = new File(geogitDirUrl.toURI());
+            repoDir = new File(geogigDirUrl.toURI());
         } catch (URISyntaxException e) {
             throw Throwables.propagate(e);
         }
@@ -367,8 +367,8 @@ public class OSMHistoryImport extends AbstractCommand implements CLICommand {
         return branchTrackingFile;
     }
 
-    private SymRef getHead(GeoGIG geogit) {
-        final Ref currentHead = geogit.command(RefParse.class).setName(Ref.HEAD).call().get();
+    private SymRef getHead(GeoGIG geogig) {
+        final Ref currentHead = geogig.command(RefParse.class).setName(Ref.HEAD).call().get();
         if (!(currentHead instanceof SymRef)) {
             throw new CommandFailedException("Cannot run on a dettached HEAD");
         }
@@ -384,8 +384,8 @@ public class OSMHistoryImport extends AbstractCommand implements CLICommand {
     private long insertChanges(GeogigCLI cli, final Iterator<Change> changes,
             @Nullable Envelope featureFilter) throws IOException {
 
-        final GeoGIG geogit = cli.getGeogit();
-        final Repository repository = geogit.getRepository();
+        final GeoGIG geogig = cli.getGeogig();
+        final Repository repository = geogig.getRepository();
         final WorkingTree workTree = repository.workingTree();
 
         Map<Long, Coordinate> thisChangePointCache = new LinkedHashMap<Long, Coordinate>() {
@@ -416,7 +416,7 @@ public class OSMHistoryImport extends AbstractCommand implements CLICommand {
             } else {
                 final Primitive primitive = change.getNode().isPresent() ? change.getNode().get()
                         : change.getWay().get();
-                final Geometry geom = parseGeometry(geogit, primitive, thisChangePointCache);
+                final Geometry geom = parseGeometry(geogig, primitive, thisChangePointCache);
                 if (geom instanceof Point) {
                     thisChangePointCache.put(Long.valueOf(primitive.getId()),
                             ((Point) geom).getCoordinate());
@@ -455,7 +455,7 @@ public class OSMHistoryImport extends AbstractCommand implements CLICommand {
      * @param thisChangePointCache
      * @return
      */
-    private Geometry parseGeometry(GeoGIG geogit, Primitive primitive,
+    private Geometry parseGeometry(GeoGIG geogig, Primitive primitive,
             Map<Long, Coordinate> thisChangePointCache) {
 
         if (primitive instanceof Relation) {
@@ -470,16 +470,16 @@ public class OSMHistoryImport extends AbstractCommand implements CLICommand {
         final Way way = (Way) primitive;
         final ImmutableList<Long> nodes = way.getNodes();
 
-        StagingArea index = geogit.getRepository().index();
+        StagingArea index = geogig.getRepository().index();
 
         FeatureBuilder featureBuilder = new FeatureBuilder(NODE_REV_TYPE);
         List<Coordinate> coordinates = Lists.newArrayList(nodes.size());
-        FindTreeChild findTreeChild = geogit.command(FindTreeChild.class);
+        FindTreeChild findTreeChild = geogig.command(FindTreeChild.class);
         findTreeChild.setIndex(true);
-        ObjectId rootTreeId = geogit.command(ResolveTreeish.class).setTreeish(Ref.HEAD).call()
+        ObjectId rootTreeId = geogig.command(ResolveTreeish.class).setTreeish(Ref.HEAD).call()
                 .get();
         if (!rootTreeId.isNull()) {
-            RevTree headTree = geogit.command(RevObjectParse.class).setObjectId(rootTreeId)
+            RevTree headTree = geogig.command(RevObjectParse.class).setObjectId(rootTreeId)
                     .call(RevTree.class).get();
             findTreeChild.setParent(headTree);
         }

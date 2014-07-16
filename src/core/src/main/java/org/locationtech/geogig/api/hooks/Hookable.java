@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
 import org.locationtech.geogig.api.AbstractGeoGigOp;
 
 /**
- * An annotation to indicate that a {@link AbstractGeoGigOp GeoGit operation} allows hooks
+ * An annotation to indicate that a {@link AbstractGeoGigOp GeoGig operation} allows hooks
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)

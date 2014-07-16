@@ -5,7 +5,7 @@
 
 package org.locationtech.geogig.rest.repository;
 
-import static org.locationtech.geogig.rest.repository.RESTUtils.getGeogit;
+import static org.locationtech.geogig.rest.repository.RESTUtils.getGeogig;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -140,7 +140,7 @@ public class FilteredChangesResource extends Finder {
                     }
                 }
 
-                final GeoGIG ggit = getGeogit(getRequest()).get();
+                final GeoGIG ggit = getGeogig(getRequest()).get();
                 final Repository repository = ggit.getRepository();
 
                 RevCommit commit = repository.getCommit(commitId);
@@ -175,7 +175,7 @@ public class FilteredChangesResource extends Finder {
             }
         }
 
-        private static final MediaType PACKED_OBJECTS = new MediaType("application/x-geogit-packed");
+        private static final MediaType PACKED_OBJECTS = new MediaType("application/x-geogig-packed");
 
         private class FilteredDiffIteratorRepresentation extends OutputRepresentation {
 

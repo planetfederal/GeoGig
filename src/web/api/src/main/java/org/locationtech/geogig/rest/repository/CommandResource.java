@@ -4,7 +4,7 @@
  */
 package org.locationtech.geogig.rest.repository;
 
-import static org.locationtech.geogig.rest.repository.RESTUtils.getGeogit;
+import static org.locationtech.geogig.rest.repository.RESTUtils.getGeogig;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -88,8 +88,8 @@ public class CommandResource extends Resource {
 
     private Representation runCommand(Variant variant, Request request) {
 
-        final Optional<GeoGIG> geogit = getGeogit(request);
-        Preconditions.checkState(geogit.isPresent());
+        final Optional<GeoGIG> geogig = getGeogig(request);
+        Preconditions.checkState(geogig.isPresent());
 
         Representation rep = null;
         WebAPICommand command = null;
@@ -105,7 +105,7 @@ public class CommandResource extends Resource {
         }
         try {
             if (command != null) {
-                RestletContext ctx = new RestletContext(geogit.get());
+                RestletContext ctx = new RestletContext(geogig.get());
                 command.run(ctx);
                 rep = ctx.getRepresentation(format, getJSONPCallback());
             }
@@ -178,15 +178,15 @@ public class CommandResource extends Resource {
 
         StreamResponse streamContent = null;
 
-        final GeoGIG geogit;
+        final GeoGIG geogig;
 
-        RestletContext(GeoGIG geogit) {
-            this.geogit = geogit;
+        RestletContext(GeoGIG geogig) {
+            this.geogig = geogig;
         }
 
         @Override
-        public GeoGIG getGeoGIT() {
-            return geogit;
+        public GeoGIG getGeoGIG() {
+            return geogig;
         }
 
         Representation getRepresentation(MediaType format, String callback) {

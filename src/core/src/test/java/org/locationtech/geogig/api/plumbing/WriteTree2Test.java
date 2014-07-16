@@ -56,7 +56,7 @@ public class WriteTree2Test extends RepositoryTestCase {
 
     private WriteTree2 command;
 
-    private GeoGIG geogit;
+    private GeoGIG geogig;
 
     private StagingDatabase indexDb;
 
@@ -68,10 +68,10 @@ public class WriteTree2Test extends RepositoryTestCase {
 
     @Override
     protected void setUpInternal() throws Exception {
-        geogit = getGeogit();
-        command = geogit.command(WriteTree2.class);
-        indexDb = geogit.getRepository().stagingDatabase();
-        objectDb = geogit.getRepository().objectDatabase();
+        geogig = getGeogig();
+        command = geogig.command(WriteTree2.class);
+        indexDb = geogig.getRepository().stagingDatabase();
+        objectDb = geogig.getRepository().objectDatabase();
     }
 
     @Override
@@ -523,7 +523,7 @@ public class WriteTree2Test extends RepositoryTestCase {
     }
 
     private ImmutableMap<String, NodeRef> getTreeRefsByPath(ObjectId newRepoRoot) {
-        Iterator<NodeRef> iterator = geogit.command(LsTreeOp.class)
+        Iterator<NodeRef> iterator = geogig.command(LsTreeOp.class)
                 .setReference(newRepoRoot.toString()).setStrategy(Strategy.DEPTHFIRST_ONLY_TREES)
                 .call();
         Function<NodeRef, String> keyFunction = new Function<NodeRef, String>() {
@@ -539,7 +539,7 @@ public class WriteTree2Test extends RepositoryTestCase {
     private ImmutableMap<String, NodeRef> getRefsByPath(ObjectId repoRoot, boolean includeFeatures) {
 
         Strategy strategy = includeFeatures ? Strategy.DEPTHFIRST : Strategy.DEPTHFIRST_ONLY_TREES;
-        Iterator<NodeRef> iterator = geogit.command(LsTreeOp.class)
+        Iterator<NodeRef> iterator = geogig.command(LsTreeOp.class)
                 .setReference(repoRoot.toString()).setStrategy(strategy).call();
         Function<NodeRef, String> keyFunction = new Function<NodeRef, String>() {
             @Override
@@ -553,7 +553,7 @@ public class WriteTree2Test extends RepositoryTestCase {
 
     private void print(ObjectId treeId) {
         System.err.println(treeId);
-        Iterator<NodeRef> iterator = geogit.command(LsTreeOp.class).setReference(treeId.toString())
+        Iterator<NodeRef> iterator = geogig.command(LsTreeOp.class).setReference(treeId.toString())
                 .setStrategy(Strategy.DEPTHFIRST).call();
         while (iterator.hasNext()) {
             print(iterator.next());
@@ -618,17 +618,17 @@ public class WriteTree2Test extends RepositoryTestCase {
     private RevTree createHeadTree(NodeRef... treeRefs) {
         RevTree root = createFromRefs(objectDb, treeRefs);
         objectDb.put(root);
-        CommitBuilder cb = new CommitBuilder(geogit.getPlatform());
+        CommitBuilder cb = new CommitBuilder(geogig.getPlatform());
         ObjectId treeId = root.getId();
 
         RevCommit commit = cb.setTreeId(treeId).setCommitter("Gabriel Roldan")
                 .setAuthor("Gabriel Roldan").build();
         objectDb.put(commit);
 
-        SymRef head = (SymRef) geogit.command(RefParse.class).setName(Ref.HEAD).call().get();
+        SymRef head = (SymRef) geogig.command(RefParse.class).setName(Ref.HEAD).call().get();
         final String currentBranch = head.getTarget();
 
-        geogit.command(UpdateRef.class).setName(currentBranch).setNewValue(commit.getId()).call();
+        geogig.command(UpdateRef.class).setName(currentBranch).setNewValue(commit.getId()).call();
 
         verifyRepositoryTree(NodeRef.ROOT, treeId);
         verifyTreeStructure(treeId, treeRefs);
@@ -653,7 +653,7 @@ public class WriteTree2Test extends RepositoryTestCase {
 
     private RevTree createStageHeadTree(NodeRef... treeRefs) {
         RevTree root = createFromRefs(indexDb, treeRefs);
-        geogit.command(UpdateRef.class).setName(Ref.STAGE_HEAD).setNewValue(root.getId()).call();
+        geogig.command(UpdateRef.class).setName(Ref.STAGE_HEAD).setNewValue(root.getId()).call();
         return root;
     }
 

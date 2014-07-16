@@ -38,14 +38,14 @@ import com.beust.jcommander.Parameters;
  * <p>
  * This command can be performed multiple times before a commit. It only adds the content of the
  * specified feature(s) at the time the add command is run; if you want subsequent changes included
- * in the next commit, then you must run {@code geogit add} again to add the new content to the
+ * in the next commit, then you must run {@code geogig add} again to add the new content to the
  * index.
  * <p>
  * CLI proxy for {@link AddOp}
  * <p>
  * Usage:
  * <ul>
- * <li> {@code geogit add [-n] [<pattern>...]}
+ * <li> {@code geogig add [-n] [<pattern>...]}
  * </ul>
  * 
  * @see AddOp
@@ -71,7 +71,7 @@ public class Add extends AbstractCommand implements CLICommand {
      */
     @Override
     public void runInternal(GeogigCLI cli) throws IOException {
-        final GeoGIG geogit = cli.getGeogit();
+        final GeoGIG geogig = cli.getGeogig();
 
         final ConsoleReader console = cli.getConsole();
 
@@ -82,10 +82,10 @@ public class Add extends AbstractCommand implements CLICommand {
             throw new InvalidParameterException("Only a single path is supported so far");
         }
 
-        List<Conflict> conflicts = geogit.command(ConflictsReadOp.class).call();
+        List<Conflict> conflicts = geogig.command(ConflictsReadOp.class).call();
 
         console.print("Counting unstaged elements...");
-        DiffObjectCount unstaged = geogit.getRepository().workingTree().countUnstaged(pathFilter);
+        DiffObjectCount unstaged = geogig.getRepository().workingTree().countUnstaged(pathFilter);
         if (0 == unstaged.count() && conflicts.isEmpty()) {
             console.println();
             console.println("No unstaged elements, exiting.");
@@ -95,7 +95,7 @@ public class Add extends AbstractCommand implements CLICommand {
         }
 
         console.println("Staging changes...");
-        AddOp op = geogit.command(AddOp.class);
+        AddOp op = geogig.command(AddOp.class);
         if (patterns.size() == 1) {
             op.addPattern(patterns.get(0));
         }
@@ -103,7 +103,7 @@ public class Add extends AbstractCommand implements CLICommand {
         WorkingTree workTree = op.setUpdateOnly(updateOnly)
                 .setProgressListener(cli.getProgressListener()).call();
 
-        DiffObjectCount staged = geogit.getRepository().index().countStaged(null);
+        DiffObjectCount staged = geogig.getRepository().index().countStaged(null);
         unstaged = workTree.countUnstaged(null);
 
         console.println(staged.featureCount() + " features and " + staged.treeCount()

@@ -167,7 +167,7 @@ public abstract class SQLiteConfigDatabase implements ConfigDatabase {
                 throw new ConfigException(StatusCode.USERHOME_NOT_SET);
             }
 
-            File globalDir = new File(home.getPath(), ".geogit");
+            File globalDir = new File(home.getPath(), ".geogig");
             if (globalDir.exists() && !globalDir.isDirectory()) {
                 throw new IllegalStateException(globalDir.getAbsolutePath()
                         + " exists but is not a directory");

@@ -110,7 +110,7 @@ public class CommandBuilder {
         } else if ("statistics".equalsIgnoreCase(commandName)) {
             command = buildStatistics(options);
         } else {
-            throw new CommandSpecException("'" + commandName + "' is not a geogit command");
+            throw new CommandSpecException("'" + commandName + "' is not a geogig command");
         }
 
         command.setTransactionId(options.getFirstValue("transactionId", null));

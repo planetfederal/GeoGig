@@ -1,16 +1,16 @@
 Feature: "pg import" command
-    In order to import data to Geogit
-    As a Geogit User
+    In order to import data to Geogig
+    As a Geogig User
     I want to import one or more tables from a PostGIS database
 
   Scenario: Try importing into an empty directory
     Given I am in an empty directory
-     When I run the command "pg import --table geogit_pg_test" on the PostGIS database
-     Then the response should start with "Not in a geogit repository"
+     When I run the command "pg import --table geogig_pg_test" on the PostGIS database
+     Then the response should start with "Not in a geogig repository"
       
   Scenario: Try to import a PostGIS table
     Given I have a repository
-     When I run the command "pg import --table geogit_pg_test" on the PostGIS database
+     When I run the command "pg import --table geogig_pg_test" on the PostGIS database
      Then the response should contain "Import successful."
 
   Scenario: Try to import a full PostGIS database
@@ -30,5 +30,5 @@ Feature: "pg import" command
      
   Scenario: Try to import with table and -all
     Given I have a repository
-     When I run the command "pg import --table geogit_pg_test --all" on the PostGIS database
+     When I run the command "pg import --table geogig_pg_test --all" on the PostGIS database
      Then the response should contain "Specify --all or --table <table>, both cannot be set."       

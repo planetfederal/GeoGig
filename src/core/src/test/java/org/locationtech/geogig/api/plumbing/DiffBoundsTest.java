@@ -60,12 +60,12 @@ public class DiffBoundsTest extends RepositoryTestCase {
         Feature p1ModifiedAgain = feature(pointsType, idP1, "StringProp1_1a", new Integer(1001),
                 "POINT(10 20)");// used to be POINT(1 2)
         insertAndAdd(p1ModifiedAgain);
-        commits.add(geogit.command(CommitOp.class).call());
+        commits.add(geogig.command(CommitOp.class).call());
 
         points1B_modified = feature(pointsType, idP1, "StringProp1B_1a", new Integer(2000),
                 "POINT(10 220)");
         insertAndAdd(points1B_modified);
-        commits.add(geogit.command(CommitOp.class).call());
+        commits.add(geogig.command(CommitOp.class).call());
 
         l1Modified = feature(linesType, idL1, "StringProp2_1", new Integer(1000),
                 "LINESTRING (1 1, -2 -2)");// used to be LINESTRING (1 1, 2 2)
@@ -79,7 +79,7 @@ public class DiffBoundsTest extends RepositoryTestCase {
         String oldRefSpec = "HEAD~3";
         String newRefSpec = "HEAD";
 
-        DiffSummary<BoundingBox, BoundingBox> diffBounds = geogit.command(DiffBounds.class)
+        DiffSummary<BoundingBox, BoundingBox> diffBounds = geogig.command(DiffBounds.class)
                 .setOldVersion(oldRefSpec).setNewVersion(newRefSpec)
                 .setCRS(pointsType.getCoordinateReferenceSystem()).call();
 
@@ -95,7 +95,7 @@ public class DiffBoundsTest extends RepositoryTestCase {
         String oldRefSpec = "HEAD";
         String newRefSpec = "HEAD";
 
-        DiffSummary<BoundingBox, BoundingBox> diffBounds = geogit.command(DiffBounds.class)
+        DiffSummary<BoundingBox, BoundingBox> diffBounds = geogig.command(DiffBounds.class)
                 .setOldVersion(oldRefSpec).setNewVersion(newRefSpec).call();
         assertTrue(diffBounds.getLeft().isEmpty());
         assertTrue(diffBounds.getRight().isEmpty());
@@ -105,7 +105,7 @@ public class DiffBoundsTest extends RepositoryTestCase {
     @Test
     public void testPathFiltering() throws Exception {
         insertAndAdd(l1Modified);
-        geogit.command(CommitOp.class).call();
+        geogig.command(CommitOp.class).call();
         insert(l2Modified);
 
         testPathFiltering("HEAD~3", "HEAD", l1Modified.getBounds(), linesName);
@@ -132,7 +132,7 @@ public class DiffBoundsTest extends RepositoryTestCase {
         if (expected != null) {
             crs = expected.getCoordinateReferenceSystem();
         }
-        DiffSummary<BoundingBox, BoundingBox> result = geogit.command(DiffBounds.class)//
+        DiffSummary<BoundingBox, BoundingBox> result = geogig.command(DiffBounds.class)//
                 .setOldVersion(oldVersion)//
                 .setNewVersion(newVersion)//
                 .setPathFilters(filter)//
@@ -149,7 +149,7 @@ public class DiffBoundsTest extends RepositoryTestCase {
 
     @Test
     public void testDefaultCrs() {
-        DiffSummary<BoundingBox, BoundingBox> diffBounds = geogit.command(DiffBounds.class)
+        DiffSummary<BoundingBox, BoundingBox> diffBounds = geogig.command(DiffBounds.class)
                 .setOldVersion("HEAD^").setNewVersion("HEAD").call();
 
         assertEquals(DEFAULT_CRS, diffBounds.getLeft().getCoordinateReferenceSystem());
@@ -159,7 +159,7 @@ public class DiffBoundsTest extends RepositoryTestCase {
 
     @Test
     public void testReprojectToTargetCRS() throws Exception {
-        DiffBounds cmd = geogit.command(DiffBounds.class).setOldVersion("HEAD^")
+        DiffBounds cmd = geogig.command(DiffBounds.class).setOldVersion("HEAD^")
                 .setNewVersion("HEAD");
 
         DiffSummary<BoundingBox, BoundingBox> defaultCrs = cmd.call();
@@ -186,24 +186,24 @@ public class DiffBoundsTest extends RepositoryTestCase {
         final int leftCount = RevTree.NORMALIZED_SIZE_LIMIT * 2;
         final int rightCount = RevTree.NORMALIZED_SIZE_LIMIT * 3;
 
-        WorkingTree workingTree = geogit.getRepository().workingTree();
+        WorkingTree workingTree = geogig.getRepository().workingTree();
         final String typeName = "newpoints";
 
         final DefaultProgressListener listener = new DefaultProgressListener();
         workingTree.insert(typeName, new TestFeatureIterator(typeName, leftCount), listener, null,
                 null);
-        geogit.command(AddOp.class).call();
+        geogig.command(AddOp.class).call();
 
         workingTree.insert(typeName, new TestFeatureIterator(typeName, rightCount), listener, null,
                 null);
 
         {// sanity check
-            long diffFeatures = geogit.command(DiffCount.class).setOldVersion("STAGE_HEAD")
+            long diffFeatures = geogig.command(DiffCount.class).setOldVersion("STAGE_HEAD")
                     .setNewVersion("WORK_HEAD").call().featureCount();
             assertEquals(rightCount - leftCount, diffFeatures);
         }
 
-        DiffBounds cmd = geogit.command(DiffBounds.class).setOldVersion("STAGE_HEAD")
+        DiffBounds cmd = geogig.command(DiffBounds.class).setOldVersion("STAGE_HEAD")
                 .setNewVersion("WORK_HEAD");
 
         final CoordinateReferenceSystem nativeCrs = CRS.decode("EPSG:3857");

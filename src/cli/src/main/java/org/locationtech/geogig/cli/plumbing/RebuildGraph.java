@@ -34,7 +34,7 @@ public class RebuildGraph extends AbstractCommand implements CLICommand {
 
     @Override
     public void runInternal(GeogigCLI cli) throws IOException {
-        ImmutableList<ObjectId> updatedObjects = cli.getGeogit().command(RebuildGraphOp.class)
+        ImmutableList<ObjectId> updatedObjects = cli.getGeogig().command(RebuildGraphOp.class)
                 .call();
 
         final ConsoleReader console = cli.getConsole();

@@ -71,7 +71,7 @@ public abstract class AbstractMappedRemoteRepo implements IRemoteRepo {
         Preconditions.checkState(filterFile != null, "No filter found for sparse clone.");
         try {
             Optional<URL> envHome = localRepository.command(ResolveGeogigDir.class).call();
-            checkState(envHome.isPresent(), "Not inside a geogit directory");
+            checkState(envHome.isPresent(), "Not inside a geogig directory");
             final URL envLocation = envHome.get();
             if (!"file".equals(envLocation.getProtocol())) {
                 throw new UnsupportedOperationException(

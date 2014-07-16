@@ -63,49 +63,49 @@ public class VersionInfo {
     }
 
     /**
-     * @return the Git branch that GeoGit was built from
+     * @return the Git branch that GeoGig was built from
      */
     public String getBranch() {
         return this.branch;
     }
 
     /**
-     * @return the last commit id on the branch that GeoGit was built from
+     * @return the last commit id on the branch that GeoGig was built from
      */
     public String getCommitId() {
         return this.commitId;
     }
 
     /**
-     * @return the last commit id (abbreviated) on the branch that GeoGit was built from
+     * @return the last commit id (abbreviated) on the branch that GeoGig was built from
      */
     public String getCommitIdAbbrev() {
         return this.commitIdAbbrev;
     }
 
     /**
-     * @return the committer name of the last commit on the branch that GeoGit was built from
+     * @return the committer name of the last commit on the branch that GeoGig was built from
      */
     public String getCommitUserName() {
         return this.commitUserName;
     }
 
     /**
-     * @return the committer email of the last commit on the branch that GeoGit was built from
+     * @return the committer email of the last commit on the branch that GeoGig was built from
      */
     public String getCommitUserEmail() {
         return this.commitUserEmail;
     }
 
     /**
-     * @return the full commit message of the last commit on the branch that GeoGit was built from
+     * @return the full commit message of the last commit on the branch that GeoGig was built from
      */
     public String getCommitMessageFull() {
         return this.commitMessageFull;
     }
 
     /**
-     * @return the shortened commit message of the last commit on the branch that GeoGit was built
+     * @return the shortened commit message of the last commit on the branch that GeoGig was built
      *         from
      */
     public String getCommitMessageShort() {
@@ -113,7 +113,7 @@ public class VersionInfo {
     }
 
     /**
-     * @return the commit time of the last commit on the branch that GeoGit was built from
+     * @return the commit time of the last commit on the branch that GeoGig was built from
      */
     public String getCommitTime() {
         return this.commitTime;

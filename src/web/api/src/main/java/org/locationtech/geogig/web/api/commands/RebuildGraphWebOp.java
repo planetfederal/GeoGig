@@ -15,7 +15,7 @@ import org.locationtech.geogig.web.api.ResponseWriter;
 import com.google.common.collect.ImmutableList;
 
 /**
- * Interface for the rebuild graph operation in GeoGit.
+ * Interface for the rebuild graph operation in GeoGig.
  * 
  * Web interface for {@link RebuildGraphOp}
  */
@@ -40,9 +40,9 @@ public class RebuildGraphWebOp extends AbstractWebAPICommand {
      */
     @Override
     public void run(CommandContext context) {
-        final Context geogit = this.getCommandLocator(context);
+        final Context geogig = this.getCommandLocator(context);
 
-        final ImmutableList<ObjectId> updatedObjects = geogit.command(RebuildGraphOp.class).call();
+        final ImmutableList<ObjectId> updatedObjects = geogig.command(RebuildGraphOp.class).call();
 
         context.setResponseContent(new CommandResponse() {
             @Override

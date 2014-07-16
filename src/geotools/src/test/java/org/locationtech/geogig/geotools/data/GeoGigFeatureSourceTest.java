@@ -68,11 +68,11 @@ public class GeoGigFeatureSourceTest extends RepositoryTestCase {
 
     @Override
     protected void setUpInternal() throws Exception {
-        dataStore = new GeoGigDataStore(geogit);
+        dataStore = new GeoGigDataStore(geogig);
         dataStore.createSchema(super.pointsType);
         dataStore.createSchema(super.linesType);
         insertAndAdd(points1, points2, points3, lines1, lines2, lines3);
-        geogit.command(CommitOp.class).setAuthor("yo", "yo@test.com")
+        geogig.command(CommitOp.class).setAuthor("yo", "yo@test.com")
                 .setCommitter("me", "me@test.com").setMessage("initial import").call();
 
         pointsSource = dataStore.getFeatureSource(pointsTypeName);

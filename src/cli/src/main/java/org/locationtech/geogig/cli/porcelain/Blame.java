@@ -61,12 +61,12 @@ public class Blame extends AbstractCommand {
         checkParameter(!paths.isEmpty(), "A path must be specified");
 
         ConsoleReader console = cli.getConsole();
-        GeoGIG geogit = cli.getGeogit();
+        GeoGIG geogig = cli.getGeogig();
 
         String path = paths.get(0);
 
         try {
-            BlameReport report = geogit.command(BlameOp.class).setPath(path).call();
+            BlameReport report = geogig.command(BlameOp.class).setPath(path).call();
 
             Map<String, ValueAndCommit> changes = report.getChanges();
             Iterator<String> iter = changes.keySet().iterator();

@@ -73,7 +73,7 @@ public class LsTree extends AbstractCommand implements CLICommand {
                 lsStrategy = Strategy.TREES_ONLY;
             }
         }
-        Iterator<NodeRef> iter = cli.getGeogit().command(LsTreeOp.class).setReference(ref)
+        Iterator<NodeRef> iter = cli.getGeogig().command(LsTreeOp.class).setReference(ref)
                 .setStrategy(lsStrategy).call();
 
         final ConsoleReader console = cli.getConsole();
@@ -98,7 +98,7 @@ public class LsTree extends AbstractCommand implements CLICommand {
                             .append(input.objectId().toString()).append(' ').append(input.path())
                             .append(' ').append(sbenv);
                     if (input.getType().equals(TYPE.TREE)) {
-                        RevTree tree = cli.getGeogit().command(RevObjectParse.class)
+                        RevTree tree = cli.getGeogig().command(RevObjectParse.class)
                                 .setObjectId(input.objectId()).call(RevTree.class).get();
                         sb.append(' ').append(tree.size()).append(' ').append(tree.numTrees());
                     }

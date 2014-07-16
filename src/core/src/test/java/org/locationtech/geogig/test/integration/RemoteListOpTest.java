@@ -26,7 +26,7 @@ public class RemoteListOpTest extends RepositoryTestCase {
 
     @Test
     public void testListNoRemotes() {
-        final RemoteListOp remoteList = geogit.command(RemoteListOp.class);
+        final RemoteListOp remoteList = geogig.command(RemoteListOp.class);
 
         ImmutableList<Remote> allRemotes = remoteList.call();
 
@@ -35,7 +35,7 @@ public class RemoteListOpTest extends RepositoryTestCase {
 
     @Test
     public void testListMultipleRemotes() {
-        final RemoteAddOp remoteAdd = geogit.command(RemoteAddOp.class);
+        final RemoteAddOp remoteAdd = geogig.command(RemoteAddOp.class);
 
         String remoteName1 = "myremote";
         String remoteURL1 = "http://test.com";
@@ -59,7 +59,7 @@ public class RemoteListOpTest extends RepositoryTestCase {
         assertEquals("+refs/heads/" + branch + ":refs/remotes/" + remoteName2 + "/" + branch,
                 remote.getFetch());
 
-        final RemoteListOp remoteList = geogit.command(RemoteListOp.class);
+        final RemoteListOp remoteList = geogig.command(RemoteListOp.class);
 
         ImmutableList<Remote> allRemotes = remoteList.call();
 
@@ -89,7 +89,7 @@ public class RemoteListOpTest extends RepositoryTestCase {
 
     @Test
     public void testListRemoteWithNoURL() {
-        final RemoteAddOp remoteAdd = geogit.command(RemoteAddOp.class);
+        final RemoteAddOp remoteAdd = geogig.command(RemoteAddOp.class);
 
         String remoteName = "myremote";
         String remoteURL = "http://test.com";
@@ -101,10 +101,10 @@ public class RemoteListOpTest extends RepositoryTestCase {
         assertEquals(remoteURL, remote.getPushURL());
         assertEquals("+refs/heads/*:refs/remotes/" + remoteName + "/*", remote.getFetch());
 
-        final ConfigOp config = geogit.command(ConfigOp.class);
+        final ConfigOp config = geogig.command(ConfigOp.class);
         config.setAction(ConfigAction.CONFIG_UNSET).setName("remote." + remoteName + ".url").call();
 
-        final RemoteListOp remoteList = geogit.command(RemoteListOp.class);
+        final RemoteListOp remoteList = geogig.command(RemoteListOp.class);
 
         ImmutableList<Remote> allRemotes = remoteList.call();
 
@@ -113,7 +113,7 @@ public class RemoteListOpTest extends RepositoryTestCase {
 
     @Test
     public void testListRemoteWithNoFetch() {
-        final RemoteAddOp remoteAdd = geogit.command(RemoteAddOp.class);
+        final RemoteAddOp remoteAdd = geogig.command(RemoteAddOp.class);
 
         String remoteName = "myremote";
         String remoteURL = "http://test.com";
@@ -125,11 +125,11 @@ public class RemoteListOpTest extends RepositoryTestCase {
         assertEquals(remoteURL, remote.getPushURL());
         assertEquals("+refs/heads/*:refs/remotes/" + remoteName + "/*", remote.getFetch());
 
-        final ConfigOp config = geogit.command(ConfigOp.class);
+        final ConfigOp config = geogig.command(ConfigOp.class);
         config.setAction(ConfigAction.CONFIG_UNSET).setName("remote." + remoteName + ".fetch")
                 .call();
 
-        final RemoteListOp remoteList = geogit.command(RemoteListOp.class);
+        final RemoteListOp remoteList = geogig.command(RemoteListOp.class);
 
         ImmutableList<Remote> allRemotes = remoteList.call();
 

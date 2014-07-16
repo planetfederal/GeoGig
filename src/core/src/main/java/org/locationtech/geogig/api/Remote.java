@@ -20,7 +20,7 @@ import com.google.common.base.Optional;
 import com.google.common.base.Strings;
 
 /**
- * Internal representation of a GeoGit remote repository.
+ * Internal representation of a GeoGig remote repository.
  * 
  */
 public class Remote {

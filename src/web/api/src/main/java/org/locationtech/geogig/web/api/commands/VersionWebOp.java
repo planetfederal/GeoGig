@@ -13,7 +13,7 @@ import org.locationtech.geogig.web.api.CommandResponse;
 import org.locationtech.geogig.web.api.ResponseWriter;
 
 /**
- * Interface for the Version operation in the GeoGit.
+ * Interface for the Version operation in the GeoGig.
  * 
  * Web interface for {@link VersionOp}, {@link VersionInfo}
  */
@@ -27,9 +27,9 @@ public class VersionWebOp extends AbstractWebAPICommand {
      */
     @Override
     public void run(CommandContext context) {
-        final Context geogit = this.getCommandLocator(context);
+        final Context geogig = this.getCommandLocator(context);
 
-        final VersionInfo info = geogit.command(VersionOp.class).call();
+        final VersionInfo info = geogig.command(VersionOp.class).call();
 
         context.setResponseContent(new CommandResponse() {
             @Override

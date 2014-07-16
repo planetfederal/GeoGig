@@ -80,14 +80,14 @@ public class DataStoreConcurrencyTest {
         TestPlatform platform = new TestPlatform(workingDirectory);
         platform.setUserHome(userHomeDirectory);
         Context injector = new CLITestContextBuilder(platform).build();
-        GeoGIG geogit = new GeoGIG(injector);
-        geogit.command(InitOp.class).call();
-        geogit.command(ConfigOp.class).setAction(ConfigAction.CONFIG_SET).setName("user.name")
+        GeoGIG geogig = new GeoGIG(injector);
+        geogig.command(InitOp.class).call();
+        geogig.command(ConfigOp.class).setAction(ConfigAction.CONFIG_SET).setName("user.name")
                 .setValue("gabriel").call();
-        geogit.command(ConfigOp.class).setAction(ConfigAction.CONFIG_SET).setName("user.email")
+        geogig.command(ConfigOp.class).setAction(ConfigAction.CONFIG_SET).setName("user.email")
                 .setValue("gabriel@roldan.example.com").call();
 
-        store = new GeoGigDataStore(geogit);
+        store = new GeoGigDataStore(geogig);
 
         store.createSchema(pointType);
 
@@ -96,7 +96,7 @@ public class DataStoreConcurrencyTest {
 
         readThreads = Executors.newFixedThreadPool(readThreadCount, new ThreadFactoryBuilder()
                 .setNameFormat("read-thread-%d").build());
-        initialCommitCount = copyOf(store.getGeogit().command(LogOp.class).call()).size();
+        initialCommitCount = copyOf(store.getGeogig().command(LogOp.class).call()).size();
     }
 
     @After
@@ -120,7 +120,7 @@ public class DataStoreConcurrencyTest {
             assertEquals(insertsPerTask, f.get().intValue());
         }
 
-        List<RevCommit> commits = copyOf(store.getGeogit().command(LogOp.class).call());
+        List<RevCommit> commits = copyOf(store.getGeogig().command(LogOp.class).call());
         final int expectedCommitCount = initialCommitCount + insertsPerTask * writeThreadCount;
         assertEquals(expectedCommitCount, commits.size());
     }
@@ -159,7 +159,7 @@ public class DataStoreConcurrencyTest {
             assertEquals(readsPerTask, f.get().intValue());
         }
 
-        List<RevCommit> commits = copyOf(store.getGeogit().command(LogOp.class).call());
+        List<RevCommit> commits = copyOf(store.getGeogig().command(LogOp.class).call());
         final int expectedCommitCount = insertsPerTask + initialCommitCount + insertsPerTask
                 * writeThreadCount;
         assertEquals(expectedCommitCount, commits.size());

@@ -18,11 +18,11 @@ import com.google.common.base.Preconditions;
 import com.google.common.base.Throwables;
 
 /**
- * Resolves the location of the {@code .geogit} repository directory relative to the
+ * Resolves the location of the {@code .geogig} repository directory relative to the
  * {@link Platform#pwd() current directory}.
  * <p>
  * The location can be a either the current directory, a parent of it, or {@code null} if no
- * {@code .geogit} directory is found.
+ * {@code .geogig} directory is found.
  * 
  */
 public class ResolveGeogigDir extends AbstractGeoGigOp<Optional<URL>> {
@@ -39,7 +39,7 @@ public class ResolveGeogigDir extends AbstractGeoGigOp<Optional<URL>> {
 
     public static Optional<URL> lookup(final File directory) {
         try {
-            return Optional.fromNullable(lookupGeogitDirectory(directory));
+            return Optional.fromNullable(lookupGeogigDirectory(directory));
         } catch (IOException e) {
             throw Throwables.propagate(e);
         }
@@ -51,7 +51,7 @@ public class ResolveGeogigDir extends AbstractGeoGigOp<Optional<URL>> {
     }
 
     /**
-     * @return the location of the {@code .geogit} repository environment directory or {@code null}
+     * @return the location of the {@code .geogig} repository environment directory or {@code null}
      *         if not inside a working directory
      * @see org.locationtech.geogig.api.AbstractGeoGigOp#call()
      */
@@ -78,15 +78,15 @@ public class ResolveGeogigDir extends AbstractGeoGigOp<Optional<URL>> {
 
     /**
      * @param file the directory to search
-     * @return the location of the {@code .geogit} repository environment directory or {@code null}
+     * @return the location of the {@code .geogig} repository environment directory or {@code null}
      *         if not inside a working directory
      */
-    private static URL lookupGeogitDirectory(@Nullable File file) throws IOException {
+    private static URL lookupGeogigDirectory(@Nullable File file) throws IOException {
         if (file == null) {
             return null;
         }
         if (file.isDirectory()) {
-            if (file.getName().equals(".geogit")) {
+            if (file.getName().equals(".geogig")) {
                 return file.toURI().toURL();
             }
             File[] contents = file.listFiles();
@@ -94,12 +94,12 @@ public class ResolveGeogigDir extends AbstractGeoGigOp<Optional<URL>> {
                     "Either '%s' is not a directory or an I/O error ocurred listing its contents",
                     file.getAbsolutePath());
             for (File dir : contents) {
-                if (dir.isDirectory() && dir.getName().equals(".geogit")) {
-                    return lookupGeogitDirectory(dir);
+                if (dir.isDirectory() && dir.getName().equals(".geogig")) {
+                    return lookupGeogigDirectory(dir);
                 }
             }
         }
-        return lookupGeogitDirectory(file.getParentFile());
+        return lookupGeogigDirectory(file.getParentFile());
     }
 
 }

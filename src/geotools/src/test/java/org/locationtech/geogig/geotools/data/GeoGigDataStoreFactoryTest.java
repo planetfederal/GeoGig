@@ -46,7 +46,7 @@ public class GeoGigDataStoreFactoryTest extends RepositoryTestCase {
     @Override
     protected void setUpInternal() throws Exception {
         factory = new GeoGigDataStoreFactory();
-        repoDirectory = geogit.getPlatform().pwd();
+        repoDirectory = geogig.getPlatform().pwd();
     }
 
     @Test
@@ -120,7 +120,7 @@ public class GeoGigDataStoreFactoryTest extends RepositoryTestCase {
             factory.createDataStore(params);
             fail("Expectd IOE on non existing repository");
         } catch (IOException e) {
-            assertTrue(e.getMessage(), e.getMessage().contains("not a geogit repository"));
+            assertTrue(e.getMessage(), e.getMessage().contains("not a geogig repository"));
         }
     }
 

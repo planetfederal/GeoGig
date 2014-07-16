@@ -144,8 +144,8 @@ public class InitOpTest {
 
         Repository created = init.call();
         assertSame(mockRepo, created);
-        assertTrue(new File(workingDir, ".geogit").exists());
-        assertTrue(new File(workingDir, ".geogit").isDirectory());
+        assertTrue(new File(workingDir, ".geogig").exists());
+        assertTrue(new File(workingDir, ".geogig").isDirectory());
 
         verify(injector, times(1)).repository();
         verify(platform, atLeastOnce()).pwd();
@@ -177,8 +177,8 @@ public class InitOpTest {
         verify(mockUpdateRef, times(3)).call();
         verify(mockUpdateSymRef, times(1)).call();
 
-        assertTrue(new File(workingDir, ".geogit").exists());
-        assertTrue(new File(workingDir, ".geogit").isDirectory());
+        assertTrue(new File(workingDir, ".geogig").exists());
+        assertTrue(new File(workingDir, ".geogig").isDirectory());
 
         Ref master = new Ref(Ref.MASTER, ObjectId.forString("hash me"));
 

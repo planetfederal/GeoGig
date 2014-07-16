@@ -28,8 +28,8 @@ public class ConflictsReadWriteOpTest extends RepositoryTestCase {
         Conflict conflict2 = new Conflict(idP2, ObjectId.forString("ancestor2"),
                 ObjectId.forString("ours2"), ObjectId.forString("theirs2"));
         ArrayList<Conflict> conflicts = Lists.newArrayList(conflict, conflict2);
-        geogit.command(ConflictsWriteOp.class).setConflicts(conflicts).call();
-        List<Conflict> returnedConflicts = geogit.command(ConflictsReadOp.class).call();
+        geogig.command(ConflictsWriteOp.class).setConflicts(conflicts).call();
+        List<Conflict> returnedConflicts = geogig.command(ConflictsReadOp.class).call();
         assertEquals(conflicts, returnedConflicts);
     }
 

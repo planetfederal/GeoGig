@@ -1,6 +1,6 @@
 Feature: "rm" command
     In order to remove features from the repository
-    As a Geogit User
+    As a Geogig User
     I want to delete features and trees from the working tree
 
   Scenario: Try to delete a single feature

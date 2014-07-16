@@ -28,7 +28,7 @@ import com.google.common.collect.Maps;
 import com.ning.compress.lzf.LZFInputStream;
 
 /**
- * Provides an implementation of a GeoGit object database that utilizes the heap for the storage of
+ * Provides an implementation of a GeoGig object database that utilizes the heap for the storage of
  * objects.
  * 
  * @see AbstractObjectDatabase
@@ -63,7 +63,7 @@ public class HeapObjectDatabse extends AbstractObjectDatabase implements ObjectD
     }
 
     /**
-     * Opens the database for use by GeoGit.
+     * Opens the database for use by GeoGig.
      */
     @Override
     public void open() {

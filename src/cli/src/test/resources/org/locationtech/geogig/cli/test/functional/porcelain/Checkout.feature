@@ -1,6 +1,6 @@
 Feature: "checkout" command
 	In order to view an alternate version of the data
-	As a Geogit User
+	As a Geogig User
 	I want to be able to checkout out branches
 	
   Scenario: Create a new branch and check it out
@@ -15,7 +15,7 @@ Feature: "checkout" command
   Scenario: Try to checkout something while not in a repository
   	Given I am in an empty directory
   	 When I run the command "checkout noBranch"
-  	 Then the response should contain "Not in a geogit repository"
+  	 Then the response should contain "Not in a geogig repository"
   	  And it should exit with non-zero exit code
   	 
   Scenario: Try to checkout without specifying a path

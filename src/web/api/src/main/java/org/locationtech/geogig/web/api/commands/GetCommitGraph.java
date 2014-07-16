@@ -82,8 +82,8 @@ public class GetCommitGraph extends AbstractWebAPICommand {
         if (commitId.equals(ObjectId.NULL.toString())) {
             throw new CommandSpecException("No commitId was given.");
         }
-        final GeoGIG geogit = context.getGeoGIT();
-        RevCommit commit = geogit.getRepository().getCommit(ObjectId.valueOf(commitId));
+        final GeoGIG geogig = context.getGeoGIG();
+        RevCommit commit = geogig.getRepository().getCommit(ObjectId.valueOf(commitId));
         final List<RevCommit> history = Lists.newLinkedList();
 
         List<CommitNode> nodes = Lists.newLinkedList();
@@ -97,7 +97,7 @@ public class GetCommitGraph extends AbstractWebAPICommand {
             }
             if (this.depth == 0 || node.depth < this.depth) {
                 for (ObjectId id : node.commit.getParentIds()) {
-                    nodes.add(new CommitNode(geogit.getRepository().getCommit(id), node.depth + 1));
+                    nodes.add(new CommitNode(geogig.getRepository().getCommit(id), node.depth + 1));
                 }
             }
         }

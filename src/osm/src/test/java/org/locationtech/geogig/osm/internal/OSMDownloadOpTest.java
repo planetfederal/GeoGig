@@ -42,13 +42,13 @@ public class OSMDownloadOpTest extends RepositoryTestCase {
     public void testDownloadNodes() throws Exception {
         String filename = OSMImportOp.class.getResource("nodes_overpass_filter.txt").getFile();
         File filterFile = new File(filename);
-        OSMDownloadOp download = geogit.command(OSMDownloadOp.class);
+        OSMDownloadOp download = geogig.command(OSMDownloadOp.class);
         download.setFilterFile(filterFile).setOsmAPIUrl(OSMUtils.DEFAULT_API_ENDPOINT).call();
-        Optional<Node> tree = geogit.getRepository().getRootTreeChild("node");
+        Optional<Node> tree = geogig.getRepository().getRootTreeChild("node");
         assertTrue(tree.isPresent());
-        List<OSMLogEntry> entries = geogit.command(ReadOSMLogEntries.class).call();
+        List<OSMLogEntry> entries = geogig.command(ReadOSMLogEntries.class).call();
         assertFalse(entries.isEmpty());
-        Iterator<RevCommit> log = geogit.command(LogOp.class).call();
+        Iterator<RevCommit> log = geogig.command(LogOp.class).call();
         assertTrue(log.hasNext());
     }
 
@@ -58,7 +58,7 @@ public class OSMDownloadOpTest extends RepositoryTestCase {
         String filename = OSMImportOp.class.getResource("empty_filter.txt").getFile();
         File filterFile = new File(filename);
         try {
-            OSMDownloadOp download = geogit.command(OSMDownloadOp.class);
+            OSMDownloadOp download = geogig.command(OSMDownloadOp.class);
             download.setFilterFile(filterFile).setOsmAPIUrl(OSMUtils.DEFAULT_API_ENDPOINT).call();
             fail();
         } catch (IllegalArgumentException e) {
@@ -71,15 +71,15 @@ public class OSMDownloadOpTest extends RepositoryTestCase {
     public void testDowloadNodesWithDestinationFile() throws Exception {
         String filename = OSMImportOp.class.getResource("nodes_overpass_filter.txt").getFile();
         File filterFile = new File(filename);
-        File downloadFile = File.createTempFile("osm-geogit", ".xml");
-        OSMDownloadOp download = geogit.command(OSMDownloadOp.class);
+        File downloadFile = File.createTempFile("osm-geogig", ".xml");
+        OSMDownloadOp download = geogig.command(OSMDownloadOp.class);
         download.setFilterFile(filterFile).setSaveFile(downloadFile)
                 .setOsmAPIUrl(OSMUtils.DEFAULT_API_ENDPOINT).call();
-        Optional<Node> tree = geogit.getRepository().getRootTreeChild("node");
+        Optional<Node> tree = geogig.getRepository().getRootTreeChild("node");
         assertTrue(tree.isPresent());
-        List<OSMLogEntry> entries = geogit.command(ReadOSMLogEntries.class).call();
+        List<OSMLogEntry> entries = geogig.command(ReadOSMLogEntries.class).call();
         assertFalse(entries.isEmpty());
-        Iterator<RevCommit> log = geogit.command(LogOp.class).call();
+        Iterator<RevCommit> log = geogig.command(LogOp.class).call();
         assertTrue(log.hasNext());
     }
 
@@ -88,13 +88,13 @@ public class OSMDownloadOpTest extends RepositoryTestCase {
     public void testDownaloadWays() throws Exception {
         String filename = OSMImportOp.class.getResource("ways_overpass_filter.txt").getFile();
         File filterFile = new File(filename);
-        OSMDownloadOp download = geogit.command(OSMDownloadOp.class);
+        OSMDownloadOp download = geogig.command(OSMDownloadOp.class);
         download.setFilterFile(filterFile).setOsmAPIUrl(OSMUtils.DEFAULT_API_ENDPOINT).call();
-        Optional<Node> tree = geogit.getRepository().getRootTreeChild("node");
+        Optional<Node> tree = geogig.getRepository().getRootTreeChild("node");
         assertTrue(tree.isPresent());
-        tree = geogit.getRepository().getRootTreeChild("way");
+        tree = geogig.getRepository().getRootTreeChild("way");
         assertTrue(tree.isPresent());
-        Iterator<RevCommit> log = geogit.command(LogOp.class).call();
+        Iterator<RevCommit> log = geogig.command(LogOp.class).call();
         assertTrue(log.hasNext());
     }
 
@@ -105,7 +105,7 @@ public class OSMDownloadOpTest extends RepositoryTestCase {
                 .getFile();
         File filterFile = new File(filename);
         try {
-            OSMDownloadOp download = geogit.command(OSMDownloadOp.class);
+            OSMDownloadOp download = geogig.command(OSMDownloadOp.class);
             download.setFilterFile(filterFile).setOsmAPIUrl(OSMUtils.DEFAULT_API_ENDPOINT).call();
         } catch (IllegalArgumentException e) {
             assertTrue(e.getMessage().startsWith("The specified filter did not return any element"));
@@ -116,12 +116,12 @@ public class OSMDownloadOpTest extends RepositoryTestCase {
     @Ignore
     @Test
     public void testDownloadWithBBox() throws Exception {
-        OSMDownloadOp download = geogit.command(OSMDownloadOp.class);
+        OSMDownloadOp download = geogig.command(OSMDownloadOp.class);
         download.setBbox(Arrays.asList("50.79", "7.19", "50.8", "7.20"))
                 .setOsmAPIUrl(OSMUtils.DEFAULT_API_ENDPOINT).call();
-        Optional<Node> tree = geogit.getRepository().getRootTreeChild("way");
+        Optional<Node> tree = geogig.getRepository().getRootTreeChild("way");
         assertTrue(tree.isPresent());
-        Iterator<RevCommit> log = geogit.command(LogOp.class).call();
+        Iterator<RevCommit> log = geogig.command(LogOp.class).call();
         assertTrue(log.hasNext());
     }
 
@@ -129,9 +129,9 @@ public class OSMDownloadOpTest extends RepositoryTestCase {
     @Test
     public void testDownloadWithBBoxAndAlternativeUrl() throws Exception {
         String url = "http://api.openstreetmap.fr/oapi/interpreter/";
-        OSMDownloadOp download = geogit.command(OSMDownloadOp.class);
+        OSMDownloadOp download = geogig.command(OSMDownloadOp.class);
         download.setBbox(Arrays.asList("50.79", "7.19", "50.8", "7.20")).setOsmAPIUrl(url).call();
-        Optional<Node> tree = geogit.getRepository().getRootTreeChild("way");
+        Optional<Node> tree = geogig.getRepository().getRootTreeChild("way");
         assertTrue(tree.isPresent());
     }
 
@@ -140,19 +140,19 @@ public class OSMDownloadOpTest extends RepositoryTestCase {
     public void testDownloadWithBBoxAndMapping() throws Exception {
         String mappingFilename = OSMMapOp.class.getResource("mapping.json").getFile();
         File mappingFile = new File(mappingFilename);
-        OSMDownloadOp download = geogit.command(OSMDownloadOp.class);
+        OSMDownloadOp download = geogig.command(OSMDownloadOp.class);
         download.setMappingFile(mappingFile)
                 .setBbox(Arrays.asList("50.79", "7.19", "50.8", "7.20"))
                 .setOsmAPIUrl(OSMUtils.DEFAULT_API_ENDPOINT).call();
-        Optional<Node> tree = geogit.getRepository().getRootTreeChild("way");
+        Optional<Node> tree = geogig.getRepository().getRootTreeChild("way");
         assertTrue(tree.isPresent());
-        tree = geogit.getRepository().getRootTreeChild("onewaystreets");
+        tree = geogig.getRepository().getRootTreeChild("onewaystreets");
         assertTrue(tree.isPresent());
         // check it has created mapping log files
-        File osmMapFolder = geogit.command(ResolveOSMMappingLogFolder.class).call();
+        File osmMapFolder = geogig.command(ResolveOSMMappingLogFolder.class).call();
         File file = new File(osmMapFolder, "onewaystreets");
         assertTrue(file.exists());
-        file = new File(osmMapFolder, geogit.getRepository().workingTree().getTree().getId()
+        file = new File(osmMapFolder, geogig.getRepository().workingTree().getTree().getId()
                 .toString());
         assertTrue(file.exists());
     }
@@ -160,7 +160,7 @@ public class OSMDownloadOpTest extends RepositoryTestCase {
     @Test
     public void testImportWithWrongBBox() throws Exception {
         try {
-            OSMDownloadOp download = geogit.command(OSMDownloadOp.class);
+            OSMDownloadOp download = geogig.command(OSMDownloadOp.class);
             download.setBbox(Arrays.asList("asdads", "7.19", "50.8", "7.20"))
                     .setOsmAPIUrl(OSMUtils.DEFAULT_API_ENDPOINT).call();
             fail();
@@ -171,7 +171,7 @@ public class OSMDownloadOpTest extends RepositoryTestCase {
     @Test
     public void testImportWithWrongUrl() throws Exception {
         try {
-            OSMDownloadOp download = geogit.command(OSMDownloadOp.class);
+            OSMDownloadOp download = geogig.command(OSMDownloadOp.class);
             download.setBbox(Arrays.asList("50.79", "7.19", "50.8", "7.20"))
                     .setOsmAPIUrl("http://wrongurl.com").call();
             fail();
@@ -185,15 +185,15 @@ public class OSMDownloadOpTest extends RepositoryTestCase {
     public void testUpdate() throws Exception {
         String filename = OSMImportOp.class.getResource("fire_station_filter.txt").getFile();
         File filterFile = new File(filename);
-        OSMDownloadOp download = geogit.command(OSMDownloadOp.class);
+        OSMDownloadOp download = geogig.command(OSMDownloadOp.class);
         download.setFilterFile(filterFile).setOsmAPIUrl(OSMUtils.DEFAULT_API_ENDPOINT).call();
-        Optional<Node> tree = geogit.getRepository().getRootTreeChild("node");
+        Optional<Node> tree = geogig.getRepository().getRootTreeChild("node");
         assertTrue(tree.isPresent());
-        tree = geogit.getRepository().getRootTreeChild("way");
+        tree = geogig.getRepository().getRootTreeChild("way");
         assertTrue(tree.isPresent());
-        List<OSMLogEntry> entries = geogit.command(ReadOSMLogEntries.class).call();
+        List<OSMLogEntry> entries = geogig.command(ReadOSMLogEntries.class).call();
         assertFalse(entries.isEmpty());
-        OSMUpdateOp update = geogit.command(OSMUpdateOp.class);
+        OSMUpdateOp update = geogig.command(OSMUpdateOp.class);
         try {
             update.setAPIUrl(OSMUtils.DEFAULT_API_ENDPOINT).call();
         } catch (NothingToCommitException e) {
@@ -204,16 +204,16 @@ public class OSMDownloadOpTest extends RepositoryTestCase {
     @Ignore
     @Test
     public void testUpdatewithBBox() throws Exception {
-        OSMDownloadOp download = geogit.command(OSMDownloadOp.class);
+        OSMDownloadOp download = geogig.command(OSMDownloadOp.class);
         download.setBbox(Arrays.asList("50.79", "7.19", "50.8", "7.20"))
                 .setOsmAPIUrl(OSMUtils.DEFAULT_API_ENDPOINT).call();
-        Optional<Node> tree = geogit.getRepository().getRootTreeChild("node");
+        Optional<Node> tree = geogig.getRepository().getRootTreeChild("node");
         assertTrue(tree.isPresent());
-        tree = geogit.getRepository().getRootTreeChild("way");
+        tree = geogig.getRepository().getRootTreeChild("way");
         assertTrue(tree.isPresent());
-        List<OSMLogEntry> entries = geogit.command(ReadOSMLogEntries.class).call();
+        List<OSMLogEntry> entries = geogig.command(ReadOSMLogEntries.class).call();
         assertFalse(entries.isEmpty());
-        OSMUpdateOp update = geogit.command(OSMUpdateOp.class);
+        OSMUpdateOp update = geogig.command(OSMUpdateOp.class);
         try {
             update.setAPIUrl(OSMUtils.DEFAULT_API_ENDPOINT).call();
         } catch (NothingToCommitException e) {

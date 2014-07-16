@@ -19,7 +19,7 @@ import com.beust.jcommander.Parameters;
  * <p>
  * Usage:
  * <ul>
- * <li> {@code geogit pg <command> <args>...}
+ * <li> {@code geogig pg <command> <args>...}
  * </ul>
  * 
  * @see PGImport
@@ -27,7 +27,7 @@ import com.beust.jcommander.Parameters;
  * @see PGDescribe
  * @see PGExport
  */
-@Parameters(commandNames = "pg", commandDescription = "GeoGit/PostGIS integration utilities")
+@Parameters(commandNames = "pg", commandDescription = "GeoGig/PostGIS integration utilities")
 public class PGCommandProxy implements CLICommandExtension {
 
     /**
@@ -37,7 +37,7 @@ public class PGCommandProxy implements CLICommandExtension {
     @Override
     public JCommander getCommandParser() {
         JCommander commander = new JCommander();
-        commander.setProgramName("geogit pg");
+        commander.setProgramName("geogig pg");
         commander.addCommand("import", new PGImport());
         commander.addCommand("list", new PGList());
         commander.addCommand("describe", new PGDescribe());

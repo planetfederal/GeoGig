@@ -67,13 +67,13 @@ public class SparseCloneTest extends RemoteRepositoryTestCase {
 
     protected static final String idC3 = "Cities.3";
 
-    protected static final String citiesNs = "http://geogit.cities";
+    protected static final String citiesNs = "http://geogig.cities";
 
     protected static final String citiesName = "Cities";
 
     protected static final String citiesTypeSpec = "name:String,population:Integer,pp:Point:srid=4326";
 
-    protected static final Name citiesTypeName = new NameImpl("http://geogit.cities", citiesName);
+    protected static final Name citiesTypeName = new NameImpl("http://geogig.cities", citiesName);
 
     protected SimpleFeatureType citiesType;
 
@@ -85,13 +85,13 @@ public class SparseCloneTest extends RemoteRepositoryTestCase {
 
     protected Feature city3;
 
-    protected static final String roadsNs = "http://geogit.roads";
+    protected static final String roadsNs = "http://geogig.roads";
 
     protected static final String roadsName = "Roads";
 
     protected static final String roadsTypeSpec = "name:String,length:Integer,pp:LineString:srid=4326";
 
-    protected static final Name roadsTypeName = new NameImpl("http://geogit.roads", roadsName);
+    protected static final Name roadsTypeName = new NameImpl("http://geogig.roads", roadsName);
 
     protected SimpleFeatureType roadsType;
 
@@ -137,22 +137,22 @@ public class SparseCloneTest extends RemoteRepositoryTestCase {
             filterFile += "filter = " + filter + "\n";
         }
         try {
-            String path = this.localGeogit.geogit.getPlatform().pwd().getAbsolutePath()
-                    + "/.geogit/";
+            String path = this.localGeogig.geogig.getPlatform().pwd().getAbsolutePath()
+                    + "/.geogig/";
             PrintWriter out = new PrintWriter(path + "filter.ini");
             out.println(filterFile);
             out.close();
-            localGeogit.geogit.command(ConfigOp.class).setAction(ConfigAction.CONFIG_SET)
+            localGeogig.geogig.command(ConfigOp.class).setAction(ConfigAction.CONFIG_SET)
                     .setName("sparse.filter").setValue("filter.ini").setScope(ConfigScope.LOCAL)
                     .call();
 
             LocalMappedRemoteRepo remoteRepo = spy(new LocalMappedRemoteRepo(
-                    remoteGeogit.getInjector(), remoteGeogit.envHome.getCanonicalFile(),
-                    localGeogit.repo));
+                    remoteGeogig.getInjector(), remoteGeogig.envHome.getCanonicalFile(),
+                    localGeogig.repo));
 
             doNothing().when(remoteRepo).close();
 
-            remoteRepo.setGeoGit(remoteGeogit.geogit);
+            remoteRepo.setGeoGig(remoteGeogig.geogig);
             this.remoteRepo = remoteRepo;
         } catch (Exception e) {
         }
@@ -171,18 +171,18 @@ public class SparseCloneTest extends RemoteRepositoryTestCase {
         Map<Feature, ObjectId> oids = new HashMap<Feature, ObjectId>();
 
         for (Feature f : features) {
-            ObjectId oId = insertAndAdd(remoteGeogit.geogit, f);
+            ObjectId oId = insertAndAdd(remoteGeogig.geogig, f);
             oids.put(f, oId);
-            final RevCommit commit = remoteGeogit.geogit.command(CommitOp.class)
+            final RevCommit commit = remoteGeogig.geogig.command(CommitOp.class)
                     .setMessage(f.getIdentifier().toString()).call();
             expected.addFirst(commit);
-            Optional<RevObject> childObject = remoteGeogit.geogit.command(RevObjectParse.class)
+            Optional<RevObject> childObject = remoteGeogig.geogig.command(RevObjectParse.class)
                     .setObjectId(oId).call();
             assertTrue(childObject.isPresent());
         }
 
         // Make sure the remote has all of the commits
-        Iterator<RevCommit> logs = remoteGeogit.geogit.command(LogOp.class).call();
+        Iterator<RevCommit> logs = remoteGeogig.geogig.command(LogOp.class).call();
         List<RevCommit> logged = new ArrayList<RevCommit>();
         for (; logs.hasNext();) {
             logged.add(logs.next());
@@ -191,21 +191,21 @@ public class SparseCloneTest extends RemoteRepositoryTestCase {
         assertEquals(expected, logged);
 
         // Make sure the local repository has no commits prior to clone
-        logs = localGeogit.geogit.command(LogOp.class).call();
+        logs = localGeogig.geogig.command(LogOp.class).call();
         assertNotNull(logs);
         assertFalse(logs.hasNext());
 
         // clone from the remote
         CloneOp clone = clone();
         clone.setDepth(0);
-        clone.setRepositoryURL(remoteGeogit.envHome.getCanonicalPath()).setBranch("master").call();
+        clone.setRepositoryURL(remoteGeogig.envHome.getCanonicalPath()).setBranch("master").call();
 
         // The features that match the filter are "Cities.3", "Roads.1", "Roads.2", and "Roads.3",
         // the "Cities.1" commit should be present since it added the "Cities" tree, but "Cities.1"
         // should not be present in the tree.
 
         // Make sure the local repository got the correct commits
-        logs = localGeogit.geogit.command(LogOp.class).call();
+        logs = localGeogig.geogig.command(LogOp.class).call();
         logged = new ArrayList<RevCommit>();
         for (; logs.hasNext();) {
             logged.add(logs.next());
@@ -223,9 +223,9 @@ public class SparseCloneTest extends RemoteRepositoryTestCase {
         assertEquals("Cities.1", logged.get(4).getMessage());
         assertFalse(expected.get(5).getId().equals(logged.get(4).getId()));
 
-        assertExists(localGeogit, oids.get(city3), oids.get(road1), oids.get(road2),
+        assertExists(localGeogig, oids.get(city3), oids.get(road1), oids.get(road2),
                 oids.get(road3));
-        assertNotExists(localGeogit, oids.get(city1), oids.get(city2));
+        assertNotExists(localGeogig, oids.get(city1), oids.get(city2));
     }
 
     @Test
@@ -240,18 +240,18 @@ public class SparseCloneTest extends RemoteRepositoryTestCase {
         Map<Feature, ObjectId> oids = new HashMap<Feature, ObjectId>();
 
         for (Feature f : features) {
-            ObjectId oId = insertAndAdd(remoteGeogit.geogit, f);
+            ObjectId oId = insertAndAdd(remoteGeogig.geogig, f);
             oids.put(f, oId);
-            final RevCommit commit = remoteGeogit.geogit.command(CommitOp.class)
+            final RevCommit commit = remoteGeogig.geogig.command(CommitOp.class)
                     .setMessage(f.getIdentifier().toString()).call();
             expected.addFirst(commit);
-            Optional<RevObject> childObject = remoteGeogit.geogit.command(RevObjectParse.class)
+            Optional<RevObject> childObject = remoteGeogig.geogig.command(RevObjectParse.class)
                     .setObjectId(oId).call();
             assertTrue(childObject.isPresent());
         }
 
         // Make sure the remote has all of the commits
-        Iterator<RevCommit> logs = remoteGeogit.geogit.command(LogOp.class).call();
+        Iterator<RevCommit> logs = remoteGeogig.geogig.command(LogOp.class).call();
         List<RevCommit> logged = new ArrayList<RevCommit>();
         for (; logs.hasNext();) {
             logged.add(logs.next());
@@ -260,19 +260,19 @@ public class SparseCloneTest extends RemoteRepositoryTestCase {
         assertEquals(expected, logged);
 
         // Make sure the local repository has no commits prior to clone
-        logs = localGeogit.geogit.command(LogOp.class).call();
+        logs = localGeogig.geogig.command(LogOp.class).call();
         assertNotNull(logs);
         assertFalse(logs.hasNext());
 
         // clone from the remote
         CloneOp clone = clone();
         clone.setDepth(0);
-        clone.setRepositoryURL(remoteGeogit.envHome.getCanonicalPath()).setBranch("master").call();
+        clone.setRepositoryURL(remoteGeogig.envHome.getCanonicalPath()).setBranch("master").call();
 
         // Because all features match the filter, the history should be identical
 
         // Make sure the local repository got the correct commits
-        logs = localGeogit.geogit.command(LogOp.class).call();
+        logs = localGeogig.geogig.command(LogOp.class).call();
         logged = new ArrayList<RevCommit>();
         for (; logs.hasNext();) {
             logged.add(logs.next());
@@ -280,7 +280,7 @@ public class SparseCloneTest extends RemoteRepositoryTestCase {
 
         assertEquals(expected, logged);
 
-        assertExists(localGeogit, oids.get(city1), oids.get(city2), oids.get(city3),
+        assertExists(localGeogig, oids.get(city1), oids.get(city2), oids.get(city3),
                 oids.get(road1), oids.get(road2), oids.get(road3));
     }
 
@@ -296,18 +296,18 @@ public class SparseCloneTest extends RemoteRepositoryTestCase {
         Map<Feature, ObjectId> oids = new HashMap<Feature, ObjectId>();
 
         for (Feature f : features) {
-            ObjectId oId = insertAndAdd(remoteGeogit.geogit, f);
+            ObjectId oId = insertAndAdd(remoteGeogig.geogig, f);
             oids.put(f, oId);
-            final RevCommit commit = remoteGeogit.geogit.command(CommitOp.class)
+            final RevCommit commit = remoteGeogig.geogig.command(CommitOp.class)
                     .setMessage(f.getIdentifier().toString()).call();
             expected.addFirst(commit);
-            Optional<RevObject> childObject = remoteGeogit.geogit.command(RevObjectParse.class)
+            Optional<RevObject> childObject = remoteGeogig.geogig.command(RevObjectParse.class)
                     .setObjectId(oId).call();
             assertTrue(childObject.isPresent());
         }
 
         // Make sure the remote has all of the commits
-        Iterator<RevCommit> logs = remoteGeogit.geogit.command(LogOp.class).call();
+        Iterator<RevCommit> logs = remoteGeogig.geogig.command(LogOp.class).call();
         List<RevCommit> logged = new ArrayList<RevCommit>();
         for (; logs.hasNext();) {
             logged.add(logs.next());
@@ -316,21 +316,21 @@ public class SparseCloneTest extends RemoteRepositoryTestCase {
         assertEquals(expected, logged);
 
         // Make sure the local repository has no commits prior to clone
-        logs = localGeogit.geogit.command(LogOp.class).call();
+        logs = localGeogig.geogig.command(LogOp.class).call();
         assertNotNull(logs);
         assertFalse(logs.hasNext());
 
         // clone from the remote
         CloneOp clone = clone();
         clone.setDepth(0);
-        clone.setRepositoryURL(remoteGeogit.envHome.getCanonicalPath()).setBranch("master").call();
+        clone.setRepositoryURL(remoteGeogig.envHome.getCanonicalPath()).setBranch("master").call();
 
         // Because only the first feature matches (Cities.1), the first commit should be the same,
         // there will also be the commit that adds the "Roads" tree but no features, and finally an
         // "Empty Placeholder Commit".
 
         // Make sure the local repository got the correct commits
-        logs = localGeogit.geogit.command(LogOp.class).call();
+        logs = localGeogig.geogig.command(LogOp.class).call();
         logged = new ArrayList<RevCommit>();
         for (; logs.hasNext();) {
             logged.add(logs.next());
@@ -345,8 +345,8 @@ public class SparseCloneTest extends RemoteRepositoryTestCase {
         assertEquals("Cities.1", logged.get(2).getMessage());
         assertTrue(expected.get(5).getId().equals(logged.get(2).getId()));
 
-        assertExists(localGeogit, oids.get(city1));
-        assertNotExists(localGeogit, oids.get(city2), oids.get(city3), oids.get(road1),
+        assertExists(localGeogig, oids.get(city1));
+        assertNotExists(localGeogig, oids.get(city2), oids.get(city3), oids.get(road1),
                 oids.get(road2), oids.get(road3));
     }
 
@@ -362,18 +362,18 @@ public class SparseCloneTest extends RemoteRepositoryTestCase {
         Map<Feature, ObjectId> oids = new HashMap<Feature, ObjectId>();
 
         for (Feature f : features) {
-            ObjectId oId = insertAndAdd(remoteGeogit.geogit, f);
+            ObjectId oId = insertAndAdd(remoteGeogig.geogig, f);
             oids.put(f, oId);
-            final RevCommit commit = remoteGeogit.geogit.command(CommitOp.class)
+            final RevCommit commit = remoteGeogig.geogig.command(CommitOp.class)
                     .setMessage(f.getIdentifier().toString()).call();
             expected.addFirst(commit);
-            Optional<RevObject> childObject = remoteGeogit.geogit.command(RevObjectParse.class)
+            Optional<RevObject> childObject = remoteGeogig.geogig.command(RevObjectParse.class)
                     .setObjectId(oId).call();
             assertTrue(childObject.isPresent());
         }
 
         // Make sure the remote has all of the commits
-        Iterator<RevCommit> logs = remoteGeogit.geogit.command(LogOp.class).call();
+        Iterator<RevCommit> logs = remoteGeogig.geogig.command(LogOp.class).call();
         List<RevCommit> logged = new ArrayList<RevCommit>();
         for (; logs.hasNext();) {
             logged.add(logs.next());
@@ -382,20 +382,20 @@ public class SparseCloneTest extends RemoteRepositoryTestCase {
         assertEquals(expected, logged);
 
         // Make sure the local repository has no commits prior to clone
-        logs = localGeogit.geogit.command(LogOp.class).call();
+        logs = localGeogig.geogig.command(LogOp.class).call();
         assertNotNull(logs);
         assertFalse(logs.hasNext());
 
         // clone from the remote
         CloneOp clone = clone();
         clone.setDepth(0);
-        clone.setRepositoryURL(remoteGeogit.envHome.getCanonicalPath()).setBranch("master").call();
+        clone.setRepositoryURL(remoteGeogig.envHome.getCanonicalPath()).setBranch("master").call();
 
         // Because Cities.1 is first in our filter, then is modified to be outside the filter, it
         // should continue to be tracked. Therefore our histories should match.
 
         // Make sure the local repository got the correct commits
-        logs = localGeogit.geogit.command(LogOp.class).call();
+        logs = localGeogig.geogig.command(LogOp.class).call();
         logged = new ArrayList<RevCommit>();
         for (; logs.hasNext();) {
             logged.add(logs.next());
@@ -403,7 +403,7 @@ public class SparseCloneTest extends RemoteRepositoryTestCase {
 
         assertEquals(expected, logged);
 
-        assertExists(localGeogit, oids.get(city1), oids.get(city1_modified));
+        assertExists(localGeogig, oids.get(city1), oids.get(city1_modified));
     }
 
     @Test
@@ -418,18 +418,18 @@ public class SparseCloneTest extends RemoteRepositoryTestCase {
         Map<Feature, ObjectId> oids = new HashMap<Feature, ObjectId>();
 
         for (Feature f : features) {
-            ObjectId oId = insertAndAdd(remoteGeogit.geogit, f);
+            ObjectId oId = insertAndAdd(remoteGeogig.geogig, f);
             oids.put(f, oId);
-            final RevCommit commit = remoteGeogit.geogit.command(CommitOp.class)
+            final RevCommit commit = remoteGeogig.geogig.command(CommitOp.class)
                     .setMessage(f.getIdentifier().toString()).call();
             expected.addFirst(commit);
-            Optional<RevObject> childObject = remoteGeogit.geogit.command(RevObjectParse.class)
+            Optional<RevObject> childObject = remoteGeogig.geogig.command(RevObjectParse.class)
                     .setObjectId(oId).call();
             assertTrue(childObject.isPresent());
         }
 
         // Make sure the remote has all of the commits
-        Iterator<RevCommit> logs = remoteGeogit.geogit.command(LogOp.class).call();
+        Iterator<RevCommit> logs = remoteGeogig.geogig.command(LogOp.class).call();
         List<RevCommit> logged = new ArrayList<RevCommit>();
         for (; logs.hasNext();) {
             logged.add(logs.next());
@@ -438,21 +438,21 @@ public class SparseCloneTest extends RemoteRepositoryTestCase {
         assertEquals(expected, logged);
 
         // Make sure the local repository has no commits prior to clone
-        logs = localGeogit.geogit.command(LogOp.class).call();
+        logs = localGeogig.geogig.command(LogOp.class).call();
         assertNotNull(logs);
         assertFalse(logs.hasNext());
 
         // clone from the remote
         CloneOp clone = clone();
         clone.setDepth(0);
-        clone.setRepositoryURL(remoteGeogit.envHome.getCanonicalPath()).setBranch("master").call();
+        clone.setRepositoryURL(remoteGeogig.envHome.getCanonicalPath()).setBranch("master").call();
 
         // Cities.1 initially lies outside the filter, so the commit that adds it will not be part
         // of the sparse clone. Later the feature is moved into the AOI so it will be added at that
         // time.
 
         // Make sure the local repository got the correct commits
-        logs = localGeogit.geogit.command(LogOp.class).call();
+        logs = localGeogig.geogig.command(LogOp.class).call();
         logged = new ArrayList<RevCommit>();
         for (; logs.hasNext();) {
             logged.add(logs.next());
@@ -466,27 +466,27 @@ public class SparseCloneTest extends RemoteRepositoryTestCase {
         assertEquals("Cities.2", logged.get(2).getMessage());
         assertTrue(expected.get(3).getId().equals(logged.get(2).getId()));
 
-        assertExists(localGeogit, oids.get(city2), oids.get(city3), oids.get(city1_modified));
-        assertNotExists(localGeogit, oids.get(city1));
+        assertExists(localGeogig, oids.get(city2), oids.get(city3), oids.get(city1_modified));
+        assertNotExists(localGeogig, oids.get(city1));
     }
 
     @Test
     public void testPullCommitThatPassesFilter() throws Exception {
         setupSparseClone();
         // Add a commit that passes our filter to the remote.
-        ObjectId oId = insertAndAdd(remoteGeogit.geogit, city1_modified);
-        final RevCommit commit = remoteGeogit.geogit.command(CommitOp.class)
+        ObjectId oId = insertAndAdd(remoteGeogig.geogig, city1_modified);
+        final RevCommit commit = remoteGeogig.geogig.command(CommitOp.class)
                 .setMessage(city1_modified.getIdentifier().toString()).call();
-        Optional<RevObject> childObject = remoteGeogit.geogit.command(RevObjectParse.class)
+        Optional<RevObject> childObject = remoteGeogig.geogig.command(RevObjectParse.class)
                 .setObjectId(oId).call();
         assertTrue(childObject.isPresent());
         assertEquals(commit,
-                remoteGeogit.geogit.getRepository().objectDatabase().getCommit(commit.getId()));
+                remoteGeogig.geogig.getRepository().objectDatabase().getCommit(commit.getId()));
         System.err.println(commit.getId());
         PullOp pull = pull();
         pull.call();
 
-        Iterator<RevCommit> logs = localGeogit.geogit.command(LogOp.class).call();
+        Iterator<RevCommit> logs = localGeogig.geogig.command(LogOp.class).call();
         List<RevCommit> logged = new ArrayList<RevCommit>();
         for (; logs.hasNext();) {
             logged.add(logs.next());
@@ -495,24 +495,24 @@ public class SparseCloneTest extends RemoteRepositoryTestCase {
         assertEquals("Cities.1", logged.get(0).getMessage());
         assertFalse(commit.getId().equals(logged.get(0).getId()));
 
-        assertExists(localGeogit, oId);
+        assertExists(localGeogig, oId);
     }
 
     @Test
     public void testPullCommitThatDoesNotPassFilter() throws Exception {
         setupSparseClone();
         // Add a commit that passes our filter to the remote.
-        ObjectId oId = insertAndAdd(remoteGeogit.geogit, city1);
-        final RevCommit commit = remoteGeogit.geogit.command(CommitOp.class)
+        ObjectId oId = insertAndAdd(remoteGeogig.geogig, city1);
+        final RevCommit commit = remoteGeogig.geogig.command(CommitOp.class)
                 .setMessage(city1.getIdentifier().toString()).call();
-        Optional<RevObject> childObject = remoteGeogit.geogit.command(RevObjectParse.class)
+        Optional<RevObject> childObject = remoteGeogig.geogig.command(RevObjectParse.class)
                 .setObjectId(oId).call();
         assertTrue(childObject.isPresent());
 
         PullOp pull = pull();
         pull.call();
 
-        Iterator<RevCommit> logs = localGeogit.geogit.command(LogOp.class).call();
+        Iterator<RevCommit> logs = localGeogig.geogig.command(LogOp.class).call();
         List<RevCommit> logged = new ArrayList<RevCommit>();
         for (; logs.hasNext();) {
             logged.add(logs.next());
@@ -522,7 +522,7 @@ public class SparseCloneTest extends RemoteRepositoryTestCase {
                 .getMessage());
         assertFalse(commit.getId().equals(logged.get(0).getId()));
 
-        assertNotExists(localGeogit, oId);
+        assertNotExists(localGeogig, oId);
     }
 
     @Test
@@ -534,12 +534,12 @@ public class SparseCloneTest extends RemoteRepositoryTestCase {
         Map<Feature, ObjectId> oids = new HashMap<Feature, ObjectId>();
 
         for (Feature f : features) {
-            ObjectId oId = insertAndAdd(localGeogit.geogit, f);
+            ObjectId oId = insertAndAdd(localGeogig.geogig, f);
             oids.put(f, oId);
-            final RevCommit commit = localGeogit.geogit.command(CommitOp.class)
+            final RevCommit commit = localGeogig.geogig.command(CommitOp.class)
                     .setMessage(f.getIdentifier().toString()).call();
             expected.addFirst(commit);
-            Optional<RevObject> childObject = localGeogit.geogit.command(RevObjectParse.class)
+            Optional<RevObject> childObject = localGeogig.geogig.command(RevObjectParse.class)
                     .setObjectId(oId).call();
             assertTrue(childObject.isPresent());
         }
@@ -547,7 +547,7 @@ public class SparseCloneTest extends RemoteRepositoryTestCase {
         PushOp push = push();
         push.setAll(true).call();
 
-        Iterator<RevCommit> logs = remoteGeogit.geogit.command(LogOp.class).call();
+        Iterator<RevCommit> logs = remoteGeogig.geogig.command(LogOp.class).call();
         List<RevCommit> logged = new ArrayList<RevCommit>();
         for (; logs.hasNext();) {
             logged.add(logs.next());
@@ -560,20 +560,20 @@ public class SparseCloneTest extends RemoteRepositoryTestCase {
         assertEquals("Cities.1", logged.get(2).getMessage());
         assertFalse(expected.get(2).getId().equals(logged.get(2).getId()));
 
-        assertExists(remoteGeogit, oids.get(city1), oids.get(city1_modified), oids.get(road3));
+        assertExists(remoteGeogig, oids.get(city1), oids.get(city1_modified), oids.get(road3));
     }
 
     @Test
     public void testPushSparseMerge() throws Exception {
         setupSparseClone();
         // create a branch off an early commit
-        Iterator<RevCommit> logs = localGeogit.geogit.command(LogOp.class).call();
+        Iterator<RevCommit> logs = localGeogig.geogig.command(LogOp.class).call();
         RevCommit initialCommit = logs.next();
         ObjectId masterCommit = initialCommit.getId();
         while (logs.hasNext()) {
             initialCommit = logs.next();
         }
-        localGeogit.geogit.command(BranchCreateOp.class).setName("Branch1").setAutoCheckout(true)
+        localGeogig.geogig.command(BranchCreateOp.class).setName("Branch1").setAutoCheckout(true)
                 .setSource(initialCommit.getId().toString()).call();
 
         // Add some commits to the local (sparse) repository
@@ -582,32 +582,32 @@ public class SparseCloneTest extends RemoteRepositoryTestCase {
         Map<Feature, ObjectId> oids = new HashMap<Feature, ObjectId>();
 
         for (Feature f : features) {
-            ObjectId oId = insertAndAdd(localGeogit.geogit, f);
+            ObjectId oId = insertAndAdd(localGeogig.geogig, f);
             oids.put(f, oId);
-            final RevCommit commit = localGeogit.geogit.command(CommitOp.class)
+            final RevCommit commit = localGeogig.geogig.command(CommitOp.class)
                     .setMessage(f.getIdentifier().toString()).call();
             expected.addFirst(commit);
-            Optional<RevObject> childObject = localGeogit.geogit.command(RevObjectParse.class)
+            Optional<RevObject> childObject = localGeogig.geogig.command(RevObjectParse.class)
                     .setObjectId(oId).call();
             assertTrue(childObject.isPresent());
         }
 
         // Merge master into Branch1
-        MergeOp merge = localGeogit.geogit.command(MergeOp.class);
+        MergeOp merge = localGeogig.geogig.command(MergeOp.class);
         MergeReport report = merge.addCommit(Suppliers.ofInstance(masterCommit))
                 .setMessage("Merge").call();
 
         // Update master to the new merge commit
-        localGeogit.geogit.command(UpdateRef.class).setName("refs/heads/master")
+        localGeogig.geogig.command(UpdateRef.class).setName("refs/heads/master")
                 .setNewValue(report.getMergeCommit().getId()).call();
 
         // Checkout master
-        localGeogit.geogit.command(CheckoutOp.class).setSource("master").call();
+        localGeogig.geogig.command(CheckoutOp.class).setSource("master").call();
 
         PushOp push = push();
         push.addRefSpec("refs/heads/master").call();
 
-        logs = remoteGeogit.geogit.command(LogOp.class).call();
+        logs = remoteGeogig.geogig.command(LogOp.class).call();
         List<RevCommit> logged = new ArrayList<RevCommit>();
         for (; logs.hasNext();) {
             logged.add(logs.next());
@@ -622,10 +622,10 @@ public class SparseCloneTest extends RemoteRepositoryTestCase {
         ObjectId parent1Id = logged.get(0).getParentIds().get(0);
         ObjectId parent2Id = logged.get(0).getParentIds().get(1);
 
-        RevCommit parent1 = remoteGeogit.geogit.getRepository().getCommit(parent1Id);
+        RevCommit parent1 = remoteGeogig.geogig.getRepository().getCommit(parent1Id);
         assertNotNull(parent1);
         assertEquals("Roads.2", parent1.getMessage());
-        RevCommit parent2 = remoteGeogit.geogit.getRepository().getCommit(parent2Id);
+        RevCommit parent2 = remoteGeogig.geogig.getRepository().getCommit(parent2Id);
         assertNotNull(parent2);
         assertEquals("Roads.3", parent2.getMessage());
 
@@ -633,26 +633,26 @@ public class SparseCloneTest extends RemoteRepositoryTestCase {
         parent1Id = report.getMergeCommit().getParentIds().get(0);
         parent2Id = report.getMergeCommit().getParentIds().get(1);
 
-        parent1 = localGeogit.geogit.getRepository().getCommit(parent1Id);
+        parent1 = localGeogig.geogig.getRepository().getCommit(parent1Id);
         assertNotNull(parent1);
         assertEquals("Roads.3", parent1.getMessage());
-        parent2 = localGeogit.geogit.getRepository().getCommit(parent2Id);
+        parent2 = localGeogig.geogig.getRepository().getCommit(parent2Id);
         assertNotNull(parent2);
         assertEquals("Roads.2", parent2.getMessage());
 
-        assertExists(remoteGeogit, oids.get(city1), oids.get(city1_modified), oids.get(road3));
+        assertExists(remoteGeogig, oids.get(city1), oids.get(city1_modified), oids.get(road3));
     }
 
     @Test
     public void testPushSparseMergeScenario2() throws Exception {
         setupSparseClone();
         // create a branch off an early commit
-        Iterator<RevCommit> logs = localGeogit.geogit.command(LogOp.class).call();
+        Iterator<RevCommit> logs = localGeogig.geogig.command(LogOp.class).call();
         RevCommit initialCommit = logs.next();
         while (logs.hasNext()) {
             initialCommit = logs.next();
         }
-        localGeogit.geogit.command(BranchCreateOp.class).setName("Branch1").setAutoCheckout(true)
+        localGeogig.geogig.command(BranchCreateOp.class).setName("Branch1").setAutoCheckout(true)
                 .setSource(initialCommit.getId().toString()).call();
 
         // Add some commits to the local (sparse) repository
@@ -661,28 +661,28 @@ public class SparseCloneTest extends RemoteRepositoryTestCase {
         Map<Feature, ObjectId> oids = new HashMap<Feature, ObjectId>();
 
         for (Feature f : features) {
-            ObjectId oId = insertAndAdd(localGeogit.geogit, f);
+            ObjectId oId = insertAndAdd(localGeogig.geogig, f);
             oids.put(f, oId);
-            final RevCommit commit = localGeogit.geogit.command(CommitOp.class)
+            final RevCommit commit = localGeogig.geogig.command(CommitOp.class)
                     .setMessage(f.getIdentifier().toString()).call();
             expected.addFirst(commit);
-            Optional<RevObject> childObject = localGeogit.geogit.command(RevObjectParse.class)
+            Optional<RevObject> childObject = localGeogig.geogig.command(RevObjectParse.class)
                     .setObjectId(oId).call();
             assertTrue(childObject.isPresent());
         }
 
         // Checkout master
-        localGeogit.geogit.command(CheckoutOp.class).setSource("master").call();
+        localGeogig.geogig.command(CheckoutOp.class).setSource("master").call();
 
         // Merge Branch1 into master
-        MergeOp merge = localGeogit.geogit.command(MergeOp.class);
+        MergeOp merge = localGeogig.geogig.command(MergeOp.class);
         MergeReport report = merge.addCommit(Suppliers.ofInstance(expected.get(0).getId()))
                 .setMessage("Merge").call();
 
         PushOp push = push();
         push.addRefSpec("refs/heads/master").call();
 
-        logs = remoteGeogit.geogit.command(LogOp.class).call();
+        logs = remoteGeogig.geogig.command(LogOp.class).call();
         List<RevCommit> logged = new ArrayList<RevCommit>();
         for (; logs.hasNext();) {
             logged.add(logs.next());
@@ -696,10 +696,10 @@ public class SparseCloneTest extends RemoteRepositoryTestCase {
         ObjectId parent1Id = logged.get(0).getParentIds().get(0);
         ObjectId parent2Id = logged.get(0).getParentIds().get(1);
 
-        RevCommit parent1 = remoteGeogit.geogit.getRepository().getCommit(parent1Id);
+        RevCommit parent1 = remoteGeogig.geogig.getRepository().getCommit(parent1Id);
         assertNotNull(parent1);
         assertEquals("Roads.2", parent1.getMessage());
-        RevCommit parent2 = remoteGeogit.geogit.getRepository().getCommit(parent2Id);
+        RevCommit parent2 = remoteGeogig.geogig.getRepository().getCommit(parent2Id);
         assertNotNull(parent2);
         assertEquals("Roads.3", parent2.getMessage());
 
@@ -707,14 +707,14 @@ public class SparseCloneTest extends RemoteRepositoryTestCase {
         parent1Id = report.getMergeCommit().getParentIds().get(0);
         parent2Id = report.getMergeCommit().getParentIds().get(1);
 
-        parent1 = localGeogit.geogit.getRepository().getCommit(parent1Id);
+        parent1 = localGeogig.geogig.getRepository().getCommit(parent1Id);
         assertNotNull(parent1);
         assertEquals("Roads.2", parent1.getMessage());
-        parent2 = localGeogit.geogit.getRepository().getCommit(parent2Id);
+        parent2 = localGeogig.geogig.getRepository().getCommit(parent2Id);
         assertNotNull(parent2);
         assertEquals("Roads.3", parent2.getMessage());
 
-        assertExists(remoteGeogit, oids.get(city1), oids.get(city1_modified), oids.get(road3));
+        assertExists(remoteGeogig, oids.get(city1), oids.get(city1_modified), oids.get(road3));
     }
 
     @Test
@@ -725,7 +725,7 @@ public class SparseCloneTest extends RemoteRepositoryTestCase {
 
         CloneOp clone = clone();
         exception.expect(IllegalArgumentException.class);
-        clone.setRepositoryURL(remoteGeogit.envHome.getCanonicalPath()).call();
+        clone.setRepositoryURL(remoteGeogig.envHome.getCanonicalPath()).call();
     }
 
     @Test
@@ -737,7 +737,7 @@ public class SparseCloneTest extends RemoteRepositoryTestCase {
         CloneOp clone = clone();
         clone.setDepth(3).setBranch("master");
         exception.expect(IllegalStateException.class);
-        clone.setRepositoryURL(remoteGeogit.envHome.getCanonicalPath()).call();
+        clone.setRepositoryURL(remoteGeogig.envHome.getCanonicalPath()).call();
     }
 
     private void setupSparseClone() throws Exception {
@@ -752,18 +752,18 @@ public class SparseCloneTest extends RemoteRepositoryTestCase {
         Map<Feature, ObjectId> oids = new HashMap<Feature, ObjectId>();
 
         for (Feature f : features) {
-            ObjectId oId = insertAndAdd(remoteGeogit.geogit, f);
+            ObjectId oId = insertAndAdd(remoteGeogig.geogig, f);
             oids.put(f, oId);
-            final RevCommit commit = remoteGeogit.geogit.command(CommitOp.class)
+            final RevCommit commit = remoteGeogig.geogig.command(CommitOp.class)
                     .setMessage(f.getIdentifier().toString()).call();
             expected.addFirst(commit);
-            Optional<RevObject> childObject = remoteGeogit.geogit.command(RevObjectParse.class)
+            Optional<RevObject> childObject = remoteGeogig.geogig.command(RevObjectParse.class)
                     .setObjectId(oId).call();
             assertTrue(childObject.isPresent());
         }
 
         // Make sure the remote has all of the commits
-        Iterator<RevCommit> logs = remoteGeogit.geogit.command(LogOp.class).call();
+        Iterator<RevCommit> logs = remoteGeogig.geogig.command(LogOp.class).call();
         List<RevCommit> logged = new ArrayList<RevCommit>();
         for (; logs.hasNext();) {
             logged.add(logs.next());
@@ -772,16 +772,16 @@ public class SparseCloneTest extends RemoteRepositoryTestCase {
         assertEquals(expected, logged);
 
         // Make sure the local repository has no commits prior to clone
-        logs = localGeogit.geogit.command(LogOp.class).call();
+        logs = localGeogig.geogig.command(LogOp.class).call();
         assertNotNull(logs);
         assertFalse(logs.hasNext());
 
         // clone from the remote
         CloneOp clone = clone();
         clone.setDepth(0);
-        clone.setRepositoryURL(remoteGeogit.envHome.getCanonicalPath()).setBranch("master").call();
+        clone.setRepositoryURL(remoteGeogig.envHome.getCanonicalPath()).setBranch("master").call();
 
-        logs = localGeogit.geogit.command(LogOp.class).call();
+        logs = localGeogig.geogig.command(LogOp.class).call();
         logged = new ArrayList<RevCommit>();
         for (; logs.hasNext();) {
             logged.add(logs.next());
@@ -794,15 +794,15 @@ public class SparseCloneTest extends RemoteRepositoryTestCase {
 
     }
 
-    private void assertExists(GeogigContainer geogit, ObjectId... features) {
+    private void assertExists(GeogigContainer geogig, ObjectId... features) {
         for (ObjectId object : features) {
-            assertTrue(geogit.geogit.getRepository().blobExists(object));
+            assertTrue(geogig.geogig.getRepository().blobExists(object));
         }
     }
 
-    private void assertNotExists(GeogigContainer geogit, ObjectId... features) {
+    private void assertNotExists(GeogigContainer geogig, ObjectId... features) {
         for (ObjectId object : features) {
-            assertFalse(geogit.geogit.getRepository().blobExists(object));
+            assertFalse(geogig.geogig.getRepository().blobExists(object));
         }
     }
 

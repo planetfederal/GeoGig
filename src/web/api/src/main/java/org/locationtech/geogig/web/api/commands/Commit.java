@@ -24,7 +24,7 @@ import org.locationtech.geogig.web.api.ResponseWriter;
 import com.google.common.base.Optional;
 
 /**
- * Interface for the Commit operation in GeoGit.
+ * Interface for the Commit operation in GeoGig.
  * 
  * Web interface for {@link CommitOp}
  */
@@ -82,10 +82,10 @@ public class Commit extends AbstractWebAPICommand {
             throw new CommandSpecException(
                     "No transaction was specified, commit requires a transaction to preserve the stability of the repository.");
         }
-        final Context geogit = this.getCommandLocator(context);
+        final Context geogig = this.getCommandLocator(context);
         RevCommit commit;
         try {
-            commit = geogit.command(CommitOp.class)
+            commit = geogig.command(CommitOp.class)
                     .setAuthor(authorName.orNull(), authorEmail.orNull()).setMessage(message)
                     .setAllowEmpty(true).setAll(all).call();
             assert commit != null;
@@ -99,7 +99,7 @@ public class Commit extends AbstractWebAPICommand {
         if (commit != null) {
             final RevCommit commitToWrite = commit;
             final ObjectId parentId = commit.parentN(0).or(ObjectId.NULL);
-            final Iterator<DiffEntry> diff = geogit.command(DiffOp.class).setOldVersion(parentId)
+            final Iterator<DiffEntry> diff = geogig.command(DiffOp.class).setOldVersion(parentId)
                     .setNewVersion(commit.getId()).call();
 
             context.setResponseContent(new CommandResponse() {

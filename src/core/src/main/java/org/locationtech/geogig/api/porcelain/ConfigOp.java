@@ -21,8 +21,8 @@ import com.google.common.base.Optional;
  * You can query/set options with this command. The name is actually the section and key separated
  * by a dot.
  * <p>
- * Global options are usually stored in ~/.geogitconfig. Repository options will be stored in
- * repo/.geogit/config
+ * Global options are usually stored in ~/.geogigconfig. Repository options will be stored in
+ * repo/.geogig/config
  * 
  * @see ConfigDatabase
  */

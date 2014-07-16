@@ -17,7 +17,7 @@ import com.google.inject.Module;
  * classpath.
  * <p>
  * Any CLI plugin that provides extra command line commands shall include a file named
- * {@code org.geogit.cli.CLIModule} text file inside the jar's {@code META-INF/services} folder,
+ * {@code org.geogig.cli.CLIModule} text file inside the jar's {@code META-INF/services} folder,
  * whose content is the full qualified class name of the module implementation. There can be more
  * than one module declared on each file, separated by a newline.
  */

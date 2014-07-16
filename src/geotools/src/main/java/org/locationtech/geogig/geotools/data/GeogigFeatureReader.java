@@ -221,7 +221,7 @@ class GeogigFeatureReader<T extends FeatureType, F extends Feature> implements F
     @Override
     public void close() throws IOException {
         if (stats != null) {
-            LOGGER.info("geogit reader stats: " + stats.toString());
+            LOGGER.info("geogig reader stats: " + stats.toString());
         }
     }
 

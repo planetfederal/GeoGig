@@ -207,7 +207,7 @@ public class WorkingTreeTest extends RepositoryTestCase {
 
     @Test
     public void testInsertNonPagingFeatureSource() throws Exception {
-        assertEquals(2, super.getGeogit().getPlatform().availableProcessors());
+        assertEquals(2, super.getGeogig().getPlatform().availableProcessors());
 
         final List<SimpleFeature> features = ImmutableList.of((SimpleFeature) points1,
                 (SimpleFeature) points2, (SimpleFeature) points3);
@@ -231,7 +231,7 @@ public class WorkingTreeTest extends RepositoryTestCase {
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @Test
     public void testInsertPagingFeatureSource() throws Exception {
-        assertEquals(2, super.getGeogit().getPlatform().availableProcessors());
+        assertEquals(2, super.getGeogig().getPlatform().availableProcessors());
 
         final List<SimpleFeature> features = ImmutableList.of((SimpleFeature) points1,
                 (SimpleFeature) points2, (SimpleFeature) points3);
@@ -654,7 +654,7 @@ public class WorkingTreeTest extends RepositoryTestCase {
         RevTree typeTree = repo.getTree(typeTreeId.get().getObjectId());
         assertNotNull(typeTree);
         String path = NodeRef.appendChild(pointsName, points1.getIdentifier().getID());
-        Optional<NodeRef> featureBlobId = geogit.command(FindTreeChild.class).setParent(root)
+        Optional<NodeRef> featureBlobId = geogig.command(FindTreeChild.class).setParent(root)
                 .setChildPath(path).setIndex(true).call();
         assertTrue(featureBlobId.isPresent());
         assertEquals(RevFeatureTypeImpl.build(modifiedPointsType).getId(), featureBlobId.get()
@@ -701,7 +701,7 @@ public class WorkingTreeTest extends RepositoryTestCase {
     }
 
     private Optional<Node> findTreeChild(RevTree root, String pathRemove) {
-        Optional<NodeRef> nodeRef = geogit.command(FindTreeChild.class).setParent(root)
+        Optional<NodeRef> nodeRef = geogig.command(FindTreeChild.class).setParent(root)
                 .setChildPath(pathRemove).setIndex(true).call();
         Optional<Node> node = Optional.absent();
         if (nodeRef.isPresent()) {

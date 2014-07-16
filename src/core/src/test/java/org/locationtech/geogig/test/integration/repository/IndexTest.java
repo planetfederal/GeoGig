@@ -83,7 +83,7 @@ public class IndexTest extends RepositoryTestCase {
 
         // this new root tree must exist on the repo db, but is not set as the current head. In
         // fact, it is headless, as there's no commit pointing to it. CommitOp does that.
-        ObjectId newRootTreeId = geogit.command(WriteTree.class)
+        ObjectId newRootTreeId = geogig.command(WriteTree.class)
                 .setOldRoot(tree(repo.getHead().get().getObjectId())).call();
 
         assertNotNull(newRootTreeId);
@@ -106,20 +106,20 @@ public class IndexTest extends RepositoryTestCase {
         ObjectInserter objectInserter = repo.newObjectInserter();
         List<ObjectId> parents = ImmutableList.of();
 
-        RevCommit commit = new CommitBuilder(geogit.getPlatform()).setTreeId(newRootTreeId)
+        RevCommit commit = new CommitBuilder(geogig.getPlatform()).setTreeId(newRootTreeId)
                 .setParentIds(parents).build();
         ObjectId commitId = commit.getId();
 
         objectInserter.insert(commit);
-        Optional<Ref> newHead = geogit.command(UpdateRef.class).setName("refs/heads/master")
+        Optional<Ref> newHead = geogig.command(UpdateRef.class).setName("refs/heads/master")
                 .setNewValue(commitId).call();
         assertTrue(newHead.isPresent());
 
         WorkingTree workTree = repo.workingTree();
         workTree.delete(linesName, lines1.getIdentifier().getID());
-        geogit.command(AddOp.class).call();
+        geogig.command(AddOp.class).call();
 
-        newRootTreeId = geogit.command(WriteTree.class).setOldRoot(tree(newRootTreeId)).call(); // newRootTreeId
+        newRootTreeId = geogig.command(WriteTree.class).setOldRoot(tree(newRootTreeId)).call(); // newRootTreeId
                                                                                                 // =
                                                                                                 // index.writeTree(newRootTreeId,
                                                                                                 // new
@@ -159,10 +159,10 @@ public class IndexTest extends RepositoryTestCase {
     @Test
     public void testWriteEmptyPathAddAll() throws Exception {
         insert(lines1);
-        WorkingTree workingTree = geogit.getRepository().workingTree();
+        WorkingTree workingTree = geogig.getRepository().workingTree();
         workingTree.createTypeTree(pointsName, pointsType);
 
-        List<NodeRef> workHead = toList(geogit.command(LsTreeOp.class).setReference(Ref.WORK_HEAD)
+        List<NodeRef> workHead = toList(geogig.command(LsTreeOp.class).setReference(Ref.WORK_HEAD)
                 .setStrategy(Strategy.DEPTHFIRST).call());
 
         assertEquals(3, workHead.size());
@@ -170,9 +170,9 @@ public class IndexTest extends RepositoryTestCase {
                 .filter(workHead, new TreeNameFilter(pointsName));
         assertEquals(1, filtered.size());
 
-        geogit.command(AddOp.class).call();
+        geogig.command(AddOp.class).call();
 
-        List<NodeRef> indexHead = toList(geogit.command(LsTreeOp.class)
+        List<NodeRef> indexHead = toList(geogig.command(LsTreeOp.class)
                 .setReference(Ref.STAGE_HEAD).setStrategy(Strategy.DEPTHFIRST).call());
 
         assertEquals(3, indexHead.size());
@@ -182,11 +182,11 @@ public class IndexTest extends RepositoryTestCase {
 
     @Test
     public void testWriteEmptyPath() throws Exception {
-        WorkingTree workingTree = geogit.getRepository().workingTree();
+        WorkingTree workingTree = geogig.getRepository().workingTree();
         workingTree.createTypeTree(pointsName, pointsType);
         workingTree.createTypeTree(linesName, linesType);
 
-        List<NodeRef> workHead = toList(geogit.command(LsTreeOp.class).setReference(Ref.WORK_HEAD)
+        List<NodeRef> workHead = toList(geogig.command(LsTreeOp.class).setReference(Ref.WORK_HEAD)
                 .setStrategy(Strategy.DEPTHFIRST).call());
 
         assertEquals(2, workHead.size());
@@ -198,18 +198,18 @@ public class IndexTest extends RepositoryTestCase {
         filtered = Collections2.filter(workHead, new TreeNameFilter(linesName));
         assertEquals(1, filtered.size());
 
-        geogit.command(AddOp.class).addPattern(pointsName).call();
+        geogig.command(AddOp.class).addPattern(pointsName).call();
 
         List<NodeRef> indexHead;
-        indexHead = toList(geogit.command(LsTreeOp.class).setReference(Ref.STAGE_HEAD)
+        indexHead = toList(geogig.command(LsTreeOp.class).setReference(Ref.STAGE_HEAD)
                 .setStrategy(Strategy.DEPTHFIRST).call());
 
         assertEquals(1, indexHead.size());
         filtered = Collections2.filter(indexHead, new TreeNameFilter(pointsName));
         assertEquals(1, filtered.size());
 
-        geogit.command(AddOp.class).addPattern(linesName).call();
-        indexHead = toList(geogit.command(LsTreeOp.class).setReference(Ref.STAGE_HEAD)
+        geogig.command(AddOp.class).addPattern(linesName).call();
+        indexHead = toList(geogig.command(LsTreeOp.class).setReference(Ref.STAGE_HEAD)
                 .setStrategy(Strategy.DEPTHFIRST).call());
 
         assertEquals(2, indexHead.size());// Points and Lines
@@ -250,7 +250,7 @@ public class IndexTest extends RepositoryTestCase {
         assertEquals(oId2, repo.workingTree().findUnstaged(appendChild(pointsName, idP2)).get()
                 .getObjectId());
 
-        geogit.command(AddOp.class).call();
+        geogig.command(AddOp.class).call();
 
         assertEquals(oId1, index.findStaged(appendChild(pointsName, idP1)).get().getObjectId());
         assertEquals(oId2, index.findStaged(appendChild(pointsName, idP2)).get().getObjectId());
@@ -265,7 +265,7 @@ public class IndexTest extends RepositoryTestCase {
                 if (treeId.isNull()) {
                     return RevTree.EMPTY;
                 }
-                return geogit.command(RevObjectParse.class).setObjectId(treeId).call(RevTree.class)
+                return geogig.command(RevObjectParse.class).setObjectId(treeId).call(RevTree.class)
                         .get();
             }
         };
@@ -340,7 +340,7 @@ public class IndexTest extends RepositoryTestCase {
 
         final ObjectId newRepoTreeId1;
         {
-            newRepoTreeId1 = geogit.command(WriteTree.class)
+            newRepoTreeId1 = geogig.command(WriteTree.class)
                     .setOldRoot(tree(repo.getHead().get().getObjectId())).call();
 
             // assertEquals(index.getDatabase().getStagedRootRef().getObjectId(), newRepoTreeId1);
@@ -367,7 +367,7 @@ public class IndexTest extends RepositoryTestCase {
                     .build();
             ObjectId commitId = commit.getId();
             objectInserter.insert(commit);
-            Optional<Ref> newHead = geogit.command(UpdateRef.class).setName("refs/heads/master")
+            Optional<Ref> newHead = geogig.command(UpdateRef.class).setName("refs/heads/master")
                     .setNewValue(commitId).call();
             assertTrue(newHead.isPresent());
         }
@@ -376,7 +376,7 @@ public class IndexTest extends RepositoryTestCase {
         {
             // write comparing the the previously generated tree instead of the repository HEAD, as
             // it was not updated (no commit op was performed)
-            newRepoTreeId2 = geogit.command(WriteTree.class).setOldRoot(tree(newRepoTreeId1))
+            newRepoTreeId2 = geogig.command(WriteTree.class).setOldRoot(tree(newRepoTreeId1))
                     .call();
 
             // assertEquals(index.getDatabase().getStagedRootRef().getObjectId(), newRepoTreeId2);
@@ -408,7 +408,7 @@ public class IndexTest extends RepositoryTestCase {
             ObjectId commitId = commit.getId();
 
             objectInserter.insert(commit);
-            Optional<Ref> newHead = geogit.command(UpdateRef.class).setName("refs/heads/master")
+            Optional<Ref> newHead = geogig.command(UpdateRef.class).setName("refs/heads/master")
                     .setNewValue(commitId).call();
             assertTrue(newHead.isPresent());
         }
@@ -424,7 +424,7 @@ public class IndexTest extends RepositoryTestCase {
         {
             // write comparing the the previously generated tree instead of the repository HEAD, as
             // it was not updated (no commit op was performed)
-            newRepoTreeId3 = geogit.command(WriteTree.class).setOldRoot(tree(newRepoTreeId2))
+            newRepoTreeId3 = geogig.command(WriteTree.class).setOldRoot(tree(newRepoTreeId2))
                     .call();
 
             // assertEquals(index.getDatabase().getStagedRootRef().getObjectId(), newRepoTreeId3);
@@ -447,9 +447,9 @@ public class IndexTest extends RepositoryTestCase {
 
     @Test
     public void testAddEmptyTree() throws Exception {
-        WorkingTree workingTree = geogit.getRepository().workingTree();
+        WorkingTree workingTree = geogig.getRepository().workingTree();
         workingTree.createTypeTree(pointsName, pointsType);
-        geogit.command(AddOp.class).setUpdateOnly(false).call();
+        geogig.command(AddOp.class).setUpdateOnly(false).call();
         assertTrue(index.findStaged(pointsName).isPresent());
     }
 }

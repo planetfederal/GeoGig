@@ -75,7 +75,7 @@ public class Ls extends AbstractCommand implements CLICommand {
                 lsStrategy = Strategy.TREES_ONLY;
             }
         }
-        Iterator<NodeRef> iter = cli.getGeogit().command(LsTreeOp.class).setReference(ref)
+        Iterator<NodeRef> iter = cli.getGeogig().command(LsTreeOp.class).setReference(ref)
                 .setStrategy(lsStrategy).call();
 
         final ConsoleReader console = cli.getConsole();

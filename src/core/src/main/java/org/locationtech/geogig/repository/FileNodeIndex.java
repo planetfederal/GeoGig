@@ -74,7 +74,7 @@ class FileNodeIndex implements Closeable, NodeIndex {
             Iterable<Node> cache = getSortedNodes();
             final File file;
             try {
-                file = File.createTempFile("geogitNodes", ".idx", tmpFolder);
+                file = File.createTempFile("geogigNodes", ".idx", tmpFolder);
                 file.deleteOnExit();
                 // System.err.println("Created index file " + file.getAbsolutePath());
                 FastByteArrayOutputStream buf = new FastByteArrayOutputStream();

@@ -15,7 +15,7 @@ import org.locationtech.geogig.web.api.CommandSpecException;
 import org.locationtech.geogig.web.api.ResponseWriter;
 
 /**
- * This is the interface for the Fetch operation in GeoGit.
+ * This is the interface for the Fetch operation in GeoGig.
  * 
  * Web interface for {@link FetchOp}
  */
@@ -63,9 +63,9 @@ public class FetchWebOp extends AbstractWebAPICommand {
      */
     @Override
     public void run(CommandContext context) {
-        final Context geogit = this.getCommandLocator(context);
+        final Context geogig = this.getCommandLocator(context);
 
-        FetchOp command = geogit.command(FetchOp.class);
+        FetchOp command = geogig.command(FetchOp.class);
 
         command.addRemote(remote);
 

@@ -21,7 +21,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.base.Throwables;
 
 /**
- * A facade to Geo-GIT operations.
+ * A facade to GeoGig operations.
  * <p>
  * Represents the checkout of user's working tree and repository and provides the operations to work
  * on them.
@@ -35,16 +35,16 @@ public class GeoGIG {
     private Repository repository;
 
     /**
-     * Constructs a new instance of the GeoGit facade.
+     * Constructs a new instance of the GeoGig facade.
      */
     public GeoGIG() {
         context = GlobalContextBuilder.builder.build();
     }
 
     /**
-     * Constructs a new instance of the GeoGit facade with the given working directory.
+     * Constructs a new instance of the GeoGig facade with the given working directory.
      * 
-     * @param workingDir the working directory for this instance of GeoGit
+     * @param workingDir the working directory for this instance of GeoGig
      */
     public GeoGIG(File workingDir) {
         this();
@@ -52,7 +52,7 @@ public class GeoGIG {
     }
 
     /**
-     * Constructs a new instance of the GeoGit facade with the given Guice injector
+     * Constructs a new instance of the GeoGig facade with the given Guice injector
      * 
      * @param injector the injector to use
      * @see Context
@@ -62,11 +62,11 @@ public class GeoGIG {
     }
 
     /**
-     * Constructs a new instance of the GeoGit facade with the given Guice injector and working
+     * Constructs a new instance of the GeoGig facade with the given Guice injector and working
      * directory.
      * 
      * @param injector the injector to use
-     * @param workingDir the working directory for this instance of GeoGit
+     * @param workingDir the working directory for this instance of GeoGig
      * @see Context
      */
     public GeoGIG(final Context injector, @Nullable final File workingDir) {
@@ -100,7 +100,7 @@ public class GeoGIG {
     }
 
     /**
-     * Sets the repository for this GeoGIT instance.
+     * Sets the repository for this GeoGIG instance.
      * 
      * @param repository
      */
@@ -151,7 +151,7 @@ public class GeoGIG {
     }
 
     /**
-     * @return the platform for this GeoGit facade
+     * @return the platform for this GeoGig facade
      */
     public Platform getPlatform() {
         return context.platform();

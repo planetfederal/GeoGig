@@ -1,6 +1,6 @@
 Feature: "apply" command
     In order to apply changes stored in a patch file
-    As a Geogit User
+    As a Geogig User
     I want to apply a patch to the repository
 
 Scenario: Check if a correct patch can be applied

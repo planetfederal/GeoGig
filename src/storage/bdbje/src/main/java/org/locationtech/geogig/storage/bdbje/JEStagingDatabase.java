@@ -59,7 +59,7 @@ import com.google.common.io.LineProcessor;
 abstract class JEStagingDatabase extends AbstractStagingDatabase {
 
     /**
-     * Name of the BDB JE environment inside the .geogit folder used for the staging database
+     * Name of the BDB JE environment inside the .geogig folder used for the staging database
      */
     static final String ENVIRONMENT_NAME = "index";
 
@@ -180,7 +180,7 @@ abstract class JEStagingDatabase extends AbstractStagingDatabase {
     }
 
     /**
-     * @return the object to synchronize on, or null if not inside a geogit repository
+     * @return the object to synchronize on, or null if not inside a geogig repository
      */
     @Nullable
     private Object resolveConflictsMonitor(@Nullable final String namespace) {

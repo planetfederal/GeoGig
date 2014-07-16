@@ -16,7 +16,7 @@ import org.locationtech.geogig.web.api.CommandSpecException;
 import org.locationtech.geogig.web.api.ResponseWriter;
 
 /**
- * Interface for the Diff operation in GeoGit.
+ * Interface for the Diff operation in GeoGig.
  * 
  * Web interface for {@link DiffOp}
  */
@@ -101,9 +101,9 @@ public class Diff extends AbstractWebAPICommand {
             throw new CommandSpecException("No old ref spec");
         }
 
-        final Context geogit = this.getCommandLocator(context);
+        final Context geogig = this.getCommandLocator(context);
 
-        final Iterator<DiffEntry> diff = geogit.command(DiffOp.class).setOldVersion(oldRefSpec)
+        final Iterator<DiffEntry> diff = geogig.command(DiffOp.class).setOldVersion(oldRefSpec)
                 .setNewVersion(newRefSpec).setFilter(pathFilter).call();
 
         context.setResponseContent(new CommandResponse() {
@@ -111,7 +111,7 @@ public class Diff extends AbstractWebAPICommand {
             public void write(ResponseWriter out) throws Exception {
                 out.start();
                 if (showGeometryChanges) {
-                    out.writeGeometryChanges(geogit, diff, page, elementsPerPage);
+                    out.writeGeometryChanges(geogig, diff, page, elementsPerPage);
                 } else {
                     out.writeDiffEntries("diff", page * elementsPerPage, elementsPerPage, diff);
                 }

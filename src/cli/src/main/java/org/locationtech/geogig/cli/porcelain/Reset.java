@@ -30,16 +30,16 @@ import com.google.common.base.Optional;
 import com.google.common.base.Suppliers;
 
 /**
- * There are two forms of geogit reset. In the first form, copy entries from {@code <commit>} to the
+ * There are two forms of geogig reset. In the first form, copy entries from {@code <commit>} to the
  * index. In the second form, set the current branch head (HEAD) to {@code <commit>}, optionally
  * modifying index and working tree to match. The {@code <commit>} defaults to HEAD in both forms.
  * <p>
- * {@code geogit reset [<commit>] --path <path>...}
+ * {@code geogig reset [<commit>] --path <path>...}
  * <p>
  * This form resets the index entries for all {@code <path>} to their state at {@code <commit>}. (It
  * does not affect the working tree, nor the current branch.)
  * <p>
- * {@code geogit reset --(hard|soft|mixed) [<commit>]}
+ * {@code geogig reset --(hard|soft|mixed) [<commit>]}
  * <p>
  * This form resets the current branch head to {@code <commit>} and possibly updates the index
  * (resetting it to the tree of {@code <commit>}) and the working tree depending on {@code <mode>},
@@ -47,7 +47,7 @@ import com.google.common.base.Suppliers;
  * <p>
  * {@code --soft} Does not touch the index file nor the working tree at all (but resets the head to
  * {@code <commit>}, just like all modes do). This leaves all your changed files
- * "Changes to be committed", as {@code geogit status} would put it.
+ * "Changes to be committed", as {@code geogig status} would put it.
  * <p>
  * {@code --mixed} Resets the index but not the working tree (i.e., the changed files are preserved
  * but not marked for commit) and reports what has not been updated. This is the default action.
@@ -59,8 +59,8 @@ import com.google.common.base.Suppliers;
  * <p>
  * Usage:
  * <ul>
- * <li> {@code geogit reset [<commit>] --path <path>...}
- * <li> {@code geogit reset --(hard|soft|mixed) [<commit>]}
+ * <li> {@code geogig reset [<commit>] --path <path>...}
+ * <li> {@code geogig reset --(hard|soft|mixed) [<commit>]}
  * </ul>
  * 
  * @see ResetOp
@@ -92,18 +92,18 @@ public class Reset extends AbstractCommand implements CLICommand {
      */
     @Override
     public void runInternal(GeogigCLI cli) {
-        final GeoGIG geogit = cli.getGeogit();
+        final GeoGIG geogig = cli.getGeogig();
 
         ResetMode mode = resolveResetMode();
 
-        ResetOp reset = cli.getGeogit().command(ResetOp.class);
+        ResetOp reset = cli.getGeogig().command(ResetOp.class);
         try {
             for (int i = 0; args != null && i < args.size(); i++) {
                 reset.addPattern(args.get(i));
             }
 
             if (commit != null && commit.size() > 0) {
-                Optional<ObjectId> commitId = geogit.command(RevParse.class)
+                Optional<ObjectId> commitId = geogig.command(RevParse.class)
                         .setRefSpec(commit.get(0)).call();
                 checkParameter(commitId.isPresent(), "Commit could not be resolved.");
                 reset.setCommit(Suppliers.ofInstance(commitId.get()));
@@ -118,9 +118,9 @@ public class Reset extends AbstractCommand implements CLICommand {
             throw new CommandFailedException(ise.getMessage(), ise);
         }
 
-        if (!geogit.getRepository().workingTree().isClean()) {
+        if (!geogig.getRepository().workingTree().isClean()) {
             try {
-                Iterator<DiffEntry> unstaged = geogit.command(DiffWorkTree.class).setFilter(null)
+                Iterator<DiffEntry> unstaged = geogig.command(DiffWorkTree.class).setFilter(null)
                         .call();
                 cli.getConsole().println("Unstaged changes after reset:");
                 while (unstaged.hasNext()) {

@@ -5,7 +5,7 @@
 
 package org.locationtech.geogig.rest.repository;
 
-import static org.locationtech.geogig.rest.repository.RESTUtils.getGeogit;
+import static org.locationtech.geogig.rest.repository.RESTUtils.getGeogig;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -69,8 +69,8 @@ public class MergeFeatureResource extends Resource {
         return true;
     }
 
-    private Optional<NodeRef> parseID(ObjectId commitId, String path, GeoGIG geogit) {
-        Optional<RevObject> object = geogit.command(RevObjectParse.class).setObjectId(commitId)
+    private Optional<NodeRef> parseID(ObjectId commitId, String path, GeoGIG geogig) {
+        Optional<RevObject> object = geogig.command(RevObjectParse.class).setObjectId(commitId)
                 .call();
         RevCommit commit = null;
         if (object.isPresent() && object.get() instanceof RevCommit) {
@@ -80,11 +80,11 @@ public class MergeFeatureResource extends Resource {
                     + " to a commit");
         }
 
-        object = geogit.command(RevObjectParse.class).setObjectId(commit.getTreeId()).call();
+        object = geogig.command(RevObjectParse.class).setObjectId(commit.getTreeId()).call();
 
         if (object.isPresent()) {
             RevTree tree = (RevTree) object.get();
-            return geogit.command(FindTreeChild.class).setParent(tree).setChildPath(path).call();
+            return geogig.command(FindTreeChild.class).setParent(tree).setChildPath(path).call();
         } else {
             throw new CommandSpecException("Couldn't resolve commit's treeId");
         }
@@ -95,7 +95,7 @@ public class MergeFeatureResource extends Resource {
 
         try {
             input = getRequest().getEntity().getStream();
-            final GeoGIG ggit = getGeogit(getRequest()).get();
+            final GeoGIG ggit = getGeogig(getRequest()).get();
             final Reader body = new InputStreamReader(input);
             final JsonParser parser = new JsonParser();
             final JsonElement conflictJson = parser.parse(body);

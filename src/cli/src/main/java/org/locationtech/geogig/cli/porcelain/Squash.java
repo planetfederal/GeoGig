@@ -28,7 +28,7 @@ import com.google.common.collect.Lists;
  * <p>
  * Usage:
  * <ul>
- * <li> {@code geogit squash [<message>] <since_commit> <until_commit>
+ * <li> {@code geogig squash [<message>] <since_commit> <until_commit>
  * </ul>
  * 
  * @see org.locationtech.geogig.api.porcelain.LogOp
@@ -49,23 +49,23 @@ public class Squash extends AbstractCommand implements CLICommand {
     public void runInternal(GeogigCLI cli) {
         checkParameter(commits.size() == 2, "2 commit references must be supplied");
 
-        final GeoGIG geogit = cli.getGeogit();
+        final GeoGIG geogig = cli.getGeogig();
 
-        Optional<ObjectId> sinceId = geogit.command(RevParse.class).setRefSpec(commits.get(0))
+        Optional<ObjectId> sinceId = geogig.command(RevParse.class).setRefSpec(commits.get(0))
                 .call();
         checkParameter(sinceId.isPresent(), "'since' reference cannot be found");
-        checkParameter(geogit.getRepository().commitExists(sinceId.get()),
+        checkParameter(geogig.getRepository().commitExists(sinceId.get()),
                 "'since' reference does not resolve to a commit");
-        RevCommit sinceCommit = geogit.getRepository().getCommit(sinceId.get());
+        RevCommit sinceCommit = geogig.getRepository().getCommit(sinceId.get());
 
-        Optional<ObjectId> untilId = geogit.command(RevParse.class).setRefSpec(commits.get(1))
+        Optional<ObjectId> untilId = geogig.command(RevParse.class).setRefSpec(commits.get(1))
                 .call();
         checkParameter(untilId.isPresent(), "'until' reference cannot be found");
-        checkParameter(geogit.getRepository().commitExists(untilId.get()),
+        checkParameter(geogig.getRepository().commitExists(untilId.get()),
                 "'until' reference does not resolve to a commit");
-        RevCommit untilCommit = geogit.getRepository().getCommit(untilId.get());
+        RevCommit untilCommit = geogig.getRepository().getCommit(untilId.get());
 
-        geogit.command(SquashOp.class).setSince(sinceCommit).setUntil(untilCommit)
+        geogig.command(SquashOp.class).setSince(sinceCommit).setUntil(untilCommit)
                 .setMessage(message).call();
     }
 

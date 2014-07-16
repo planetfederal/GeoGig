@@ -40,7 +40,7 @@ public class OnlineTestProperties {
 
     /**
      * @param propertiesFileName name of the .properties file to place/use under $HOME (e.g.
-     *        .geogit-mongo-test.properties, .geogit-pg-test.properties, etc)
+     *        .geogig-mongo-test.properties, .geogig-pg-test.properties, etc)
      */
     public OnlineTestProperties(final String propertiesFileName, final String... defaultsKvp) {
         this.propertiesFileName = propertiesFileName;

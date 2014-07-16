@@ -1,6 +1,6 @@
 Feature: "conflicts" command
     In order to know which features are conflicted 
-    As a Geogit User
+    As a Geogig User
     I want to get a list of conflicted elements
 
   Scenario: Try to list conflicts

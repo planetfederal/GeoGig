@@ -55,7 +55,7 @@ public class AddOpTest extends RepositoryTestCase {
         insert(points1);
         insert(points2);
         insert(points3);
-        geogit.command(AddOp.class).call();
+        geogig.command(AddOp.class).call();
         List<DiffEntry> unstaged = toList(repo.workingTree().getUnstaged(null));
         assertEquals(ImmutableList.of(), unstaged);
     }
@@ -65,12 +65,12 @@ public class AddOpTest extends RepositoryTestCase {
         insert(points1);
         insert(points2);
         insert(points3);
-        geogit.command(AddOp.class).call();
+        geogig.command(AddOp.class).call();
         Iterator<DiffEntry> iterator = repo.workingTree().getUnstaged(null);
         assertFalse(iterator.hasNext());
         insert(lines1);
         insert(lines2);
-        geogit.command(AddOp.class).call();
+        geogig.command(AddOp.class).call();
         iterator = repo.workingTree().getUnstaged(null);
         assertFalse(iterator.hasNext());
     }
@@ -79,7 +79,7 @@ public class AddOpTest extends RepositoryTestCase {
     public void testAddNewPathUsingPathFilter() throws Exception {
         insert(points1);
         insert(points2);
-        geogit.command(AddOp.class).addPattern("Points/Points.1").call();
+        geogig.command(AddOp.class).addPattern("Points/Points.1").call();
         List<DiffEntry> unstaged = toList(repo.index().getStaged(null));
         assertEquals(unstaged.toString(), 2, unstaged.size());
 
@@ -102,7 +102,7 @@ public class AddOpTest extends RepositoryTestCase {
         insert(points1);
         insert(points2);
         insert(lines1);
-        geogit.command(AddOp.class).addPattern("Points").call();
+        geogig.command(AddOp.class).addPattern("Points").call();
         List<DiffEntry> unstaged = toList(repo.workingTree().getUnstaged(null));
         assertEquals(2, unstaged.size());
         assertEquals(linesName, unstaged.get(0).newName());
@@ -114,11 +114,11 @@ public class AddOpTest extends RepositoryTestCase {
     public void testAddSingleDeletion() throws Exception {
         insert(points1);
         insert(points2);
-        geogit.command(AddOp.class).call();
+        geogig.command(AddOp.class).call();
         List<DiffEntry> staged = toList(repo.index().getStaged(Lists.newArrayList(pointsName)));
         assertEquals(3, staged.size());
         delete(points1);
-        geogit.command(AddOp.class).call();
+        geogig.command(AddOp.class).call();
         staged = toList(repo.index().getStaged(Lists.newArrayList(pointsName)));
         assertEquals(2, staged.size());
     }
@@ -127,9 +127,9 @@ public class AddOpTest extends RepositoryTestCase {
     public void testAddTreeDeletion() throws Exception {
         insert(points1);
         insert(points2);
-        geogit.command(AddOp.class).call();
+        geogig.command(AddOp.class).call();
         repo.workingTree().delete(pointsName);
-        geogit.command(AddOp.class).call();
+        geogig.command(AddOp.class).call();
         List<DiffEntry> staged = toList(repo.index().getStaged(Lists.newArrayList(pointsName)));
         assertEquals(0, staged.size());
         assertEquals(0, repo.index().countStaged(null).featureCount());
@@ -139,12 +139,12 @@ public class AddOpTest extends RepositoryTestCase {
     @Test
     public void testAddUpdate() throws Exception {
         insert(points1);
-        geogit.command(AddOp.class).call();
-        geogit.command(CommitOp.class).call();
+        geogig.command(AddOp.class).call();
+        geogig.command(CommitOp.class).call();
 
         insert(points1_modified);
         insert(lines1);
-        geogit.command(AddOp.class).setUpdateOnly(true).call();
+        geogig.command(AddOp.class).setUpdateOnly(true).call();
         List<DiffEntry> unstaged = toList(repo.workingTree().getUnstaged(null));
         assertEquals(2, unstaged.size());
         assertEquals(linesName, unstaged.get(0).newName());
@@ -154,12 +154,12 @@ public class AddOpTest extends RepositoryTestCase {
     @Test
     public void testAddUpdateWithPathFilter() throws Exception {
         insertAndAdd(points1);
-        geogit.command(CommitOp.class).call();
+        geogig.command(CommitOp.class).call();
         insert(points1_modified);
         insert(lines1);
 
         // stage only Lines changed
-        geogit.command(AddOp.class).setUpdateOnly(true).addPattern(pointsName).call();
+        geogig.command(AddOp.class).setUpdateOnly(true).addPattern(pointsName).call();
         List<DiffEntry> staged = toList(repo.index().getStaged(null));
         assertEquals(1, staged.size());
         assertEquals(idP1, staged.get(0).newName());
@@ -170,7 +170,7 @@ public class AddOpTest extends RepositoryTestCase {
         assertEquals(linesName, unstaged.get(0).newName());
         assertEquals(idL1, unstaged.get(1).newName());
 
-        geogit.command(AddOp.class).setUpdateOnly(true).addPattern("Points").call();
+        geogig.command(AddOp.class).setUpdateOnly(true).addPattern("Points").call();
         unstaged = toList(repo.workingTree().getUnstaged(null));
 
         assertEquals(2, unstaged.size());
@@ -185,31 +185,31 @@ public class AddOpTest extends RepositoryTestCase {
         Feature points1ModifiedB = feature(pointsType, idP1, "StringProp1_3", new Integer(2000),
                 "POINT(1 1)");
         insertAndAdd(points1);
-        geogit.command(CommitOp.class).call();
-        geogit.command(BranchCreateOp.class).setName("TestBranch").call();
+        geogig.command(CommitOp.class).call();
+        geogig.command(BranchCreateOp.class).setName("TestBranch").call();
         insertAndAdd(points1Modified);
-        geogit.command(CommitOp.class).call();
-        geogit.command(CheckoutOp.class).setSource("TestBranch").call();
+        geogig.command(CommitOp.class).call();
+        geogig.command(CheckoutOp.class).setSource("TestBranch").call();
         insertAndAdd(points1ModifiedB);
         insertAndAdd(points2);
-        geogit.command(CommitOp.class).call();
+        geogig.command(CommitOp.class).call();
 
-        geogit.command(CheckoutOp.class).setSource("master").call();
-        Ref branch = geogit.command(RefParse.class).setName("TestBranch").call().get();
+        geogig.command(CheckoutOp.class).setSource("master").call();
+        Ref branch = geogig.command(RefParse.class).setName("TestBranch").call().get();
         try {
-            geogit.command(MergeOp.class).addCommit(Suppliers.ofInstance(branch.getObjectId()))
+            geogig.command(MergeOp.class).addCommit(Suppliers.ofInstance(branch.getObjectId()))
                     .call();
             fail();
         } catch (MergeConflictsException e) {
             assertTrue(e.getMessage().contains("conflict"));
         }
         insert(points1);
-        geogit.command(AddOp.class).call();
-        List<Conflict> conflicts = geogit.getRepository().stagingDatabase()
+        geogig.command(AddOp.class).call();
+        List<Conflict> conflicts = geogig.getRepository().stagingDatabase()
                 .getConflicts(null, null);
         assertTrue(conflicts.isEmpty());
-        geogit.command(CommitOp.class).call();
-        Optional<Ref> ref = geogit.command(RefParse.class).setName(Ref.MERGE_HEAD).call();
+        geogig.command(CommitOp.class).call();
+        Optional<Ref> ref = geogig.command(RefParse.class).setName(Ref.MERGE_HEAD).call();
         assertFalse(ref.isPresent());
     }
 
@@ -220,49 +220,49 @@ public class AddOpTest extends RepositoryTestCase {
         Feature points1ModifiedB = feature(pointsType, idP1, "StringProp1_3", new Integer(2000),
                 "POINT(1 1)");
         insertAndAdd(points1);
-        geogit.command(CommitOp.class).call();
-        geogit.command(BranchCreateOp.class).setName("TestBranch").call();
+        geogig.command(CommitOp.class).call();
+        geogig.command(BranchCreateOp.class).setName("TestBranch").call();
         insertAndAdd(points1Modified);
-        geogit.command(CommitOp.class).call();
-        geogit.command(CheckoutOp.class).setSource("TestBranch").call();
+        geogig.command(CommitOp.class).call();
+        geogig.command(CheckoutOp.class).setSource("TestBranch").call();
         insertAndAdd(points1ModifiedB);
         insertAndAdd(points2);
-        geogit.command(CommitOp.class).call();
+        geogig.command(CommitOp.class).call();
 
-        geogit.command(CheckoutOp.class).setSource("master").call();
-        Ref branch = geogit.command(RefParse.class).setName("TestBranch").call().get();
+        geogig.command(CheckoutOp.class).setSource("master").call();
+        Ref branch = geogig.command(RefParse.class).setName("TestBranch").call().get();
         try {
-            geogit.command(MergeOp.class).addCommit(Suppliers.ofInstance(branch.getObjectId()))
+            geogig.command(MergeOp.class).addCommit(Suppliers.ofInstance(branch.getObjectId()))
                     .call();
             fail();
         } catch (MergeConflictsException e) {
             assertTrue(true);
         }
-        geogit.command(AddOp.class).call();
-        List<Conflict> conflicts = geogit.getRepository().stagingDatabase()
+        geogig.command(AddOp.class).call();
+        List<Conflict> conflicts = geogig.getRepository().stagingDatabase()
                 .getConflicts(null, null);
         assertTrue(conflicts.isEmpty());
-        geogit.command(CommitOp.class).call();
-        Optional<Ref> ref = geogit.command(RefParse.class).setName(Ref.MERGE_HEAD).call();
+        geogig.command(CommitOp.class).call();
+        Optional<Ref> ref = geogig.command(RefParse.class).setName(Ref.MERGE_HEAD).call();
         assertFalse(ref.isPresent());
     }
 
     @Test
     public void testAddModifiedFeatureType() throws Exception {
         insertAndAdd(points2, points1B);
-        geogit.command(CommitOp.class).call();
-        geogit.getRepository().workingTree().updateTypeTree(pointsName, modifiedPointsType);
-        geogit.command(AddOp.class).call();
-        List<DiffEntry> list = toList(geogit.getRepository().index().getStaged(null));
+        geogig.command(CommitOp.class).call();
+        geogig.getRepository().workingTree().updateTypeTree(pointsName, modifiedPointsType);
+        geogig.command(AddOp.class).call();
+        List<DiffEntry> list = toList(geogig.getRepository().index().getStaged(null));
         assertFalse(list.isEmpty());
         String path = NodeRef.appendChild(pointsName, idP1);
-        Optional<NodeRef> ref = geogit.command(FindTreeChild.class).setChildPath(path)
-                .setIndex(true).setParent(geogit.getRepository().index().getTree()).call();
+        Optional<NodeRef> ref = geogig.command(FindTreeChild.class).setChildPath(path)
+                .setIndex(true).setParent(geogig.getRepository().index().getTree()).call();
         assertTrue(ref.isPresent());
         assertFalse(ref.get().getNode().getMetadataId().isPresent());
         path = NodeRef.appendChild(pointsName, idP2);
-        ref = geogit.command(FindTreeChild.class).setChildPath(path).setIndex(true)
-                .setParent(geogit.getRepository().index().getTree()).call();
+        ref = geogig.command(FindTreeChild.class).setChildPath(path).setIndex(true)
+                .setParent(geogig.getRepository().index().getTree()).call();
         assertTrue(ref.isPresent());
         assertTrue(ref.get().getNode().getMetadataId().isPresent());
 

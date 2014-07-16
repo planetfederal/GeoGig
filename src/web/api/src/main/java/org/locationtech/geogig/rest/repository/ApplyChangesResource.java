@@ -4,7 +4,7 @@
  */
 package org.locationtech.geogig.rest.repository;
 
-import static org.locationtech.geogig.rest.repository.RESTUtils.getGeogit;
+import static org.locationtech.geogig.rest.repository.RESTUtils.getGeogig;
 
 import java.io.EOFException;
 import java.io.IOException;
@@ -70,7 +70,7 @@ public class ApplyChangesResource extends Finder {
             ObjectId newCommitId = ObjectId.NULL;
             try {
                 input = getRequest().getEntity().getStream();
-                final GeoGIG ggit = getGeogit(getRequest()).get();
+                final GeoGIG ggit = getGeogig(getRequest()).get();
 
                 final Repository repository = ggit.getRepository();
 

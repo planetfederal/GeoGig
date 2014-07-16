@@ -89,19 +89,19 @@ public class ConsoleResourceResource extends Resource {
             throw Throwables.propagate(e);
         }
         Preconditions.checkArgument("2.0".equals(json.get("jsonrpc").getAsString()));
-        Optional<GeoGIG> providedGeogit = RESTUtils.getGeogit(request);
-        checkArgument(providedGeogit.isPresent());
-        final GeoGIG geogit = providedGeogit.get();
+        Optional<GeoGIG> providedGeogig = RESTUtils.getGeogig(request);
+        checkArgument(providedGeogig.isPresent());
+        final GeoGIG geogig = providedGeogig.get();
         JsonObject response;
-        if (!checkConsoleEnabled(geogit.getContext())) {
+        if (!checkConsoleEnabled(geogig.getContext())) {
             response = serviceDisabled(json);
         } else {
-            response = processRequest(json, geogit);
+            response = processRequest(json, geogig);
         }
         getResponse().setEntity(response.toString(), MediaType.APPLICATION_JSON);
     }
 
-    private JsonObject processRequest(JsonObject json, final GeoGIG geogit) {
+    private JsonObject processRequest(JsonObject json, final GeoGIG geogig) {
         JsonObject response;
         final String command = json.get("method").getAsString();
         final String queryId = json.get("id").getAsString();
@@ -115,25 +115,25 @@ public class ConsoleResourceResource extends Resource {
             // pass it a BufferedOutputStream 'cause it doesn't buffer the internal FileOutputStream
             ConsoleReader console = new ConsoleReader(in, new BufferedOutputStream(out),
                     new UnsupportedTerminal());
-            Platform platform = geogit.getPlatform();
+            Platform platform = geogig.getPlatform();
 
-            GeogigCLI geogitCLI = new GeogigCLI(geogit, console);
-            geogitCLI.setPlatform(platform);
-            geogitCLI.disableProgressListener();
+            GeogigCLI geogigCLI = new GeogigCLI(geogig, console);
+            geogigCLI.setPlatform(platform);
+            geogigCLI.disableProgressListener();
 
             String[] args = ArgumentTokenizer.tokenize(command);
-            final int exitCode = geogitCLI.execute(args);
+            final int exitCode = geogigCLI.execute(args);
             response = new JsonObject();
             response.addProperty("id", queryId);
 
-            final int charCountLimit = getOutputLimit(geogit.getContext());
+            final int charCountLimit = getOutputLimit(geogig.getContext());
             final StringBuilder output = getLimitedOutput(out, charCountLimit);
 
             if (exitCode == 0) {
                 response.addProperty("result", output.toString());
                 response.addProperty("error", (String) null);
             } else {
-                Exception exception = geogitCLI.exception;
+                Exception exception = geogigCLI.exception;
                 JsonObject error = buildError(exitCode, output, exception);
                 response.add("error", error);
             }
@@ -157,7 +157,7 @@ public class ConsoleResourceResource extends Resource {
 
         JsonObject error = new JsonObject();
         error.addProperty("code", "-1");
-        String message = "Web-console service is disabled. Run 'geogit config web.console.enabled true' on a real terminal to enable it.";
+        String message = "Web-console service is disabled. Run 'geogig config web.console.enabled true' on a real terminal to enable it.";
         error.addProperty("message", message);
 
         response.add("error", error);

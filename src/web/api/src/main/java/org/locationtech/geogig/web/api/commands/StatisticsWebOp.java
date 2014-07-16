@@ -60,23 +60,23 @@ public class StatisticsWebOp extends AbstractWebAPICommand {
      */
     @Override
     public void run(CommandContext context) {
-        final Context geogit = this.getCommandLocator(context);
+        final Context geogig = this.getCommandLocator(context);
         final List<FeatureTypeStats> stats = Lists.newArrayList();
-        LogOp logOp = geogit.command(LogOp.class).setFirstParentOnly(true);
+        LogOp logOp = geogig.command(LogOp.class).setFirstParentOnly(true);
         final Iterator<RevCommit> log;
         if (since != null && !since.trim().isEmpty()) {
             Date untilTime = new Date();
-            Date sinceTime = new Date(geogit.command(ParseTimestamp.class).setString(since).call());
+            Date sinceTime = new Date(geogig.command(ParseTimestamp.class).setString(since).call());
             logOp.setTimeRange(new Range<Date>(Date.class, sinceTime, untilTime));
         }
         if (this.until != null) {
             Optional<ObjectId> until;
-            until = geogit.command(RevParse.class).setRefSpec(this.until).call();
+            until = geogig.command(RevParse.class).setRefSpec(this.until).call();
             Preconditions.checkArgument(until.isPresent(), "Object not found '%s'", this.until);
             logOp.setUntil(until.get());
         }
 
-        LsTreeOp lsTreeOp = geogit.command(LsTreeOp.class)
+        LsTreeOp lsTreeOp = geogig.command(LsTreeOp.class)
                 .setStrategy(LsTreeOp.Strategy.TREES_ONLY);
         if (path != null && !path.trim().isEmpty()) {
             lsTreeOp.setReference(path);
@@ -86,7 +86,7 @@ public class StatisticsWebOp extends AbstractWebAPICommand {
 
         while (treeIter.hasNext()) {
             NodeRef node = treeIter.next();
-            stats.add(new FeatureTypeStats(node.path(), context.getGeoGIT().getRepository()
+            stats.add(new FeatureTypeStats(node.path(), context.getGeoGIG().getRepository()
                     .getTree(node.objectId()).size()));
         }
         log = logOp.call();
@@ -127,7 +127,7 @@ public class StatisticsWebOp extends AbstractWebAPICommand {
         int modifiedFeatures = 0;
         int removedFeatures = 0;
         if (since != null && !since.trim().isEmpty() && firstCommit != null && lastCommit != null) {
-            final Iterator<DiffEntry> diff = geogit.command(DiffOp.class)
+            final Iterator<DiffEntry> diff = geogig.command(DiffOp.class)
                     .setOldVersion(firstCommit.getId()).setNewVersion(lastCommit.getId())
                     .setFilter(path).call();
             while (diff.hasNext()) {

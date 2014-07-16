@@ -54,7 +54,7 @@ import com.google.common.collect.ImmutableSet;
  * <p>
  * Usage:
  * <ul>
- * <li> {@code geogit log [<options>]}
+ * <li> {@code geogig log [<options>]}
  * </ul>
  * 
  * @see org.locationtech.geogig.api.porcelain.LogOp
@@ -72,7 +72,7 @@ public class Log extends AbstractCommand implements CLICommand {
 
     private Map<ObjectId, String> refs;
 
-    private GeoGIG geogit;
+    private GeoGIG geogig;
 
     private ConsoleReader console;
 
@@ -92,16 +92,16 @@ public class Log extends AbstractCommand implements CLICommand {
         checkParameter(!(args.stats && args.oneline),
                 "--name-only and --oneline cannot be used together");
 
-        geogit = cli.getGeogit();
+        geogig = cli.getGeogig();
 
-        LogOp op = geogit.command(LogOp.class).setTopoOrder(args.topo)
+        LogOp op = geogig.command(LogOp.class).setTopoOrder(args.topo)
                 .setFirstParentOnly(args.firstParent);
 
         refs = Maps.newHashMap();
         if (args.decoration) {
-            Optional<Ref> head = geogit.command(RefParse.class).setName(Ref.HEAD).call();
+            Optional<Ref> head = geogig.command(RefParse.class).setName(Ref.HEAD).call();
             refs.put(head.get().getObjectId(), Ref.HEAD);
-            ImmutableSet<Ref> set = geogit.command(ForEachRef.class).call();
+            ImmutableSet<Ref> set = geogig.command(ForEachRef.class).call();
             for (Ref ref : set) {
                 ObjectId id = ref.getObjectId();
                 if (refs.containsKey(id)) {
@@ -112,12 +112,12 @@ public class Log extends AbstractCommand implements CLICommand {
             }
         }
         if (args.all) {
-            ImmutableSet<Ref> refs = geogit.command(ForEachRef.class).call();
+            ImmutableSet<Ref> refs = geogig.command(ForEachRef.class).call();
             List<ObjectId> list = Lists.newArrayList();
             for (Ref ref : refs) {
                 list.add(ref.getObjectId());
             }
-            Optional<Ref> head = geogit.command(RefParse.class).setName(Ref.HEAD).call();
+            Optional<Ref> head = geogig.command(RefParse.class).setName(Ref.HEAD).call();
             if (head.isPresent()) {
                 Ref ref = head.get();
                 if (ref instanceof SymRef) {
@@ -130,7 +130,7 @@ public class Log extends AbstractCommand implements CLICommand {
                 op.addCommit(id);
             }
         } else if (args.branch != null) {
-            Optional<Ref> obj = geogit.command(RefParse.class).setName(args.branch).call();
+            Optional<Ref> obj = geogig.command(RefParse.class).setName(args.branch).call();
             checkParameter(obj.isPresent(), "Wrong branch name: " + args.branch);
             op.addCommit(obj.get().getObjectId());
         }
@@ -151,10 +151,10 @@ public class Log extends AbstractCommand implements CLICommand {
             Date since = new Date(0);
             Date until = new Date();
             if (args.since != null) {
-                since = new Date(geogit.command(ParseTimestamp.class).setString(args.since).call());
+                since = new Date(geogig.command(ParseTimestamp.class).setString(args.since).call());
             }
             if (args.until != null) {
-                until = new Date(geogit.command(ParseTimestamp.class).setString(args.until).call());
+                until = new Date(geogig.command(ParseTimestamp.class).setString(args.until).call());
                 if (args.all) {
                     throw new InvalidParameterException(
                             "Cannot specify 'until' commit when listing all branches");
@@ -181,7 +181,7 @@ public class Log extends AbstractCommand implements CLICommand {
             }
             if (sinceRefSpec != null) {
                 Optional<ObjectId> since;
-                since = geogit.command(RevParse.class).setRefSpec(sinceRefSpec).call();
+                since = geogig.command(RevParse.class).setRefSpec(sinceRefSpec).call();
                 checkParameter(since.isPresent(), "Object not found '%s'", sinceRefSpec);
                 op.setSince(since.get());
             }
@@ -191,7 +191,7 @@ public class Log extends AbstractCommand implements CLICommand {
                             "Cannot specify 'until' commit when listing all branches");
                 }
                 Optional<ObjectId> until;
-                until = geogit.command(RevParse.class).setRefSpec(untilRefSpec).call();
+                until = geogig.command(RevParse.class).setRefSpec(untilRefSpec).call();
                 checkParameter(until.isPresent(), "Object not found '%s'", sinceRefSpec);
                 op.setUntil(until.get());
             }
@@ -224,7 +224,7 @@ public class Log extends AbstractCommand implements CLICommand {
                 detail = LOG_DETAIL.NOTHING;
             }
 
-            printer = new StandardConverter(detail, geogit.getPlatform());
+            printer = new StandardConverter(detail, geogig.getPlatform());
         }
 
         while (log.hasNext()) {
@@ -236,7 +236,7 @@ public class Log extends AbstractCommand implements CLICommand {
     interface LogEntryPrinter {
 
         /**
-         * @param geogit
+         * @param geogig
          * @param console
          * @param entry
          * @throws IOException
@@ -303,7 +303,7 @@ public class Log extends AbstractCommand implements CLICommand {
             ansi.a("Subject: ").a(commit.getMessage()).newline();
             if ((detail.equals(LOG_DETAIL.NAMES_ONLY)) && commit.getParentIds().size() == 1) {
                 ansi.a("Affected paths:").newline();
-                Iterator<DiffEntry> diff = geogit.command(DiffOp.class)
+                Iterator<DiffEntry> diff = geogig.command(DiffOp.class)
                         .setOldVersion(commit.parentN(0).get()).setNewVersion(commit.getId())
                         .call();
                 DiffEntry diffEntry;
@@ -314,7 +314,7 @@ public class Log extends AbstractCommand implements CLICommand {
             }
             if (detail.equals(LOG_DETAIL.STATS) && commit.getParentIds().size() == 1) {
 
-                Iterator<DiffEntry> diff = geogit.command(DiffOp.class)
+                Iterator<DiffEntry> diff = geogig.command(DiffOp.class)
                         .setOldVersion(commit.parentN(0).get()).setNewVersion(commit.getId())
                         .call();
                 int adds = 0, deletes = 0, changes = 0;
@@ -343,14 +343,14 @@ public class Log extends AbstractCommand implements CLICommand {
             console.println(ansi.toString());
             if (detail.equals(LOG_DETAIL.SUMMARY) && commit.getParentIds().size() == 1) {
                 ansi.a("Changes:").newline();
-                Iterator<DiffEntry> diff = geogit.command(DiffOp.class)
+                Iterator<DiffEntry> diff = geogig.command(DiffOp.class)
                         .setOldVersion(commit.parentN(0).get()).setNewVersion(commit.getId())
                         .call();
                 DiffEntry diffEntry;
                 while (diff.hasNext()) {
                     diffEntry = diff.next();
                     if (detail.equals(LOG_DETAIL.SUMMARY)) {
-                        new FullDiffPrinter(true, false).print(geogit, console, diffEntry);
+                        new FullDiffPrinter(true, false).print(geogig, console, diffEntry);
                     }
 
                 }

@@ -296,7 +296,7 @@ public class SquashOp extends AbstractGeoGigOp<ObjectId> {
 
         checkState(
                 name.isPresent(),
-                "%s not found in config. Use geogit config [--global] %s <your name> to configure it.",
+                "%s not found in config. Use geogig config [--global] %s <your name> to configure it.",
                 key, key);
 
         return name.get();
@@ -308,7 +308,7 @@ public class SquashOp extends AbstractGeoGigOp<ObjectId> {
 
         checkState(
                 email.isPresent(),
-                "%s not found in config. Use geogit config [--global] %s <your email> to configure it.",
+                "%s not found in config. Use geogig config [--global] %s <your email> to configure it.",
                 key, key);
 
         return email.get();

@@ -20,7 +20,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.base.Throwables;
 
 /**
- * Standard platform for GeoGit.
+ * Standard platform for GeoGig.
  */
 public class DefaultPlatform implements Platform {
 

@@ -45,14 +45,14 @@ public class OSMUnmapOpTest extends RepositoryTestCase {
         // Import
         String filename = OSMImportOp.class.getResource("ways.xml").getFile();
         File file = new File(filename);
-        geogit.command(OSMImportOp.class).setDataSource(file.getAbsolutePath()).call();
-        WorkingTree workTree = geogit.getRepository().workingTree();
+        geogig.command(OSMImportOp.class).setDataSource(file.getAbsolutePath()).call();
+        WorkingTree workTree = geogig.getRepository().workingTree();
         long unstaged = workTree.countUnstaged("node").count();
         assertTrue(unstaged > 0);
         unstaged = workTree.countUnstaged("way").count();
         assertTrue(unstaged > 0);
-        geogit.command(AddOp.class).call();
-        geogit.command(CommitOp.class).setMessage("msg").call();
+        geogig.command(AddOp.class).call();
+        geogig.command(CommitOp.class).setMessage("msg").call();
 
         // map
         Map<String, AttributeDefinition> fields = Maps.newHashMap();
@@ -66,13 +66,13 @@ public class OSMUnmapOpTest extends RepositoryTestCase {
         List<MappingRule> mappingRules = Lists.newArrayList();
         mappingRules.add(mappingRule);
         Mapping mapping = new Mapping(mappingRules);
-        geogit.command(OSMMapOp.class).setMapping(mapping).call();
+        geogig.command(OSMMapOp.class).setMapping(mapping).call();
 
         // check that mapping was correctly performed
-        Optional<RevFeature> revFeature = geogit.command(RevObjectParse.class)
+        Optional<RevFeature> revFeature = geogig.command(RevObjectParse.class)
                 .setRefSpec("HEAD:residential/31347480").call(RevFeature.class);
         assertTrue(revFeature.isPresent());
-        Optional<RevFeatureType> featureType = geogit.command(ResolveFeatureType.class)
+        Optional<RevFeatureType> featureType = geogig.command(ResolveFeatureType.class)
                 .setRefSpec("HEAD:residential/31347480").call();
         assertTrue(featureType.isPresent());
         ImmutableList<Optional<Object>> values = revFeature.get().getValues();
@@ -92,8 +92,8 @@ public class OSMUnmapOpTest extends RepositoryTestCase {
         fb.set("id", 31347480l);
         fb.set("nodes", values.get(3).get());
         SimpleFeature newFeature = fb.buildFeature("31347480");
-        geogit.getRepository().workingTree().insert("residential", newFeature);
-        Optional<RevFeature> mapped = geogit.command(RevObjectParse.class)
+        geogig.getRepository().workingTree().insert("residential", newFeature);
+        Optional<RevFeature> mapped = geogig.command(RevObjectParse.class)
                 .setRefSpec("WORK_HEAD:residential/31347480").call(RevFeature.class);
         assertTrue(mapped.isPresent());
         values = mapped.get().getValues();
@@ -105,11 +105,11 @@ public class OSMUnmapOpTest extends RepositoryTestCase {
         assertEquals("newname", values.get(1).get().toString());
 
         // unmap
-        geogit.command(OSMUnmapOp.class).setPath("residential").call();
+        geogig.command(OSMUnmapOp.class).setPath("residential").call();
 
         // Check that raw OSM data was updated
         // First, we check that the corresponding way has been modified
-        Optional<RevFeature> unmapped = geogit.command(RevObjectParse.class)
+        Optional<RevFeature> unmapped = geogig.command(RevObjectParse.class)
                 .setRefSpec("WORK_HEAD:way/31347480").call(RevFeature.class);
         assertTrue(unmapped.isPresent());
         values = unmapped.get().getValues();
@@ -128,7 +128,7 @@ public class OSMUnmapOpTest extends RepositoryTestCase {
         String newNodeId = nodeIds[nodeIds.length - 1];
         // and we check that the node has been added to the 'node' tree and has the right
         // coordinates.
-        Optional<RevFeature> newNode = geogit.command(RevObjectParse.class)
+        Optional<RevFeature> newNode = geogig.command(RevObjectParse.class)
                 .setRefSpec("WORK_HEAD:node/" + newNodeId).call(RevFeature.class);
         assertTrue(newNode.isPresent());
         values = newNode.get().getValues();
@@ -142,14 +142,14 @@ public class OSMUnmapOpTest extends RepositoryTestCase {
         // import and check that we have both ways and nodes
         String filename = OSMImportOp.class.getResource("ways_restriction.xml").getFile();
         File file = new File(filename);
-        geogit.command(OSMImportOp.class).setDataSource(file.getAbsolutePath()).call();
-        WorkingTree workTree = geogit.getRepository().workingTree();
+        geogig.command(OSMImportOp.class).setDataSource(file.getAbsolutePath()).call();
+        WorkingTree workTree = geogig.getRepository().workingTree();
         long unstaged = workTree.countUnstaged("way").count();
         assertTrue(unstaged > 0);
         unstaged = workTree.countUnstaged("node").count();
         assertTrue(unstaged > 0);
-        geogit.command(AddOp.class).call();
-        geogit.command(CommitOp.class).setMessage("msg").call();
+        geogig.command(AddOp.class).call();
+        geogig.command(CommitOp.class).setMessage("msg").call();
 
         // Define mapping
         Map<String, AttributeDefinition> fields = Maps.newHashMap();
@@ -162,10 +162,10 @@ public class OSMUnmapOpTest extends RepositoryTestCase {
         List<MappingRule> mappingRules = Lists.newArrayList();
         mappingRules.add(mappingRule);
         Mapping mapping = new Mapping(mappingRules);
-        geogit.command(OSMMapOp.class).setMapping(mapping).call();
+        geogig.command(OSMMapOp.class).setMapping(mapping).call();
 
         // Check that mapping was correctly performed
-        Optional<RevFeature> revFeature = geogit.command(RevObjectParse.class)
+        Optional<RevFeature> revFeature = geogig.command(RevObjectParse.class)
                 .setRefSpec("HEAD:polygons/31045880").call(RevFeature.class);
         assertTrue(revFeature.isPresent());
         ImmutableList<Optional<Object>> values = revFeature.get().getValues();
@@ -173,21 +173,21 @@ public class OSMUnmapOpTest extends RepositoryTestCase {
         String wkt = "POLYGON ((7.1923367 50.7395887, 7.1923127 50.7396946, 7.1923444 50.7397419, 7.1924199 50.7397781, 7.1923367 50.7395887))";
         assertEquals(wkt, values.get(2).get().toString());
         assertEquals("yes", values.get(1).get());
-        revFeature = geogit.command(RevObjectParse.class).setRefSpec("HEAD:polygons/24777894")
+        revFeature = geogig.command(RevObjectParse.class).setRefSpec("HEAD:polygons/24777894")
                 .call(RevFeature.class);
         assertFalse(revFeature.isPresent());
 
         // delete the original feature
-        geogit.getRepository().workingTree().delete("way/31045880");
-        Optional<RevFeature> original = geogit.command(RevObjectParse.class)
+        geogig.getRepository().workingTree().delete("way/31045880");
+        Optional<RevFeature> original = geogig.command(RevObjectParse.class)
                 .setRefSpec("WORK_HEAD:way/31045880").call(RevFeature.class);
         assertFalse(original.isPresent());
 
         // unmap
-        geogit.command(OSMUnmapOp.class).setPath("polygons").call();
+        geogig.command(OSMUnmapOp.class).setPath("polygons").call();
 
         // check that the original way has been recreated
-        Optional<RevFeature> unmapped = geogit.command(RevObjectParse.class)
+        Optional<RevFeature> unmapped = geogig.command(RevObjectParse.class)
                 .setRefSpec("WORK_HEAD:way/31045880").call(RevFeature.class);
         assertTrue(unmapped.isPresent());
         values = unmapped.get().getValues();
@@ -202,9 +202,9 @@ public class OSMUnmapOpTest extends RepositoryTestCase {
         // Import
         String filename = OSMImportOp.class.getResource("nodes.xml").getFile();
         File file = new File(filename);
-        geogit.command(OSMImportOp.class).setDataSource(file.getAbsolutePath()).call();
-        geogit.command(AddOp.class).call();
-        geogit.command(CommitOp.class).setMessage("msg").call();
+        geogig.command(OSMImportOp.class).setDataSource(file.getAbsolutePath()).call();
+        geogig.command(AddOp.class).call();
+        geogig.command(CommitOp.class).setMessage("msg").call();
 
         // Map
         Map<String, AttributeDefinition> fields = Maps.newHashMap();
@@ -217,12 +217,12 @@ public class OSMUnmapOpTest extends RepositoryTestCase {
         List<MappingRule> mappingRules = Lists.newArrayList();
         mappingRules.add(mappingRule);
         Mapping mapping = new Mapping(mappingRules);
-        geogit.command(OSMMapOp.class).setMapping(mapping).call();
+        geogig.command(OSMMapOp.class).setMapping(mapping).call();
 
-        Optional<RevFeature> revFeature = geogit.command(RevObjectParse.class)
+        Optional<RevFeature> revFeature = geogig.command(RevObjectParse.class)
                 .setRefSpec("HEAD:busstops/507464799").call(RevFeature.class);
         assertTrue(revFeature.isPresent());
-        Optional<RevFeatureType> featureType = geogit.command(ResolveFeatureType.class)
+        Optional<RevFeatureType> featureType = geogig.command(ResolveFeatureType.class)
                 .setRefSpec("HEAD:busstops/507464799").call();
         assertTrue(featureType.isPresent());
         ImmutableList<Optional<Object>> values = revFeature.get().getValues();
@@ -239,10 +239,10 @@ public class OSMUnmapOpTest extends RepositoryTestCase {
         fb.set("name", "newname");
         fb.set("id", 507464799l);
         SimpleFeature newFeature = fb.buildFeature("507464799");
-        geogit.getRepository().workingTree().insert("busstops", newFeature);
+        geogig.getRepository().workingTree().insert("busstops", newFeature);
 
         // check that it was correctly inserted in the working tree
-        Optional<RevFeature> mapped = geogit.command(RevObjectParse.class)
+        Optional<RevFeature> mapped = geogig.command(RevObjectParse.class)
                 .setRefSpec("WORK_HEAD:busstops/507464799").call(RevFeature.class);
         assertTrue(mapped.isPresent());
         values = mapped.get().getValues();
@@ -251,10 +251,10 @@ public class OSMUnmapOpTest extends RepositoryTestCase {
         assertEquals("newname", values.get(1).get().toString());
 
         // unmap
-        geogit.command(OSMUnmapOp.class).setPath("busstops").call();
+        geogig.command(OSMUnmapOp.class).setPath("busstops").call();
 
         // check that the unmapped node has the changes we introduced
-        Optional<RevFeature> unmapped = geogit.command(RevObjectParse.class)
+        Optional<RevFeature> unmapped = geogig.command(RevObjectParse.class)
                 .setRefSpec("WORK_HEAD:node/507464799").call(RevFeature.class);
         assertTrue(unmapped.isPresent());
         values = unmapped.get().getValues();
@@ -263,7 +263,7 @@ public class OSMUnmapOpTest extends RepositoryTestCase {
                 "bus:yes|public_transport:platform|highway:bus_stop|VRS:ortsteil:Hoholz|name:newname|VRS:ref:68566|VRS:gemeinde:BONN",
                 values.get(3).get().toString());
         // check that unchanged nodes keep their attributes
-        Optional<RevFeature> unchanged = geogit.command(RevObjectParse.class)
+        Optional<RevFeature> unchanged = geogig.command(RevObjectParse.class)
                 .setRefSpec("WORK_HEAD:node/1633594723").call(RevFeature.class);
         values = unchanged.get().getValues();
         assertEquals("14220478", values.get(4).get().toString());
@@ -277,9 +277,9 @@ public class OSMUnmapOpTest extends RepositoryTestCase {
         // Import
         String filename = OSMImportOp.class.getResource("nodes.xml").getFile();
         File file = new File(filename);
-        geogit.command(OSMImportOp.class).setDataSource(file.getAbsolutePath()).call();
-        geogit.command(AddOp.class).call();
-        geogit.command(CommitOp.class).setMessage("msg").call();
+        geogig.command(OSMImportOp.class).setDataSource(file.getAbsolutePath()).call();
+        geogig.command(AddOp.class).call();
+        geogig.command(CommitOp.class).setMessage("msg").call();
         // Map
         Map<String, AttributeDefinition> fields = Maps.newHashMap();
         Map<String, List<String>> mappings = Maps.newHashMap();
@@ -291,12 +291,12 @@ public class OSMUnmapOpTest extends RepositoryTestCase {
         List<MappingRule> mappingRules = Lists.newArrayList();
         mappingRules.add(mappingRule);
         Mapping mapping = new Mapping(mappingRules);
-        geogit.command(OSMMapOp.class).setMapping(mapping).call();
+        geogig.command(OSMMapOp.class).setMapping(mapping).call();
 
-        Optional<RevFeature> revFeature = geogit.command(RevObjectParse.class)
+        Optional<RevFeature> revFeature = geogig.command(RevObjectParse.class)
                 .setRefSpec("HEAD:busstops/507464799").call(RevFeature.class);
         assertTrue(revFeature.isPresent());
-        Optional<RevFeatureType> featureType = geogit.command(ResolveFeatureType.class)
+        Optional<RevFeatureType> featureType = geogig.command(ResolveFeatureType.class)
                 .setRefSpec("HEAD:busstops/507464799").call();
         assertTrue(featureType.isPresent());
         ImmutableList<Optional<Object>> values = revFeature.get().getValues();
@@ -306,18 +306,18 @@ public class OSMUnmapOpTest extends RepositoryTestCase {
         assertEquals(507464799l, values.get(0).get());
 
         // Delete a node
-        geogit.getRepository().workingTree().delete("busstops", "507464799");
+        geogig.getRepository().workingTree().delete("busstops", "507464799");
 
         // check that it was correctly deleted in the working tree
-        Optional<RevFeature> mapped = geogit.command(RevObjectParse.class)
+        Optional<RevFeature> mapped = geogig.command(RevObjectParse.class)
                 .setRefSpec("WORK_HEAD:busstops/507464799").call(RevFeature.class);
         assertFalse(mapped.isPresent());
 
         // unmap
-        geogit.command(OSMUnmapOp.class).setPath("busstops").call();
+        geogig.command(OSMUnmapOp.class).setPath("busstops").call();
 
         // check that the node has been deleted in the canonical tree
-        Optional<RevFeature> unmapped = geogit.command(RevObjectParse.class)
+        Optional<RevFeature> unmapped = geogig.command(RevObjectParse.class)
                 .setRefSpec("WORK_HEAD:node/507464799").call(RevFeature.class);
         assertFalse(unmapped.isPresent());
 
@@ -328,9 +328,9 @@ public class OSMUnmapOpTest extends RepositoryTestCase {
         // Import
         String filename = OSMImportOp.class.getResource("nodes.xml").getFile();
         File file = new File(filename);
-        geogit.command(OSMImportOp.class).setDataSource(file.getAbsolutePath()).call();
-        geogit.command(AddOp.class).call();
-        geogit.command(CommitOp.class).setMessage("msg").call();
+        geogig.command(OSMImportOp.class).setDataSource(file.getAbsolutePath()).call();
+        geogig.command(AddOp.class).call();
+        geogig.command(CommitOp.class).setMessage("msg").call();
         // Map
         Map<String, AttributeDefinition> fields = Maps.newHashMap();
         Map<String, List<String>> mappings = Maps.newHashMap();
@@ -342,12 +342,12 @@ public class OSMUnmapOpTest extends RepositoryTestCase {
         List<MappingRule> mappingRules = Lists.newArrayList();
         mappingRules.add(mappingRule);
         Mapping mapping = new Mapping(mappingRules);
-        geogit.command(OSMMapOp.class).setMapping(mapping).call();
+        geogig.command(OSMMapOp.class).setMapping(mapping).call();
 
-        Optional<RevFeature> revFeature = geogit.command(RevObjectParse.class)
+        Optional<RevFeature> revFeature = geogig.command(RevObjectParse.class)
                 .setRefSpec("HEAD:busstops/507464799").call(RevFeature.class);
         assertTrue(revFeature.isPresent());
-        Optional<RevFeatureType> featureType = geogit.command(ResolveFeatureType.class)
+        Optional<RevFeatureType> featureType = geogig.command(ResolveFeatureType.class)
                 .setRefSpec("HEAD:busstops/507464799").call();
         assertTrue(featureType.isPresent());
         ImmutableList<Optional<Object>> values = revFeature.get().getValues();
@@ -358,8 +358,8 @@ public class OSMUnmapOpTest extends RepositoryTestCase {
 
         // unmap without having made any changes and check that the canonical folders are not
         // modified
-        geogit.command(OSMUnmapOp.class).setPath("busstops").call();
-        WorkingTree workTree = geogit.getRepository().workingTree();
+        geogig.command(OSMUnmapOp.class).setPath("busstops").call();
+        WorkingTree workTree = geogig.getRepository().workingTree();
         long unstaged = workTree.countUnstaged("way").count();
         assertEquals(0, unstaged);
         unstaged = workTree.countUnstaged("node").count();
@@ -373,10 +373,10 @@ public class OSMUnmapOpTest extends RepositoryTestCase {
         fb.set("name_alias", "newname");
         fb.set("id", 507464799l);
         SimpleFeature newFeature = fb.buildFeature("507464799");
-        geogit.getRepository().workingTree().insert("busstops", newFeature);
+        geogig.getRepository().workingTree().insert("busstops", newFeature);
 
         // check that it was correctly inserted in the working tree
-        Optional<RevFeature> mapped = geogit.command(RevObjectParse.class)
+        Optional<RevFeature> mapped = geogig.command(RevObjectParse.class)
                 .setRefSpec("WORK_HEAD:busstops/507464799").call(RevFeature.class);
         assertTrue(mapped.isPresent());
         values = mapped.get().getValues();
@@ -385,13 +385,13 @@ public class OSMUnmapOpTest extends RepositoryTestCase {
         assertEquals("newname", values.get(1).get().toString());
 
         // unmap
-        geogit.command(OSMUnmapOp.class).setPath("busstops").call();
+        geogig.command(OSMUnmapOp.class).setPath("busstops").call();
 
         unstaged = workTree.countUnstaged("node").featureCount();
         assertEquals(1, unstaged);
 
         // check that the unmapped node has the changes we introduced
-        Optional<RevFeature> unmapped = geogit.command(RevObjectParse.class)
+        Optional<RevFeature> unmapped = geogig.command(RevObjectParse.class)
                 .setRefSpec("WORK_HEAD:node/507464799").call(RevFeature.class);
         assertTrue(unmapped.isPresent());
         values = unmapped.get().getValues();
@@ -400,7 +400,7 @@ public class OSMUnmapOpTest extends RepositoryTestCase {
                 "bus:yes|public_transport:platform|highway:bus_stop|VRS:ortsteil:Hoholz|name:newname|VRS:ref:68566|VRS:gemeinde:BONN",
                 values.get(3).get().toString());
         // check that unchanged nodes keep their attributes
-        Optional<RevFeature> unchanged = geogit.command(RevObjectParse.class)
+        Optional<RevFeature> unchanged = geogig.command(RevObjectParse.class)
                 .setRefSpec("WORK_HEAD:node/1633594723").call(RevFeature.class);
         values = unchanged.get().getValues();
         assertEquals("14220478", values.get(4).get().toString());
@@ -414,9 +414,9 @@ public class OSMUnmapOpTest extends RepositoryTestCase {
         // Import
         String filename = OSMImportOp.class.getResource("nodes.xml").getFile();
         File file = new File(filename);
-        geogit.command(OSMImportOp.class).setDataSource(file.getAbsolutePath()).call();
-        geogit.command(AddOp.class).call();
-        geogit.command(CommitOp.class).setMessage("msg").call();
+        geogig.command(OSMImportOp.class).setDataSource(file.getAbsolutePath()).call();
+        geogig.command(AddOp.class).call();
+        geogig.command(CommitOp.class).setMessage("msg").call();
         // Map
         Map<String, AttributeDefinition> fields = Maps.newHashMap();
         Map<String, List<String>> mappings = Maps.newHashMap();
@@ -431,12 +431,12 @@ public class OSMUnmapOpTest extends RepositoryTestCase {
         List<MappingRule> mappingRules = Lists.newArrayList();
         mappingRules.add(mappingRule);
         Mapping mapping = new Mapping(mappingRules);
-        geogit.command(OSMMapOp.class).setMapping(mapping).call();
+        geogig.command(OSMMapOp.class).setMapping(mapping).call();
 
-        Optional<RevFeature> revFeature = geogit.command(RevObjectParse.class)
+        Optional<RevFeature> revFeature = geogig.command(RevObjectParse.class)
                 .setRefSpec("HEAD:busstops/507464799").call(RevFeature.class);
         assertTrue(revFeature.isPresent());
-        Optional<RevFeatureType> featureType = geogit.command(ResolveFeatureType.class)
+        Optional<RevFeatureType> featureType = geogig.command(ResolveFeatureType.class)
                 .setRefSpec("HEAD:busstops/507464799").call();
         assertTrue(featureType.isPresent());
         ImmutableList<Optional<Object>> values = revFeature.get().getValues();
@@ -456,10 +456,10 @@ public class OSMUnmapOpTest extends RepositoryTestCase {
                 "VRS:gemeinde:BONN|VRS:ortsteil:Hoholz|VRS:ref:68566|bus:yes|highway:bus_stop|name:Gielgen|public_transport:platform");
         fb.set("timestamp", 1355097351000l);
         SimpleFeature newFeature = fb.buildFeature("507464799");
-        geogit.getRepository().workingTree().insert("busstops", newFeature);
+        geogig.getRepository().workingTree().insert("busstops", newFeature);
 
         // check that it was correctly inserted in the working tree
-        Optional<RevFeature> mapped = geogit.command(RevObjectParse.class)
+        Optional<RevFeature> mapped = geogig.command(RevObjectParse.class)
                 .setRefSpec("WORK_HEAD:busstops/507464799").call(RevFeature.class);
         assertTrue(mapped.isPresent());
         values = mapped.get().getValues();
@@ -472,14 +472,14 @@ public class OSMUnmapOpTest extends RepositoryTestCase {
                 values.get(1).get().toString());
 
         // unmap
-        geogit.command(OSMUnmapOp.class).setPath("busstops").call();
+        geogig.command(OSMUnmapOp.class).setPath("busstops").call();
 
-        WorkingTree workTree = geogit.getRepository().workingTree();
+        WorkingTree workTree = geogig.getRepository().workingTree();
         long unstaged = workTree.countUnstaged("node").featureCount();
         assertEquals(1, unstaged);
 
         // check that the unmapped node has the changes we introduced
-        Optional<RevFeature> unmapped = geogit.command(RevObjectParse.class)
+        Optional<RevFeature> unmapped = geogig.command(RevObjectParse.class)
                 .setRefSpec("WORK_HEAD:node/507464799").call(RevFeature.class);
         assertTrue(unmapped.isPresent());
         values = unmapped.get().getValues();
@@ -488,7 +488,7 @@ public class OSMUnmapOpTest extends RepositoryTestCase {
                 "bus:yes|public_transport:platform|highway:bus_stop|VRS:ortsteil:Hoholz|name:newname|VRS:ref:68566|VRS:gemeinde:BONN",
                 values.get(3).get().toString());
         // check that unchanged nodes keep their attributes
-        Optional<RevFeature> unchanged = geogit.command(RevObjectParse.class)
+        Optional<RevFeature> unchanged = geogig.command(RevObjectParse.class)
                 .setRefSpec("WORK_HEAD:node/1633594723").call(RevFeature.class);
         values = unchanged.get().getValues();
         assertEquals("14220478", values.get(4).get().toString());
@@ -502,9 +502,9 @@ public class OSMUnmapOpTest extends RepositoryTestCase {
         // Import
         String filename = OSMImportOp.class.getResource("ways.xml").getFile();
         File file = new File(filename);
-        geogit.command(OSMImportOp.class).setDataSource(file.getAbsolutePath()).call();
-        geogit.command(AddOp.class).call();
-        geogit.command(CommitOp.class).setMessage("msg").call();
+        geogig.command(OSMImportOp.class).setDataSource(file.getAbsolutePath()).call();
+        geogig.command(AddOp.class).call();
+        geogig.command(CommitOp.class).setMessage("msg").call();
         // map
         Map<String, AttributeDefinition> fields = Maps.newHashMap();
         Map<String, List<String>> mappings = Maps.newHashMap();
@@ -517,13 +517,13 @@ public class OSMUnmapOpTest extends RepositoryTestCase {
         List<MappingRule> mappingRules = Lists.newArrayList();
         mappingRules.add(mappingRule);
         Mapping mapping = new Mapping(mappingRules);
-        geogit.command(OSMMapOp.class).setMapping(mapping).call();
+        geogig.command(OSMMapOp.class).setMapping(mapping).call();
 
         // check that mapping was correctly performed
-        Optional<RevFeature> revFeature = geogit.command(RevObjectParse.class)
+        Optional<RevFeature> revFeature = geogig.command(RevObjectParse.class)
                 .setRefSpec("HEAD:residential/31347480").call(RevFeature.class);
         assertTrue(revFeature.isPresent());
-        Optional<RevFeatureType> featureType = geogit.command(ResolveFeatureType.class)
+        Optional<RevFeatureType> featureType = geogig.command(ResolveFeatureType.class)
                 .setRefSpec("WORK_HEAD:residential/31347480").call();
         assertTrue(featureType.isPresent());
         ImmutableList<Optional<Object>> values = revFeature.get().getValues();
@@ -531,8 +531,8 @@ public class OSMUnmapOpTest extends RepositoryTestCase {
 
         // unmap without having made any changes and check that the canonical folders are not
         // modified
-        WorkingTree workTree = geogit.getRepository().workingTree();
-        geogit.command(OSMUnmapOp.class)/* .setMapping(mapping) */.setPath("residential").call();
+        WorkingTree workTree = geogig.getRepository().workingTree();
+        geogig.command(OSMUnmapOp.class)/* .setMapping(mapping) */.setPath("residential").call();
         long unstaged = workTree.countUnstaged("way").count();
         assertEquals(0, unstaged);
         unstaged = workTree.countUnstaged("node").count();
@@ -551,8 +551,8 @@ public class OSMUnmapOpTest extends RepositoryTestCase {
         fb.set("id", 31347480l);
         fb.set("nodes", values.get(3).get());
         SimpleFeature newFeature = fb.buildFeature("31347480");
-        geogit.getRepository().workingTree().insert("residential", newFeature);
-        Optional<RevFeature> mapped = geogit.command(RevObjectParse.class)
+        geogig.getRepository().workingTree().insert("residential", newFeature);
+        Optional<RevFeature> mapped = geogig.command(RevObjectParse.class)
                 .setRefSpec("WORK_HEAD:residential/31347480").call(RevFeature.class);
         assertTrue(mapped.isPresent());
         values = mapped.get().getValues();
@@ -564,11 +564,11 @@ public class OSMUnmapOpTest extends RepositoryTestCase {
         assertEquals("newname", values.get(1).get().toString());
 
         // unmap
-        geogit.command(OSMUnmapOp.class).setPath("residential")/* .setMapping(mapping) */.call();
+        geogig.command(OSMUnmapOp.class).setPath("residential")/* .setMapping(mapping) */.call();
 
         // Check that raw OSM data was updated
         // First, we check that the corresponding way has been modified
-        Optional<RevFeature> unmapped = geogit.command(RevObjectParse.class)
+        Optional<RevFeature> unmapped = geogig.command(RevObjectParse.class)
                 .setRefSpec("WORK_HEAD:way/31347480").call(RevFeature.class);
         assertTrue(unmapped.isPresent());
         values = unmapped.get().getValues();
@@ -587,7 +587,7 @@ public class OSMUnmapOpTest extends RepositoryTestCase {
         String newNodeId = nodeIds[nodeIds.length - 1];
         // and we check that the node has been added to the 'node' tree and has the right
         // coordinates.
-        Optional<RevFeature> newNode = geogit.command(RevObjectParse.class)
+        Optional<RevFeature> newNode = geogig.command(RevObjectParse.class)
                 .setRefSpec("WORK_HEAD:node/" + newNodeId).call(RevFeature.class);
         assertTrue(newNode.isPresent());
         values = newNode.get().getValues();
@@ -600,7 +600,7 @@ public class OSMUnmapOpTest extends RepositoryTestCase {
     public void testUnmappingWithoutIDAttribute() throws Exception {
         insert(points1);
         try {
-            geogit.command(OSMUnmapOp.class).setPath("Points").call();
+            geogig.command(OSMUnmapOp.class).setPath("Points").call();
             fail();
         } catch (NullPointerException e) {
             assertTrue(e.getMessage().startsWith("No 'id' attribute found"));

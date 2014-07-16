@@ -37,7 +37,7 @@ import com.google.common.collect.ImmutableList.Builder;
 import com.google.inject.Inject;
 
 /**
- * Provides an implementation of a GeoGit object database that utilizes the file system for the
+ * Provides an implementation of a GeoGig object database that utilizes the file system for the
  * storage of objects.
  * 
  * @see AbstractObjectDatabase
@@ -91,7 +91,7 @@ public class FileObjectDatabase extends AbstractObjectDatabase implements Object
     }
 
     /**
-     * Opens the database for use by GeoGit.
+     * Opens the database for use by GeoGig.
      */
     @Override
     public void open() {
@@ -99,7 +99,7 @@ public class FileObjectDatabase extends AbstractObjectDatabase implements Object
             return;
         }
         final Optional<URL> repoUrl = new ResolveGeogigDir(platform).call();
-        checkState(repoUrl.isPresent(), "Can't find geogit repository home");
+        checkState(repoUrl.isPresent(), "Can't find geogig repository home");
 
         try {
             dataRoot = new File(new File(repoUrl.get().toURI()), databaseName);

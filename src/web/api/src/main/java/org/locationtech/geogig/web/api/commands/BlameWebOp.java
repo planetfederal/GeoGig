@@ -21,7 +21,7 @@ import org.locationtech.geogig.web.api.ResponseWriter;
 import com.google.common.base.Optional;
 
 /**
- * Interface for the Blame operation in the GeoGit.
+ * Interface for the Blame operation in the GeoGig.
  * 
  * Web interface for {@link BlameOp}, {@link BlameReport}
  */
@@ -57,18 +57,18 @@ public class BlameWebOp extends AbstractWebAPICommand {
      */
     @Override
     public void run(CommandContext context) {
-        final Context geogit = this.getCommandLocator(context);
+        final Context geogig = this.getCommandLocator(context);
 
         Optional<ObjectId> commit = Optional.absent();
         if (branchOrCommit != null) {
-            commit = geogit.command(RevParse.class).setRefSpec(branchOrCommit).call();
+            commit = geogig.command(RevParse.class).setRefSpec(branchOrCommit).call();
             if (!commit.isPresent()) {
                 throw new CommandSpecException("Could not resolve branch or commit");
             }
         }
 
         try {
-            final BlameReport report = geogit.command(BlameOp.class).setPath(path)
+            final BlameReport report = geogig.command(BlameOp.class).setPath(path)
                     .setCommit(commit.orNull()).call();
 
             context.setResponseContent(new CommandResponse() {

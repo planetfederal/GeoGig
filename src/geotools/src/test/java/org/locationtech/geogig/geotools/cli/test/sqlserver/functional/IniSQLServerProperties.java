@@ -20,6 +20,6 @@ public class IniSQLServerProperties extends OnlineTestProperties{
     };
 
     public IniSQLServerProperties(){
-        super(".geogit-sqlserver-tests.properties", DEFAULTS);
+        super(".geogig-sqlserver-tests.properties", DEFAULTS);
     }
 }

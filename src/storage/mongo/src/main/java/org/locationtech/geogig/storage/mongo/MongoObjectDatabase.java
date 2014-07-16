@@ -145,7 +145,7 @@ public class MongoObjectDatabase implements ObjectDatabase {
         String uri = config.get("mongodb.uri").or(config.getGlobal("mongodb.uri"))
                 .or("mongodb://localhost:27017/");
         String database = config.get("mongodb.database").or(config.getGlobal("mongodb.database"))
-                .or("geogit");
+                .or("geogig");
         config.put("mongodb.uri", uri);
         config.put("mongodb.database", database);
     }

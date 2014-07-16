@@ -23,7 +23,7 @@ public class JEGraphDatabaseV2Test extends GraphDatabaseTest {
     @Override
     protected GraphDatabase createDatabase(Platform platform) throws Exception {
         File root = platform.pwd();
-        Preconditions.checkState(new File(root, ".geogit").exists());
+        Preconditions.checkState(new File(root, ".geogig").exists());
 
         envProvider = new EnvironmentBuilder(platform);
 

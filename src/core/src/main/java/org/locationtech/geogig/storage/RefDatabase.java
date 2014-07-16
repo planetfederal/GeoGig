@@ -12,7 +12,7 @@ import org.locationtech.geogig.di.Singleton;
 import org.locationtech.geogig.repository.RepositoryConnectionException;
 
 /**
- * Provides an interface for GeoGit reference databases.
+ * Provides an interface for GeoGig reference databases.
  * 
  */
 @Singleton

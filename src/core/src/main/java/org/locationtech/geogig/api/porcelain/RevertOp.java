@@ -377,7 +377,7 @@ public class RevertOp extends AbstractGeoGigOp<Boolean> {
 
         checkState(
                 name.isPresent(),
-                "%s not found in config. Use geogit config [--global] %s <your name> to configure it.",
+                "%s not found in config. Use geogig config [--global] %s <your name> to configure it.",
                 key, key);
 
         return name.get();
@@ -389,7 +389,7 @@ public class RevertOp extends AbstractGeoGigOp<Boolean> {
 
         checkState(
                 email.isPresent(),
-                "%s not found in config. Use geogit config [--global] %s <your email> to configure it.",
+                "%s not found in config. Use geogig config [--global] %s <your email> to configure it.",
                 key, key);
 
         return email.get();

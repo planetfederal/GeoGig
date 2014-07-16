@@ -112,7 +112,7 @@ public class OSMExportShp extends AbstractShpCommand implements CLICommand {
                     "Could not create feature store. Shapefile may be read only");
         }
         final SimpleFeatureStore featureStore = (SimpleFeatureStore) featureSource;
-        ExportOp op = cli.getGeogit().command(ExportOp.class).setFeatureStore(featureStore)
+        ExportOp op = cli.getGeogig().command(ExportOp.class).setFeatureStore(featureStore)
                 .setPath(path).setFeatureTypeConversionFunction(function);
         try {
             op.setProgressListener(cli.getProgressListener()).call();

@@ -1,6 +1,6 @@
 Feature: "reset" command
     In order to undo local changes
-    As a Geogit User
+    As a Geogig User
     I want to reset the head, and optionally, the working tree and index to the state of another commit
 
   Scenario: Try to do a mixed reset of all local changes
@@ -48,7 +48,7 @@ Feature: "reset" command
   Scenario: Try to reset from an empty directory
     Given I am in an empty directory
      When I run the command "reset"
-     Then the response should start with "Not in a geogit repository"
+     Then the response should start with "Not in a geogig repository"
       And it should exit with non-zero exit code
      
   Scenario: Try to reset with no commits

@@ -73,7 +73,7 @@ public class SLImport extends AbstractSLCommand implements CLICommand {
             cli.getConsole().println("Importing from database " + commonArgs.database);
 
             ProgressListener progressListener = cli.getProgressListener();
-            cli.getGeogit().command(ImportOp.class).setAll(all).setTable(table).setAlter(alter)
+            cli.getGeogig().command(ImportOp.class).setAll(all).setTable(table).setAlter(alter)
                     .setOverwrite(!add).setDataStore(dataStore)
                     .setAdaptToDefaultFeatureType(!forceFeatureType)
                     .setProgressListener(progressListener).call();

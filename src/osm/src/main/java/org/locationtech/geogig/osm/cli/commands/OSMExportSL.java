@@ -107,7 +107,7 @@ public class OSMExportSL extends AbstractSLCommand implements CLICommand {
                 throw new CommandFailedException("Error removing features from the database.", e);
             }
         }
-        ExportOp op = cli.getGeogit().command(ExportOp.class).setFeatureStore(featureStore)
+        ExportOp op = cli.getGeogig().command(ExportOp.class).setFeatureStore(featureStore)
                 .setPath(path).setFeatureTypeConversionFunction(function);
         try {
             op.setProgressListener(cli.getProgressListener()).call();

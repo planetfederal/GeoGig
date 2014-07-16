@@ -1,6 +1,6 @@
 Feature: "help" command
-    In order to know how to use geogit
-    As a Geogit User
+    In order to know how to use geogig
+    As a Geogig User
     I want to see the description of a command
 
   Scenario: Show general help, containing only porcelain commands

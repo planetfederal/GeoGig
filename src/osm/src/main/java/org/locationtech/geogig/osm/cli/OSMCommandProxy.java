@@ -26,13 +26,13 @@ import com.beust.jcommander.Parameters;
  * 
  * @see OSMHistoryImport
  */
-@Parameters(commandNames = "osm", commandDescription = "GeoGit/OpenStreetMap integration utilities")
+@Parameters(commandNames = "osm", commandDescription = "GeoGig/OpenStreetMap integration utilities")
 public class OSMCommandProxy implements CLICommandExtension {
 
     @Override
     public JCommander getCommandParser() {
         JCommander commander = new JCommander();
-        commander.setProgramName("geogit osm");
+        commander.setProgramName("geogig osm");
         commander.addCommand("import-history", new OSMHistoryImport());
         commander.addCommand("import", new OSMImport());
         commander.addCommand("export", new OSMExport());

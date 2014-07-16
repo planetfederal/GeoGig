@@ -33,7 +33,7 @@ import com.google.common.base.Suppliers;
  * <p>
  * Usage:
  * <ul>
- * <li> {@code geogit revert [--continue] [--abort] [--no-commit] <commit>...}
+ * <li> {@code geogig revert [--continue] [--abort] [--no-commit] <commit>...}
  * </ul>
  * 
  * @see RevertOp
@@ -61,11 +61,11 @@ public class Revert extends AbstractCommand implements CLICommand {
         checkParameter(commits.size() > 0 || abort || continueRevert,
                 "nothing specified for reverting");
 
-        final GeoGIG geogit = cli.getGeogit();
-        RevertOp revert = geogit.command(RevertOp.class);
+        final GeoGIG geogig = cli.getGeogig();
+        RevertOp revert = geogig.command(RevertOp.class);
 
         for (String st : commits) {
-            Optional<ObjectId> commitId = geogit.command(RevParse.class).setRefSpec(st).call();
+            Optional<ObjectId> commitId = geogig.command(RevParse.class).setRefSpec(st).call();
             checkParameter(commitId.isPresent(), "Couldn't resolve '" + st
                     + "' to a commit, aborting revert.");
             revert.addCommit(Suppliers.ofInstance(commitId.get()));
@@ -75,8 +75,8 @@ public class Revert extends AbstractCommand implements CLICommand {
         } catch (RevertConflictsException e) {
             StringBuilder sb = new StringBuilder();
             sb.append(e.getMessage() + "\n");
-            sb.append("When you have fixed these conflicts, run 'geogit revert --continue' to continue the revert operation.\n");
-            sb.append("To abort the revert operation, run 'geogit revert --abort'\n");
+            sb.append("When you have fixed these conflicts, run 'geogig revert --continue' to continue the revert operation.\n");
+            sb.append("To abort the revert operation, run 'geogig revert --abort'\n");
             throw new CommandFailedException(sb.toString());
         }
 

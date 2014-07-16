@@ -41,7 +41,7 @@ public class BranchDeleteOpTest extends RepositoryTestCase {
 
     @Test
     public void BranchNotPresentTest() {
-        Optional<? extends Ref> branchref = geogit.command(BranchDeleteOp.class)
+        Optional<? extends Ref> branchref = geogig.command(BranchDeleteOp.class)
                 .setName("noBranch").call();
         assertEquals(Optional.absent(), branchref);
     }
@@ -49,12 +49,12 @@ public class BranchDeleteOpTest extends RepositoryTestCase {
     @Test
     public void BranchPresentTest() throws Exception {
         insertAndAdd(points1);
-        geogit.command(AddOp.class).call();
-        geogit.command(CommitOp.class).call();
-        geogit.command(BranchCreateOp.class).setName("TestBranch").call();
-        geogit.command(BranchDeleteOp.class).setName("TestBranch").call();
+        geogig.command(AddOp.class).call();
+        geogig.command(CommitOp.class).call();
+        geogig.command(BranchCreateOp.class).setName("TestBranch").call();
+        geogig.command(BranchDeleteOp.class).setName("TestBranch").call();
 
-        Optional<Ref> result = geogit.command(RefParse.class).setName("TestBranch").call();
+        Optional<Ref> result = geogig.command(RefParse.class).setName("TestBranch").call();
 
         assertFalse(result.isPresent());
     }
@@ -62,32 +62,32 @@ public class BranchDeleteOpTest extends RepositoryTestCase {
     @Test
     public void BranchIsHeadTest() throws Exception {
         insertAndAdd(points1);
-        geogit.command(AddOp.class).call();
-        geogit.command(CommitOp.class).call();
-        geogit.command(BranchCreateOp.class).setName("TestMasterBranch").call();
+        geogig.command(AddOp.class).call();
+        geogig.command(CommitOp.class).call();
+        geogig.command(BranchCreateOp.class).setName("TestMasterBranch").call();
 
-        geogit.command(BranchCreateOp.class).setName("TestBranch").call();
-        geogit.command(CheckoutOp.class).setSource("TestBranch").call();
+        geogig.command(BranchCreateOp.class).setName("TestBranch").call();
+        geogig.command(CheckoutOp.class).setSource("TestBranch").call();
 
         insertAndAdd(points2);
-        geogit.command(AddOp.class).call();
-        geogit.command(CommitOp.class).call();
+        geogig.command(AddOp.class).call();
+        geogig.command(CommitOp.class).call();
 
         exception.expect(IllegalStateException.class);
-        geogit.command(BranchDeleteOp.class).setName("TestBranch").call();
+        geogig.command(BranchDeleteOp.class).setName("TestBranch").call();
     }
 
     @Test
     public void InvalidBranchNameTest() throws Exception {
         insertAndAdd(points1);
-        geogit.command(AddOp.class).call();
-        geogit.command(CommitOp.class).call();
-        Ref testBranch = geogit.command(BranchCreateOp.class).setName("TestBranch").call();
+        geogig.command(AddOp.class).call();
+        geogig.command(CommitOp.class).call();
+        Ref testBranch = geogig.command(BranchCreateOp.class).setName("TestBranch").call();
 
-        testBranch = geogit.command(UpdateRef.class).setName("TestBranch")
+        testBranch = geogig.command(UpdateRef.class).setName("TestBranch")
                 .setNewValue(testBranch.getObjectId()).call().get();
 
         exception.expect(IllegalArgumentException.class);
-        geogit.command(BranchDeleteOp.class).setName("TestBranch").call();
+        geogig.command(BranchDeleteOp.class).setName("TestBranch").call();
     }
 }

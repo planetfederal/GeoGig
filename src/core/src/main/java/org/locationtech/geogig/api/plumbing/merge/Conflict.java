@@ -11,7 +11,7 @@ import com.google.common.base.Preconditions;
 
 /**
  * A class to store a merge conflict. It stores the information needed to solve the conflict, saving
- * the object id's that point to the common ancestor and both versions of a given geogit element
+ * the object id's that point to the common ancestor and both versions of a given geogig element
  * that are to be merged.
  * 
  * A null ObjectId indicates that, for the corresponding version, the element did not exist

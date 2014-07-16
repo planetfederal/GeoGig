@@ -17,7 +17,7 @@ import org.locationtech.geogig.web.api.ResponseWriter;
 import com.google.common.collect.Lists;
 
 /**
- * The interface for the Branch operations in GeoGit. Currently only supports listing of local and
+ * The interface for the Branch operations in GeoGig. Currently only supports listing of local and
  * remote branches.
  * 
  * Web interface for {@link BranchListOp}
@@ -55,11 +55,11 @@ public class BranchWebOp extends AbstractWebAPICommand {
     @Override
     public void run(CommandContext context) {
         if (list) {
-            final Context geogit = this.getCommandLocator(context);
-            final List<Ref> localBranches = geogit.command(BranchListOp.class).call();
+            final Context geogig = this.getCommandLocator(context);
+            final List<Ref> localBranches = geogig.command(BranchListOp.class).call();
             final List<Ref> remoteBranches;
             if (remotes) {
-                remoteBranches = geogit.command(BranchListOp.class).setLocal(false)
+                remoteBranches = geogig.command(BranchListOp.class).setLocal(false)
                         .setRemotes(remotes).call();
             } else {
                 remoteBranches = Lists.newLinkedList();

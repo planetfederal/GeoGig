@@ -27,14 +27,14 @@ import com.beust.jcommander.Parameters;
  * Fetches named heads or tags from one or more other repositories, along with the objects necessary
  * to complete them.
  * <p>
- * {@code geogit fetch} can fetch from either a single named repository, or from several
+ * {@code geogig fetch} can fetch from either a single named repository, or from several
  * repositories at once.
  * <p>
  * CLI proxy for {@link FetchOp}
  * <p>
  * Usage:
  * <ul>
- * <li> {@code geogit fetch [<options>] [<repository>...]}
+ * <li> {@code geogig fetch [<options>] [<repository>...]}
  * </ul>
  * 
  * @see FetchOp
@@ -68,13 +68,13 @@ public class Fetch extends AbstractCommand implements CLICommand {
                 "Cannot specify a depth and full depth.  Use --depth <depth> or --fulldepth.");
 
         if (depth > 0 || fulldepth) {
-            checkParameter(cli.getGeogit().getRepository().getDepth().isPresent(),
+            checkParameter(cli.getGeogig().getRepository().getDepth().isPresent(),
                     "Depth operations can only be used on a shallow clone.");
         }
 
         FetchResult result;
         try {
-            FetchOp fetch = cli.getGeogit().command(FetchOp.class);
+            FetchOp fetch = cli.getGeogig().command(FetchOp.class);
             fetch.setProgressListener(cli.getProgressListener());
             fetch.setAll(all).setPrune(prune).setFullDepth(fulldepth);
             fetch.setDepth(depth);

@@ -10,7 +10,7 @@ import org.locationtech.geogig.cli.CLIModule;
 import com.google.inject.Binder;
 
 /**
- * Provides bindings for GeoTools command extensions to the GeoGit command line interface.
+ * Provides bindings for GeoTools command extensions to the GeoGig command line interface.
  * 
  * @see PGCommandProxy
  * @see ShpCommandProxy

@@ -37,7 +37,7 @@ import com.google.common.base.Optional;
 import com.google.common.base.Throwables;
 
 /**
- * Provides the ability to execute several commands in succession without re-initializing GeoGit or
+ * Provides the ability to execute several commands in succession without re-initializing GeoGig or
  * the command line interface.
  */
 public class GeogigConsole {
@@ -45,7 +45,7 @@ public class GeogigConsole {
     private boolean interactive;
 
     /**
-     * Entry point for the Geogit console.
+     * Entry point for the Geogig console.
      * 
      * @param args unused
      */
@@ -57,7 +57,7 @@ public class GeogigConsole {
             } else if (args.length == 0) {
                 new GeogigConsole().run();
             } else {
-                System.out.println("Too many arguments.\nUsage: geogit-console [batch_file]");
+                System.out.println("Too many arguments.\nUsage: geogig-console [batch_file]");
             }
             System.exit(0);
         } catch (IOException e) {
@@ -181,17 +181,17 @@ public class GeogigConsole {
         }
         String currentDir = new File(".").getCanonicalPath();
         String currentHead = "";
-        GeoGIG geogit;
+        GeoGIG geogig;
         try {
-            geogit = cli.newGeoGIT(Hints.readOnly());
+            geogig = cli.newGeoGIG(Hints.readOnly());
         } catch (Exception e) {
-            geogit = null;
+            geogig = null;
         }
-        if (geogit != null) {
-            Optional<URL> dir = geogit.command(ResolveGeogigDir.class).call();
+        if (geogig != null) {
+            Optional<URL> dir = geogig.command(ResolveGeogigDir.class).call();
             if (dir.isPresent()) {
                 try {
-                    Optional<Ref> ref = geogit.command(RefParse.class).setName(Ref.HEAD).call();
+                    Optional<Ref> ref = geogig.command(RefParse.class).setName(Ref.HEAD).call();
                     if (ref.isPresent()) {
                         if (ref.get() instanceof SymRef) {
                             currentHead = ((SymRef) ref.get()).getTarget();
@@ -205,11 +205,11 @@ public class GeogigConsole {
                         currentHead = " (" + currentHead + ")";
                     }
                 } finally {
-                    geogit.close();
+                    geogig.close();
                 }
             }
         }
-        String prompt = "(geogit):" + currentDir + currentHead + " $ ";
+        String prompt = "(geogig):" + currentDir + currentHead + " $ ";
         cli.getConsole().setPrompt(prompt);
     }
 

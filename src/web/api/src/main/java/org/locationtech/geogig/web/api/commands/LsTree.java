@@ -16,7 +16,7 @@ import org.locationtech.geogig.web.api.CommandResponse;
 import org.locationtech.geogig.web.api.ResponseWriter;
 
 /**
- * Interface for the Ls-Tree operation in GeoGit
+ * Interface for the Ls-Tree operation in GeoGig
  * 
  * Web interface for {@link LsTreeOp}
  */
@@ -103,9 +103,9 @@ public class LsTree extends AbstractWebAPICommand {
             }
         }
 
-        final Context geogit = this.getCommandLocator(context);
+        final Context geogig = this.getCommandLocator(context);
 
-        final Iterator<NodeRef> iter = geogit.command(LsTreeOp.class).setReference(ref)
+        final Iterator<NodeRef> iter = geogig.command(LsTreeOp.class).setReference(ref)
                 .setStrategy(lsStrategy).call();
 
         context.setResponseContent(new CommandResponse() {

@@ -47,9 +47,9 @@ public class WalkGraph extends AbstractCommand implements CLICommand {
         } else {
             ref = refList.get(0);
         }
-        Deduplicator deduplicator = cli.getGeogit().command(CreateDeduplicator.class).call();
+        Deduplicator deduplicator = cli.getGeogig().command(CreateDeduplicator.class).call();
         try {
-            Iterator<RevObject> iter = cli.getGeogit() //
+            Iterator<RevObject> iter = cli.getGeogig() //
                     .command(WalkGraphOp.class).setReference(ref) //
                     .setDeduplicator(deduplicator) //
                     // .setStrategy(lsStrategy) //

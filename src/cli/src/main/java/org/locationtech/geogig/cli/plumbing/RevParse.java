@@ -28,24 +28,24 @@ import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
 
 /**
- * Determines if the current directory is inside a geogit repository.
+ * Determines if the current directory is inside a geogig repository.
  * <p>
  * Usage:
  * <ul>
- * <li> {@code geogit rev-parse --resolve-geogit-dir}: check if the current directory is inside a
- * geogit repository and print out the repository location
- * <li> {@code geogit rev-parse --is-inside-work-tree}: check if the current directory is inside a
- * geogit repository and print out the repository location
+ * <li> {@code geogig rev-parse --resolve-geogig-dir}: check if the current directory is inside a
+ * geogig repository and print out the repository location
+ * <li> {@code geogig rev-parse --is-inside-work-tree}: check if the current directory is inside a
+ * geogig repository and print out the repository location
  * </ul>
  */
 @ReadOnly
 @Parameters(commandNames = "rev-parse", commandDescription = "Resolve parameters according to the arguments")
 public class RevParse extends AbstractCommand {
 
-    @Parameter(names = "--resolve-geogit-dir", description = "Check if the current directory is inside a geogit repository and print out the repository location")
-    private boolean resolve_geogit_dir;
+    @Parameter(names = "--resolve-geogig-dir", description = "Check if the current directory is inside a geogig repository and print out the repository location")
+    private boolean resolve_geogig_dir;
 
-    @Parameter(names = "--is-inside-work-tree", description = "Check if the current directory is inside a geogit repository and print out the repository location")
+    @Parameter(names = "--is-inside-work-tree", description = "Check if the current directory is inside a geogig repository and print out the repository location")
     private boolean is_inside_work_tree;
 
     @Parameter(description = "[refSpec]... where refSpec is of the form [<object id>|<ref name>][^<parent index>]+[~<ancestor index>]+")
@@ -56,14 +56,14 @@ public class RevParse extends AbstractCommand {
      */
     @Override
     protected void runInternal(GeogigCLI cli) throws IOException {
-        GeoGIG geogit = cli.getGeogit();
+        GeoGIG geogig = cli.getGeogig();
 
         if (!refSpecs.isEmpty()) {
-            checkParameter(!(resolve_geogit_dir || is_inside_work_tree),
-                    "if refSpec is given, --resolve-geogit-dir or --is-inside-work-tree shall not be specified");
+            checkParameter(!(resolve_geogig_dir || is_inside_work_tree),
+                    "if refSpec is given, --resolve-geogig-dir or --is-inside-work-tree shall not be specified");
             ConsoleReader console = cli.getConsole();
             for (String refSpec : this.refSpecs) {
-                Optional<ObjectId> resolved = geogit
+                Optional<ObjectId> resolved = geogig
                         .command(org.locationtech.geogig.api.plumbing.RevParse.class)
                         .setRefSpec(refSpec).call();
                 checkParameter(resolved.isPresent(), "fatal: ambiguous argument '%s': "
@@ -75,43 +75,43 @@ public class RevParse extends AbstractCommand {
         }
 
         boolean closeIt = false;
-        if (null == geogit) {
-            geogit = cli.newGeoGIT(Hints.readOnly());
+        if (null == geogig) {
+            geogig = cli.newGeoGIG(Hints.readOnly());
             closeIt = true;
         }
         try {
-            if (resolve_geogit_dir) {
-                resolveGeogitDir(cli.getConsole(), geogit);
+            if (resolve_geogig_dir) {
+                resolveGeogigDir(cli.getConsole(), geogig);
             } else if (is_inside_work_tree) {
-                isInsideWorkTree(cli.getConsole(), geogit);
+                isInsideWorkTree(cli.getConsole(), geogig);
             }
         } finally {
             if (closeIt) {
-                geogit.close();
+                geogig.close();
             }
         }
     }
 
-    private void isInsideWorkTree(ConsoleReader console, GeoGIG geogit) throws IOException {
-        Optional<URL> repoUrl = geogit.command(ResolveGeogigDir.class).call();
+    private void isInsideWorkTree(ConsoleReader console, GeoGIG geogig) throws IOException {
+        Optional<URL> repoUrl = geogig.command(ResolveGeogigDir.class).call();
 
-        File pwd = geogit.getPlatform().pwd();
+        File pwd = geogig.getPlatform().pwd();
 
         if (repoUrl.isPresent()) {
-            boolean insideWorkTree = !pwd.getAbsolutePath().contains(".geogit");
+            boolean insideWorkTree = !pwd.getAbsolutePath().contains(".geogig");
             console.println(String.valueOf(insideWorkTree));
         } else {
-            console.println("Error: not a geogit repository (or any parent) '"
+            console.println("Error: not a geogig repository (or any parent) '"
                     + pwd.getAbsolutePath() + "'");
         }
     }
 
-    private void resolveGeogitDir(ConsoleReader console, GeoGIG geogit) throws IOException {
+    private void resolveGeogigDir(ConsoleReader console, GeoGIG geogig) throws IOException {
 
-        URL repoUrl = geogit.command(ResolveGeogigDir.class).call().orNull();
+        URL repoUrl = geogig.command(ResolveGeogigDir.class).call().orNull();
         if (null == repoUrl) {
-            File currDir = geogit.getPlatform().pwd();
-            console.println("Error: not a geogit dir '"
+            File currDir = geogig.getPlatform().pwd();
+            console.println("Error: not a geogig dir '"
                     + currDir.getCanonicalFile().getAbsolutePath() + "'");
         } else if ("file".equals(repoUrl.getProtocol())) {
             try {

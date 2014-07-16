@@ -14,7 +14,7 @@ import org.locationtech.geogig.di.CanRunDuringConflict;
 import com.google.common.base.Throwables;
 
 /**
- * Retrieves GeoGit version information.
+ * Retrieves GeoGig version information.
  * 
  */
 @CanRunDuringConflict

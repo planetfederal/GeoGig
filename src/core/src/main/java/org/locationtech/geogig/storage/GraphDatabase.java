@@ -86,7 +86,7 @@ public interface GraphDatabase extends Closeable {
     public void open();
 
     /**
-     * Perform GeoGit configuration before the first connection to the database.
+     * Perform GeoGig configuration before the first connection to the database.
      */
     public void configure() throws RepositoryConnectionException;
 

@@ -50,7 +50,7 @@ import com.google.inject.Inject;
 /**
  * Creates or "initializes" a repository in the {@link Platform#pwd() working directory}.
  * <p>
- * This command tries to find an existing {@code .geogit} repository directory in the current
+ * This command tries to find an existing {@code .geogig} repository directory in the current
  * directory's hierarchy. It is safe to call it from inside a directory that's a child of a
  * repository.
  * <p>
@@ -78,7 +78,7 @@ public class InitOp extends AbstractGeoGigOp<Repository> {
      * 
      * @param platform where to get the current directory from
      * @param context where to get the repository from (with auto-wired dependencies) once ensured
-     *        the {@code .geogit} repository directory is found or created.
+     *        the {@code .geogig} repository directory is found or created.
      */
     @Inject
     public InitOp(PluginDefaults defaults) {
@@ -147,9 +147,9 @@ public class InitOp extends AbstractGeoGigOp<Repository> {
                 throw Throwables.propagate(e);
             }
         } else {
-            envHome = new File(workingDirectory, ".geogit");
+            envHome = new File(workingDirectory, ".geogig");
             if (!envHome.mkdirs()) {
-                throw new RuntimeException("Unable to create geogit environment at '"
+                throw new RuntimeException("Unable to create geogig environment at '"
                         + envHome.getAbsolutePath() + "'");
             }
         }
@@ -170,7 +170,7 @@ public class InitOp extends AbstractGeoGigOp<Repository> {
                 }
 
                 Optional<URL> envHomeURL = new ResolveGeogigDir(platform).call();
-                Preconditions.checkState(envHomeURL.isPresent(), "Not inside a geogit directory");
+                Preconditions.checkState(envHomeURL.isPresent(), "Not inside a geogig directory");
                 final URL url = envHomeURL.get();
                 if (!"file".equals(url.getProtocol())) {
                     throw new UnsupportedOperationException(

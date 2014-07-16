@@ -50,7 +50,7 @@ import com.google.common.base.Preconditions;
 class GeogigFeatureSource extends ContentFeatureSource {
 
     /**
-     * <b>Precondition</b>: {@code entry.getDataStore() instanceof GeoGitDataStore}
+     * <b>Precondition</b>: {@code entry.getDataStore() instanceof GeoGigDataStore}
      * 
      * @param entry
      */
@@ -59,7 +59,7 @@ class GeogigFeatureSource extends ContentFeatureSource {
     }
 
     /**
-     * <b>Precondition</b>: {@code entry.getDataStore() instanceof GeoGitDataStore}
+     * <b>Precondition</b>: {@code entry.getDataStore() instanceof GeoGigDataStore}
      * 
      * @param entry
      * @param query optional "definition query" making this feature source a "view"

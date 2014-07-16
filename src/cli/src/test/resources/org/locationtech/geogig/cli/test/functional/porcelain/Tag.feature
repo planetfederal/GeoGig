@@ -1,6 +1,6 @@
 Feature: "tag" command
 	In order to store defined versions of my repository
-	As a Geogit User
+	As a Geogig User
 	I want to be create tags
 	
   Scenario: List the available tags

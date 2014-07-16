@@ -12,15 +12,15 @@ import com.google.common.base.Optional;
 
 public class SingleRepositoryProvider implements RepositoryProvider {
 
-    private GeoGIG geogit;
+    private GeoGIG geogig;
 
-    public SingleRepositoryProvider(GeoGIG geogit) {
-        this.geogit = geogit;
+    public SingleRepositoryProvider(GeoGIG geogig) {
+        this.geogig = geogig;
     }
 
     @Override
-    public Optional<GeoGIG> getGeogit(Request request) {
-        return Optional.fromNullable(geogit);
+    public Optional<GeoGIG> getGeogig(Request request) {
+        return Optional.fromNullable(geogig);
     }
 
 }

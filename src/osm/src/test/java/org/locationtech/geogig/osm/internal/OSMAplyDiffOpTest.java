@@ -30,22 +30,22 @@ public class OSMAplyDiffOpTest extends RepositoryTestCase {
     public void testApplyChangeset() throws Exception {
         String filename = getClass().getResource("nodes_for_changeset2.xml").getFile();
         File file = new File(filename);
-        geogit.command(OSMImportOp.class).setDataSource(file.getAbsolutePath()).call();
-        long unstaged = geogit.getRepository().workingTree().countUnstaged("node").count();
+        geogig.command(OSMImportOp.class).setDataSource(file.getAbsolutePath()).call();
+        long unstaged = geogig.getRepository().workingTree().countUnstaged("node").count();
         assertTrue(unstaged > 0);
-        Optional<RevFeature> revFeature = geogit.command(RevObjectParse.class)
+        Optional<RevFeature> revFeature = geogig.command(RevObjectParse.class)
                 .setRefSpec("WORK_HEAD:node/2059114068").call(RevFeature.class);
         assertTrue(revFeature.isPresent());
-        revFeature = geogit.command(RevObjectParse.class).setRefSpec("WORK_HEAD:node/507464865")
+        revFeature = geogig.command(RevObjectParse.class).setRefSpec("WORK_HEAD:node/507464865")
                 .call(RevFeature.class);
         assertFalse(revFeature.isPresent());
 
         String changesetFilename = getClass().getResource("changeset.xml").getFile();
-        geogit.command(OSMApplyDiffOp.class).setDiffFile(new File(changesetFilename)).call();
-        revFeature = geogit.command(RevObjectParse.class).setRefSpec("WORK_HEAD:node/2059114068")
+        geogig.command(OSMApplyDiffOp.class).setDiffFile(new File(changesetFilename)).call();
+        revFeature = geogig.command(RevObjectParse.class).setRefSpec("WORK_HEAD:node/2059114068")
                 .call(RevFeature.class);
         assertFalse(revFeature.isPresent());
-        revFeature = geogit.command(RevObjectParse.class).setRefSpec("WORK_HEAD:node/507464865")
+        revFeature = geogig.command(RevObjectParse.class).setRefSpec("WORK_HEAD:node/507464865")
                 .call(RevFeature.class);
         assertTrue(revFeature.isPresent());
 
@@ -55,25 +55,25 @@ public class OSMAplyDiffOpTest extends RepositoryTestCase {
     public void testApplyChangesetWithMissingNode() throws Exception {
         String filename = getClass().getResource("nodes_for_changeset2.xml").getFile();
         File file = new File(filename);
-        geogit.command(OSMImportOp.class).setDataSource(file.getAbsolutePath()).call();
-        long unstaged = geogit.getRepository().workingTree().countUnstaged("node").count();
+        geogig.command(OSMImportOp.class).setDataSource(file.getAbsolutePath()).call();
+        long unstaged = geogig.getRepository().workingTree().countUnstaged("node").count();
         assertTrue(unstaged > 0);
-        Optional<RevFeature> revFeature = geogit.command(RevObjectParse.class)
+        Optional<RevFeature> revFeature = geogig.command(RevObjectParse.class)
                 .setRefSpec("WORK_HEAD:node/2059114068").call(RevFeature.class);
         assertTrue(revFeature.isPresent());
-        revFeature = geogit.command(RevObjectParse.class).setRefSpec("WORK_HEAD:node/269237867")
+        revFeature = geogig.command(RevObjectParse.class).setRefSpec("WORK_HEAD:node/269237867")
                 .call(RevFeature.class);
         assertFalse(revFeature.isPresent());
 
         String changesetFilename = getClass().getResource("changeset_missing_nodes.xml").getFile();
-        OSMReport report = geogit.command(OSMApplyDiffOp.class)
+        OSMReport report = geogig.command(OSMApplyDiffOp.class)
                 .setDiffFile(new File(changesetFilename)).call().get();
         assertEquals(1, report.getUnpprocessedCount());
         assertEquals(4, report.getCount());
-        revFeature = geogit.command(RevObjectParse.class).setRefSpec("WORK_HEAD:way/51502277")
+        revFeature = geogig.command(RevObjectParse.class).setRefSpec("WORK_HEAD:way/51502277")
                 .call(RevFeature.class);
         assertTrue(revFeature.isPresent());
-        revFeature = geogit.command(RevObjectParse.class).setRefSpec("WORK_HEAD:way/31347480")
+        revFeature = geogig.command(RevObjectParse.class).setRefSpec("WORK_HEAD:way/31347480")
                 .call(RevFeature.class);
         assertFalse(revFeature.isPresent());
 

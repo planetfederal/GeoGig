@@ -70,7 +70,7 @@ public class OracleImport extends AbstractOracleCommand implements CLICommand {
      * Executes the import command using the provided options.
      * 
      * @param cli
-     * @see org.geogit.cli.AbstractOracleCommand#runInternal(org.locationtech.geogig.cli.GeogigCLI)
+     * @see org.geogig.cli.AbstractOracleCommand#runInternal(org.locationtech.geogig.cli.GeogigCLI)
      */
     @Override
     protected void runInternal(GeogigCLI cli) throws IOException {
@@ -81,7 +81,7 @@ public class OracleImport extends AbstractOracleCommand implements CLICommand {
             cli.getConsole().println("Importing from database " + commonArgs.database);
 
             ProgressListener progressListener = cli.getProgressListener();
-            cli.getGeogit().command(ImportOp.class).setAll(all).setTable(table).setAlter(alter)
+            cli.getGeogig().command(ImportOp.class).setAll(all).setTable(table).setAlter(alter)
                     .setDestinationPath(destTable).setOverwrite(!add).setDataStore(dataStore)
                     .setAdaptToDefaultFeatureType(!forceFeatureType)
                     .setProgressListener(progressListener).call();

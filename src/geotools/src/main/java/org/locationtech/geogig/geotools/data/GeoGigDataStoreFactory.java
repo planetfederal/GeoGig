@@ -2,22 +2,6 @@
  * This code is licensed under the GNU GPL 2.0 license, available at the root
  * application directory.
  */
-/*
- *    GeoTools - The Open Source Java GIS Toolkit
- *    http://geotools.org
- *
- *    (C) 2002-2011, Open Source Geospatial Foundation (OSGeo)
- *
- *    This library is free software; you can redistribute it and/or
- *    modify it under the terms of the GNU Lesser General Public
- *    License as published by the Free Software Foundation;
- *    version 2.1 of the License.
- *
- *    This library is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- *    Lesser General Public License for more details.
- */
 package org.locationtech.geogig.geotools.data;
 
 import java.awt.RenderingHints.Key;
@@ -40,8 +24,8 @@ import com.google.common.base.Preconditions;
 
 public class GeoGigDataStoreFactory implements DataStoreFactorySpi {
 
-    /** GEO_GIT */
-    public static final String DISPLAY_NAME = "GeoGIT";
+    /** GEO_GIG */
+    public static final String DISPLAY_NAME = "GeoGIG";
 
     static {
         if (GlobalContextBuilder.builder == null
@@ -50,8 +34,8 @@ public class GeoGigDataStoreFactory implements DataStoreFactorySpi {
         }
     }
 
-    public static final Param REPOSITORY = new Param("geogit_repository", File.class,
-            "Root directory for the geogit repository", true, "/path/to/repository");
+    public static final Param REPOSITORY = new Param("geogig_repository", File.class,
+            "Root directory for the geogig repository", true, "/path/to/repository");
 
     public static final Param BRANCH = new Param(
             "branch",
@@ -79,7 +63,7 @@ public class GeoGigDataStoreFactory implements DataStoreFactorySpi {
 
     @Override
     public String getDescription() {
-        return "GeoGIT Versioning DataStore";
+        return "GeoGIG Versioning DataStore";
     }
 
     @Override
@@ -141,23 +125,23 @@ public class GeoGigDataStoreFactory implements DataStoreFactorySpi {
             }
         }
 
-        GeoGIG geogit;
+        GeoGIG geogig;
         try {
-            geogit = new GeoGIG(repositoryRoot);
+            geogig = new GeoGIG(repositoryRoot);
         } catch (RuntimeException e) {
             throw new IOException(e.getMessage(), e);
         }
-        Repository repository = geogit.getRepository();
+        Repository repository = geogig.getRepository();
         if (null == repository) {
             if (create != null && create.booleanValue()) {
                 return createNewDataStore(params);
             }
 
-            throw new IOException(String.format("Directory is not a geogit repository: '%s'",
+            throw new IOException(String.format("Directory is not a geogig repository: '%s'",
                     repositoryRoot.getAbsolutePath()));
         }
 
-        GeoGigDataStore store = new GeoGigDataStore(geogit);
+        GeoGigDataStore store = new GeoGigDataStore(geogig);
         if (defaultNamespace != null) {
             store.setNamespaceURI(defaultNamespace);
         }
@@ -182,16 +166,16 @@ public class GeoGigDataStoreFactory implements DataStoreFactorySpi {
             repositoryRoot.mkdirs();
         }
 
-        GeoGIG geogit = new GeoGIG(repositoryRoot);
+        GeoGIG geogig = new GeoGIG(repositoryRoot);
 
         try {
-            Repository repository = geogit.getOrCreateRepository();
+            Repository repository = geogig.getOrCreateRepository();
             Preconditions.checkState(repository != null);
         } catch (RuntimeException e) {
             throw new IOException(e);
         }
 
-        GeoGigDataStore store = new GeoGigDataStore(geogit);
+        GeoGigDataStore store = new GeoGigDataStore(geogig);
         if (defaultNamespace != null) {
             store.setNamespaceURI(defaultNamespace);
         }

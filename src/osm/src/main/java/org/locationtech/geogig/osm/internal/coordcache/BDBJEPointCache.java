@@ -32,7 +32,7 @@ import com.vividsolutions.jts.geom.CoordinateSequence;
 
 /**
  * A {@link PointCache} that uses a temporary BDB JE database inside the repository's
- * {@code .geogit/tmp}
+ * {@code .geogig/tmp}
  */
 public class BDBJEPointCache implements PointCache {
 

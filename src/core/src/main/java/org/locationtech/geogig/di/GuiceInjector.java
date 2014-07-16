@@ -22,7 +22,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 /**
- * Provides a method for finding and creating instances of GeoGit operations.
+ * Provides a method for finding and creating instances of GeoGig operations.
  * 
  * @see Context
  * @see AbstractGeoGigOp

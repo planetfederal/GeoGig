@@ -64,7 +64,7 @@ public abstract class SQLiteObjectDatabase<C> implements ObjectDatabase {
     @Override
     public void open() {
         if (cx == null) {
-            cx = connect(SQLiteStorage.geogitDir(platform));
+            cx = connect(SQLiteStorage.geogigDir(platform));
             init(cx);
         }
     }
@@ -259,7 +259,7 @@ public abstract class SQLiteObjectDatabase<C> implements ObjectDatabase {
     /**
      * Opens a database connection, returning the object representing connection state.
      */
-    protected abstract C connect(File geogitDir);
+    protected abstract C connect(File geogigDir);
 
     /**
      * Closes a database connection.

@@ -18,7 +18,7 @@ import org.locationtech.geogig.web.api.ResponseWriter;
 import com.google.common.base.Optional;
 
 /**
- * Interface for the Remove operation in GeoGit.
+ * Interface for the Remove operation in GeoGig.
  * 
  * Web interface for {@link RemoveOp}
  */
@@ -64,13 +64,13 @@ public class RemoveWebOp extends AbstractWebAPICommand {
             throw new CommandSpecException("No path was specified for removal.");
         }
 
-        final Context geogit = this.getCommandLocator(context);
-        RemoveOp command = geogit.command(RemoveOp.class);
+        final Context geogig = this.getCommandLocator(context);
+        RemoveOp command = geogig.command(RemoveOp.class);
 
         NodeRef.checkValidPath(path);
 
-        Optional<NodeRef> node = geogit.command(FindTreeChild.class)
-                .setParent(geogit.workingTree().getTree()).setIndex(true).setChildPath(path)
+        Optional<NodeRef> node = geogig.command(FindTreeChild.class)
+                .setParent(geogig.workingTree().getTree()).setIndex(true).setChildPath(path)
                 .call();
         if (node.isPresent()) {
             NodeRef nodeRef = node.get();

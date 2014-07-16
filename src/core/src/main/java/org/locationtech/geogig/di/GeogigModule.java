@@ -37,7 +37,7 @@ import com.google.inject.Scopes;
 import com.google.inject.multibindings.Multibinder;
 
 /**
- * Provides bindings for GeoGit singletons.
+ * Provides bindings for GeoGig singletons.
  * 
  * @see Context
  * @see Platform

@@ -46,19 +46,19 @@ public class RevParseIntegrationTest extends RepositoryTestCase {
      */
     @Override
     protected void setUpInternal() throws Exception {
-        geogit.command(InitOp.class).call();
+        geogig.command(InitOp.class).call();
 
         masterCommit1 = commit("masterCommit1");
         masterCommit2 = commit("masterCommit2");
 
-        Ref branch = geogit.command(BranchCreateOp.class).setName("BRANCH")
+        Ref branch = geogig.command(BranchCreateOp.class).setName("BRANCH")
                 .setSource(masterCommit2.getId().toString()).setAutoCheckout(true).call();
         assertEquals(masterCommit2.getId(), branch.getObjectId());
 
         branchCommit1 = commit("branchCommit1");
         branchCommit2 = commit("branchCommit2");
 
-        geogit.command(CheckoutOp.class).setSource("master").call();
+        geogig.command(CheckoutOp.class).setSource("master").call();
 
         masterCommit3 = commit("masterCommit3");
 
@@ -77,7 +77,7 @@ public class RevParseIntegrationTest extends RepositoryTestCase {
 
         getRepository().objectDatabase().put(mergeCommit);
 
-        geogit.command(UpdateRef.class).setName("refs/heads/master")
+        geogig.command(UpdateRef.class).setName("refs/heads/master")
                 .setOldValue(masterCommit3.getId()).setNewValue(mergeCommit.getId()).call();
         // end faking up merge op
 
@@ -85,11 +85,11 @@ public class RevParseIntegrationTest extends RepositoryTestCase {
     }
 
     private RevCommit commit(String message) {
-        return geogit.command(CommitOp.class).setAllowEmpty(true).call();
+        return geogig.command(CommitOp.class).setAllowEmpty(true).call();
     }
 
     private Optional<ObjectId> revParse(String refSpec) {
-        return geogit.command(RevParse.class).setRefSpec(refSpec).call();
+        return geogig.command(RevParse.class).setRefSpec(refSpec).call();
     }
 
     private void assertParsed(RevCommit expected, Optional<ObjectId> parsed) {

@@ -1,6 +1,6 @@
 Feature: "config" command
-    In order to configure geogit
-    As a Geogit User
+    In order to configure geogig
+    As a Geogig User
     I want to get and set global settings as well as repository settings on a directory of my choice
 
   Scenario: Try to set a config value in the current empty directory

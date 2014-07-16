@@ -33,7 +33,7 @@ public class OSMUnmap extends AbstractCommand implements CLICommand {
     @Parameter(description = "<path>")
     public List<String> args;
 
-    private GeoGIG geogit;
+    private GeoGIG geogig;
 
     /**
      * Executes the map command using the provided options.
@@ -48,11 +48,11 @@ public class OSMUnmap extends AbstractCommand implements CLICommand {
 
         String path = args.get(0);
 
-        geogit = cli.getGeogit();
+        geogig = cli.getGeogig();
 
-        ObjectId oldTreeId = geogit.getRepository().workingTree().getTree().getId();
+        ObjectId oldTreeId = geogig.getRepository().workingTree().getTree().getId();
 
-        ObjectId newTreeId = geogit.command(OSMUnmapOp.class).setPath(path).call().getId();
+        ObjectId newTreeId = geogig.command(OSMUnmapOp.class).setPath(path).call().getId();
 
         ConsoleReader console = cli.getConsole();
         if (newTreeId.equals(oldTreeId)) {

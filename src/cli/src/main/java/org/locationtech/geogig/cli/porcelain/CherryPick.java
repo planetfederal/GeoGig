@@ -29,7 +29,7 @@ import com.google.common.collect.Lists;
  * <p>
  * Usage:
  * <ul>
- * <li> {@code geogit cherry-pick <commitish>}
+ * <li> {@code geogig cherry-pick <commitish>}
  * </ul>
  * 
  * @see CherryPickOp
@@ -42,14 +42,14 @@ public class CherryPick extends AbstractCommand implements CLICommand {
 
     @Override
     public void runInternal(GeogigCLI cli) {
-        final GeoGIG geogit = cli.getGeogit();
+        final GeoGIG geogig = cli.getGeogig();
         checkParameter(commits.size() > 0, "No commits specified.");
         checkParameter(commits.size() < 2, "Too many commits specified.");
 
-        CherryPickOp cherryPick = geogit.command(CherryPickOp.class);
+        CherryPickOp cherryPick = geogig.command(CherryPickOp.class);
 
         Optional<ObjectId> commitId;
-        commitId = geogit.command(RevParse.class).setRefSpec(commits.get(0)).call();
+        commitId = geogig.command(RevParse.class).setRefSpec(commits.get(0)).call();
         checkParameter(commitId.isPresent(), "Commit not found '%s'", commits.get(0));
         cherryPick.setCommit(Suppliers.ofInstance(commitId.get()));
 

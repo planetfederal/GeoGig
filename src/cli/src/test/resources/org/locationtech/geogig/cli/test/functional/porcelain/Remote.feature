@@ -1,12 +1,12 @@
 Feature: "remote" command
     In order to track changes from other repositories
-    As a Geogit User
+    As a Geogig User
     I want to add and remove remotes for the current repository
 
   Scenario: Try to add and list remote from an empty directory
     Given I am in an empty directory
      When I run the command "remote add myremote http://myremote.com"
-     Then the response should contain "Not in a geogit repository"
+     Then the response should contain "Not in a geogig repository"
      
   Scenario: Try to add and list a remote to the current repository
     Given I have a repository
@@ -58,7 +58,7 @@ Feature: "remote" command
   Scenario: Try to remove a remote from an empty repository
     Given I am in an empty directory
      When I run the command "remote rm myremote"
-     Then the response should contain "Not in a geogit repository"
+     Then the response should contain "Not in a geogig repository"
       And it should exit with non-zero exit code
      
   Scenario: Try to remove a remote that doesn't exist
@@ -70,7 +70,7 @@ Feature: "remote" command
   Scenario: Try to list remotes from an empty repository
     Given I am in an empty directory
      When I run the command "remote list"
-     Then the response should contain "Not in a geogit repository"
+     Then the response should contain "Not in a geogig repository"
       And it should exit with non-zero exit code 
     
      

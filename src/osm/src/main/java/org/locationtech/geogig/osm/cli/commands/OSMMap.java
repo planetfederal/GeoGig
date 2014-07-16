@@ -26,7 +26,7 @@ import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
 
 /**
- * Creates new data in the geogit repository based on raw OSM data already in the repository.
+ * Creates new data in the geogig repository based on raw OSM data already in the repository.
  * 
  * 
  * @see OSMMapOp
@@ -40,7 +40,7 @@ public class OSMMap extends AbstractCommand implements CLICommand {
     @Parameter(names = { "--message", "-m" }, description = "The message for the commit to create")
     public String message;
 
-    private GeoGIG geogit;
+    private GeoGIG geogig;
 
     /**
      * Executes the map command using the provided options.
@@ -52,22 +52,22 @@ public class OSMMap extends AbstractCommand implements CLICommand {
             throw new CommandFailedException();
         }
 
-        checkState(cli.getGeogit().getRepository().index().isClean()
-                && cli.getGeogit().getRepository().workingTree().isClean(),
+        checkState(cli.getGeogig().getRepository().index().isClean()
+                && cli.getGeogig().getRepository().workingTree().isClean(),
                 "Working tree and index are not clean");
 
         String mappingFilepath = args.get(0);
 
         Mapping mapping = Mapping.fromFile(mappingFilepath);
 
-        geogit = cli.getGeogit();
+        geogig = cli.getGeogig();
 
-        ObjectId oldTreeId = geogit.getRepository().workingTree().getTree().getId();
+        ObjectId oldTreeId = geogig.getRepository().workingTree().getTree().getId();
 
         message = message == null ? "Applied mapping " + new File(mappingFilepath).getName()
                 : message;
 
-        ObjectId newTreeId = geogit.command(OSMMapOp.class).setMapping(mapping).setMessage(message)
+        ObjectId newTreeId = geogig.command(OSMMapOp.class).setMapping(mapping).setMessage(message)
                 .call().getId();
 
         ConsoleReader console = cli.getConsole();

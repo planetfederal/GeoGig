@@ -1,6 +1,6 @@
 Feature: "cat" command
     In order to know the content of a given element
-    As a Geogit User
+    As a Geogig User
     I want to display its content
 
   Scenario: Try to show the content of a tree.

@@ -60,7 +60,7 @@ public class OSMImport extends AbstractCommand implements CLICommand {
 
         try {
             message = message == null ? "Updated OSM data" : message;
-            Optional<OSMReport> report = cli.getGeogit().command(OSMImportOp.class)
+            Optional<OSMReport> report = cli.getGeogig().command(OSMImportOp.class)
                     .setDataSource(importFile.getAbsolutePath()).setMapping(mapping)
                     .setMessage(message).setNoRaw(noRaw).setAdd(add)
                     .setProgressListener(cli.getProgressListener()).call();

@@ -40,7 +40,7 @@ public class SLList extends AbstractSLCommand implements CLICommand {
         try {
             cli.getConsole().println("Fetching feature types...");
 
-            Optional<List<String>> features = cli.getGeogit().command(ListOp.class)
+            Optional<List<String>> features = cli.getGeogig().command(ListOp.class)
                     .setDataStore(dataStore).call();
 
             if (features.isPresent()) {

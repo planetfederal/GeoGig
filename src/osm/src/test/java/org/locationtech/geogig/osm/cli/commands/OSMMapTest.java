@@ -56,7 +56,7 @@ public class OSMMapTest extends Assert {
         cli.execute("init");
         cli.execute("config", "user.name", "Gabriel Roldan");
         cli.execute("config", "user.email", "groldan@opengeo.org");
-        assertTrue(new File(workingDirectory, ".geogit").exists());
+        assertTrue(new File(workingDirectory, ".geogig").exists());
 
     }
 
@@ -68,12 +68,12 @@ public class OSMMapTest extends Assert {
         cli.execute("osm", "import", file.getAbsolutePath());
         cli.execute("add");
         cli.execute("commit", "-m", "message");
-        GeoGIG geogit = cli.newGeoGIT();
-        Optional<RevTree> tree = geogit.command(RevObjectParse.class).setRefSpec("HEAD:node")
+        GeoGIG geogig = cli.newGeoGIG();
+        Optional<RevTree> tree = geogig.command(RevObjectParse.class).setRefSpec("HEAD:node")
                 .call(RevTree.class);
         assertTrue(tree.isPresent());
         assertTrue(tree.get().size() > 0);
-        tree = geogit.command(RevObjectParse.class).setRefSpec("HEAD:way").call(RevTree.class);
+        tree = geogig.command(RevObjectParse.class).setRefSpec("HEAD:way").call(RevTree.class);
         assertTrue(tree.isPresent());
         assertTrue(tree.get().size() > 0);
         // map
@@ -81,7 +81,7 @@ public class OSMMapTest extends Assert {
         File mappingFile = new File(mappingFilename);
         cli.execute("osm", "map", mappingFile.getAbsolutePath());
         // check that a feature was correctly mapped
-        Optional<RevFeature> revFeature = geogit.command(RevObjectParse.class)
+        Optional<RevFeature> revFeature = geogig.command(RevObjectParse.class)
                 .setRefSpec("HEAD:onewaystreets/31045880").call(RevFeature.class);
         assertTrue(revFeature.isPresent());
         ImmutableList<Optional<Object>> values = revFeature.get().getValues();
@@ -90,10 +90,10 @@ public class OSMMapTest extends Assert {
         assertEquals("345117525;345117526;1300224327;345117527", values.get(3).get());
         assertEquals("yes", values.get(1).get());
         // check that a feature was correctly ignored
-        revFeature = geogit.command(RevObjectParse.class).setRefSpec("HEAD:onewaystreets/31347480")
+        revFeature = geogig.command(RevObjectParse.class).setRefSpec("HEAD:onewaystreets/31347480")
                 .call(RevFeature.class);
         assertFalse(revFeature.isPresent());
-        geogit.close();
+        geogig.close();
     }
 
     @Test
@@ -103,11 +103,11 @@ public class OSMMapTest extends Assert {
         cli.execute("osm", "import", file.getAbsolutePath());
         cli.execute("add");
         cli.execute("commit", "-m", "message");
-        Optional<RevTree> tree = cli.getGeogit().command(RevObjectParse.class)
+        Optional<RevTree> tree = cli.getGeogig().command(RevObjectParse.class)
                 .setRefSpec("HEAD:node").call(RevTree.class);
         assertTrue(tree.isPresent());
         assertTrue(tree.get().size() > 0);
-        tree = cli.getGeogit().command(RevObjectParse.class).setRefSpec("HEAD:way")
+        tree = cli.getGeogig().command(RevObjectParse.class).setRefSpec("HEAD:way")
                 .call(RevTree.class);
         assertTrue(tree.isPresent());
         assertTrue(tree.get().size() > 0);
@@ -127,11 +127,11 @@ public class OSMMapTest extends Assert {
         cli.execute("osm", "import", file.getAbsolutePath());
         cli.execute("add");
         cli.execute("commit", "-m", "message");
-        Optional<RevTree> tree = cli.getGeogit().command(RevObjectParse.class)
+        Optional<RevTree> tree = cli.getGeogig().command(RevObjectParse.class)
                 .setRefSpec("HEAD:node").call(RevTree.class);
         assertTrue(tree.isPresent());
         assertTrue(tree.get().size() > 0);
-        tree = cli.getGeogit().command(RevObjectParse.class).setRefSpec("HEAD:way")
+        tree = cli.getGeogig().command(RevObjectParse.class).setRefSpec("HEAD:way")
                 .call(RevTree.class);
         assertTrue(tree.isPresent());
         assertTrue(tree.get().size() > 0);
@@ -151,22 +151,22 @@ public class OSMMapTest extends Assert {
         cli.execute("osm", "import", file.getAbsolutePath());
         cli.execute("add");
         cli.execute("commit", "-m", "message");
-        GeoGIG geogit = cli.newGeoGIT();
-        Optional<RevTree> tree = geogit.command(RevObjectParse.class).setRefSpec("HEAD:node")
+        GeoGIG geogig = cli.newGeoGIG();
+        Optional<RevTree> tree = geogig.command(RevObjectParse.class).setRefSpec("HEAD:node")
                 .call(RevTree.class);
         assertTrue(tree.isPresent());
         assertTrue(tree.get().size() > 0);
-        tree = geogit.command(RevObjectParse.class).setRefSpec("HEAD:way").call(RevTree.class);
+        tree = geogig.command(RevObjectParse.class).setRefSpec("HEAD:way").call(RevTree.class);
         assertTrue(tree.isPresent());
         assertTrue(tree.get().size() > 0);
         String mappingFilename = OSMMap.class.getResource("no_filter_mapping.json").getFile();
         File mappingFile = new File(mappingFilename);
         cli.execute("osm", "map", mappingFile.getAbsolutePath());
-        Iterator<NodeRef> allways = geogit.command(LsTreeOp.class).setReference("HEAD:all_ways")
+        Iterator<NodeRef> allways = geogig.command(LsTreeOp.class).setReference("HEAD:all_ways")
                 .call();
         ArrayList<NodeRef> listAllways = Lists.newArrayList(allways);
         assertEquals(4, listAllways.size());
-        geogit.close();
+        geogig.close();
     }
 
     @Test
@@ -177,21 +177,21 @@ public class OSMMapTest extends Assert {
         cli.execute("osm", "import", file.getAbsolutePath());
         cli.execute("add");
         cli.execute("commit", "-m", "message");
-        Optional<RevTree> tree = cli.getGeogit().command(RevObjectParse.class)
+        Optional<RevTree> tree = cli.getGeogig().command(RevObjectParse.class)
                 .setRefSpec("HEAD:node").call(RevTree.class);
         assertTrue(tree.isPresent());
         assertTrue(tree.get().size() > 0);
-        tree = cli.getGeogit().command(RevObjectParse.class).setRefSpec("HEAD:way")
+        tree = cli.getGeogig().command(RevObjectParse.class).setRefSpec("HEAD:way")
                 .call(RevTree.class);
         assertTrue(tree.isPresent());
         assertTrue(tree.get().size() > 0);
         String mappingFilename = OSMMap.class.getResource("polygons_mapping.json").getFile();
         File mappingFile = new File(mappingFilename);
         cli.execute("osm", "map", mappingFile.getAbsolutePath());
-        Iterator<NodeRef> iter = cli.getGeogit().command(LsTreeOp.class).setReference("HEAD:areas")
+        Iterator<NodeRef> iter = cli.getGeogig().command(LsTreeOp.class).setReference("HEAD:areas")
                 .call();
         assertTrue(iter.hasNext());
-        Optional<RevFeatureType> ft = cli.getGeogit().command(ResolveFeatureType.class)
+        Optional<RevFeatureType> ft = cli.getGeogig().command(ResolveFeatureType.class)
                 .setRefSpec("HEAD:" + iter.next().path()).call();
         assertTrue(ft.isPresent());
         assertEquals(Polygon.class, ft.get().sortedDescriptors().get(1).getType().getBinding());
@@ -210,7 +210,7 @@ public class OSMMapTest extends Assert {
         File mappingFile = new File(mappingFilename);
         cli.execute("osm", "import", file.getAbsolutePath(), "--mapping",
                 mappingFile.getAbsolutePath());
-        Optional<RevFeatureType> revFeatureType = cli.getGeogit().command(ResolveFeatureType.class)
+        Optional<RevFeatureType> revFeatureType = cli.getGeogig().command(ResolveFeatureType.class)
                 .setRefSpec("onewaystreets").call();
         assertTrue(revFeatureType.isPresent());
         cli.execute("osm", "map", mappingFile.getAbsolutePath());
@@ -225,12 +225,12 @@ public class OSMMapTest extends Assert {
         cli.execute("osm", "import", file.getAbsolutePath());
         cli.execute("add");
         cli.execute("commit", "-m", "message");
-        GeoGIG geogit = cli.newGeoGIT();
-        Optional<RevTree> tree = geogit.command(RevObjectParse.class).setRefSpec("HEAD:node")
+        GeoGIG geogig = cli.newGeoGIG();
+        Optional<RevTree> tree = geogig.command(RevObjectParse.class).setRefSpec("HEAD:node")
                 .call(RevTree.class);
         assertTrue(tree.isPresent());
         assertTrue(tree.get().size() > 0);
-        tree = geogit.command(RevObjectParse.class).setRefSpec("HEAD:way").call(RevTree.class);
+        tree = geogig.command(RevObjectParse.class).setRefSpec("HEAD:way").call(RevTree.class);
         assertTrue(tree.isPresent());
         assertTrue(tree.get().size() > 0);
         // map
@@ -239,14 +239,14 @@ public class OSMMapTest extends Assert {
         File mappingFile = new File(mappingFilename);
         cli.execute("osm", "map", mappingFile.getAbsolutePath());
         // check that a feature was correctly mapped
-        Optional<RevFeature> revFeature = geogit.command(RevObjectParse.class)
+        Optional<RevFeature> revFeature = geogig.command(RevObjectParse.class)
                 .setRefSpec("HEAD:namedhighways/2059114068").call(RevFeature.class);
         assertTrue(revFeature.isPresent());
         // check that a feature was correctly ignored
-        revFeature = geogit.command(RevObjectParse.class).setRefSpec("HEAD:namedhighways/81953612")
+        revFeature = geogig.command(RevObjectParse.class).setRefSpec("HEAD:namedhighways/81953612")
                 .call(RevFeature.class);
         assertFalse(revFeature.isPresent());
-        geogit.close();
+        geogig.close();
 
     }
 }

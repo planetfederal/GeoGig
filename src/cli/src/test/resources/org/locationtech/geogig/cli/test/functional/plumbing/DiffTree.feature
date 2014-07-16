@@ -1,6 +1,6 @@
 Feature: "diff-tree" command
     In order to know changes made in a repository
-    As a Geogit User
+    As a Geogig User
     I want to see the existing differences between trees 
   
 Scenario: Show diff between working tree and index

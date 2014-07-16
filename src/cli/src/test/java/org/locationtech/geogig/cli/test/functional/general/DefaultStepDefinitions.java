@@ -11,7 +11,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.locationtech.geogig.cli.test.functional.general.GlobalState.deleteAndReplaceFeatureType;
 import static org.locationtech.geogig.cli.test.functional.general.GlobalState.exitCode;
-import static org.locationtech.geogig.cli.test.functional.general.GlobalState.geogitCLI;
+import static org.locationtech.geogig.cli.test.functional.general.GlobalState.geogigCLI;
 import static org.locationtech.geogig.cli.test.functional.general.GlobalState.insert;
 import static org.locationtech.geogig.cli.test.functional.general.GlobalState.insertAndAdd;
 import static org.locationtech.geogig.cli.test.functional.general.GlobalState.insertAndAddFeatures;
@@ -20,7 +20,7 @@ import static org.locationtech.geogig.cli.test.functional.general.GlobalState.pl
 import static org.locationtech.geogig.cli.test.functional.general.GlobalState.runAndParseCommand;
 import static org.locationtech.geogig.cli.test.functional.general.GlobalState.runCommand;
 import static org.locationtech.geogig.cli.test.functional.general.GlobalState.setUpDirectories;
-import static org.locationtech.geogig.cli.test.functional.general.GlobalState.setupGeogit;
+import static org.locationtech.geogig.cli.test.functional.general.GlobalState.setupGeogig;
 import static org.locationtech.geogig.cli.test.functional.general.GlobalState.stdOut;
 import static org.locationtech.geogig.cli.test.functional.general.GlobalState.tempFolder;
 import static org.locationtech.geogig.cli.test.functional.general.TestFeatures.feature;
@@ -92,9 +92,9 @@ public class DefaultStepDefinitions {
 
     @cucumber.annotation.After
     public void after() {
-        if (GlobalState.geogitCLI != null) {
-            GlobalState.geogitCLI.close();
-            GlobalState.geogitCLI = null;
+        if (GlobalState.geogigCLI != null) {
+            GlobalState.geogigCLI.close();
+            GlobalState.geogigCLI = null;
         }
         if (GlobalState.consoleReader != null) {
             GlobalState.consoleReader.shutdown();
@@ -105,14 +105,14 @@ public class DefaultStepDefinitions {
         tempFolder.delete();
         // assertFalse(
         // "this test is messing up with the config, make sure it uses CLITestInjectorBuilder",
-        // new File("/home/groldan/.geogitconfig").exists());
+        // new File("/home/groldan/.geogigconfig").exists());
     }
 
     @Given("^I am in an empty directory$")
     public void I_am_in_an_empty_directory() throws Throwable {
         setUpDirectories();
         assertEquals(0, platform.pwd().list().length);
-        setupGeogit();
+        setupGeogig();
     }
 
     @When("^I run the command \"(.*?)\"$")
@@ -176,7 +176,7 @@ public class DefaultStepDefinitions {
 
     @Then("^the repository directory shall exist$")
     public void the_repository_directory_shall_exist() throws Throwable {
-        List<String> output = runAndParseCommand(true, "rev-parse", "--resolve-geogit-dir");
+        List<String> output = runAndParseCommand(true, "rev-parse", "--resolve-geogig-dir");
         assertEquals(output.toString(), 1, output.size());
         String location = output.get(0);
         assertNotNull(location);
@@ -187,9 +187,9 @@ public class DefaultStepDefinitions {
     @Given("^I have a remote ref called \"([^\"]*)\"$")
     public void i_have_a_remote_ref_called(String expected) throws Throwable {
         String ref = "refs/remotes/origin/" + expected;
-        geogitCLI.getGeogit(Hints.readWrite()).command(UpdateRef.class).setName(ref)
+        geogigCLI.getGeogig(Hints.readWrite()).command(UpdateRef.class).setName(ref)
                 .setNewValue(ObjectId.NULL).call();
-        Optional<Ref> refValue = geogitCLI.getGeogit(Hints.readWrite()).command(RefParse.class)
+        Optional<Ref> refValue = geogigCLI.getGeogig(Hints.readWrite()).command(RefParse.class)
                 .setName(ref).call();
         assertTrue(refValue.isPresent());
         assertEquals(refValue.get().getObjectId(), ObjectId.NULL);
@@ -197,7 +197,7 @@ public class DefaultStepDefinitions {
 
     @Given("^I have a remote tag called \"([^\"]*)\"$")
     public void i_have_a_remote_tag_called(String expected) throws Throwable {
-        geogitCLI.getGeogit(Hints.readWrite()) //
+        geogigCLI.getGeogig(Hints.readWrite()) //
                 .command(TagCreateOp.class) //
                 .setName(expected) //
                 .setMessage("Tagged " + expected) //
@@ -208,7 +208,7 @@ public class DefaultStepDefinitions {
     @Given("^I have an unconfigured repository$")
     public void I_have_an_unconfigured_repository() throws Throwable {
         setUpDirectories();
-        setupGeogit();
+        setupGeogig();
 
         List<String> output = runAndParseCommand(true, "init");
         assertEquals(output.toString(), 1, output.size());
@@ -219,10 +219,10 @@ public class DefaultStepDefinitions {
     @Given("^I have a merge conflict state$")
     public void I_have_a_merge_conflict_state() throws Throwable {
         I_have_conflicting_branches();
-        Ref branch = geogitCLI.getGeogit(Hints.readOnly()).command(RefParse.class)
+        Ref branch = geogigCLI.getGeogig(Hints.readOnly()).command(RefParse.class)
                 .setName("branch1").call().get();
         try {
-            geogitCLI.getGeogit(Hints.readWrite()).command(MergeOp.class)
+            geogigCLI.getGeogig(Hints.readWrite()).command(MergeOp.class)
                     .addCommit(Suppliers.ofInstance(branch.getObjectId())).call();
             fail();
         } catch (MergeConflictsException e) {
@@ -266,9 +266,9 @@ public class DefaultStepDefinitions {
 
     @Given("^I set up a hook$")
     public void I_set_up_a_hook() throws Throwable {
-        File hooksDir = new File(platform.pwd(), ".geogit/hooks");
+        File hooksDir = new File(platform.pwd(), ".geogig/hooks");
         File hook = new File(hooksDir, "pre_commit.js");
-        String script = "exception = Packages.org.geogit.api.hooks.CannotRunGeogitOperationException;\n"
+        String script = "exception = Packages.org.geogig.api.hooks.CannotRunGeogigOperationException;\n"
                 + "msg = params.get(\"message\");\n"
                 + "if (msg.length() < 5){\n"
                 + "\tthrow new exception(\"Commit messages must have at least 5 letters\");\n"
@@ -300,7 +300,7 @@ public class DefaultStepDefinitions {
         final File remoteRepo = new File(currDir, name);
         GlobalState.remoteRepo = remoteRepo;
         platform.setWorkingDir(remoteRepo);
-        setupGeogit();
+        setupGeogig();
         runCommand(true, "config", "--global", "user.name", "John Doe");
         runCommand(true, "config", "--global", "user.email", "JohnDoe@example.com");
         insertAndAdd(points1);
@@ -317,7 +317,7 @@ public class DefaultStepDefinitions {
         runCommand(true, "commit -m Commit5");
 
         platform.setWorkingDir(currDir);
-        setupGeogit();
+        setupGeogig();
     }
 
     @Given("^there is a remote repository with a tag named \"([^\"]*)\"$")
@@ -335,7 +335,7 @@ public class DefaultStepDefinitions {
         final File remoteRepo = new File(currDir, "remoterepo");
         GlobalState.remoteRepo = remoteRepo;
         platform.setWorkingDir(remoteRepo);
-        setupGeogit();
+        setupGeogig();
         runCommand(true, "config", "--global", "user.name", "John Doe");
         runCommand(true, "config", "--global", "user.email", "JohnDoe@example.com");
         insertAndAdd(points1);
@@ -357,7 +357,7 @@ public class DefaultStepDefinitions {
         assertTrue(actual, actual.startsWith("created tag " + tagName));
 
         platform.setWorkingDir(currDir);
-        setupGeogit();
+        setupGeogig();
     }
 
     @Given("^I have a repository$")
@@ -377,7 +377,7 @@ public class DefaultStepDefinitions {
         assertTrue(output.get(0), output.get(0).startsWith("Initialized"));
 
         platform.setWorkingDir(new File(platform.pwd(), "localrepo"));
-        setupGeogit();
+        setupGeogig();
 
         runCommand(true, "config", "--global", "user.name", "John Doe");
         runCommand(true, "config", "--global", "user.email", "JohnDoe@example.com");
@@ -437,10 +437,10 @@ public class DefaultStepDefinitions {
     @Given("^I have unstaged an empty feature type$")
     public void I_have_unstaged_an_empty_feature_type() throws Throwable {
         insert(points1);
-        GeoGIG geogit = geogitCLI.newGeoGIT();
-        final WorkingTree workTree = geogit.getRepository().workingTree();
+        GeoGIG geogig = geogigCLI.newGeoGIG();
+        final WorkingTree workTree = geogig.getRepository().workingTree();
         workTree.delete(pointsName, idP1);
-        geogit.close();
+        geogig.close();
     }
 
     @Given("^I stage 6 features$")
@@ -501,7 +501,7 @@ public class DefaultStepDefinitions {
         }
         assertTrue(dir.exists());
         platform.setWorkingDir(dir);
-        setupGeogit();
+        setupGeogig();
     }
 
     @Given("^I have a patch file$")

@@ -64,7 +64,7 @@ public class Conflicts extends AbstractCommand implements CLICommand {
     @Parameter(names = { "--refspecs-only" }, description = "Just show refspecs of elements")
     private boolean refspecsOnly;
 
-    private GeoGIG geogit;
+    private GeoGIG geogig;
 
     @Override
     public void runInternal(GeogigCLI cli) throws IOException {
@@ -75,8 +75,8 @@ public class Conflicts extends AbstractCommand implements CLICommand {
         checkParameter(!(refspecsOnly && idsOnly),
                 "Cannot use --ids-only and --refspecs-only at the same time");
 
-        geogit = cli.getGeogit();
-        List<Conflict> conflicts = geogit.command(ConflictsReadOp.class).call();
+        geogig = cli.getGeogig();
+        List<Conflict> conflicts = geogig.command(ConflictsReadOp.class).call();
 
         if (conflicts.isEmpty()) {
             cli.getConsole().println("No elements need merging.");
@@ -85,28 +85,28 @@ public class Conflicts extends AbstractCommand implements CLICommand {
         for (Conflict conflict : conflicts) {
             if (paths.isEmpty() || paths.contains(conflict.getPath())) {
                 if (previewDiff) {
-                    printConflictDiff(conflict, cli.getConsole(), geogit);
+                    printConflictDiff(conflict, cli.getConsole(), geogig);
                 } else if (idsOnly) {
                     cli.getConsole().println(conflict.toString());
                 } else if (refspecsOnly) {
-                    printRefspecs(conflict, cli.getConsole(), geogit);
+                    printRefspecs(conflict, cli.getConsole(), geogig);
                 } else {
-                    printConflict(conflict, cli.getConsole(), geogit);
+                    printConflict(conflict, cli.getConsole(), geogig);
                 }
             }
         }
     }
 
     private File getRebaseFolder() {
-        URL dir = geogit.command(ResolveGeogigDir.class).call().get();
+        URL dir = geogig.command(ResolveGeogigDir.class).call().get();
         File rebaseFolder = new File(dir.getFile(), "rebase-apply");
         return rebaseFolder;
     }
 
-    private void printRefspecs(Conflict conflict, ConsoleReader console, GeoGIG geogit)
+    private void printRefspecs(Conflict conflict, ConsoleReader console, GeoGIG geogig)
             throws IOException {
         ObjectId theirsHeadId;
-        Optional<Ref> mergeHead = geogit.command(RefParse.class).setName(Ref.MERGE_HEAD).call();
+        Optional<Ref> mergeHead = geogig.command(RefParse.class).setName(Ref.MERGE_HEAD).call();
         if (mergeHead.isPresent()) {
             theirsHeadId = mergeHead.get().getObjectId();
         } else {
@@ -115,7 +115,7 @@ public class Conflicts extends AbstractCommand implements CLICommand {
                     .checkState(branchFile.exists(), "Cannot find merge/rebase head reference");
             try {
                 String currentBranch = Files.readFirstLine(branchFile, Charsets.UTF_8);
-                Optional<Ref> rebaseHead = geogit.command(RefParse.class).setName(currentBranch)
+                Optional<Ref> rebaseHead = geogig.command(RefParse.class).setName(currentBranch)
                         .call();
                 theirsHeadId = rebaseHead.get().getObjectId();
             } catch (IOException e) {
@@ -123,13 +123,13 @@ public class Conflicts extends AbstractCommand implements CLICommand {
             }
 
         }
-        Optional<RevCommit> theirsHead = geogit.command(RevObjectParse.class)
+        Optional<RevCommit> theirsHead = geogig.command(RevObjectParse.class)
                 .setObjectId(theirsHeadId).call(RevCommit.class);
-        ObjectId oursHeadId = geogit.command(RefParse.class).setName(Ref.ORIG_HEAD).call().get()
+        ObjectId oursHeadId = geogig.command(RefParse.class).setName(Ref.ORIG_HEAD).call().get()
                 .getObjectId();
-        Optional<RevCommit> oursHead = geogit.command(RevObjectParse.class).setObjectId(oursHeadId)
+        Optional<RevCommit> oursHead = geogig.command(RevObjectParse.class).setObjectId(oursHeadId)
                 .call(RevCommit.class);
-        Optional<ObjectId> commonAncestor = geogit.command(FindCommonAncestor.class)
+        Optional<ObjectId> commonAncestor = geogig.command(FindCommonAncestor.class)
                 .setLeft(theirsHead.get()).setRight(oursHead.get()).call();
         String ancestorPath = commonAncestor.get().toString() + ":" + conflict.getPath();
         StringBuilder sb = new StringBuilder();
@@ -143,13 +143,13 @@ public class Conflicts extends AbstractCommand implements CLICommand {
         console.println(sb.toString());
     }
 
-    private void printConflictDiff(Conflict conflict, ConsoleReader console, GeoGIG geogit)
+    private void printConflictDiff(Conflict conflict, ConsoleReader console, GeoGIG geogig)
             throws IOException {
         FullDiffPrinter diffPrinter = new FullDiffPrinter(false, true);
         console.println("---" + conflict.getPath() + "---");
 
         ObjectId theirsHeadId;
-        Optional<Ref> mergeHead = geogit.command(RefParse.class).setName(Ref.MERGE_HEAD).call();
+        Optional<Ref> mergeHead = geogig.command(RefParse.class).setName(Ref.MERGE_HEAD).call();
         if (mergeHead.isPresent()) {
             theirsHeadId = mergeHead.get().getObjectId();
         } else {
@@ -158,7 +158,7 @@ public class Conflicts extends AbstractCommand implements CLICommand {
                     .checkState(branchFile.exists(), "Cannot find merge/rebase head reference");
             try {
                 String currentBranch = Files.readFirstLine(branchFile, Charsets.UTF_8);
-                Optional<Ref> rebaseHead = geogit.command(RefParse.class).setName(currentBranch)
+                Optional<Ref> rebaseHead = geogig.command(RefParse.class).setName(currentBranch)
                         .call();
                 theirsHeadId = rebaseHead.get().getObjectId();
             } catch (IOException e) {
@@ -166,54 +166,54 @@ public class Conflicts extends AbstractCommand implements CLICommand {
             }
 
         }
-        Optional<RevCommit> theirsHead = geogit.command(RevObjectParse.class)
+        Optional<RevCommit> theirsHead = geogig.command(RevObjectParse.class)
                 .setObjectId(theirsHeadId).call(RevCommit.class);
-        ObjectId oursHeadId = geogit.command(RefParse.class).setName(Ref.ORIG_HEAD).call().get()
+        ObjectId oursHeadId = geogig.command(RefParse.class).setName(Ref.ORIG_HEAD).call().get()
                 .getObjectId();
-        Optional<RevCommit> oursHead = geogit.command(RevObjectParse.class).setObjectId(oursHeadId)
+        Optional<RevCommit> oursHead = geogig.command(RevObjectParse.class).setObjectId(oursHeadId)
                 .call(RevCommit.class);
-        Optional<ObjectId> commonAncestor = geogit.command(FindCommonAncestor.class)
+        Optional<ObjectId> commonAncestor = geogig.command(FindCommonAncestor.class)
                 .setLeft(theirsHead.get()).setRight(oursHead.get()).call();
 
         String ancestorPath = commonAncestor.get().toString() + ":" + conflict.getPath();
-        Optional<NodeRef> ancestorNodeRef = geogit.command(FeatureNodeRefFromRefspec.class)
+        Optional<NodeRef> ancestorNodeRef = geogig.command(FeatureNodeRefFromRefspec.class)
                 .setRefspec(ancestorPath).call();
         String path = Ref.ORIG_HEAD + ":" + conflict.getPath();
-        Optional<NodeRef> oursNodeRef = geogit.command(FeatureNodeRefFromRefspec.class)
+        Optional<NodeRef> oursNodeRef = geogig.command(FeatureNodeRefFromRefspec.class)
                 .setRefspec(path).call();
         DiffEntry diffEntry = new DiffEntry(ancestorNodeRef.orNull(), oursNodeRef.orNull());
         console.println("Ours");
-        diffPrinter.print(geogit, console, diffEntry);
+        diffPrinter.print(geogig, console, diffEntry);
         path = theirsHeadId + ":" + conflict.getPath();
-        Optional<NodeRef> theirsNodeRef = geogit.command(FeatureNodeRefFromRefspec.class)
+        Optional<NodeRef> theirsNodeRef = geogig.command(FeatureNodeRefFromRefspec.class)
                 .setRefspec(path).call();
         diffEntry = new DiffEntry(ancestorNodeRef.orNull(), theirsNodeRef.orNull());
         console.println("Theirs");
-        diffPrinter.print(geogit, console, diffEntry);
+        diffPrinter.print(geogig, console, diffEntry);
 
     }
 
-    private void printConflict(Conflict conflict, ConsoleReader console, GeoGIG geogit)
+    private void printConflict(Conflict conflict, ConsoleReader console, GeoGIG geogig)
             throws IOException {
 
         console.println(conflict.getPath());
         console.println();
-        printObject("Ancestor", conflict.getAncestor(), console, geogit);
+        printObject("Ancestor", conflict.getAncestor(), console, geogig);
         console.println();
-        printObject("Ours", conflict.getOurs(), console, geogit);
+        printObject("Ours", conflict.getOurs(), console, geogig);
         console.println();
-        printObject("Theirs", conflict.getTheirs(), console, geogit);
+        printObject("Theirs", conflict.getTheirs(), console, geogig);
         console.println();
 
     }
 
-    private void printObject(String name, ObjectId id, ConsoleReader console, GeoGIG geogit)
+    private void printObject(String name, ObjectId id, ConsoleReader console, GeoGIG geogig)
             throws IOException {
 
         console.println(name + "\t" + id.toString());
         if (!id.isNull()) {
-            Optional<RevObject> obj = geogit.command(RevObjectParse.class).setObjectId(id).call();
-            CharSequence s = geogit.command(CatObject.class)
+            Optional<RevObject> obj = geogig.command(RevObjectParse.class).setObjectId(id).call();
+            CharSequence s = geogig.command(CatObject.class)
                     .setObject(Suppliers.ofInstance(obj.get())).call();
             console.println(s);
         }

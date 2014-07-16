@@ -32,15 +32,15 @@ import com.google.common.base.Objects;
 /**
  * Incorporates changes from a remote repository into the current branch.
  * <p>
- * More precisely, {@code geogit pull} runs {@code geogit fetch} with the given parameters and calls
- * {@code geogit merge} to merge the retrieved branch heads into the current branch. With
- * {@code --rebase}, it runs {@code geogit rebase} instead of {@code geogit merge}.
+ * More precisely, {@code geogig pull} runs {@code geogig fetch} with the given parameters and calls
+ * {@code geogig merge} to merge the retrieved branch heads into the current branch. With
+ * {@code --rebase}, it runs {@code geogig rebase} instead of {@code geogig merge}.
  * <p>
  * CLI proxy for {@link PullOp}
  * <p>
  * Usage:
  * <ul>
- * <li> {@code geogit pull [options] [<repository> [<refspec>...]]}
+ * <li> {@code geogig pull [options] [<repository> [<refspec>...]]}
  * </ul>
  * 
  * @see PullOp
@@ -72,15 +72,15 @@ public class Pull extends AbstractCommand implements CLICommand {
         checkParameter(depth > 0 ? !fulldepth : true,
                 "Cannot specify a depth and full depth.  Use --depth <depth> or --fulldepth.");
 
-        GeoGIG geogit = cli.getGeogit();
+        GeoGIG geogig = cli.getGeogig();
         if (depth > 0 || fulldepth) {
-            if (!geogit.getRepository().getDepth().isPresent()) {
+            if (!geogig.getRepository().getDepth().isPresent()) {
                 throw new CommandFailedException(
                         "Depth operations can only be used on a shallow clone.");
             }
         }
 
-        PullOp pull = geogit.command(PullOp.class);
+        PullOp pull = geogig.command(PullOp.class);
         pull.setProgressListener(cli.getProgressListener());
         pull.setAll(all).setRebase(rebase).setFullDepth(fulldepth);
         pull.setDepth(depth);
@@ -123,7 +123,7 @@ public class Pull extends AbstractCommand implements CLICommand {
                     oldTreeish = oldRef.getObjectId().toString();
                 }
 
-                DiffObjectCount count = geogit.command(DiffCount.class).setOldVersion(oldTreeish)
+                DiffObjectCount count = geogig.command(DiffCount.class).setOldVersion(oldTreeish)
                         .setNewVersion(newTreeish).call();
                 long added = count.getFeaturesAdded();
                 long removed = count.getFeaturesRemoved();

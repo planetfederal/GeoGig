@@ -47,13 +47,13 @@ public class Insert extends AbstractCommand implements CLICommand {
     @Parameter(names = "-f", description = "File with definition of features to insert")
     private String filepath;
 
-    private GeoGIG geogit;
+    private GeoGIG geogig;
 
     @Override
     public void runInternal(GeogigCLI cli) throws IOException {
 
         ConsoleReader console = cli.getConsole();
-        geogit = cli.getGeogit();
+        geogig = cli.getGeogig();
 
         Iterable<String> lines = null;
         if (filepath != null) {
@@ -69,7 +69,7 @@ public class Insert extends AbstractCommand implements CLICommand {
         long count = 0;
         for (String key : features.keySet()) {
             List<Feature> treeFeatures = features.get(key);
-            geogit.getRepository()
+            geogig.getRepository()
                     .workingTree()
                     .insert(key, treeFeatures.iterator(), cli.getProgressListener(), null,
                             treeFeatures.size());
@@ -120,7 +120,7 @@ public class Insert extends AbstractCommand implements CLICommand {
         String tree = NodeRef.parentPath(path);
         String featureId = NodeRef.nodeFromPath(path);
         if (!featureTypes.containsKey(tree)) {
-            Optional<RevFeatureType> opt = geogit.command(ResolveFeatureType.class)
+            Optional<RevFeatureType> opt = geogig.command(ResolveFeatureType.class)
                     .setRefSpec("WORK_HEAD:" + tree).call();
             checkParameter(opt.isPresent(), "The parent tree does not exist: " + tree);
             SimpleFeatureBuilder builder = new SimpleFeatureBuilder((SimpleFeatureType) opt.get()

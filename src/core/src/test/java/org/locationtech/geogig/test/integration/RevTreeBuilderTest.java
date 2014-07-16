@@ -386,7 +386,7 @@ public class RevTreeBuilderTest extends RepositoryTestCase {
     }
 
     private List<Node> lstree(RevTree tree) {
-        Iterator<NodeRef> refs = geogit.command(LsTreeOp.class)
+        Iterator<NodeRef> refs = geogig.command(LsTreeOp.class)
                 .setReference(tree.getId().toString()).setStrategy(FEATURES_ONLY).call();
         List<Node> nodes = new ArrayList<Node>();
         while (refs.hasNext()) {

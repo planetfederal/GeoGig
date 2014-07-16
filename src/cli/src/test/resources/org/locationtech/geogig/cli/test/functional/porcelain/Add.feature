@@ -1,6 +1,6 @@
 Feature: "add" command
-    In order to prepare for making a commit to the geogit repository
-    As a Geogit User
+    In order to prepare for making a commit to the geogig repository
+    As a Geogig User
     I want to stage my changes to the working tree
 
   Scenario: Try to add a conflicted feature
@@ -61,7 +61,7 @@ Feature: "add" command
   Scenario: Try to add from an empty directory
     Given I am in an empty directory
      When I run the command "add"
-     Then the response should start with "Not in a geogit repository"
+     Then the response should start with "Not in a geogig repository"
      And it should exit with non-zero exit code
      
   Scenario: Try to add when no changes have been made

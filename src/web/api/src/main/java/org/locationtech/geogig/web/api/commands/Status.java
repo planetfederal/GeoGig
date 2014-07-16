@@ -19,7 +19,7 @@ import org.locationtech.geogig.web.api.ResponseWriter;
 import com.google.common.base.Optional;
 
 /**
- * Web version of the Status operation in GeoGit's CLI. Lists the current branch as well as the
+ * Web version of the Status operation in GeoGig's CLI. Lists the current branch as well as the
  * current staged and unstaged changes.
  * 
  * Web implementation of {@link Status}
@@ -55,10 +55,10 @@ public class Status extends AbstractWebAPICommand {
      */
     @Override
     public void run(CommandContext context) {
-        final Context geogit = this.getCommandLocator(context);
+        final Context geogig = this.getCommandLocator(context);
 
         final String pathFilter = null;
-        final Optional<Ref> currHead = geogit.command(RefParse.class).setName(Ref.HEAD).call();
+        final Optional<Ref> currHead = geogig.command(RefParse.class).setName(Ref.HEAD).call();
 
         context.setResponseContent(new CommandResponse() {
             @Override
@@ -73,11 +73,11 @@ public class Status extends AbstractWebAPICommand {
                     }
                 }
 
-                writer.writeStaged(geogit.command(DiffIndex.class).addFilter(pathFilter), offset,
+                writer.writeStaged(geogig.command(DiffIndex.class).addFilter(pathFilter), offset,
                         limit);
-                writer.writeUnstaged(geogit.command(DiffWorkTree.class).setFilter(pathFilter),
+                writer.writeUnstaged(geogig.command(DiffWorkTree.class).setFilter(pathFilter),
                         offset, limit);
-                writer.writeUnmerged(geogit.command(ConflictsReadOp.class).call(), offset, limit);
+                writer.writeUnmerged(geogig.command(ConflictsReadOp.class).call(), offset, limit);
 
                 writer.finish();
             }

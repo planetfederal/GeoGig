@@ -1,6 +1,6 @@
 Feature: "cherry-pick" command
     In order to select specific changes to bring to the current branch
-    As a Geogit User
+    As a Geogig User
     I want to cherry pick several commits from other branches
 
   Scenario: Try to cherry pick several commits
@@ -37,7 +37,7 @@ Feature: "cherry-pick" command
   Scenario: Try to cherry pick from an empty directory
     Given I am in an empty directory
      When I run the command "cherry-pick branch1"
-     Then the response should start with "Not in a geogit repository"
+     Then the response should start with "Not in a geogig repository"
       And it should exit with non-zero exit code
      
   Scenario: Try to cherry pick a commit that causes conflict

@@ -56,13 +56,13 @@ public class XerialObjectDatabase extends SQLiteObjectDatabase<DataSource> {
     public XerialObjectDatabase(ConfigDatabase configdb, Platform platform, String dbName) {
         super(configdb, platform);
         this.dbName = dbName;
-        // File db = new File(new File(platform.pwd(), ".geogit"), name + ".db");
+        // File db = new File(new File(platform.pwd(), ".geogig"), name + ".db");
         // dataSource = Xerial.newDataSource(db);
     }
 
     @Override
-    protected DataSource connect(File geogitDir) {
-        return Xerial.newDataSource(new File(geogitDir, dbName + ".db"));
+    protected DataSource connect(File geogigDir) {
+        return Xerial.newDataSource(new File(geogigDir, dbName + ".db"));
     }
 
     @Override

@@ -67,14 +67,14 @@ public class CheckoutOpTest extends RepositoryTestCase {
         insertAndAdd(points3);
         ObjectId oID2 = insertAndAdd(lines1);
 
-        geogit.command(CommitOp.class).setMessage("commit for all features").call();
+        geogig.command(CommitOp.class).setMessage("commit for all features").call();
 
-        geogit.command(BranchCreateOp.class).setAutoCheckout(true).setName("testBranch").call();
+        geogig.command(BranchCreateOp.class).setAutoCheckout(true).setName("testBranch").call();
 
         ObjectId oID1Modified = insertAndAdd(points1_modified);
         ObjectId oID3 = insertAndAdd(lines2);
         ObjectId oID4 = insertAndAdd(lines3);
-        geogit.command(CommitOp.class).setMessage("commit for modified points1").call();
+        geogig.command(CommitOp.class).setMessage("commit for modified points1").call();
 
         List<String> paths = Arrays.asList(
                 NodeRef.appendChild(pointsName, points1.getIdentifier().getID()),
@@ -96,7 +96,7 @@ public class CheckoutOpTest extends RepositoryTestCase {
                 NodeRef.appendChild(linesName, lines3.getIdentifier().getID()));
         assertEquals(oID4, featureBlob4.get().getObjectId());
 
-        geogit.command(CheckoutOp.class).setSource("master").addPaths(paths).call();
+        geogig.command(CheckoutOp.class).setSource("master").addPaths(paths).call();
 
         root = repo.workingTree().getTree();
 
@@ -119,74 +119,74 @@ public class CheckoutOpTest extends RepositoryTestCase {
     @Test
     public void testCheckoutCommitDettachedHead() throws Exception {
         insertAndAdd(points1);
-        final RevCommit c1 = geogit.command(CommitOp.class).setMessage("commit for " + idP1).call();
+        final RevCommit c1 = geogig.command(CommitOp.class).setMessage("commit for " + idP1).call();
 
         insertAndAdd(points2);
-        final RevCommit c2 = geogit.command(CommitOp.class).setMessage("commit for " + idP2).call();
+        final RevCommit c2 = geogig.command(CommitOp.class).setMessage("commit for " + idP2).call();
 
         insertAndAdd(lines1);
-        final RevCommit c3 = geogit.command(CommitOp.class).setMessage("commit for " + idL2).call();
+        final RevCommit c3 = geogig.command(CommitOp.class).setMessage("commit for " + idL2).call();
 
         CheckoutResult result;
-        result = geogit.command(CheckoutOp.class).setSource(c1.getId().toString()).call();
+        result = geogig.command(CheckoutOp.class).setSource(c1.getId().toString()).call();
         assertEquals(c1.getTreeId(), result.getNewTree());
 
-        assertFalse(geogit.command(RefParse.class).setName(Ref.HEAD).call().get() instanceof SymRef);
-        assertTrue(geogit.command(RefParse.class).setName(Ref.HEAD).call().get() instanceof Ref);
+        assertFalse(geogig.command(RefParse.class).setName(Ref.HEAD).call().get() instanceof SymRef);
+        assertTrue(geogig.command(RefParse.class).setName(Ref.HEAD).call().get() instanceof Ref);
 
-        result = geogit.command(CheckoutOp.class).setSource(c2.getId().toString()).call();
+        result = geogig.command(CheckoutOp.class).setSource(c2.getId().toString()).call();
         assertEquals(c2.getTreeId(), result.getNewTree());
 
-        result = geogit.command(CheckoutOp.class).setSource(c3.getId().toString()).call();
+        result = geogig.command(CheckoutOp.class).setSource(c3.getId().toString()).call();
         assertEquals(c3.getTreeId(), result.getNewTree());
     }
 
     @Test
     public void testCheckoutBranch() throws Exception {
         insertAndAdd(points1);
-        final RevCommit c1 = geogit.command(CommitOp.class).setMessage("commit for " + idP1).call();
-        final Ref branch1 = geogit.command(BranchCreateOp.class).setName("branch1").call();
+        final RevCommit c1 = geogig.command(CommitOp.class).setMessage("commit for " + idP1).call();
+        final Ref branch1 = geogig.command(BranchCreateOp.class).setName("branch1").call();
 
         insertAndAdd(points2);
-        final RevCommit c2 = geogit.command(CommitOp.class).setMessage("commit for " + idP2).call();
-        final Ref branch2 = geogit.command(BranchCreateOp.class).setName("branch2").call();
+        final RevCommit c2 = geogig.command(CommitOp.class).setMessage("commit for " + idP2).call();
+        final Ref branch2 = geogig.command(BranchCreateOp.class).setName("branch2").call();
 
         insertAndAdd(lines1);
-        final RevCommit c3 = geogit.command(CommitOp.class).setMessage("commit for " + idL2).call();
-        final Ref branch3 = geogit.command(BranchCreateOp.class).setName("branch3").call();
+        final RevCommit c3 = geogig.command(CommitOp.class).setMessage("commit for " + idL2).call();
+        final Ref branch3 = geogig.command(BranchCreateOp.class).setName("branch3").call();
 
         CheckoutResult result;
-        result = geogit.command(CheckoutOp.class).setSource("branch1").call();
+        result = geogig.command(CheckoutOp.class).setSource("branch1").call();
         assertEquals(c1.getTreeId(), result.getNewTree());
-        assertTrue(geogit.command(RefParse.class).setName(Ref.HEAD).call().get() instanceof SymRef);
-        assertEquals(branch1.getName(), ((SymRef) geogit.command(RefParse.class).setName(Ref.HEAD)
+        assertTrue(geogig.command(RefParse.class).setName(Ref.HEAD).call().get() instanceof SymRef);
+        assertEquals(branch1.getName(), ((SymRef) geogig.command(RefParse.class).setName(Ref.HEAD)
                 .call().get()).getTarget());
 
-        result = geogit.command(CheckoutOp.class).setSource("branch2").call();
+        result = geogig.command(CheckoutOp.class).setSource("branch2").call();
         assertEquals(c2.getTreeId(), result.getNewTree());
-        assertTrue(geogit.command(RefParse.class).setName(Ref.HEAD).call().get() instanceof SymRef);
-        assertEquals(branch2.getName(), ((SymRef) geogit.command(RefParse.class).setName(Ref.HEAD)
+        assertTrue(geogig.command(RefParse.class).setName(Ref.HEAD).call().get() instanceof SymRef);
+        assertEquals(branch2.getName(), ((SymRef) geogig.command(RefParse.class).setName(Ref.HEAD)
                 .call().get()).getTarget());
 
-        result = geogit.command(CheckoutOp.class).setSource("branch3").call();
+        result = geogig.command(CheckoutOp.class).setSource("branch3").call();
         assertEquals(c3.getTreeId(), result.getNewTree());
-        assertTrue(geogit.command(RefParse.class).setName(Ref.HEAD).call().get() instanceof SymRef);
-        assertEquals(branch3.getName(), ((SymRef) geogit.command(RefParse.class).setName(Ref.HEAD)
+        assertTrue(geogig.command(RefParse.class).setName(Ref.HEAD).call().get() instanceof SymRef);
+        assertEquals(branch3.getName(), ((SymRef) geogig.command(RefParse.class).setName(Ref.HEAD)
                 .call().get()).getTarget());
     }
 
     @Test
     public void testCheckoutPathFilter() throws Exception {
         ObjectId points1Id = insertAndAdd(points1);
-        geogit.command(CommitOp.class).setMessage("commit for " + idP1).call();
+        geogig.command(CommitOp.class).setMessage("commit for " + idP1).call();
         insert(points1_modified);
 
-        CheckoutResult result = geogit.command(CheckoutOp.class).addPath("Points/Points.1").call();
+        CheckoutResult result = geogig.command(CheckoutOp.class).addPath("Points/Points.1").call();
 
-        Optional<RevTree> workTree = geogit.command(RevObjectParse.class)
+        Optional<RevTree> workTree = geogig.command(RevObjectParse.class)
                 .setObjectId(result.getNewTree()).call(RevTree.class);
 
-        Optional<NodeRef> nodeRef = geogit.command(FindTreeChild.class).setParent(workTree.get())
+        Optional<NodeRef> nodeRef = geogig.command(FindTreeChild.class).setParent(workTree.get())
                 .setChildPath("Points/Points.1").call();
 
         assertEquals(points1Id, nodeRef.get().getNode().getObjectId());
@@ -198,7 +198,7 @@ public class CheckoutOpTest extends RepositoryTestCase {
         insert(points1_modified);
 
         exception.expect(IllegalStateException.class);
-        geogit.command(CheckoutOp.class).addPath("Points/Points.1").call();
+        geogig.command(CheckoutOp.class).addPath("Points/Points.1").call();
 
     }
 
@@ -206,23 +206,23 @@ public class CheckoutOpTest extends RepositoryTestCase {
     public void testCheckoutPathFilterWithMultiplePaths() throws Exception {
         ObjectId points1Id = insertAndAdd(points1);
         ObjectId lines1Id = insertAndAdd(lines1);
-        geogit.command(CommitOp.class).setMessage("commit 1").call();
+        geogig.command(CommitOp.class).setMessage("commit 1").call();
         insert(points1_modified);
         insert(lines2);
         Collection<String> paths = Arrays.asList("Points/Points.1", "Lines");
-        CheckoutResult result = geogit.command(CheckoutOp.class).addPaths(paths).call();
-        Optional<RevTree> workTree = geogit.command(RevObjectParse.class)
+        CheckoutResult result = geogig.command(CheckoutOp.class).addPaths(paths).call();
+        Optional<RevTree> workTree = geogig.command(RevObjectParse.class)
                 .setObjectId(result.getNewTree()).call(RevTree.class);
-        Optional<NodeRef> nodeRef = geogit.command(FindTreeChild.class).setParent(workTree.get())
+        Optional<NodeRef> nodeRef = geogig.command(FindTreeChild.class).setParent(workTree.get())
                 .setChildPath("Points/Points.1").call();
 
         assertEquals(points1Id, nodeRef.get().getNode().getObjectId());
 
-        nodeRef = geogit.command(FindTreeChild.class).setParent(workTree.get())
+        nodeRef = geogig.command(FindTreeChild.class).setParent(workTree.get())
                 .setChildPath("Lines/Lines.1").call();
 
         assertEquals(lines1Id, nodeRef.get().getNode().getObjectId());
-        nodeRef = geogit.command(FindTreeChild.class).setParent(workTree.get())
+        nodeRef = geogig.command(FindTreeChild.class).setParent(workTree.get())
                 .setChildPath("Lines/Lines.2").call();
         assertFalse(nodeRef.isPresent());
     }
@@ -230,29 +230,29 @@ public class CheckoutOpTest extends RepositoryTestCase {
     @Test
     public void testCheckoutPathFilterWithTreeOtherThanIndex() throws Exception {
         ObjectId points1Id = insertAndAdd(points1);
-        geogit.command(CommitOp.class).setMessage("commit 1").call();
+        geogig.command(CommitOp.class).setMessage("commit 1").call();
         ObjectId points2Id = insertAndAdd(points2);
-        RevCommit c2 = geogit.command(CommitOp.class).setMessage("commit 2").call();
+        RevCommit c2 = geogig.command(CommitOp.class).setMessage("commit 2").call();
         insertAndAdd(points3);
-        geogit.command(CommitOp.class).setMessage("commit 3").call();
+        geogig.command(CommitOp.class).setMessage("commit 3").call();
         insert(points1_modified);
 
-        CheckoutResult result = geogit.command(CheckoutOp.class)
+        CheckoutResult result = geogig.command(CheckoutOp.class)
                 .setSource(c2.getTreeId().toString()).addPath("Points").call();
 
-        Optional<RevTree> workTree = geogit.command(RevObjectParse.class)
+        Optional<RevTree> workTree = geogig.command(RevObjectParse.class)
                 .setObjectId(result.getNewTree()).call(RevTree.class);
-        Optional<NodeRef> nodeRef = geogit.command(FindTreeChild.class).setParent(workTree.get())
+        Optional<NodeRef> nodeRef = geogig.command(FindTreeChild.class).setParent(workTree.get())
                 .setChildPath("Points/Points.1").call();
 
         assertEquals(points1Id, nodeRef.get().getNode().getObjectId());
 
-        nodeRef = geogit.command(FindTreeChild.class).setParent(workTree.get())
+        nodeRef = geogig.command(FindTreeChild.class).setParent(workTree.get())
                 .setChildPath("Points/Points.2").call();
 
         assertEquals(points2Id, nodeRef.get().getNode().getObjectId());
 
-        nodeRef = geogit.command(FindTreeChild.class).setParent(workTree.get())
+        nodeRef = geogig.command(FindTreeChild.class).setParent(workTree.get())
                 .setChildPath("Points/Points.3").call();
 
         assertFalse(nodeRef.isPresent());
@@ -261,95 +261,95 @@ public class CheckoutOpTest extends RepositoryTestCase {
     @Test
     public void testCheckoutNoParametersSet() {
         exception.expect(IllegalStateException.class);
-        geogit.command(CheckoutOp.class).call();
+        geogig.command(CheckoutOp.class).call();
     }
 
     @Test
     public void testCheckoutBranchWithChangesInTheIndex() throws Exception {
         insertAndAdd(points1);
-        geogit.command(CommitOp.class).setMessage("commit for " + idP1).call();
-        geogit.command(BranchCreateOp.class).setName("branch1").call();
+        geogig.command(CommitOp.class).setMessage("commit for " + idP1).call();
+        geogig.command(BranchCreateOp.class).setName("branch1").call();
         insertAndAdd(points2);
         exception.expect(CheckoutException.class);
-        geogit.command(CheckoutOp.class).setSource("branch1").call();
+        geogig.command(CheckoutOp.class).setSource("branch1").call();
     }
 
     @Test
     public void testCheckoutBranchWithChangesInTheWorkTree() throws Exception {
         insertAndAdd(points1);
-        geogit.command(CommitOp.class).setMessage("commit for " + idP1).call();
-        geogit.command(BranchCreateOp.class).setName("branch1").call();
+        geogig.command(CommitOp.class).setMessage("commit for " + idP1).call();
+        geogig.command(BranchCreateOp.class).setName("branch1").call();
         insert(points2);
         exception.expect(CheckoutException.class);
-        geogit.command(CheckoutOp.class).setSource("branch1").call();
+        geogig.command(CheckoutOp.class).setSource("branch1").call();
     }
 
     @Test
     public void testCheckoutBranchWithForceOptionAndChangesInTheIndex() throws Exception {
         insertAndAdd(points1);
-        RevCommit c1 = geogit.command(CommitOp.class).setMessage("commit for " + idP1).call();
-        Ref branch1 = geogit.command(BranchCreateOp.class).setName("branch1").call();
+        RevCommit c1 = geogig.command(CommitOp.class).setMessage("commit for " + idP1).call();
+        Ref branch1 = geogig.command(BranchCreateOp.class).setName("branch1").call();
         insertAndAdd(points2);
-        CheckoutResult result = geogit.command(CheckoutOp.class).setSource("branch1")
+        CheckoutResult result = geogig.command(CheckoutOp.class).setSource("branch1")
                 .setForce(true).call();
 
         assertEquals(c1.getTreeId(), result.getNewTree());
-        assertTrue(geogit.command(RefParse.class).setName(Ref.HEAD).call().get() instanceof SymRef);
-        assertEquals(branch1.getName(), ((SymRef) geogit.command(RefParse.class).setName(Ref.HEAD)
+        assertTrue(geogig.command(RefParse.class).setName(Ref.HEAD).call().get() instanceof SymRef);
+        assertEquals(branch1.getName(), ((SymRef) geogig.command(RefParse.class).setName(Ref.HEAD)
                 .call().get()).getTarget());
     }
 
     @Test
     public void testCheckoutPathFilterToUpdatePathThatIsntInIndex() throws Exception {
         insertAndAdd(points1);
-        geogit.command(CommitOp.class).setMessage("commit 1").call();
+        geogig.command(CommitOp.class).setMessage("commit 1").call();
 
         insertAndAdd(points2);
-        geogit.command(CommitOp.class).setMessage("commit 2").call();
+        geogig.command(CommitOp.class).setMessage("commit 2").call();
 
         insertAndAdd(points3);
-        geogit.command(CommitOp.class).setMessage("commit 3").call();
+        geogig.command(CommitOp.class).setMessage("commit 3").call();
 
-        geogit.command(BranchCreateOp.class).setAutoCheckout(true).setName("branch1").call();
+        geogig.command(BranchCreateOp.class).setAutoCheckout(true).setName("branch1").call();
 
         insertAndAdd(lines1);
-        geogit.command(CommitOp.class).setMessage("commit 4").call();
+        geogig.command(CommitOp.class).setMessage("commit 4").call();
 
         insertAndAdd(lines2);
-        geogit.command(CommitOp.class).setMessage("commit 5").call();
+        geogig.command(CommitOp.class).setMessage("commit 5").call();
 
         insertAndAdd(lines3);
-        geogit.command(CommitOp.class).setMessage("commit 6").call();
+        geogig.command(CommitOp.class).setMessage("commit 6").call();
 
-        geogit.command(CheckoutOp.class).setSource("master").call();
+        geogig.command(CheckoutOp.class).setSource("master").call();
 
-        CheckoutResult result = geogit.command(CheckoutOp.class).setSource("branch1")
+        CheckoutResult result = geogig.command(CheckoutOp.class).setSource("branch1")
                 .addPath("Lines/Lines.1").call();
 
-        Optional<RevTree> workTree = geogit.command(RevObjectParse.class)
+        Optional<RevTree> workTree = geogig.command(RevObjectParse.class)
                 .setObjectId(result.getNewTree()).call(RevTree.class);
 
-        Optional<NodeRef> nodeRef = geogit.command(FindTreeChild.class).setParent(workTree.get())
+        Optional<NodeRef> nodeRef = geogig.command(FindTreeChild.class).setParent(workTree.get())
                 .setChildPath("Points/Points.1").call();
         assertTrue(nodeRef.isPresent());
 
-        nodeRef = geogit.command(FindTreeChild.class).setParent(workTree.get())
+        nodeRef = geogig.command(FindTreeChild.class).setParent(workTree.get())
                 .setChildPath("Points/Points.2").call();
         assertTrue(nodeRef.isPresent());
 
-        nodeRef = geogit.command(FindTreeChild.class).setParent(workTree.get())
+        nodeRef = geogig.command(FindTreeChild.class).setParent(workTree.get())
                 .setChildPath("Points/Points.3").call();
         assertTrue(nodeRef.isPresent());
 
-        nodeRef = geogit.command(FindTreeChild.class).setParent(workTree.get())
+        nodeRef = geogig.command(FindTreeChild.class).setParent(workTree.get())
                 .setChildPath("Lines/Lines.1").call();
         assertTrue(nodeRef.isPresent());
 
-        nodeRef = geogit.command(FindTreeChild.class).setParent(workTree.get())
+        nodeRef = geogig.command(FindTreeChild.class).setParent(workTree.get())
                 .setChildPath("Lines/Lines.2").call();
         assertFalse(nodeRef.isPresent());
 
-        nodeRef = geogit.command(FindTreeChild.class).setParent(workTree.get())
+        nodeRef = geogig.command(FindTreeChild.class).setParent(workTree.get())
                 .setChildPath("Lines/Lines.3").call();
         assertFalse(nodeRef.isPresent());
     }
@@ -359,7 +359,7 @@ public class CheckoutOpTest extends RepositoryTestCase {
         createConflictedState();
         String path = NodeRef.appendChild(pointsName, idP1);
         try {
-            geogit.command(CheckoutOp.class).addPath(path).call();
+            geogig.command(CheckoutOp.class).addPath(path).call();
         } catch (CheckoutException e) {
             assertTrue(true);
         }
@@ -369,7 +369,7 @@ public class CheckoutOpTest extends RepositoryTestCase {
     public void testCheckoutBranchDuringConflict() throws Exception {
         createConflictedState();
         try {
-            geogit.command(CheckoutOp.class).setSource("TestBranch").call();
+            geogig.command(CheckoutOp.class).setSource("TestBranch").call();
         } catch (CheckoutException e) {
             assertTrue(true);
         }
@@ -379,7 +379,7 @@ public class CheckoutOpTest extends RepositoryTestCase {
     public void testCheckoutOursAndBranchDuringConflict() throws Exception {
         createConflictedState();
         try {
-            geogit.command(CheckoutOp.class).setSource("TestBranch").setOurs(true).call();
+            geogig.command(CheckoutOp.class).setSource("TestBranch").setOurs(true).call();
         } catch (IllegalArgumentException e) {
             assertTrue(true);
         }
@@ -390,13 +390,13 @@ public class CheckoutOpTest extends RepositoryTestCase {
         createConflictedState();
         String path = NodeRef.appendChild(pointsName, idP1);
         String path2 = NodeRef.appendChild(pointsName, idP1);
-        geogit.command(CheckoutOp.class).addPath(path).addPath(path2).setForce(true).call();
+        geogig.command(CheckoutOp.class).addPath(path).addPath(path2).setForce(true).call();
     }
 
     @Test
     public void testCheckoutOursAndTheirs() throws Exception {
         try {
-            geogit.command(CheckoutOp.class).setOurs(true).setTheirs(true).addPath("dummypath")
+            geogig.command(CheckoutOp.class).setOurs(true).setTheirs(true).addPath("dummypath")
                     .call();
             fail();
         } catch (IllegalArgumentException e) {
@@ -408,10 +408,10 @@ public class CheckoutOpTest extends RepositoryTestCase {
     public void testCheckoutOurs() throws Exception {
         createConflictedState();
         String path = NodeRef.appendChild(pointsName, idP1);
-        geogit.command(CheckoutOp.class).addPath(path).setOurs(true).call();
-        Optional<Node> node = geogit.getRepository().workingTree().findUnstaged(path);
+        geogig.command(CheckoutOp.class).addPath(path).setOurs(true).call();
+        Optional<Node> node = geogig.getRepository().workingTree().findUnstaged(path);
         String headPath = Ref.HEAD + ":" + path;
-        Optional<ObjectId> id = geogit.command(RevParse.class).setRefSpec(headPath).call();
+        Optional<ObjectId> id = geogig.command(RevParse.class).setRefSpec(headPath).call();
         assertEquals(id.get(), node.get().getObjectId());
     }
 
@@ -419,11 +419,11 @@ public class CheckoutOpTest extends RepositoryTestCase {
     public void testCheckoutOursDeleted() throws Exception {
         createDeleteOursConflictedState();
         String path = NodeRef.appendChild(pointsName, idP1);
-        geogit.command(CheckoutOp.class).addPath(path).setOurs(true).call();
-        Optional<Node> node = geogit.getRepository().index().findStaged(path);
+        geogig.command(CheckoutOp.class).addPath(path).setOurs(true).call();
+        Optional<Node> node = geogig.getRepository().index().findStaged(path);
         assertFalse(node.isPresent());
         String headPath = Ref.HEAD + ":" + path;
-        Optional<ObjectId> id = geogit.command(RevParse.class).setRefSpec(headPath).call();
+        Optional<ObjectId> id = geogig.command(RevParse.class).setRefSpec(headPath).call();
         assertFalse(id.isPresent());
     }
 
@@ -431,10 +431,10 @@ public class CheckoutOpTest extends RepositoryTestCase {
     public void testCheckoutTheirs() throws Exception {
         createConflictedState();
         String path = NodeRef.appendChild(pointsName, idP1);
-        geogit.command(CheckoutOp.class).addPath(path).setTheirs(true).call();
-        Optional<Node> node = geogit.getRepository().workingTree().findUnstaged(path);
+        geogig.command(CheckoutOp.class).addPath(path).setTheirs(true).call();
+        Optional<Node> node = geogig.getRepository().workingTree().findUnstaged(path);
         String headPath = Ref.MERGE_HEAD + ":" + path;
-        Optional<ObjectId> id = geogit.command(RevParse.class).setRefSpec(headPath).call();
+        Optional<ObjectId> id = geogig.command(RevParse.class).setRefSpec(headPath).call();
         assertEquals(id.get(), node.get().getObjectId());
     }
 
@@ -442,11 +442,11 @@ public class CheckoutOpTest extends RepositoryTestCase {
     public void testCheckoutTheirsDeleted() throws Exception {
         createDeleteTheirsConflictedState();
         String path = NodeRef.appendChild(pointsName, idP1);
-        geogit.command(CheckoutOp.class).addPath(path).setTheirs(true).call();
-        Optional<Node> node = geogit.getRepository().index().findStaged(path);
+        geogig.command(CheckoutOp.class).addPath(path).setTheirs(true).call();
+        Optional<Node> node = geogig.getRepository().index().findStaged(path);
         assertFalse(node.isPresent());
         String headPath = Ref.MERGE_HEAD + ":" + path;
-        Optional<ObjectId> id = geogit.command(RevParse.class).setRefSpec(headPath).call();
+        Optional<ObjectId> id = geogig.command(RevParse.class).setRefSpec(headPath).call();
         assertFalse(id.isPresent());
     }
 
@@ -460,19 +460,19 @@ public class CheckoutOpTest extends RepositoryTestCase {
         // |
         // o - master - HEAD - Points 1 modifiedB
         insertAndAdd(points1);
-        geogit.command(CommitOp.class).call();
-        geogit.command(BranchCreateOp.class).setName("TestBranch").call();
+        geogig.command(CommitOp.class).call();
+        geogig.command(BranchCreateOp.class).setName("TestBranch").call();
         insertAndAdd(points1Modified);
-        geogit.command(CommitOp.class).call();
-        geogit.command(CheckoutOp.class).setSource("TestBranch").call();
+        geogig.command(CommitOp.class).call();
+        geogig.command(CheckoutOp.class).setSource("TestBranch").call();
         insertAndAdd(points1ModifiedB);
         insertAndAdd(points2);
-        geogit.command(CommitOp.class).call();
+        geogig.command(CommitOp.class).call();
 
-        geogit.command(CheckoutOp.class).setSource("master").call();
-        Ref branch = geogit.command(RefParse.class).setName("TestBranch").call().get();
+        geogig.command(CheckoutOp.class).setSource("master").call();
+        Ref branch = geogig.command(RefParse.class).setName("TestBranch").call().get();
         try {
-            geogit.command(MergeOp.class).addCommit(Suppliers.ofInstance(branch.getObjectId()))
+            geogig.command(MergeOp.class).addCommit(Suppliers.ofInstance(branch.getObjectId()))
                     .call();
             fail();
         } catch (MergeConflictsException e) {
@@ -490,20 +490,20 @@ public class CheckoutOpTest extends RepositoryTestCase {
         // |
         // o - master - HEAD - Points 1 modified
         insertAndAdd(points1);
-        geogit.command(CommitOp.class).call();
-        geogit.command(BranchCreateOp.class).setName("TestBranch").call();
+        geogig.command(CommitOp.class).call();
+        geogig.command(BranchCreateOp.class).setName("TestBranch").call();
         insertAndAdd(points1Modified);
-        geogit.command(CommitOp.class).call();
-        geogit.command(CheckoutOp.class).setSource("TestBranch").call();
-        geogit.command(RemoveOp.class).addPathToRemove(NodeRef.appendChild(pointsName, idP1))
+        geogig.command(CommitOp.class).call();
+        geogig.command(CheckoutOp.class).setSource("TestBranch").call();
+        geogig.command(RemoveOp.class).addPathToRemove(NodeRef.appendChild(pointsName, idP1))
                 .call();
         insertAndAdd(points2);
-        geogit.command(CommitOp.class).call();
+        geogig.command(CommitOp.class).call();
 
-        geogit.command(CheckoutOp.class).setSource("master").call();
-        Ref branch = geogit.command(RefParse.class).setName("TestBranch").call().get();
+        geogig.command(CheckoutOp.class).setSource("master").call();
+        Ref branch = geogig.command(RefParse.class).setName("TestBranch").call().get();
         try {
-            geogit.command(MergeOp.class).addCommit(Suppliers.ofInstance(branch.getObjectId()))
+            geogig.command(MergeOp.class).addCommit(Suppliers.ofInstance(branch.getObjectId()))
                     .call();
             fail();
         } catch (MergeConflictsException e) {
@@ -521,20 +521,20 @@ public class CheckoutOpTest extends RepositoryTestCase {
         // |
         // o - master - HEAD - Points 1 modified
         insertAndAdd(points1);
-        geogit.command(CommitOp.class).call();
-        geogit.command(BranchCreateOp.class).setName("TestBranch").call();
-        geogit.command(RemoveOp.class).addPathToRemove(NodeRef.appendChild(pointsName, idP1))
+        geogig.command(CommitOp.class).call();
+        geogig.command(BranchCreateOp.class).setName("TestBranch").call();
+        geogig.command(RemoveOp.class).addPathToRemove(NodeRef.appendChild(pointsName, idP1))
                 .call();
-        geogit.command(CommitOp.class).call();
-        geogit.command(CheckoutOp.class).setSource("TestBranch").call();
+        geogig.command(CommitOp.class).call();
+        geogig.command(CheckoutOp.class).setSource("TestBranch").call();
         insertAndAdd(points1ModifiedB);
         insertAndAdd(points2);
-        geogit.command(CommitOp.class).call();
+        geogig.command(CommitOp.class).call();
 
-        geogit.command(CheckoutOp.class).setSource("master").call();
-        Ref branch = geogit.command(RefParse.class).setName("TestBranch").call().get();
+        geogig.command(CheckoutOp.class).setSource("master").call();
+        Ref branch = geogig.command(RefParse.class).setName("TestBranch").call().get();
         try {
-            geogit.command(MergeOp.class).addCommit(Suppliers.ofInstance(branch.getObjectId()))
+            geogig.command(MergeOp.class).addCommit(Suppliers.ofInstance(branch.getObjectId()))
                     .call();
             fail();
         } catch (MergeConflictsException e) {

@@ -33,7 +33,7 @@ import com.google.common.collect.Lists;
 /**
  * Creates or deletes tags Usage:
  * <ul>
- * <li> {@code geogit commit <tagname> [tag_commit] [-d] [-m <msg>]}
+ * <li> {@code geogig commit <tagname> [tag_commit] [-d] [-m <msg>]}
  * </ul>
  * 
  * @see TagOp
@@ -73,15 +73,15 @@ public class Tag extends AbstractCommand implements CLICommand {
 
         ConsoleReader console = cli.getConsole();
 
-        final GeoGIG geogit = cli.getGeogit();
+        final GeoGIG geogig = cli.getGeogig();
 
         if (delete) {
-            geogit.command(TagRemoveOp.class).setName(name).call();
+            geogig.command(TagRemoveOp.class).setName(name).call();
             console.println("Deleted tag " + name);
         } else {
-            Optional<ObjectId> commitId = geogit.command(RevParse.class).setRefSpec(commit).call();
+            Optional<ObjectId> commitId = geogig.command(RevParse.class).setRefSpec(commit).call();
             checkParameter(commitId.isPresent(), "Wrong reference: " + commit);
-            RevTag tag = geogit.command(TagCreateOp.class).setName(name).setMessage(message)
+            RevTag tag = geogig.command(TagCreateOp.class).setName(name).setMessage(message)
                     .setCommitId(commitId.get()).call();
             console.println("Created tag " + name + " -> " + tag.getCommitId());
         }
@@ -90,8 +90,8 @@ public class Tag extends AbstractCommand implements CLICommand {
 
     private void listTags(GeogigCLI cli) {
 
-        GeoGIG geogit = cli.getGeogit();
-        ImmutableList<RevTag> tags = geogit.command(TagListOp.class).call();
+        GeoGIG geogig = cli.getGeogig();
+        ImmutableList<RevTag> tags = geogig.command(TagListOp.class).call();
         for (RevTag tag : tags) {
             try {
                 cli.getConsole().println(tag.getName());

@@ -27,7 +27,7 @@ import com.google.common.base.Optional;
 import com.google.common.base.Suppliers;
 
 /**
- * Interface for the Merge operation in GeoGit.
+ * Interface for the Merge operation in GeoGig.
  * 
  * Web interface for {@link MergeOp}
  */
@@ -122,9 +122,9 @@ public class MergeWebOp extends AbstractWebAPICommand {
                 }
             });
         } catch (Exception e) {
-            final RevCommit ours = context.getGeoGIT().getRepository()
+            final RevCommit ours = context.getGeoGIG().getRepository()
                     .getCommit(currHead.get().getObjectId());
-            final RevCommit theirs = context.getGeoGIT().getRepository().getCommit(oid.get());
+            final RevCommit theirs = context.getGeoGIG().getRepository().getCommit(oid.get());
             final Optional<ObjectId> ancestor = transaction.command(FindCommonAncestor.class)
                     .setLeft(ours).setRight(theirs).call();
             context.setResponseContent(new CommandResponse() {

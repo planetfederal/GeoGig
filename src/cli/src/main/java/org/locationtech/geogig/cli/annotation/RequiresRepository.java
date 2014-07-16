@@ -14,9 +14,9 @@ import org.locationtech.geogig.cli.CLICommand;
 import org.locationtech.geogig.cli.GeogigCLI;
 
 /**
- * Annotation indicating that a given {@link CLICommand} can only be run if a proper geogit
+ * Annotation indicating that a given {@link CLICommand} can only be run if a proper geogig
  * repository is in place, and hence {@link CLICommand#run(GeogigCLI)} is guaranteed to be called
- * with a non null {@link GeogigCLI#getGeogit() geogit} instance.
+ * with a non null {@link GeogigCLI#getGeogig() geogig} instance.
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

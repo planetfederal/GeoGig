@@ -88,7 +88,7 @@ public class OSMUpdateOp extends AbstractGeoGigOp<Optional<OSMReport>> {
                 "Can't update from detached HEAD");
 
         List<OSMLogEntry> entries = command(ReadOSMLogEntries.class).call();
-        checkArgument(!entries.isEmpty(), "Not in a geogit repository with OSM data");
+        checkArgument(!entries.isEmpty(), "Not in a geogig repository with OSM data");
 
         Iterator<RevCommit> log = command(LogOp.class).setFirstParentOnly(false)
                 .setTopoOrder(false).call();

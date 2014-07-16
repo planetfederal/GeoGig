@@ -40,7 +40,7 @@ public abstract class PointCacheTest extends Assert {
 
     @Before
     public void before() {
-        tmpFolder.newFolder(".geogit");
+        tmpFolder.newFolder(".geogig");
         TestPlatform platform = new TestPlatform(tmpFolder.getRoot());
         platform.setUserHome(tmpFolder.newFolder("fakeHome"));
         cache = createCache(platform);
@@ -217,7 +217,7 @@ public abstract class PointCacheTest extends Assert {
     }
 
     private long caclDbSize() {
-        final File repoDir = new File(tmpFolder.getRoot(), ".geogit");
+        final File repoDir = new File(tmpFolder.getRoot(), ".geogig");
         final AtomicLong sizeContainer = new AtomicLong();
         repoDir.listFiles(new FileFilter() {
 

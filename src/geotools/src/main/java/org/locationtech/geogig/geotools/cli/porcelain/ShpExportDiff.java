@@ -104,7 +104,7 @@ public class ShpExportDiff extends AbstractShpCommand implements CLICommand {
         }
 
         SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
-        builder.add("geogit_fid", String.class);
+        builder.add("geogig_fid", String.class);
         for (AttributeDescriptor descriptor : outputFeatureType.getAttributeDescriptors()) {
             builder.add(descriptor);
         }
@@ -124,7 +124,7 @@ public class ShpExportDiff extends AbstractShpCommand implements CLICommand {
         Function<Feature, Optional<Feature>> function = getTransformingFunction(dataStore
                 .getSchema());
 
-        ExportDiffOp op = cli.getGeogit().command(ExportDiffOp.class).setFeatureStore(featureStore)
+        ExportDiffOp op = cli.getGeogig().command(ExportDiffOp.class).setFeatureStore(featureStore)
                 .setPath(path).setOldRef(commitOld).setNewRef(commitNew).setUseOld(old)
                 .setTransactional(false).setFeatureTypeConversionFunction(function);
         try {
@@ -184,22 +184,22 @@ public class ShpExportDiff extends AbstractShpCommand implements CLICommand {
 
         checkParameter(!refspec.endsWith(":"), "No path specified.");
 
-        final GeoGIG geogit = cli.getGeogit();
+        final GeoGIG geogig = cli.getGeogig();
 
-        Optional<ObjectId> rootTreeId = geogit.command(ResolveTreeish.class)
+        Optional<ObjectId> rootTreeId = geogig.command(ResolveTreeish.class)
                 .setTreeish(refspec.split(":")[0]).call();
 
         checkParameter(rootTreeId.isPresent(), "Couldn't resolve '" + refspec
                 + "' to a treeish object");
 
-        RevTree rootTree = geogit.getRepository().getTree(rootTreeId.get());
-        Optional<NodeRef> featureTypeTree = geogit.command(FindTreeChild.class)
+        RevTree rootTree = geogig.getRepository().getTree(rootTreeId.get());
+        Optional<NodeRef> featureTypeTree = geogig.command(FindTreeChild.class)
                 .setChildPath(refspec.split(":")[1]).setParent(rootTree).setIndex(true).call();
 
         checkParameter(featureTypeTree.isPresent(), "pathspec '" + refspec.split(":")[1]
                 + "' did not match any valid path");
 
-        Optional<RevObject> revObject = cli.getGeogit().command(RevObjectParse.class)
+        Optional<RevObject> revObject = cli.getGeogig().command(RevObjectParse.class)
                 .setObjectId(featureTypeTree.get().getMetadataId()).call();
         if (revObject.isPresent() && revObject.get() instanceof RevFeatureType) {
             RevFeatureType revFeatureType = (RevFeatureType) revObject.get();

@@ -9,7 +9,7 @@ import org.locationtech.geogig.api.AbstractGeoGigOp.CommandListener;
 import org.locationtech.geogig.di.Decorator;
 
 /**
- * An interceptor for the call() method in GeoGit operations that allow hooks
+ * An interceptor for the call() method in GeoGig operations that allow hooks
  * 
  */
 public class CommandHooksDecorator implements Decorator {

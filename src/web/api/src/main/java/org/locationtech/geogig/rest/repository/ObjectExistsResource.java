@@ -5,7 +5,7 @@
 
 package org.locationtech.geogig.rest.repository;
 
-import static org.locationtech.geogig.rest.repository.RESTUtils.getGeogit;
+import static org.locationtech.geogig.rest.repository.RESTUtils.getGeogig;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -49,11 +49,11 @@ public class ObjectExistsResource extends Resource {
 
             ObjectId oid = ObjectId.valueOf(options.getFirstValue("oid", ObjectId.NULL.toString()));
             Request request = getRequest();
-            Optional<GeoGIG> ggit = getGeogit(request);
+            Optional<GeoGIG> ggit = getGeogig(request);
             Preconditions.checkState(ggit.isPresent());
 
-            GeoGIG geogit = ggit.get();
-            Repository repository = geogit.getRepository();
+            GeoGIG geogig = ggit.get();
+            Repository repository = geogig.getRepository();
             boolean blobExists = repository.blobExists(oid);
 
             if (blobExists) {

@@ -19,7 +19,7 @@ import com.beust.jcommander.Parameters;
  * <p>
  * Usage:
  * <ul>
- * <li> {@code geogit sqlserver <command> <args>...}
+ * <li> {@code geogig sqlserver <command> <args>...}
  * </ul>
  * 
  * @see SQLServerImport
@@ -27,7 +27,7 @@ import com.beust.jcommander.Parameters;
  * @see SQLServerDescribe
  * @see SQLServerExport
  */
-@Parameters(commandNames = "sqlserver", commandDescription = "GeoGit/SQL Server integration utilities")
+@Parameters(commandNames = "sqlserver", commandDescription = "GeoGig/SQL Server integration utilities")
 public class SQLServerCommandProxy implements CLICommandExtension {
 
     /**
@@ -37,7 +37,7 @@ public class SQLServerCommandProxy implements CLICommandExtension {
     @Override
     public JCommander getCommandParser() {
         JCommander commander = new JCommander();
-        commander.setProgramName("geogit sqlserver");
+        commander.setProgramName("geogig sqlserver");
         commander.addCommand("import", new SQLServerImport());
         commander.addCommand("list", new SQLServerList());
         commander.addCommand("describe", new SQLServerDescribe());

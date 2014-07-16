@@ -42,9 +42,9 @@ public class ShowRef extends AbstractCommand implements CLICommand {
     public void runInternal(GeogigCLI cli) throws IOException {
 
         ConsoleReader console = cli.getConsole();
-        GeoGIG geogit = cli.getGeogit();
+        GeoGIG geogig = cli.getGeogig();
 
-        ForEachRef op = geogit.command(ForEachRef.class);
+        ForEachRef op = geogig.command(ForEachRef.class);
         if (!patterns.isEmpty()) {
             Predicate<Ref> filter = new Predicate<Ref>() {
                 @Override

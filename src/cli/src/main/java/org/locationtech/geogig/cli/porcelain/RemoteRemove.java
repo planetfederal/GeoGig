@@ -28,7 +28,7 @@ import com.beust.jcommander.Parameters;
  * <p>
  * Usage:
  * <ul>
- * <li> {@code geogit rm <name>}
+ * <li> {@code geogig rm <name>}
  * </ul>
  * 
  * @see RemoteRemoveOp
@@ -52,7 +52,7 @@ public class RemoteRemove extends AbstractCommand implements CLICommand {
         }
 
         try {
-            cli.getGeogit().command(RemoteRemoveOp.class).setName(params.get(0)).call();
+            cli.getGeogig().command(RemoteRemoveOp.class).setName(params.get(0)).call();
         } catch (RemoteException e) {
             switch (e.statusCode) {
             case REMOTE_NOT_FOUND:

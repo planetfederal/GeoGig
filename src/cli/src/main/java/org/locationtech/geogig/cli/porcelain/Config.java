@@ -35,20 +35,20 @@ import com.google.common.base.Optional;
 /**
  * You can query/set/unset options with this command. The name is actually the section and the key
  * separated by a dot, and the value will be escaped. By default, the config file of the current
- * repository will be assumed. If the --global option is set, the global .geogitconfig file will be
+ * repository will be assumed. If the --global option is set, the global .geogigconfig file will be
  * used.
  * <p>
  * CLI proxy for {@link ConfigOp}
  * <p>
  * Usage:
  * <ul>
- * <li> {@code geogit config [--global] name [value]}: retrieves or sets the config variable
+ * <li> {@code geogig config [--global] name [value]}: retrieves or sets the config variable
  * specified by name
- * <li> {@code geogit config [--global] --get name}: retrieves the config variable specified by name
- * <li> {@code geogit config [--global] --unset name}: removes the config variable specified by name
- * <li> {@code geogit config [--global] --remove-section name}: removes the config section specified
+ * <li> {@code geogig config [--global] --get name}: retrieves the config variable specified by name
+ * <li> {@code geogig config [--global] --unset name}: removes the config variable specified by name
+ * <li> {@code geogig config [--global] --remove-section name}: removes the config section specified
  * by name
- * <li> {@code geogit config [--global] -l}: lists all config variables
+ * <li> {@code geogig config [--global] -l}: lists all config variables
  * </ul>
  * 
  * @see ConfigOp
@@ -86,11 +86,11 @@ public class Config extends AbstractCommand implements CLICommand {
     @Override
     public void runInternal(GeogigCLI cli) throws IOException {
 
-        GeoGIG geogit = cli.getGeogit();
-        boolean closeIt = geogit == null;
+        GeoGIG geogig = cli.getGeogig();
+        boolean closeIt = geogig == null;
         if (closeIt) {
-            // we're not in a repository, need a geogit anyways to run the global commands
-            geogit = cli.newGeoGIT(Hints.readOnly());
+            // we're not in a repository, need a geogig anyways to run the global commands
+            geogig = cli.newGeoGIG(Hints.readOnly());
         }
 
         try {
@@ -119,7 +119,7 @@ public class Config extends AbstractCommand implements CLICommand {
                 scope = ConfigScope.LOCAL;
             }
 
-            final Optional<Map<String, String>> commandResult = geogit.command(ConfigOp.class)
+            final Optional<Map<String, String>> commandResult = geogig.command(ConfigOp.class)
                     .setScope(scope).setAction(action).setName(name).setValue(value).call();
 
             if (commandResult.isPresent()) {
@@ -176,7 +176,7 @@ public class Config extends AbstractCommand implements CLICommand {
             }
         } finally {
             if (closeIt) {
-                geogit.close();
+                geogig.close();
             }
         }
     }

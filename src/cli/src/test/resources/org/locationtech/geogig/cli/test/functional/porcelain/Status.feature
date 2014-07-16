@@ -1,12 +1,12 @@
 Feature: "status" command
     In order to know what I have staged and unstaged
-    As a Geogit User
+    As a Geogig User
     I want to check the status of the current repository
      
   Scenario: Try to get the status of an empty directory
     Given I am in an empty directory
      When I run the command "status"
-     Then the response should start with "Not in a geogit repository"
+     Then the response should start with "Not in a geogig repository"
       And it should exit with non-zero exit code
      
   Scenario: Try to get the status of a repository with no changes

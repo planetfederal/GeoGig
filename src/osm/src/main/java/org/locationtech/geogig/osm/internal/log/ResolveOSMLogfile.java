@@ -20,7 +20,7 @@ import com.google.common.io.Files;
  * Resolves the location of the {@code osm} log file directory relative to the
  * {@link Platform#pwd() current directory}.
  * <p>
- * If the osm directory of the osm log file are not found, but we are within a geogit repo, they
+ * If the osm directory of the osm log file are not found, but we are within a geogig repo, they
  * will be created as needed.
  * 
  */
@@ -28,10 +28,10 @@ public class ResolveOSMLogfile extends AbstractGeoGigOp<URL> {
 
     @Override
     protected URL _call() {
-        final URL geogitDirUrl = command(ResolveGeogigDir.class).call().get();
+        final URL geogigDirUrl = command(ResolveGeogigDir.class).call().get();
         File repoDir;
         try {
-            repoDir = new File(geogitDirUrl.toURI());
+            repoDir = new File(geogigDirUrl.toURI());
         } catch (URISyntaxException e) {
             throw Throwables.propagate(e);
         }

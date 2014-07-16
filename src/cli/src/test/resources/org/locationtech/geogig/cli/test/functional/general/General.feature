@@ -1,6 +1,6 @@
 Feature: General features of CLI
     In order to use the CLI
-    As a Geogit User
+    As a Geogig User
     I want to use some basic functionality
       
   Scenario: Use command alias

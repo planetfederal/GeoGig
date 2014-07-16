@@ -58,7 +58,7 @@ public class GeoGigDataStoreTest extends RepositoryTestCase {
 
     @Override
     protected void setUpInternal() throws Exception {
-        dataStore = new GeoGigDataStore(geogit);
+        dataStore = new GeoGigDataStore(geogig);
     }
 
     @Override
@@ -69,13 +69,13 @@ public class GeoGigDataStoreTest extends RepositoryTestCase {
 
     @Test
     public void testDispose() {
-        assertTrue(geogit.isOpen());
+        assertTrue(geogig.isOpen());
         dataStore.dispose();
-        assertFalse(geogit.isOpen());
+        assertFalse(geogig.isOpen());
     }
 
     private List<String> getTypeNames(String head) {
-        Iterator<NodeRef> typeTrees = geogit.command(LsTreeOp.class)
+        Iterator<NodeRef> typeTrees = geogig.command(LsTreeOp.class)
                 .setStrategy(Strategy.TREES_ONLY).setReference(head).call();
         List<String> typeNames = Lists.newArrayList(Iterators.transform(typeTrees,
                 new Function<NodeRef, String>() {
@@ -116,7 +116,7 @@ public class GeoGigDataStoreTest extends RepositoryTestCase {
     @Test
     public void testCreateSchemaOnBranch() throws IOException {
         final String branchName = "testBranch";
-        geogit.command(BranchCreateOp.class).setName(branchName).setOrphan(true).call();
+        geogig.command(BranchCreateOp.class).setName(branchName).setOrphan(true).call();
 
         dataStore.setHead(branchName);
         final SimpleFeatureType featureType = super.linesType;
@@ -223,12 +223,12 @@ public class GeoGigDataStoreTest extends RepositoryTestCase {
     }
 
     private void commit() {
-        geogit.command(CommitOp.class).call();
+        geogig.command(CommitOp.class).call();
     }
 
     @Test
     public void testGetSchemaProvidedNamespace() throws Exception {
-        String namespace = "http://www.geogit.org/test";
+        String namespace = "http://www.geogig.org/test";
         dataStore.setNamespaceURI(namespace);
         insertAndAdd(lines1);
         commit();

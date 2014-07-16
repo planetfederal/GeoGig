@@ -38,7 +38,7 @@ public class OSMApplyDiff extends AbstractCommand implements CLICommand {
         checkParameter(diffFile.exists(), "The specified OSM diff file does not exist");
 
         try {
-            Optional<OSMReport> report = cli.getGeogit().command(OSMApplyDiffOp.class)
+            Optional<OSMReport> report = cli.getGeogig().command(OSMApplyDiffOp.class)
                     .setDiffFile(diffFile).setProgressListener(cli.getProgressListener()).call();
             if (report.isPresent()) {
                 OSMReport rep = report.get();

@@ -18,6 +18,6 @@ public class IniPGProperties extends OnlineTestProperties {
     };
 
     public IniPGProperties() {
-        super(".geogit-pg-tests.properties", DEFAULTS);
+        super(".geogig-pg-tests.properties", DEFAULTS);
     }
 }

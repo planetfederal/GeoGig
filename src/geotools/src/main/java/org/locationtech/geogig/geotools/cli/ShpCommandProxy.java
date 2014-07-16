@@ -18,12 +18,12 @@ import com.beust.jcommander.Parameters;
  * <p>
  * Usage:
  * <ul>
- * <li> {@code geogit shp <command> <args>...}
+ * <li> {@code geogig shp <command> <args>...}
  * </ul>
  * 
  * @see ShpImport
  */
-@Parameters(commandNames = "shp", commandDescription = "GeoGit/Shapefile integration utilities")
+@Parameters(commandNames = "shp", commandDescription = "GeoGig/Shapefile integration utilities")
 public class ShpCommandProxy implements CLICommandExtension {
 
     /**
@@ -33,7 +33,7 @@ public class ShpCommandProxy implements CLICommandExtension {
     @Override
     public JCommander getCommandParser() {
         JCommander commander = new JCommander();
-        commander.setProgramName("geogit shp");
+        commander.setProgramName("geogig shp");
         commander.addCommand("import", new ShpImport());
         commander.addCommand("export", new ShpExport());
         commander.addCommand("export-diff", new ShpExportDiff());

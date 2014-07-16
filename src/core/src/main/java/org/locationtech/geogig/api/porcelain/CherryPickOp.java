@@ -125,7 +125,7 @@ public class CherryPickOp extends AbstractGeoGigOp<RevCommit> {
             for (Conflict conflict : report.getConflicts()) {
                 sb.append("CONFLICT: conflict in " + conflict.getPath() + "\n");
             }
-            sb.append("Fix conflicts and then commit the result using 'geogit commit -c "
+            sb.append("Fix conflicts and then commit the result using 'geogig commit -c "
                     + commitToApply.getId().toString().substring(0, 7) + "\n");
             throw new IllegalStateException(sb.toString());
         }

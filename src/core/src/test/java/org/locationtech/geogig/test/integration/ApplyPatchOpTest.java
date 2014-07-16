@@ -41,7 +41,7 @@ public class ApplyPatchOpTest extends RepositoryTestCase {
     }
 
     private Optional<Node> findTreeChild(RevTree root, String pathRemove) {
-        Optional<NodeRef> nodeRef = geogit.command(FindTreeChild.class).setParent(root)
+        Optional<NodeRef> nodeRef = geogig.command(FindTreeChild.class).setParent(root)
                 .setChildPath(pathRemove).setIndex(true).call();
         Optional<Node> node = Optional.absent();
         if (nodeRef.isPresent()) {
@@ -55,7 +55,7 @@ public class ApplyPatchOpTest extends RepositoryTestCase {
         Patch patch = new Patch();
         String path = NodeRef.appendChild(pointsName, points1.getIdentifier().getID());
         patch.addAddedFeature(path, points1, RevFeatureTypeImpl.build(pointsType));
-        geogit.command(ApplyPatchOp.class).setPatch(patch).call();
+        geogig.command(ApplyPatchOp.class).setPatch(patch).call();
         RevTree root = repo.workingTree().getTree();
         assertNotNull(root);
         Optional<Node> typeTreeId = findTreeChild(root, pointsName);
@@ -71,7 +71,7 @@ public class ApplyPatchOpTest extends RepositoryTestCase {
         Patch patch = new Patch();
         String path = NodeRef.appendChild(pointsName, points1.getIdentifier().getID());
         patch.addRemovedFeature(path, points1, RevFeatureTypeImpl.build(pointsType));
-        geogit.command(ApplyPatchOp.class).setPatch(patch).call();
+        geogig.command(ApplyPatchOp.class).setPatch(patch).call();
         RevTree root = repo.workingTree().getTree();
         assertNotNull(root);
         Optional<Node> featureBlobId = findTreeChild(root, path);
@@ -90,14 +90,14 @@ public class ApplyPatchOpTest extends RepositoryTestCase {
         FeatureDiff feaureDiff = new FeatureDiff(path, map, RevFeatureTypeImpl.build(pointsType),
                 RevFeatureTypeImpl.build(pointsType));
         patch.addModifiedFeature(feaureDiff);
-        geogit.command(ApplyPatchOp.class).setPatch(patch).call();
+        geogig.command(ApplyPatchOp.class).setPatch(patch).call();
         RevTree root = repo.workingTree().getTree();
         Optional<Node> featureBlobId = findTreeChild(root, path);
         assertTrue(featureBlobId.isPresent());
         Iterator<DiffEntry> unstaged = repo.workingTree().getUnstaged(pointsName);
         ArrayList<DiffEntry> diffs = Lists.newArrayList(unstaged);
         assertEquals(2, diffs.size());
-        Optional<RevFeature> feature = geogit.command(RevObjectParse.class)
+        Optional<RevFeature> feature = geogig.command(RevObjectParse.class)
                 .setRefSpec("WORK_HEAD:" + path).call(RevFeature.class);
         assertTrue(feature.isPresent());
         ImmutableList<Optional<Object>> values = feature.get().getValues();
@@ -117,7 +117,7 @@ public class ApplyPatchOpTest extends RepositoryTestCase {
                 RevFeatureTypeImpl.build(pointsType));
         patch.addModifiedFeature(feaureDiff);
         try {
-            geogit.command(ApplyPatchOp.class).setPatch(patch).call();
+            geogig.command(ApplyPatchOp.class).setPatch(patch).call();
             fail();
         } catch (CannotApplyPatchException e) {
             assertTrue(true);
@@ -136,8 +136,8 @@ public class ApplyPatchOpTest extends RepositoryTestCase {
         FeatureDiff featureDiff = new FeatureDiff(path, map,
                 RevFeatureTypeImpl.build(modifiedPointsType), RevFeatureTypeImpl.build(pointsType));
         patch.addModifiedFeature(featureDiff);
-        geogit.command(ApplyPatchOp.class).setPatch(patch).call();
-        Optional<RevFeature> feature = geogit.command(RevObjectParse.class)
+        geogig.command(ApplyPatchOp.class).setPatch(patch).call();
+        Optional<RevFeature> feature = geogig.command(RevObjectParse.class)
                 .setRefSpec("WORK_HEAD:" + path).call(RevFeature.class);
         assertTrue(feature.isPresent());
         ImmutableList<Optional<Object>> values = feature.get().getValues();
@@ -158,7 +158,7 @@ public class ApplyPatchOpTest extends RepositoryTestCase {
         FeatureDiff featureDiff = new FeatureDiff(path, map, RevFeatureTypeImpl.build(pointsType),
                 RevFeatureTypeImpl.build(modifiedPointsType));
         patch.addModifiedFeature(featureDiff);
-        geogit.command(ApplyPatchOp.class).setPatch(patch).call();
+        geogig.command(ApplyPatchOp.class).setPatch(patch).call();
         // TODO
     }
 
@@ -175,7 +175,7 @@ public class ApplyPatchOpTest extends RepositoryTestCase {
                 RevFeatureTypeImpl.build(modifiedPointsType), RevFeatureTypeImpl.build(pointsType));
         patch.addModifiedFeature(featureDiff);
         try {
-            geogit.command(ApplyPatchOp.class).setPatch(patch).call();
+            geogig.command(ApplyPatchOp.class).setPatch(patch).call();
             fail();
         } catch (CannotApplyPatchException e) {
             assertTrue(true);
@@ -196,7 +196,7 @@ public class ApplyPatchOpTest extends RepositoryTestCase {
                 RevFeatureTypeImpl.build(modifiedPointsType), RevFeatureTypeImpl.build(modifiedPointsType));
         patch.addModifiedFeature(featureDiff);
         try {
-            geogit.command(ApplyPatchOp.class).setPatch(patch).call();
+            geogig.command(ApplyPatchOp.class).setPatch(patch).call();
             fail();
         } catch (CannotApplyPatchException e) {
             assertTrue(true);
@@ -211,7 +211,7 @@ public class ApplyPatchOpTest extends RepositoryTestCase {
         String path = NodeRef.appendChild(pointsName, points1.getIdentifier().getID());
         patch.addAddedFeature(path, points1, RevFeatureTypeImpl.build(pointsType));
         try {
-            geogit.command(ApplyPatchOp.class).setPatch(patch).call();
+            geogig.command(ApplyPatchOp.class).setPatch(patch).call();
             fail();
         } catch (CannotApplyPatchException e) {
             assertTrue(true);
@@ -230,7 +230,7 @@ public class ApplyPatchOpTest extends RepositoryTestCase {
                 RevFeatureTypeImpl.build(pointsType));
         patch.addModifiedFeature(featureDiff);
         try {
-            geogit.command(ApplyPatchOp.class).setPatch(patch).call();
+            geogig.command(ApplyPatchOp.class).setPatch(patch).call();
             fail();
         } catch (CannotApplyPatchException e) {
             assertTrue(true);
@@ -243,7 +243,7 @@ public class ApplyPatchOpTest extends RepositoryTestCase {
         String path = NodeRef.appendChild(pointsName, points1.getIdentifier().getID());
         patch.addRemovedFeature(path, points1, RevFeatureTypeImpl.build(pointsType));
         try {
-            geogit.command(ApplyPatchOp.class).setPatch(patch).call();
+            geogig.command(ApplyPatchOp.class).setPatch(patch).call();
             fail();
         } catch (CannotApplyPatchException e) {
             assertTrue(true);
@@ -264,7 +264,7 @@ public class ApplyPatchOpTest extends RepositoryTestCase {
         FeatureDiff featureDiff = new FeatureDiff(pathModify, map,
                 RevFeatureTypeImpl.build(modifiedPointsType), RevFeatureTypeImpl.build(pointsType));
         patch.addModifiedFeature(featureDiff);
-        Patch rejected = geogit.command(ApplyPatchOp.class).setPatch(patch).setApplyPartial(true)
+        Patch rejected = geogig.command(ApplyPatchOp.class).setPatch(patch).setApplyPartial(true)
                 .call();
         assertFalse(rejected.isEmpty());
         RevTree root = repo.workingTree().getTree();
@@ -273,7 +273,7 @@ public class ApplyPatchOpTest extends RepositoryTestCase {
         assertFalse(featureBlobId.isPresent());
         // now we take the rejected patch and apply it, and the new rejected should be identical to
         // it
-        Patch newRejected = geogit.command(ApplyPatchOp.class).setPatch(rejected)
+        Patch newRejected = geogig.command(ApplyPatchOp.class).setPatch(rejected)
                 .setApplyPartial(true).call();
         assertEquals(rejected, newRejected);
     }
@@ -281,7 +281,7 @@ public class ApplyPatchOpTest extends RepositoryTestCase {
     @Test
     public void testApplyEmptyPatch() {
         Patch patch = new Patch();
-        geogit.command(ApplyPatchOp.class).setPatch(patch).setApplyPartial(true).call();
+        geogig.command(ApplyPatchOp.class).setPatch(patch).setApplyPartial(true).call();
 
     }
 
@@ -301,14 +301,14 @@ public class ApplyPatchOpTest extends RepositoryTestCase {
         patch.addRemovedFeature(removedPath, points2, RevFeatureTypeImpl.build(pointsType));
         String addedPath = NodeRef.appendChild(pointsName, points3.getIdentifier().getID());
         patch.addAddedFeature(addedPath, points3, RevFeatureTypeImpl.build(pointsType));
-        geogit.command(ApplyPatchOp.class).setPatch(patch).call();
-        geogit.command(ApplyPatchOp.class).setPatch(patch.reversed()).call();
+        geogig.command(ApplyPatchOp.class).setPatch(patch).call();
+        geogig.command(ApplyPatchOp.class).setPatch(patch.reversed()).call();
         RevTree root = repo.workingTree().getTree();
         Optional<Node> featureBlobId = findTreeChild(root, removedPath);
         assertTrue(featureBlobId.isPresent());
         featureBlobId = findTreeChild(root, addedPath);
         assertFalse(featureBlobId.isPresent());
-        Optional<RevFeature> feature = geogit.command(RevObjectParse.class)
+        Optional<RevFeature> feature = geogig.command(RevObjectParse.class)
                 .setRefSpec("WORK_HEAD:" + path).call(RevFeature.class);
         assertTrue(feature.isPresent());
         assertEquals(oldValue, feature.get().getValues().get(0));
@@ -320,7 +320,7 @@ public class ApplyPatchOpTest extends RepositoryTestCase {
         RevFeatureType featureType = RevFeatureTypeImpl.build(pointsType);
         patch.addFeatureType(featureType);
         patch.addAlteredTree(new FeatureTypeDiff(pointsName, null, featureType.getId()));
-        geogit.command(ApplyPatchOp.class).setPatch(patch).call();
+        geogig.command(ApplyPatchOp.class).setPatch(patch).call();
         RevTree root = repo.workingTree().getTree();
         assertNotNull(root);
         Optional<Node> typeTreeId = findTreeChild(root, pointsName);
@@ -331,14 +331,14 @@ public class ApplyPatchOpTest extends RepositoryTestCase {
 
     @Test
     public void testRemoveEmptyFeatureTypePatch() throws Exception {
-        WorkingTree workingTree = geogit.getRepository().workingTree();
+        WorkingTree workingTree = geogig.getRepository().workingTree();
         workingTree.createTypeTree(pointsName, pointsType);
-        geogit.command(AddOp.class).setUpdateOnly(false).call();
+        geogig.command(AddOp.class).setUpdateOnly(false).call();
         Patch patch = new Patch();
         RevFeatureType featureType = RevFeatureTypeImpl.build(pointsType);
         patch.addFeatureType(featureType);
         patch.addAlteredTree(new FeatureTypeDiff(pointsName, featureType.getId(), null));
-        geogit.command(ApplyPatchOp.class).setPatch(patch).call();
+        geogig.command(ApplyPatchOp.class).setPatch(patch).call();
         RevTree root = repo.workingTree().getTree();
         assertNotNull(root);
         Optional<Node> typeTree = findTreeChild(root, pointsName);
@@ -354,7 +354,7 @@ public class ApplyPatchOpTest extends RepositoryTestCase {
         patch.addFeatureType(featureType);
         patch.addAlteredTree(new FeatureTypeDiff(pointsName, oldFeatureType.getId(), featureType
                 .getId()));
-        geogit.command(ApplyPatchOp.class).setPatch(patch).call();
+        geogig.command(ApplyPatchOp.class).setPatch(patch).call();
         RevTree root = repo.workingTree().getTree();
         assertNotNull(root);
         Optional<Node> typeTree = findTreeChild(root, pointsName);
@@ -374,7 +374,7 @@ public class ApplyPatchOpTest extends RepositoryTestCase {
         Patch patch = new Patch();
         String path = NodeRef.appendChild(pointsName, points1.getIdentifier().getID());
         patch.addAddedFeature(path, points1B, RevFeatureTypeImpl.build(modifiedPointsType));
-        geogit.command(ApplyPatchOp.class).setPatch(patch).call();
+        geogig.command(ApplyPatchOp.class).setPatch(patch).call();
         RevTree root = repo.workingTree().getTree();
         assertNotNull(root);
         Optional<Node> typeTreeId = findTreeChild(root, pointsName);

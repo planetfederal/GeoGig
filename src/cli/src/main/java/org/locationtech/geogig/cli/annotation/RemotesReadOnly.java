@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
 import org.locationtech.geogig.cli.CLICommand;
 
 /**
- * Annotation for {@link CLICommand}s giving geogit a hint that the operation needs read only access
+ * Annotation for {@link CLICommand}s giving geogig a hint that the operation needs read only access
  * to any remote repository it may connect to.
  */
 @Target(ElementType.TYPE)

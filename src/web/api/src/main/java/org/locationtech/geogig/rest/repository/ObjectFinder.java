@@ -5,7 +5,7 @@
 
 package org.locationtech.geogig.rest.repository;
 
-import static org.locationtech.geogig.rest.repository.RESTUtils.getGeogit;
+import static org.locationtech.geogig.rest.repository.RESTUtils.getGeogig;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -40,17 +40,17 @@ public class ObjectFinder extends Finder {
     public Resource findTarget(Request request, Response response) {
 
         if (request.getAttributes().containsKey("id")) {
-            final Optional<GeoGIG> ggit = getGeogit(request);
+            final Optional<GeoGIG> ggit = getGeogig(request);
             Preconditions.checkState(ggit.isPresent());
 
             final String id = (String) request.getAttributes().get("id");
             final ObjectId oid = ObjectId.valueOf(id);
 
-            GeoGIG geogit = ggit.get();
-            Repository repository = geogit.getRepository();
+            GeoGIG geogig = ggit.get();
+            Repository repository = geogig.getRepository();
             boolean blobExists = repository.blobExists(oid);
             if (blobExists) {
-                ObjectResource objectResource = new ObjectResource(oid, geogit);
+                ObjectResource objectResource = new ObjectResource(oid, geogig);
                 objectResource.init(getContext(), request, response);
                 return objectResource;
             }
@@ -63,11 +63,11 @@ public class ObjectFinder extends Finder {
 
         private ObjectId oid;
 
-        private GeoGIG geogit;
+        private GeoGIG geogig;
 
-        public ObjectResource(ObjectId oid, GeoGIG geogit) {
+        public ObjectResource(ObjectId oid, GeoGIG geogig) {
             this.oid = oid;
-            this.geogit = geogit;
+            this.geogig = geogig;
         }
 
         @Override
@@ -75,7 +75,7 @@ public class ObjectFinder extends Finder {
             super.init(context, request, response);
             List<Variant> variants = getVariants();
 
-            variants.add(new RevObjectBinaryRepresentation(oid, geogit));
+            variants.add(new RevObjectBinaryRepresentation(oid, geogig));
         }
     }
 

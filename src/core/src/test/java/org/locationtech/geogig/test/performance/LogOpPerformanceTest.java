@@ -62,7 +62,7 @@ public class LogOpPerformanceTest extends RepositoryTestCase {
                 + numberFormat.format(numCommits) + " comits each created in " + sw.toString());
         System.err.flush();
 
-        LogOp op = geogit.command(LogOp.class);
+        LogOp op = geogig.command(LogOp.class);
         for (ObjectId id : ids) {
             op.addCommit(id);
         }
@@ -73,7 +73,7 @@ public class LogOpPerformanceTest extends RepositoryTestCase {
 
         benchmarkIteration(commits);
 
-        op = geogit.command(LogOp.class).setTopoOrder(true);
+        op = geogig.command(LogOp.class).setTopoOrder(true);
         for (ObjectId id : ids) {
             op.addCommit(id);
         }
@@ -100,7 +100,7 @@ public class LogOpPerformanceTest extends RepositoryTestCase {
         System.err.flush();
 
         sw.reset().start();
-        Iterator<RevCommit> commits = geogit.command(LogOp.class).call();
+        Iterator<RevCommit> commits = geogig.command(LogOp.class).call();
         sw.stop();
         System.err.println("LogOp took " + sw.toString());
 
@@ -122,7 +122,7 @@ public class LogOpPerformanceTest extends RepositoryTestCase {
                 System.err.print('.');
                 System.err.flush();
             }
-            commit = geogit.command(CommitOp.class).setAllowEmpty(true)
+            commit = geogig.command(CommitOp.class).setAllowEmpty(true)
                     .setMessage("Commit " + i + " in branch " + branchName).call();
         }
         System.err.print('\n');
@@ -133,16 +133,16 @@ public class LogOpPerformanceTest extends RepositoryTestCase {
         List<ObjectId> list = Lists.newArrayList();
         for (int i = 1; i <= numBranches; i++) {
             String branchName = "branch" + Integer.toString(i);
-            geogit.command(CommitOp.class).setAllowEmpty(true)
+            geogig.command(CommitOp.class).setAllowEmpty(true)
                     .setMessage("Commit before " + branchName).call();
-            geogit.command(BranchCreateOp.class).setAutoCheckout(true).setName(branchName).call();
+            geogig.command(BranchCreateOp.class).setAutoCheckout(true).setName(branchName).call();
             createCommits(numCommits / 2, branchName);
-            geogit.command(CheckoutOp.class).setSource(Ref.MASTER).call();
-            geogit.command(CommitOp.class).setAllowEmpty(true)
+            geogig.command(CheckoutOp.class).setSource(Ref.MASTER).call();
+            geogig.command(CommitOp.class).setAllowEmpty(true)
                     .setMessage("Commit during " + branchName).call();
-            geogit.command(CheckoutOp.class).setSource(branchName).call();
+            geogig.command(CheckoutOp.class).setSource(branchName).call();
             RevCommit lastCommit = createCommits(numCommits / 2, branchName);
-            geogit.command(CheckoutOp.class).setSource(Ref.MASTER).call();
+            geogig.command(CheckoutOp.class).setSource(Ref.MASTER).call();
             list.add(lastCommit.getId());
             // System.err.println("branch " + Integer.toString(i));
         }

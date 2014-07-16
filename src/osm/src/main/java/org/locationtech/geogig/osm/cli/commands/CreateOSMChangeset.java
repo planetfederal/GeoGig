@@ -47,9 +47,9 @@ public class CreateOSMChangeset extends AbstractCommand implements CLICommand {
 
         checkParameter(refSpec.size() < 3, "Commit list is too long :" + refSpec);
 
-        GeoGIG geogit = cli.getGeogit();
+        GeoGIG geogig = cli.getGeogig();
 
-        CreateOSMChangesetOp op = geogit.command(CreateOSMChangesetOp.class);
+        CreateOSMChangesetOp op = geogig.command(CreateOSMChangesetOp.class);
 
         String oldVersion = resolveOldVersion();
         String newVersion = resolveNewVersion();

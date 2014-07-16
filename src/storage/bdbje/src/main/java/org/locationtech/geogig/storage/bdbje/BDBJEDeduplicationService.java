@@ -18,7 +18,7 @@ import com.sleepycat.je.Environment;
 
 /**
  * A {@link DeduplicationService} that creates {@link DatabaseConfig#setTemporary(boolean)
- * temporary} BDB JE databases in the {@code .geogit/seen} environment upon every
+ * temporary} BDB JE databases in the {@code .geogig/seen} environment upon every
  * {@link #createDatabase()} call.
  * <p>
  * The created temporary databases share the heap cache with the other JE databases, namely the

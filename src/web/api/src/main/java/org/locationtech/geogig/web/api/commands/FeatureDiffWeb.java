@@ -90,18 +90,18 @@ public class FeatureDiffWeb extends AbstractWebAPICommand {
      * Helper function to parse the given commit id's feature information
      * 
      * @param id - the id to parse out
-     * @param geogit - an instance of geogit to run commands with
+     * @param geogig - an instance of geogig to run commands with
      * @return (Optional)NodeRef - the NodeRef that contains the metadata id and id needed to get
      *         the feature and featuretype
      * 
      * @throws CommandSpecException - if the treeid couldn't be resolved
      */
-    private Optional<NodeRef> parseID(ObjectId id, Context geogit) {
-        Optional<RevObject> object = geogit.command(RevObjectParse.class).setObjectId(id).call();
+    private Optional<NodeRef> parseID(ObjectId id, Context geogig) {
+        Optional<RevObject> object = geogig.command(RevObjectParse.class).setObjectId(id).call();
 
         if (object.isPresent()) {
             RevTree tree = (RevTree) object.get();
-            return geogit.command(FindTreeChild.class).setParent(tree).setChildPath(path).call();
+            return geogig.command(FindTreeChild.class).setParent(tree).setChildPath(path).call();
         } else {
             throw new CommandSpecException("Couldn't resolve treeId");
         }
@@ -120,10 +120,10 @@ public class FeatureDiffWeb extends AbstractWebAPICommand {
             throw new CommandSpecException("No path for feature name specifed");
         }
 
-        final Context geogit = this.getCommandLocator(context);
-        ObjectId newId = geogit.command(ResolveTreeish.class).setTreeish(newTreeish).call().get();
+        final Context geogig = this.getCommandLocator(context);
+        ObjectId newId = geogig.command(ResolveTreeish.class).setTreeish(newTreeish).call().get();
 
-        ObjectId oldId = geogit.command(ResolveTreeish.class).setTreeish(oldTreeish).call().get();
+        ObjectId oldId = geogig.command(ResolveTreeish.class).setTreeish(oldTreeish).call().get();
 
         RevFeature newFeature = null;
         RevFeatureType newFeatureType = null;
@@ -133,7 +133,7 @@ public class FeatureDiffWeb extends AbstractWebAPICommand {
 
         final Map<PropertyDescriptor, AttributeDiff> diffs;
 
-        Optional<NodeRef> ref = parseID(newId, geogit);
+        Optional<NodeRef> ref = parseID(newId, geogig);
 
         Optional<RevObject> object;
 
@@ -143,14 +143,14 @@ public class FeatureDiffWeb extends AbstractWebAPICommand {
         boolean added = false;
 
         if (ref.isPresent()) {
-            object = geogit.command(RevObjectParse.class).setObjectId(ref.get().getMetadataId())
+            object = geogig.command(RevObjectParse.class).setObjectId(ref.get().getMetadataId())
                     .call();
             if (object.isPresent() && object.get() instanceof RevFeatureType) {
                 newFeatureType = (RevFeatureType) object.get();
             } else {
                 throw new CommandSpecException("Couldn't resolve newCommit's featureType");
             }
-            object = geogit.command(RevObjectParse.class).setObjectId(ref.get().objectId()).call();
+            object = geogig.command(RevObjectParse.class).setObjectId(ref.get().objectId()).call();
             if (object.isPresent() && object.get() instanceof RevFeature) {
                 newFeature = (RevFeature) object.get();
             } else {
@@ -161,17 +161,17 @@ public class FeatureDiffWeb extends AbstractWebAPICommand {
         }
 
         if (!oldId.equals(ObjectId.NULL)) {
-            ref = parseID(oldId, geogit);
+            ref = parseID(oldId, geogig);
 
             if (ref.isPresent()) {
-                object = geogit.command(RevObjectParse.class)
+                object = geogig.command(RevObjectParse.class)
                         .setObjectId(ref.get().getMetadataId()).call();
                 if (object.isPresent() && object.get() instanceof RevFeatureType) {
                     oldFeatureType = (RevFeatureType) object.get();
                 } else {
                     throw new CommandSpecException("Couldn't resolve oldCommit's featureType");
                 }
-                object = geogit.command(RevObjectParse.class).setObjectId(ref.get().objectId())
+                object = geogig.command(RevObjectParse.class).setObjectId(ref.get().objectId())
                         .call();
                 if (object.isPresent() && object.get() instanceof RevFeature) {
                     oldFeature = (RevFeature) object.get();

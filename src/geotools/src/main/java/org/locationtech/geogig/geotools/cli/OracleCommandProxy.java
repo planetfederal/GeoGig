@@ -19,7 +19,7 @@ import com.beust.jcommander.Parameters;
  * <p>
  * Usage:
  * <ul>
- * <li> {@code geogit oracle <command> <args>...}
+ * <li> {@code geogig oracle <command> <args>...}
  * </ul>
  * 
  * @see OracleImport
@@ -28,7 +28,7 @@ import com.beust.jcommander.Parameters;
  * @see OracleExport
  */
 
-@Parameters(commandNames = "oracle", commandDescription = "GeoGit/Oracle integration utilities")
+@Parameters(commandNames = "oracle", commandDescription = "GeoGig/Oracle integration utilities")
 public class OracleCommandProxy implements CLICommandExtension {
 
     /**
@@ -38,7 +38,7 @@ public class OracleCommandProxy implements CLICommandExtension {
     @Override
     public JCommander getCommandParser() {
         JCommander commander = new JCommander();
-        commander.setProgramName("geogit oracle");
+        commander.setProgramName("geogig oracle");
         commander.addCommand("import", new OracleImport());
         commander.addCommand("list", new OracleList());
         commander.addCommand("describe", new OracleDescribe());

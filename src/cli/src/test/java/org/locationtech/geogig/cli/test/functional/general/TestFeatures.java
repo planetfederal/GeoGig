@@ -30,7 +30,7 @@ public final class TestFeatures {
 
     public static final String idP3 = "Points.3";
 
-    public static final String pointsNs = "http://geogit.points";
+    public static final String pointsNs = "http://geogig.points";
 
     public static final String pointsName = "Points";
 
@@ -38,7 +38,7 @@ public final class TestFeatures {
 
     public static final String modifiedPointsTypeSpec = "sp:String,ip:Integer,pp:Point:srid=4326,extra:String";
 
-    public static final Name pointsTypeName = new NameImpl("http://geogit.points", pointsName);
+    public static final Name pointsTypeName = new NameImpl("http://geogig.points", pointsName);
 
     public static SimpleFeatureType pointsType;
 
@@ -54,13 +54,13 @@ public final class TestFeatures {
 
     public static Feature points1_FTmodified;
 
-    protected static final String linesNs = "http://geogit.lines";
+    protected static final String linesNs = "http://geogig.lines";
 
     protected static final String linesName = "Lines";
 
     protected static final String linesTypeSpec = "sp:String,ip:Integer,pp:LineString:srid=4326";
 
-    protected static final Name linesTypeName = new NameImpl("http://geogit.lines", linesName);
+    protected static final Name linesTypeName = new NameImpl("http://geogig.lines", linesName);
 
     public static SimpleFeatureType linesType;
 

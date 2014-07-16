@@ -5,7 +5,7 @@
 package org.locationtech.geogig.cli;
 
 /**
- * An exception to indicate that the arguments given by the user to a GeoGit CLI command are
+ * An exception to indicate that the arguments given by the user to a GeoGig CLI command are
  * invalid.
  * 
  * @see AbstractCommand#checkParameter

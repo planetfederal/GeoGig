@@ -29,9 +29,9 @@ import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 
 /**
- * This class contains a facade for some of the most common operations to perform on a GeoGit
+ * This class contains a facade for some of the most common operations to perform on a GeoGig
  * repository. It is designed to be used mainly from hooks written in a scripting language supported
- * by GeoGit, to give an easier and more detailed access to data and elements in the repository
+ * by GeoGig, to give an easier and more detailed access to data and elements in the repository
  * 
  */
 public class GeoGigAPI {

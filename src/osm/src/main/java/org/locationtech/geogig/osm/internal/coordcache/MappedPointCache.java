@@ -28,9 +28,9 @@ public class MappedPointCache implements PointCache {
     private MappedIndex index;
 
     public MappedPointCache(Platform platform) {
-        final Optional<File> geogitDir = new ResolveGeogigDir(platform).getFile();
-        checkState(geogitDir.isPresent());
-        this.parentDir = new File(new File(geogitDir.get(), "tmp"), "pointcache_"
+        final Optional<File> geogigDir = new ResolveGeogigDir(platform).getFile();
+        checkState(geogigDir.isPresent());
+        this.parentDir = new File(new File(geogigDir.get(), "tmp"), "pointcache_"
                 + Math.abs(RANDOM.nextInt()));
         checkState(parentDir.exists() || parentDir.mkdirs());
         this.parentDir.deleteOnExit();

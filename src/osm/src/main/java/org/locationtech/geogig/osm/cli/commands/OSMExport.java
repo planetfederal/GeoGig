@@ -76,7 +76,7 @@ public class OSMExport extends AbstractCommand implements CLICommand {
     @Parameter(names = { "--bbox", "-b" }, description = "The bounding box to use as filter (S W N E).", arity = 4)
     private List<String> bbox;
 
-    private GeoGIG geogit;
+    private GeoGIG geogig;
 
     /**
      * Executes the export command using the provided options.
@@ -91,14 +91,14 @@ public class OSMExport extends AbstractCommand implements CLICommand {
         checkParameter(bbox == null || bbox.size() == 4,
                 "The specified bounding box is not correct");
 
-        geogit = cli.getGeogit();
+        geogig = cli.getGeogig();
 
         String osmfile = args.get(0);
 
         String ref = "WORK_HEAD";
         if (args.size() == 2) {
             ref = args.get(1);
-            Optional<ObjectId> tree = geogit.command(ResolveTreeish.class).setTreeish(ref).call();
+            Optional<ObjectId> tree = geogig.command(ResolveTreeish.class).setTreeish(ref).call();
             checkParameter(tree.isPresent(), "Invalid commit or reference: %s", ref);
         }
 
@@ -129,11 +129,11 @@ public class OSMExport extends AbstractCommand implements CLICommand {
     }
 
     private Iterator<EntityContainer> getFeatures(String ref) {
-        Optional<ObjectId> id = geogit.command(RevParse.class).setRefSpec(ref).call();
+        Optional<ObjectId> id = geogig.command(RevParse.class).setRefSpec(ref).call();
         if (!id.isPresent()) {
             return Iterators.emptyIterator();
         }
-        LsTreeOp op = geogit.command(LsTreeOp.class).setStrategy(Strategy.DEPTHFIRST_ONLY_FEATURES)
+        LsTreeOp op = geogig.command(LsTreeOp.class).setStrategy(Strategy.DEPTHFIRST_ONLY_FEATURES)
                 .setReference(ref);
         if (bbox != null) {
             final Envelope env;
@@ -160,7 +160,7 @@ public class OSMExport extends AbstractCommand implements CLICommand {
             @Override
             @Nullable
             public EntityContainer apply(@Nullable NodeRef ref) {
-                RevFeature revFeature = geogit.command(RevObjectParse.class)
+                RevFeature revFeature = geogig.command(RevObjectParse.class)
                         .setObjectId(ref.objectId()).call(RevFeature.class).get();
                 SimpleFeatureType featureType;
                 if (ref.path().startsWith(OSMUtils.NODE_TYPE_NAME)) {

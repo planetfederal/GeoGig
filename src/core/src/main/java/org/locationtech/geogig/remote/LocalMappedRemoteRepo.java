@@ -46,7 +46,7 @@ import com.google.common.collect.ImmutableSet;
  */
 public class LocalMappedRemoteRepo extends AbstractMappedRemoteRepo {
 
-    private GeoGIG remoteGeoGit;
+    private GeoGIG remoteGeoGig;
 
     private Context injector;
 
@@ -66,10 +66,10 @@ public class LocalMappedRemoteRepo extends AbstractMappedRemoteRepo {
     }
 
     /**
-     * @param geogit manually set a geogit for this remote repository
+     * @param geogig manually set a geogig for this remote repository
      */
-    public void setGeoGit(GeoGIG geogit) {
-        this.remoteGeoGit = geogit;
+    public void setGeoGig(GeoGIG geogig) {
+        this.remoteGeoGig = geogig;
     }
 
     /**
@@ -79,9 +79,9 @@ public class LocalMappedRemoteRepo extends AbstractMappedRemoteRepo {
      */
     @Override
     public void open() throws IOException {
-        if (remoteGeoGit == null) {
-            remoteGeoGit = new GeoGIG(injector, workingDirectory);
-            remoteGeoGit.getRepository();
+        if (remoteGeoGig == null) {
+            remoteGeoGig = new GeoGIG(injector, workingDirectory);
+            remoteGeoGig.getRepository();
         }
 
     }
@@ -93,7 +93,7 @@ public class LocalMappedRemoteRepo extends AbstractMappedRemoteRepo {
      */
     @Override
     public void close() throws IOException {
-        remoteGeoGit.close();
+        remoteGeoGig.close();
 
     }
 
@@ -102,7 +102,7 @@ public class LocalMappedRemoteRepo extends AbstractMappedRemoteRepo {
      */
     @Override
     public Ref headRef() {
-        final Optional<Ref> currHead = remoteGeoGit.command(RefParse.class).setName(Ref.HEAD)
+        final Optional<Ref> currHead = remoteGeoGig.command(RefParse.class).setName(Ref.HEAD)
                 .call();
         Preconditions.checkState(currHead.isPresent(), "Remote repository has no HEAD.");
         return currHead.get();
@@ -131,7 +131,7 @@ public class LocalMappedRemoteRepo extends AbstractMappedRemoteRepo {
             }
         };
 
-        ImmutableSet<Ref> remoteRefs = remoteGeoGit.command(ForEachRef.class).setFilter(filter)
+        ImmutableSet<Ref> remoteRefs = remoteGeoGig.command(ForEachRef.class).setFilter(filter)
                 .call();
 
         // Translate the refs to their mapped values.
@@ -158,7 +158,7 @@ public class LocalMappedRemoteRepo extends AbstractMappedRemoteRepo {
      */
     @Override
     public void deleteRef(String refspec) {
-        remoteGeoGit.command(UpdateRef.class).setName(refspec).setDelete(true).call();
+        remoteGeoGig.command(UpdateRef.class).setName(refspec).setDelete(true).call();
     }
 
     /**
@@ -169,7 +169,7 @@ public class LocalMappedRemoteRepo extends AbstractMappedRemoteRepo {
      */
     @Override
     protected Optional<Ref> getRemoteRef(String refspec) {
-        return remoteGeoGit.command(RefParse.class).setName(refspec).call();
+        return remoteGeoGig.command(RefParse.class).setName(refspec).call();
     }
 
     /**
@@ -182,17 +182,17 @@ public class LocalMappedRemoteRepo extends AbstractMappedRemoteRepo {
      */
     @Override
     protected Ref updateRemoteRef(String refspec, ObjectId commitId, boolean delete) {
-        Ref updatedRef = remoteGeoGit.command(UpdateRef.class).setName(refspec)
+        Ref updatedRef = remoteGeoGig.command(UpdateRef.class).setName(refspec)
                 .setNewValue(commitId).setDelete(delete).call().get();
 
         Ref remoteHead = headRef();
         if (remoteHead instanceof SymRef) {
             if (((SymRef) remoteHead).getTarget().equals(updatedRef.getName())) {
-                remoteGeoGit.command(UpdateSymRef.class).setName(Ref.HEAD)
+                remoteGeoGig.command(UpdateSymRef.class).setName(Ref.HEAD)
                         .setNewValue(updatedRef.getName()).call();
-                RevCommit commit = remoteGeoGit.getRepository().getCommit(commitId);
-                remoteGeoGit.getRepository().workingTree().updateWorkHead(commit.getTreeId());
-                remoteGeoGit.getRepository().index().updateStageHead(commit.getTreeId());
+                RevCommit commit = remoteGeoGig.getRepository().getCommit(commitId);
+                remoteGeoGig.getRepository().workingTree().updateWorkHead(commit.getTreeId());
+                remoteGeoGig.getRepository().index().updateStageHead(commit.getTreeId());
             }
         }
         return updatedRef;
@@ -208,7 +208,7 @@ public class LocalMappedRemoteRepo extends AbstractMappedRemoteRepo {
      */
     protected void pushSparseCommit(ObjectId commitId) {
         Repository from = localRepository;
-        Repository to = remoteGeoGit.getRepository();
+        Repository to = remoteGeoGig.getRepository();
         Optional<RevObject> object = from.command(RevObjectParse.class).setObjectId(commitId)
                 .call();
         if (object.isPresent() && object.get().getType().equals(TYPE.COMMIT)) {
@@ -276,7 +276,7 @@ public class LocalMappedRemoteRepo extends AbstractMappedRemoteRepo {
      */
     @Override
     public RepositoryWrapper getRemoteWrapper() {
-        return new LocalRepositoryWrapper(remoteGeoGit.getRepository());
+        return new LocalRepositoryWrapper(remoteGeoGig.getRepository());
     }
 
     /**
@@ -287,7 +287,7 @@ public class LocalMappedRemoteRepo extends AbstractMappedRemoteRepo {
      */
     @Override
     protected Optional<RevObject> getObject(ObjectId objectId) {
-        return remoteGeoGit.command(RevObjectParse.class).setObjectId(objectId).call();
+        return remoteGeoGig.command(RevObjectParse.class).setObjectId(objectId).call();
     }
 
     /**
@@ -303,10 +303,10 @@ public class LocalMappedRemoteRepo extends AbstractMappedRemoteRepo {
             parent = commit.getParentIds().get(0);
         }
 
-        Iterator<DiffEntry> changes = remoteGeoGit.command(DiffOp.class)
+        Iterator<DiffEntry> changes = remoteGeoGig.command(DiffOp.class)
                 .setNewVersion(commit.getId()).setOldVersion(parent).setReportTrees(true).call();
 
-        return new LocalFilteredDiffIterator(changes, remoteGeoGit.getRepository(),
+        return new LocalFilteredDiffIterator(changes, remoteGeoGig.getRepository(),
                 localRepository, filter);
     }
 
@@ -318,6 +318,6 @@ public class LocalMappedRemoteRepo extends AbstractMappedRemoteRepo {
      */
     @Override
     public Optional<Integer> getDepth() {
-        return remoteGeoGit.getRepository().getDepth();
+        return remoteGeoGig.getRepository().getDepth();
     }
 }

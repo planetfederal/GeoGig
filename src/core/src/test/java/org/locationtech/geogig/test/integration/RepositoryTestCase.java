@@ -69,7 +69,7 @@ public abstract class RepositoryTestCase extends Assert {
 
     public static final String idPG3 = "Polygon.3";
 
-    public static final String pointsNs = "http://geogit.points";
+    public static final String pointsNs = "http://geogig.points";
 
     public static final String pointsName = "Points";
 
@@ -77,7 +77,7 @@ public abstract class RepositoryTestCase extends Assert {
 
     protected static final String modifiedPointsTypeSpec = "sp:String,ip:Integer,pp:Point:srid=4326,extra:String";
 
-    public static final Name pointsTypeName = new NameImpl("http://geogit.points", pointsName);
+    public static final Name pointsTypeName = new NameImpl("http://geogig.points", pointsName);
 
     protected SimpleFeatureType pointsType;
 
@@ -95,13 +95,13 @@ public abstract class RepositoryTestCase extends Assert {
 
     protected Feature points3;
 
-    public static final String linesNs = "http://geogit.lines";
+    public static final String linesNs = "http://geogig.lines";
 
     public static final String linesName = "Lines";
 
     public static final String linesTypeSpec = "sp:String,ip:Integer,pp:LineString:srid=4326";
 
-    public static final Name linesTypeName = new NameImpl("http://geogit.lines", linesName);
+    public static final Name linesTypeName = new NameImpl("http://geogig.lines", linesName);
 
     public SimpleFeatureType linesType;
 
@@ -111,13 +111,13 @@ public abstract class RepositoryTestCase extends Assert {
 
     public Feature lines3;
 
-    public static final String polyNs = "http://geogit.polygon";
+    public static final String polyNs = "http://geogig.polygon";
 
     public static final String polyName = "Polygon";
 
     public static final String polyTypeSpec = "sp:String,ip:Integer,pp:Polygon:srid=4326";
 
-    public static final Name polyTypeName = new NameImpl("http://geogit.polygon", polyName);
+    public static final Name polyTypeName = new NameImpl("http://geogig.polygon", polyName);
 
     public SimpleFeatureType polyType;
 
@@ -127,7 +127,7 @@ public abstract class RepositoryTestCase extends Assert {
 
     public Feature poly3;
 
-    protected GeoGIG geogit;
+    protected GeoGIG geogig;
 
     protected Repository repo;
 
@@ -156,8 +156,8 @@ public abstract class RepositoryTestCase extends Assert {
 
         injector = createInjector();
 
-        geogit = new GeoGIG(injector, envHome);
-        repo = geogit.getOrCreateRepository();
+        geogig = new GeoGIG(injector, envHome);
+        repo = geogig.getOrCreateRepository();
         repo.command(ConfigOp.class).setAction(ConfigAction.CONFIG_SET).setName("user.name")
                 .setValue("Gabriel Roldan").call();
         repo.command(ConfigOp.class).setAction(ConfigAction.CONFIG_SET).setName("user.email")
@@ -237,8 +237,8 @@ public abstract class RepositoryTestCase extends Assert {
         return repo;
     }
 
-    public GeoGIG getGeogit() {
-        return geogit;
+    public GeoGIG getGeogig() {
+        return geogig;
     }
 
     protected Feature feature(SimpleFeatureType type, String id, Object... values)
@@ -269,13 +269,13 @@ public abstract class RepositoryTestCase extends Assert {
         for (Feature f : features) {
             insertAndAdd(f);
             if (oneCommitPerFeature) {
-                RevCommit commit = geogit.command(CommitOp.class).call();
+                RevCommit commit = geogig.command(CommitOp.class).call();
                 commits.add(commit);
             }
         }
 
         if (!oneCommitPerFeature) {
-            RevCommit commit = geogit.command(CommitOp.class).call();
+            RevCommit commit = geogig.command(CommitOp.class).call();
             commits.add(commit);
         }
 
@@ -298,7 +298,7 @@ public abstract class RepositoryTestCase extends Assert {
         if (transaction != null) {
             transaction.command(AddOp.class).call();
         } else {
-            geogit.command(AddOp.class).call();
+            geogig.command(AddOp.class).call();
         }
         return objectId;
     }
@@ -329,7 +329,7 @@ public abstract class RepositoryTestCase extends Assert {
 
     public void insertAndAdd(GeogigTransaction transaction, Feature... features) throws Exception {
         insert(transaction, features);
-        geogit.command(AddOp.class).call();
+        geogig.command(AddOp.class).call();
     }
 
     public void insert(Feature... features) throws Exception {
@@ -366,7 +366,7 @@ public abstract class RepositoryTestCase extends Assert {
             if (transaction != null) {
                 transaction.command(AddOp.class).call();
             } else {
-                geogit.command(AddOp.class).call();
+                geogig.command(AddOp.class).call();
             }
         }
 

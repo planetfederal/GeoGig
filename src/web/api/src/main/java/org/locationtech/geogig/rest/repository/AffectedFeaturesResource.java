@@ -4,7 +4,7 @@
  */
 package org.locationtech.geogig.rest.repository;
 
-import static org.locationtech.geogig.rest.repository.RESTUtils.getGeogit;
+import static org.locationtech.geogig.rest.repository.RESTUtils.getGeogig;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -60,7 +60,7 @@ public class AffectedFeaturesResource extends Resource {
 
             Preconditions.checkState(commit.isPresent(), "No commit specified.");
 
-            GeoGIG ggit = getGeogit(request).get();
+            GeoGIG ggit = getGeogig(request).get();
 
             ObjectId commitId = ObjectId.valueOf(commit.get());
 

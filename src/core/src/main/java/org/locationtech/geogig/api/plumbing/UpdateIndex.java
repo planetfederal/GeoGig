@@ -17,7 +17,7 @@ import org.locationtech.geogig.api.porcelain.AddOp;
  * See also {@link AddOp} for a more user-friendly way to do some of the most common operations on
  * the index.
  * 
- * The way geogit update-index handles features it is told about can be modified using the various
+ * The way geogig update-index handles features it is told about can be modified using the various
  * options:
  * <ul>
  * <li>{@code add}: If a specified feature isn’t in the index already then it’s added. Default
@@ -27,7 +27,7 @@ import org.locationtech.geogig.api.porcelain.AddOp;
  * <li>{@code refresh}: Looks at the current index and checks to see if merges or updates are
  * needed.
  * <li>{@code unmerged}: If {@code refresh == true} and finds unmerged changes in the index, the
- * default behavior is to error out. This option makes geogit update-index continue anyway.
+ * default behavior is to error out. This option makes geogig update-index continue anyway.
  * <li> {@code ignoremissing}: Ignores missing features during a {@code refresh}
  * <li>cacheinfo <mode> <object> <path> Directly insert the specified info into the index.
  * </ul>

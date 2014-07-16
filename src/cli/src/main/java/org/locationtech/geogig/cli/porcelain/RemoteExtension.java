@@ -15,7 +15,7 @@ import com.beust.jcommander.Parameters;
  * <p>
  * Usage:
  * <ul>
- * <li> {@code geogit remote <command> <args>...}
+ * <li> {@code geogig remote <command> <args>...}
  * </ul>
  * 
  * @see RemoteAdd
@@ -32,7 +32,7 @@ public class RemoteExtension implements CLICommandExtension {
     @Override
     public JCommander getCommandParser() {
         JCommander commander = new JCommander(this);
-        commander.setProgramName("geogit remote");
+        commander.setProgramName("geogig remote");
         commander.addCommand("add", new RemoteAdd());
         commander.addCommand("rm", new RemoteRemove());
         commander.addCommand("list", new RemoteList());

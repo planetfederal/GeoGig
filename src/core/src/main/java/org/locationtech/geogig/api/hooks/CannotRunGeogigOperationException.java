@@ -13,7 +13,7 @@ public class CannotRunGeogigOperationException extends RuntimeException {
     }
 
     /**
-     * Constructs a new {@code CannotRunGeogitOperationException} with the given message.
+     * Constructs a new {@code CannotRunGeogigOperationException} with the given message.
      * 
      * @param msg the message for the exception
      */

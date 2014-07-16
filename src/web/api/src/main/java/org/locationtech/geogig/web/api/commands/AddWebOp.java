@@ -13,7 +13,7 @@ import org.locationtech.geogig.web.api.CommandSpecException;
 import org.locationtech.geogig.web.api.ResponseWriter;
 
 /**
- * The interface for the Add operation in GeoGit.
+ * The interface for the Add operation in GeoGig.
  * 
  * Web interface for {@link AddOp}
  */
@@ -44,9 +44,9 @@ public class AddWebOp extends AbstractWebAPICommand {
             throw new CommandSpecException(
                     "No transaction was specified, add requires a transaction to preserve the stability of the repository.");
         }
-        final Context geogit = this.getCommandLocator(context);
+        final Context geogig = this.getCommandLocator(context);
 
-        AddOp command = geogit.command(AddOp.class);
+        AddOp command = geogig.command(AddOp.class);
 
         if (path != null) {
             command.addPattern(path);

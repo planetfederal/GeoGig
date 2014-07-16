@@ -1,6 +1,6 @@
 Feature: "commit" command
     In order to finalize a set of changes that have been staged
-    As a Geogit User
+    As a Geogig User
     I want to create a commit and add it to the repository
 
     
@@ -65,7 +65,7 @@ Feature: "commit" command
   Scenario: Try to commit from an empty directory
     Given I am in an empty directory
      When I run the command "commit -m Test"
-     Then the response should start with "Not in a geogit repository"
+     Then the response should start with "Not in a geogig repository"
       And it should exit with non-zero exit code
      
   Scenario: Try to commit when no changes have been made

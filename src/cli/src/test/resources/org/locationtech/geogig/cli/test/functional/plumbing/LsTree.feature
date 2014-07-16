@@ -1,6 +1,6 @@
 Feature: "ls-tree" command
     In order to know what is in a repository
-    As a Geogit User
+    As a Geogig User
     I want to list the feature in the working tree 
 
 Scenario: Show a list of features in the root tree recursively
@@ -104,7 +104,7 @@ Scenario: Show a list of features in a path, using HEAD as origin
 Scenario: Show a list from an empty directory
     Given I am in an empty directory
      When I run the command "ls-tree"
-     Then the response should start with "Not in a geogit repository"
+     Then the response should start with "Not in a geogig repository"
       And it should exit with non-zero exit code
 
 Scenario: Run ls-tree on an empty repository

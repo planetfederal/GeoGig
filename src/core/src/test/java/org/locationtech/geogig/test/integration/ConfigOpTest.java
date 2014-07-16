@@ -40,7 +40,7 @@ public class ConfigOpTest extends RepositoryTestCase {
     }
 
     private void test(ConfigOp.ConfigScope scope) {
-        final ConfigOp config = geogit.command(ConfigOp.class);
+        final ConfigOp config = geogig.command(ConfigOp.class);
         config.setScope(scope);
 
         config.setAction(ConfigAction.CONFIG_SET).setName("section.string").setValue("1").call();
@@ -152,7 +152,7 @@ public class ConfigOpTest extends RepositoryTestCase {
 
     @Test
     public void testNullNameValuePairForGet() {
-        final ConfigOp config = geogit.command(ConfigOp.class);
+        final ConfigOp config = geogig.command(ConfigOp.class);
 
         exception.expect(ConfigException.class);
         config.setScope(ConfigScope.GLOBAL).setAction(ConfigAction.CONFIG_GET).setName(null)
@@ -161,7 +161,7 @@ public class ConfigOpTest extends RepositoryTestCase {
 
     @Test
     public void testEmptyNameAndValueForGet() {
-        final ConfigOp config = geogit.command(ConfigOp.class);
+        final ConfigOp config = geogig.command(ConfigOp.class);
 
         exception.expect(ConfigException.class);
         config.setScope(ConfigScope.GLOBAL).setAction(ConfigAction.CONFIG_GET).setName("")
@@ -170,7 +170,7 @@ public class ConfigOpTest extends RepositoryTestCase {
 
     @Test
     public void testEmptyNameAndValueForSet() {
-        final ConfigOp config = geogit.command(ConfigOp.class);
+        final ConfigOp config = geogig.command(ConfigOp.class);
 
         exception.expect(ConfigException.class);
         config.setScope(ConfigScope.GLOBAL).setAction(ConfigAction.CONFIG_SET).setName("")
@@ -179,7 +179,7 @@ public class ConfigOpTest extends RepositoryTestCase {
 
     @Test
     public void testEmptyNameForUnset() {
-        final ConfigOp config = geogit.command(ConfigOp.class);
+        final ConfigOp config = geogig.command(ConfigOp.class);
 
         exception.expect(ConfigException.class);
         config.setScope(ConfigScope.GLOBAL).setAction(ConfigAction.CONFIG_UNSET).setName("")
@@ -188,7 +188,7 @@ public class ConfigOpTest extends RepositoryTestCase {
 
     @Test
     public void testEmptyNameForRemoveSection() {
-        final ConfigOp config = geogit.command(ConfigOp.class);
+        final ConfigOp config = geogig.command(ConfigOp.class);
 
         exception.expect(ConfigException.class);
         config.setScope(ConfigScope.GLOBAL).setAction(ConfigAction.CONFIG_REMOVE_SECTION)
@@ -197,7 +197,7 @@ public class ConfigOpTest extends RepositoryTestCase {
 
     @Test
     public void testNoNameForSet() {
-        final ConfigOp config = geogit.command(ConfigOp.class);
+        final ConfigOp config = geogig.command(ConfigOp.class);
 
         exception.expect(ConfigException.class);
         config.setScope(ConfigScope.GLOBAL).setAction(ConfigAction.CONFIG_SET).setName(null)
@@ -206,7 +206,7 @@ public class ConfigOpTest extends RepositoryTestCase {
 
     @Test
     public void testNoNameForUnset() {
-        final ConfigOp config = geogit.command(ConfigOp.class);
+        final ConfigOp config = geogig.command(ConfigOp.class);
 
         exception.expect(ConfigException.class);
         config.setScope(ConfigScope.GLOBAL).setAction(ConfigAction.CONFIG_UNSET).setName(null)
@@ -215,7 +215,7 @@ public class ConfigOpTest extends RepositoryTestCase {
 
     @Test
     public void testNoNameForRemoveSection() {
-        final ConfigOp config = geogit.command(ConfigOp.class);
+        final ConfigOp config = geogig.command(ConfigOp.class);
 
         exception.expect(ConfigException.class);
         config.setScope(ConfigScope.GLOBAL).setAction(ConfigAction.CONFIG_REMOVE_SECTION)
@@ -224,7 +224,7 @@ public class ConfigOpTest extends RepositoryTestCase {
 
     @Test
     public void testRemovingMissingSection() {
-        final ConfigOp config = geogit.command(ConfigOp.class);
+        final ConfigOp config = geogig.command(ConfigOp.class);
 
         exception.expect(ConfigException.class);
         config.setScope(ConfigScope.GLOBAL).setAction(ConfigAction.CONFIG_REMOVE_SECTION)
@@ -233,7 +233,7 @@ public class ConfigOpTest extends RepositoryTestCase {
 
     @Test
     public void testInvalidSectionKey() {
-        final ConfigOp config = geogit.command(ConfigOp.class);
+        final ConfigOp config = geogig.command(ConfigOp.class);
         Optional<Map<String, String>> result = config.setScope(ConfigScope.GLOBAL)
                 .setAction(ConfigAction.CONFIG_GET).setName("doesnt.exist").setValue(null).call();
         assertFalse(result.isPresent());
@@ -241,7 +241,7 @@ public class ConfigOpTest extends RepositoryTestCase {
 
     @Test
     public void testTooManyArguments() {
-        final ConfigOp config = geogit.command(ConfigOp.class);
+        final ConfigOp config = geogig.command(ConfigOp.class);
 
         exception.expect(ConfigException.class);
         config.setScope(ConfigScope.GLOBAL).setAction(ConfigAction.CONFIG_GET).setName("too.many")
@@ -256,7 +256,7 @@ public class ConfigOpTest extends RepositoryTestCase {
 
     @Test
     public void testNoAction() {
-        final ConfigOp config = geogit.command(ConfigOp.class);
+        final ConfigOp config = geogig.command(ConfigOp.class);
 
         exception.expect(ConfigException.class);
         config.setAction(ConfigAction.CONFIG_NO_ACTION).setName("section.key").setValue(null)
@@ -265,7 +265,7 @@ public class ConfigOpTest extends RepositoryTestCase {
 
     @Test
     public void testFallback() {
-        final ConfigOp config = geogit.command(ConfigOp.class);
+        final ConfigOp config = geogig.command(ConfigOp.class);
 
         // Set a value in global config, then try to get value from local even though
         // we're not in a valid repository

@@ -87,7 +87,7 @@ public class OSMApplyDiffOp extends AbstractGeoGigOp<Optional<OSMReport>> {
         Preconditions.checkArgument(file.exists(), "File does not exist: " + file);
 
         ProgressListener progressListener = getProgressListener();
-        progressListener.setDescription("Applying OSM diff file to GeoGit repo...");
+        progressListener.setDescription("Applying OSM diff file to GeoGig repo...");
 
         OSMReport report = parseDiffFileAndInsert();
 

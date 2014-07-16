@@ -53,7 +53,7 @@ import com.google.common.collect.Lists;
 class GeogigFeatureStore extends ContentFeatureStore {
 
     /**
-     * geogit feature source to delegate to, we do this b/c we can't inherit from both
+     * geogig feature source to delegate to, we do this b/c we can't inherit from both
      * ContentFeatureStore and {@link GeogigFeatureSource} at the same time
      */
     private GeogigFeatureSource delegate;
@@ -130,11 +130,11 @@ class GeogigFeatureStore extends ContentFeatureStore {
             delegate.setTransaction(transaction);
         }
         if (!Transaction.AUTO_COMMIT.equals(transaction)) {
-            GeogigTransactionState geogitTx;
-            geogitTx = (GeogigTransactionState) transaction.getState(GeogigTransactionState.class);
-            if (geogitTx == null) {
-                geogitTx = new GeogigTransactionState(getEntry());
-                transaction.putState(GeogigTransactionState.class, geogitTx);
+            GeogigTransactionState geogigTx;
+            geogigTx = (GeogigTransactionState) transaction.getState(GeogigTransactionState.class);
+            if (geogigTx == null) {
+                geogigTx = new GeogigTransactionState(getEntry());
+                transaction.putState(GeogigTransactionState.class, geogigTx);
             }
         }
     }
@@ -228,7 +228,7 @@ class GeogigFeatureStore extends ContentFeatureStore {
             throws IOException {
 
         if (Transaction.AUTO_COMMIT.equals(getTransaction())) {
-            throw new UnsupportedOperationException("GeoGIT does not support AUTO_COMMIT");
+            throw new UnsupportedOperationException("GeoGIG does not support AUTO_COMMIT");
         }
         Preconditions.checkState(getDataStore().isAllowTransactions(),
                 "Transactions not supported; head is not a local branch");
@@ -266,7 +266,7 @@ class GeogigFeatureStore extends ContentFeatureStore {
             features = new FeatureIteratorIterator<SimpleFeature>(featureIterator);
             /*
              * Make sure to transform the incoming features to the native schema to avoid situations
-             * where geogit would change the metadataId of the RevFeature nodes due to small
+             * where geogig would change the metadataId of the RevFeature nodes due to small
              * differences in the default and incoming schema such as namespace or missing
              * properties
              */
@@ -332,7 +332,7 @@ class GeogigFeatureStore extends ContentFeatureStore {
         Iterator<SimpleFeature> features = modifyingFeatureIterator(names, values, filter);
         /*
          * Make sure to transform the incoming features to the native schema to avoid situations
-         * where geogit would change the metadataId of the RevFeature nodes due to small differences
+         * where geogig would change the metadataId of the RevFeature nodes due to small differences
          * in the default and incoming schema such as namespace or missing properties
          */
         final SimpleFeatureType nativeSchema = delegate.getNativeType();

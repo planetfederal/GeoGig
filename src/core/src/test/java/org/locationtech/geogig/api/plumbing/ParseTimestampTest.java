@@ -51,7 +51,7 @@ public class ParseTimestampTest extends Assert {
 
     private ParseTimestamp command;
 
-    private GeoGIG fakeGeogit;
+    private GeoGIG fakeGeogig;
 
     @Before
     public void setUp() {
@@ -67,9 +67,9 @@ public class ParseTimestampTest extends Assert {
                 Modules.override(new GeogigModule()).with(new MemoryModule(testPlatform)))
                 .getInstance(Context.class);
 
-        fakeGeogit = new GeoGIG(injector, workingDirectory);
-        assertNotNull(fakeGeogit.getOrCreateRepository());
-        command = fakeGeogit.command(ParseTimestamp.class);
+        fakeGeogig = new GeoGIG(injector, workingDirectory);
+        assertNotNull(fakeGeogig.getOrCreateRepository());
+        command = fakeGeogig.command(ParseTimestamp.class);
     }
 
     @Test

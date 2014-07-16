@@ -23,7 +23,7 @@ public class UpdateIndexTest extends RepositoryTestCase {
     @Test
     public void testUpdateIndex() {
         exception.expect(UnsupportedOperationException.class);
-        geogit.command(UpdateIndex.class).call();
+        geogig.command(UpdateIndex.class).call();
     }
 
 }

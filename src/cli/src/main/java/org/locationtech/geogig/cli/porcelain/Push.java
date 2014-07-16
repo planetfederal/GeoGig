@@ -25,7 +25,7 @@ import com.beust.jcommander.Parameters;
  * <p>
  * Usage:
  * <ul>
- * <li> {@code geogit push [<options>] [<repository> [<refspec>...]]}
+ * <li> {@code geogig push [<options>] [<repository> [<refspec>...]]}
  * </ul>
  * 
  * @see PushOp
@@ -45,7 +45,7 @@ public class Push extends AbstractCommand implements CLICommand {
     @Override
     public void runInternal(GeogigCLI cli) throws IOException {
 
-        PushOp push = cli.getGeogit().command(PushOp.class);
+        PushOp push = cli.getGeogig().command(PushOp.class);
         push.setProgressListener(cli.getProgressListener());
         push.setAll(all);
 

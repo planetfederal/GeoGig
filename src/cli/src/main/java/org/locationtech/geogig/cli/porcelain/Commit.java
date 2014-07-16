@@ -44,7 +44,7 @@ import com.google.common.collect.Lists;
  * <p>
  * Usage:
  * <ul>
- * <li> {@code geogit commit -m <msg>}
+ * <li> {@code geogig commit -m <msg>}
  * </ul>
  * 
  * @see CommitOp
@@ -76,10 +76,10 @@ public class Commit extends AbstractCommand implements CLICommand {
     @Override
     public void runInternal(GeogigCLI cli) throws IOException {
 
-        final GeoGIG geogit = cli.getGeogit();
+        final GeoGIG geogig = cli.getGeogig();
 
         if (message == null || Strings.isNullOrEmpty(message)) {
-            message = geogit.command(ReadMergeCommitMessageOp.class).call();
+            message = geogig.command(ReadMergeCommitMessageOp.class).call();
         }
         checkParameter(!Strings.isNullOrEmpty(message) || commitToReuse != null || amend,
                 "No commit message provided");
@@ -90,22 +90,22 @@ public class Commit extends AbstractCommand implements CLICommand {
 
         RevCommit commit;
         try {
-            CommitOp commitOp = geogit.command(CommitOp.class).setMessage(message).setAmend(amend);
+            CommitOp commitOp = geogig.command(CommitOp.class).setMessage(message).setAmend(amend);
             if (commitTimestamp != null && !Strings.isNullOrEmpty(commitTimestamp)) {
-                Long millis = geogit.command(ParseTimestamp.class).setString(commitTimestamp)
+                Long millis = geogig.command(ParseTimestamp.class).setString(commitTimestamp)
                         .call();
                 commitOp.setCommitterTimestamp(millis.longValue());
             }
 
             if (commitToReuse != null) {
-                Optional<ObjectId> commitId = geogit.command(RevParse.class)
+                Optional<ObjectId> commitId = geogig.command(RevParse.class)
                         .setRefSpec(commitToReuse).call();
                 checkParameter(commitId.isPresent(), "Provided reference does not exist");
-                TYPE type = geogit.command(ResolveObjectType.class).setObjectId(commitId.get())
+                TYPE type = geogig.command(ResolveObjectType.class).setObjectId(commitId.get())
                         .call();
                 checkParameter(TYPE.COMMIT.equals(type),
                         "Provided reference does not resolve to a commit");
-                commitOp.setCommit(geogit.getRepository().getCommit(commitId.get()));
+                commitOp.setCommit(geogig.getRepository().getCommit(commitId.get()));
             }
             commit = commitOp.setPathFilters(pathFilters)
                     .setProgressListener(cli.getProgressListener()).call();
@@ -117,7 +117,7 @@ public class Commit extends AbstractCommand implements CLICommand {
         console.println("[" + commit.getId() + "] " + commit.getMessage());
 
         console.print("Committed, counting objects...");
-        Iterator<DiffEntry> diff = geogit.command(DiffOp.class).setOldVersion(parentId)
+        Iterator<DiffEntry> diff = geogig.command(DiffOp.class).setOldVersion(parentId)
                 .setNewVersion(commit.getId()).call();
 
         int adds = 0, deletes = 0, changes = 0;

@@ -27,7 +27,7 @@ import org.locationtech.geogig.web.api.ResponseWriter;
 import com.google.common.base.Optional;
 
 /**
- * Interface for the Remote operations in GeoGit.
+ * Interface for the Remote operations in GeoGig.
  * 
  * Web interface for {@link RemoteListOp}, {@link RemoteRemoveOp}, {@link RemoteAddOp}
  */
@@ -151,9 +151,9 @@ public class RemoteWebOp extends AbstractWebAPICommand {
      */
     @Override
     public void run(CommandContext context) {
-        final Context geogit = this.getCommandLocator(context);
+        final Context geogig = this.getCommandLocator(context);
         if (list) {
-            final List<Remote> remotes = geogit.command(RemoteListOp.class).call();
+            final List<Remote> remotes = geogig.command(RemoteListOp.class).call();
 
             context.setResponseContent(new CommandResponse() {
                 @Override
@@ -164,7 +164,7 @@ public class RemoteWebOp extends AbstractWebAPICommand {
                 }
             });
         } else if (ping) {
-            Optional<Remote> remote = geogit.command(RemoteResolve.class).setName(remoteName)
+            Optional<Remote> remote = geogig.command(RemoteResolve.class).setName(remoteName)
                     .call();
 
             if (remote.isPresent()) {
@@ -206,7 +206,7 @@ public class RemoteWebOp extends AbstractWebAPICommand {
             }
             final Remote remote;
             try {
-                remote = geogit.command(RemoteRemoveOp.class).setName(remoteName).call();
+                remote = geogig.command(RemoteRemoveOp.class).setName(remoteName).call();
             } catch (RemoteException e) {
                 context.setResponseContent(CommandResponse.error(e.statusCode.toString()));
                 return;
@@ -231,12 +231,12 @@ public class RemoteWebOp extends AbstractWebAPICommand {
             final Remote newRemote;
             try {
                 if (newName != null && !newName.trim().isEmpty() && !newName.equals(remoteName)) {
-                    newRemote = geogit.command(RemoteAddOp.class).setName(newName)
+                    newRemote = geogig.command(RemoteAddOp.class).setName(newName)
                             .setURL(remoteURL).setUserName(username).setPassword(password).call();
-                    geogit.command(RemoteRemoveOp.class).setName(remoteName).call();
+                    geogig.command(RemoteRemoveOp.class).setName(remoteName).call();
                 } else {
-                    geogit.command(RemoteRemoveOp.class).setName(remoteName).call();
-                    newRemote = geogit.command(RemoteAddOp.class).setName(remoteName)
+                    geogig.command(RemoteRemoveOp.class).setName(remoteName).call();
+                    newRemote = geogig.command(RemoteAddOp.class).setName(remoteName)
                             .setURL(remoteURL).setUserName(username).setPassword(password).call();
                 }
             } catch (RemoteException e) {
@@ -262,7 +262,7 @@ public class RemoteWebOp extends AbstractWebAPICommand {
             }
             final Remote remote;
             try {
-                remote = geogit.command(RemoteAddOp.class).setName(remoteName).setURL(remoteURL)
+                remote = geogig.command(RemoteAddOp.class).setName(remoteName).setURL(remoteURL)
                         .setUserName(username).setPassword(password).call();
             } catch (RemoteException e) {
                 context.setResponseContent(CommandResponse.error(e.statusCode.toString()));

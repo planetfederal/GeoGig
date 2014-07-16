@@ -46,24 +46,24 @@ public class OSMApplyDiffTest extends Assert {
         cli.execute("init");
         cli.execute("config", "user.name", "Gabriel Roldan");
         cli.execute("config", "user.email", "groldan@opengeo.org");
-        assertTrue(new File(workingDirectory, ".geogit").exists());
+        assertTrue(new File(workingDirectory, ".geogig").exists());
 
     }
 
     @Test
     public void testApplyDiff() throws Exception {
         // import and check
-        GeoGIG geogit = cli.newGeoGIT();
+        GeoGIG geogig = cli.newGeoGIG();
         String filename = OSMImportOp.class.getResource("nodes_for_changeset2.xml").getFile();
         File file = new File(filename);
         cli.execute("osm", "import", file.getAbsolutePath());
 
-        long unstaged = geogit.getRepository().workingTree().countUnstaged("node").count();
+        long unstaged = geogig.getRepository().workingTree().countUnstaged("node").count();
         assertTrue(unstaged > 0);
-        Optional<RevFeature> revFeature = geogit.command(RevObjectParse.class)
+        Optional<RevFeature> revFeature = geogig.command(RevObjectParse.class)
                 .setRefSpec("WORK_HEAD:node/2059114068").call(RevFeature.class);
         assertTrue(revFeature.isPresent());
-        revFeature = geogit.command(RevObjectParse.class).setRefSpec("WORK_HEAD:node/507464865")
+        revFeature = geogig.command(RevObjectParse.class).setRefSpec("WORK_HEAD:node/507464865")
                 .call(RevFeature.class);
         assertFalse(revFeature.isPresent());
 
@@ -71,13 +71,13 @@ public class OSMApplyDiffTest extends Assert {
         File changesetFile = new File(changesetFilename);
         cli.execute("osm", "apply-diff", changesetFile.getAbsolutePath());
 
-        revFeature = geogit.command(RevObjectParse.class).setRefSpec("WORK_HEAD:node/2059114068")
+        revFeature = geogig.command(RevObjectParse.class).setRefSpec("WORK_HEAD:node/2059114068")
                 .call(RevFeature.class);
         assertFalse(revFeature.isPresent());
-        revFeature = geogit.command(RevObjectParse.class).setRefSpec("WORK_HEAD:node/507464865")
+        revFeature = geogig.command(RevObjectParse.class).setRefSpec("WORK_HEAD:node/507464865")
                 .call(RevFeature.class);
         assertTrue(revFeature.isPresent());
-        geogit.close();
+        geogig.close();
     }
 
 }

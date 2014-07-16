@@ -30,7 +30,7 @@ public class RebuildGraphOpTest extends RepositoryTestCase {
                 .setValue("groldan").call();
         repo.command(ConfigOp.class).setAction(ConfigAction.CONFIG_SET).setName("user.email")
                 .setValue("groldan@opengeo.org").call();
-        database = geogit.getRepository().graphDatabase();
+        database = geogig.getRepository().graphDatabase();
     }
 
     @Test
@@ -46,19 +46,19 @@ public class RebuildGraphOpTest extends RepositoryTestCase {
         // |
         // o - master - HEAD - Lines 1 added
         insertAndAdd(points1);
-        final RevCommit c1 = geogit.command(CommitOp.class).setMessage("commit for " + idP1).call();
+        final RevCommit c1 = geogig.command(CommitOp.class).setMessage("commit for " + idP1).call();
 
         // create branch1 and checkout
-        geogit.command(BranchCreateOp.class).setAutoCheckout(true).setName("branch1").call();
+        geogig.command(BranchCreateOp.class).setAutoCheckout(true).setName("branch1").call();
         insertAndAdd(points2);
-        final RevCommit c2 = geogit.command(CommitOp.class).setMessage("commit for " + idP2).call();
+        final RevCommit c2 = geogig.command(CommitOp.class).setMessage("commit for " + idP2).call();
 
         // checkout master
-        geogit.command(CheckoutOp.class).setSource("master").call();
+        geogig.command(CheckoutOp.class).setSource("master").call();
         insertAndAdd(points3);
-        final RevCommit c3 = geogit.command(CommitOp.class).setMessage("commit for " + idP3).call();
+        final RevCommit c3 = geogig.command(CommitOp.class).setMessage("commit for " + idP3).call();
         insertAndAdd(lines1);
-        final RevCommit c4 = geogit.command(CommitOp.class).setMessage("commit for " + idL1).call();
+        final RevCommit c4 = geogig.command(CommitOp.class).setMessage("commit for " + idL1).call();
 
         // Delete the graph
         database.truncate();
@@ -66,7 +66,7 @@ public class RebuildGraphOpTest extends RepositoryTestCase {
         database.open();
 
         // Rebuild the graph
-        ImmutableList<ObjectId> updated = geogit.command(RebuildGraphOp.class).call();
+        ImmutableList<ObjectId> updated = geogig.command(RebuildGraphOp.class).call();
         assertEquals(4, updated.size());
         assertTrue(updated.contains(c1.getId()));
         assertTrue(updated.contains(c2.getId()));
@@ -87,12 +87,12 @@ public class RebuildGraphOpTest extends RepositoryTestCase {
         // |
         // o - master - HEAD - Lines 1 added
         insertAndAdd(points1);
-        final RevCommit c1 = geogit.command(CommitOp.class).setMessage("commit for " + idP1).call();
+        final RevCommit c1 = geogig.command(CommitOp.class).setMessage("commit for " + idP1).call();
 
         // create branch1 and checkout
-        geogit.command(BranchCreateOp.class).setAutoCheckout(true).setName("branch1").call();
+        geogig.command(BranchCreateOp.class).setAutoCheckout(true).setName("branch1").call();
         insertAndAdd(points2);
-        final RevCommit c2 = geogit.command(CommitOp.class).setMessage("commit for " + idP2).call();
+        final RevCommit c2 = geogig.command(CommitOp.class).setMessage("commit for " + idP2).call();
 
         // Delete the graph
         database.truncate();
@@ -100,14 +100,14 @@ public class RebuildGraphOpTest extends RepositoryTestCase {
         database.open();
 
         // checkout master
-        geogit.command(CheckoutOp.class).setSource("master").call();
+        geogig.command(CheckoutOp.class).setSource("master").call();
         insertAndAdd(points3);
-        final RevCommit c3 = geogit.command(CommitOp.class).setMessage("commit for " + idP3).call();
+        final RevCommit c3 = geogig.command(CommitOp.class).setMessage("commit for " + idP3).call();
         insertAndAdd(lines1);
-        final RevCommit c4 = geogit.command(CommitOp.class).setMessage("commit for " + idL1).call();
+        final RevCommit c4 = geogig.command(CommitOp.class).setMessage("commit for " + idL1).call();
 
         // Rebuild the graph
-        ImmutableList<ObjectId> updated = geogit.command(RebuildGraphOp.class).call();
+        ImmutableList<ObjectId> updated = geogig.command(RebuildGraphOp.class).call();
         assertEquals(2, updated.size());
         assertTrue(updated.contains(c1.getId()));
         assertTrue(updated.contains(c2.getId()));
@@ -128,22 +128,22 @@ public class RebuildGraphOpTest extends RepositoryTestCase {
         // |
         // o - master - HEAD - Lines 1 added
         insertAndAdd(points1);
-        geogit.command(CommitOp.class).setMessage("commit for " + idP1).call();
+        geogig.command(CommitOp.class).setMessage("commit for " + idP1).call();
 
         // create branch1 and checkout
-        geogit.command(BranchCreateOp.class).setAutoCheckout(true).setName("branch1").call();
+        geogig.command(BranchCreateOp.class).setAutoCheckout(true).setName("branch1").call();
         insertAndAdd(points2);
-        geogit.command(CommitOp.class).setMessage("commit for " + idP2).call();
+        geogig.command(CommitOp.class).setMessage("commit for " + idP2).call();
 
         // checkout master
-        geogit.command(CheckoutOp.class).setSource("master").call();
+        geogig.command(CheckoutOp.class).setSource("master").call();
         insertAndAdd(points3);
-        geogit.command(CommitOp.class).setMessage("commit for " + idP3).call();
+        geogig.command(CommitOp.class).setMessage("commit for " + idP3).call();
         insertAndAdd(lines1);
-        geogit.command(CommitOp.class).setMessage("commit for " + idL1).call();
+        geogig.command(CommitOp.class).setMessage("commit for " + idL1).call();
 
         // Rebuild the graph
-        ImmutableList<ObjectId> updated = geogit.command(RebuildGraphOp.class).call();
+        ImmutableList<ObjectId> updated = geogig.command(RebuildGraphOp.class).call();
         assertEquals(0, updated.size());
     }
 }

@@ -29,7 +29,7 @@ public class ResolveGeogigDirTest {
     public void test() throws Exception {
 
         File workingDir = tmpFolder.newFolder("fakeWorkingDir");
-        File fakeRepo = new File(workingDir, ".geogit");
+        File fakeRepo = new File(workingDir, ".geogig");
         fakeRepo.mkdirs();
 
         Platform platform = mock(Platform.class);

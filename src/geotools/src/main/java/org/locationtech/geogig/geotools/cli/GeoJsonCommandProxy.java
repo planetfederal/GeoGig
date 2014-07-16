@@ -16,13 +16,13 @@ import com.beust.jcommander.Parameters;
  * <p>
  * Usage:
  * <ul>
- * <li> {@code geogit geojson <command> <args>...}
+ * <li> {@code geogig geojson <command> <args>...}
  * </ul>
  * 
  * @see GeoJsonImport
  */
 
-@Parameters(commandNames = "geojson", commandDescription = "GeoGit/GeoJSON integration utilities")
+@Parameters(commandNames = "geojson", commandDescription = "GeoGig/GeoJSON integration utilities")
 public class GeoJsonCommandProxy implements CLICommandExtension {
 
     /**
@@ -32,7 +32,7 @@ public class GeoJsonCommandProxy implements CLICommandExtension {
     @Override
     public JCommander getCommandParser() {
         JCommander commander = new JCommander();
-        commander.setProgramName("geogit geojson");
+        commander.setProgramName("geogig geojson");
         commander.addCommand("import", new GeoJsonImport());
         commander.addCommand("export", new GeoJsonExport());
         return commander;

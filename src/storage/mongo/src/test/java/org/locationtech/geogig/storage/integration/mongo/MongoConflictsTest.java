@@ -49,7 +49,7 @@ public class MongoConflictsTest extends RepositoryTestCase {
 
     @Test
     public void testConflicts() {
-        StagingDatabase db = geogit.getRepository().stagingDatabase();
+        StagingDatabase db = geogig.getRepository().stagingDatabase();
 
         List<Conflict> conflicts = db.getConflicts(null, null);
         assertTrue(conflicts.isEmpty());

@@ -207,7 +207,7 @@ public class OSMImportOp extends AbstractGeoGigOp<Optional<OSMReport>> {
         }
 
         ProgressListener progressListener = getProgressListener();
-        progressListener.setDescription("Importing into GeoGit repo...");
+        progressListener.setDescription("Importing into GeoGig repo...");
 
         EntityConverter converter = new EntityConverter();
 
@@ -258,7 +258,7 @@ public class OSMImportOp extends AbstractGeoGigOp<Optional<OSMReport>> {
             destination = this.downloadFile;
             if (destination == null) {
                 try {
-                    destination = File.createTempFile("osm-geogit", ".xml");
+                    destination = File.createTempFile("osm-geogig", ".xml");
                 } catch (IOException e) {
                     Throwables.propagate(e);
                 }
@@ -363,7 +363,7 @@ public class OSMImportOp extends AbstractGeoGigOp<Optional<OSMReport>> {
     }
 
     /**
-     * A sink that processes OSM entities by converting them to GeoGit features and inserting them
+     * A sink that processes OSM entities by converting them to GeoGig features and inserting them
      * into the repository working tree
      * 
      */

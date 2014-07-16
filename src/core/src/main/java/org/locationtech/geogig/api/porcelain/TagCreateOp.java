@@ -89,12 +89,12 @@ public class TagCreateOp extends AbstractGeoGigOp<RevTag> {
 
         checkState(
                 name.isPresent(),
-                "%s not found in config. Use geogit config [--global] %s <your name> to configure it.",
+                "%s not found in config. Use geogig config [--global] %s <your name> to configure it.",
                 nameKey, nameKey);
 
         checkState(
                 email.isPresent(),
-                "%s not found in config. Use geogit config [--global] %s <your email> to configure it.",
+                "%s not found in config. Use geogig config [--global] %s <your email> to configure it.",
                 emailKey, emailKey);
 
         String taggerName = name.get();

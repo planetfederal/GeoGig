@@ -40,7 +40,7 @@ public class DiffTreeTest extends Assert {
 
     private DiffTree command;
 
-    private GeoGIG fakeGeogit;
+    private GeoGIG fakeGeogig;
 
     @Before
     public void setUp() {
@@ -50,9 +50,9 @@ public class DiffTreeTest extends Assert {
         Context injector = Guice.createInjector(Modules.override(new GeogigModule()).with(
                 new MemoryModule(testPlatform))).getInstance(org.locationtech.geogig.api.Context.class);
 
-        fakeGeogit = new GeoGIG(injector);
-        assertNotNull(fakeGeogit.getOrCreateRepository());
-        command = fakeGeogit.command(DiffTree.class);
+        fakeGeogig = new GeoGIG(injector);
+        assertNotNull(fakeGeogig.getOrCreateRepository());
+        command = fakeGeogig.command(DiffTree.class);
     }
 
     @Test

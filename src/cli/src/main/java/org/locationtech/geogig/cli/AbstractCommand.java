@@ -50,7 +50,7 @@ public abstract class AbstractCommand implements CLICommand {
 
     @Override
     public void run(GeogigCLI cli) throws InvalidParameterException, CommandFailedException {
-        checkNotNull(cli, "No GeogitCLI provided");
+        checkNotNull(cli, "No GeogigCLI provided");
         if (help) {
             printUsage(cli);
             return;
@@ -99,7 +99,7 @@ public abstract class AbstractCommand implements CLICommand {
 
     /**
      * Subclasses shall implement to do the real work, will not be called if the command was invoked
-     * with {@code --help}. Also, {@link GeogigCLI#getGeogit() cli.getGeogit()} is guaranteed to be
+     * with {@code --help}. Also, {@link GeogigCLI#getGeogig() cli.getGeogig()} is guaranteed to be
      * non null (e.g. there's a working repository) if the implementation class is marked with the
      * {@link RequiresRepository @RequiresRepository} annotation.
      * 
@@ -118,7 +118,7 @@ public abstract class AbstractCommand implements CLICommand {
     public void printUsage(GeogigCLI cli) {
         JCommander jc = new JCommander(this);
         String commandName = this.getClass().getAnnotation(Parameters.class).commandNames()[0];
-        jc.setProgramName("geogit " + commandName);
+        jc.setProgramName("geogig " + commandName);
         cli.printUsage(jc);
     }
 

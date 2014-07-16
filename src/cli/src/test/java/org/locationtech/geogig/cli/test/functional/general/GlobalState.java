@@ -59,11 +59,11 @@ public class GlobalState {
     /**
      * A platform to set the current working directory and the user home directory.
      * <p>
-     * Note this platform is NOT the same than used by the created GeoGIT instances. They'll instead
+     * Note this platform is NOT the same than used by the created GeoGIG instances. They'll instead
      * use a copy of it (as per CLITestInjectorBuilder.build()), in order for the platform not to be
-     * shared by multiple geogit instances open (like when working with remotes) and get them
+     * shared by multiple geogig instances open (like when working with remotes) and get them
      * confused on what their respective working dir is. So whenever this platform's working dir is
-     * changed, setupGeogit() should be called for a new GeogitCLI to be created on the current
+     * changed, setupGeogig() should be called for a new GeogigCLI to be created on the current
      * working dir, if need be.
      */
     public static TestPlatform platform;
@@ -74,7 +74,7 @@ public class GlobalState {
 
     public static ByteArrayOutputStream stdOut;
 
-    public static GeogigCLI geogitCLI;
+    public static GeogigCLI geogigCLI;
 
     public static ConsoleReader consoleReader;
 
@@ -89,7 +89,7 @@ public class GlobalState {
         }
     }
 
-    public static void setupGeogit() throws Exception {
+    public static void setupGeogig() throws Exception {
         assertNotNull(platform);
 
         stdIn = new ByteArrayInputStream(new byte[0]);
@@ -105,15 +105,15 @@ public class GlobalState {
         ContextBuilder injectorBuilder = new CLITestContextBuilder(platform);
         Context injector = injectorBuilder.build();
 
-        if (geogitCLI != null) {
-            geogitCLI.close();
+        if (geogigCLI != null) {
+            geogigCLI.close();
         }
 
-        geogitCLI = new GeogigCLI(GlobalState.consoleReader);
+        geogigCLI = new GeogigCLI(GlobalState.consoleReader);
         GlobalContextBuilder.builder = injectorBuilder;
         Platform platform = injector.platform();
-        geogitCLI.setPlatform(platform);
-        geogitCLI.tryConfigureLogging();
+        geogigCLI.setPlatform(platform);
+        geogigCLI.tryConfigureLogging();
     }
 
     /**
@@ -153,11 +153,11 @@ public class GlobalState {
     }
 
     public static void runCommand(boolean failFast, String... command) throws Exception {
-        assertNotNull(geogitCLI);
+        assertNotNull(geogigCLI);
         stdOut.reset();
-        exitCode = geogitCLI.execute(command);
-        if (failFast && geogitCLI.exception != null) {
-            Exception exception = geogitCLI.exception;
+        exitCode = geogigCLI.execute(command);
+        if (failFast && geogigCLI.exception != null) {
+            Exception exception = geogigCLI.exception;
             throw exception;
         }
     }
@@ -182,15 +182,15 @@ public class GlobalState {
 
     public static void deleteAndReplaceFeatureType() throws Exception {
 
-        GeoGIG geogit = geogitCLI.newGeoGIT();
+        GeoGIG geogig = geogigCLI.newGeoGIG();
         try {
-            final WorkingTree workTree = geogit.getRepository().workingTree();
+            final WorkingTree workTree = geogig.getRepository().workingTree();
             workTree.delete(points1.getType().getName());
             Name name = points1_FTmodified.getType().getName();
             String parentPath = name.getLocalPart();
             workTree.insert(parentPath, points1_FTmodified);
         } finally {
-            geogit.close();
+            geogig.close();
         }
     }
 
@@ -213,17 +213,17 @@ public class GlobalState {
 
     public static List<ObjectId> insertAndAdd(Feature... features) throws Exception {
         List<ObjectId> ids = insert(features);
-        geogitCLI.execute("add");
+        geogigCLI.execute("add");
         return ids;
     }
 
     public static List<ObjectId> insert(Feature... features) throws Exception {
-        geogitCLI.close();
-        GeoGIG geogit = geogitCLI.newGeoGIT(Hints.readWrite());
-        Preconditions.checkNotNull(geogit);
+        geogigCLI.close();
+        GeoGIG geogig = geogigCLI.newGeoGIG(Hints.readWrite());
+        Preconditions.checkNotNull(geogig);
         List<ObjectId> ids = Lists.newArrayListWithCapacity(features.length);
         try {
-            Repository repository = geogit.getRepository();
+            Repository repository = geogig.getRepository();
             final WorkingTree workTree = repository.workingTree();
             for (Feature f : features) {
                 Name name = f.getType().getName();
@@ -233,7 +233,7 @@ public class GlobalState {
                 ids.add(objectId);
             }
         } finally {
-            geogit.close();
+            geogig.close();
         }
         return ids;
     }
@@ -255,16 +255,16 @@ public class GlobalState {
     }
 
     public static boolean delete(Feature f) throws Exception {
-        GeoGIG geogit = geogitCLI.newGeoGIT();
+        GeoGIG geogig = geogigCLI.newGeoGIG();
         try {
-            final WorkingTree workTree = geogit.getRepository().workingTree();
+            final WorkingTree workTree = geogig.getRepository().workingTree();
             Name name = f.getType().getName();
             String localPart = name.getLocalPart();
             String id = f.getIdentifier().getID();
             boolean existed = workTree.delete(localPart, id);
             return existed;
         } finally {
-            geogit.close();
+            geogig.close();
         }
     }
 }

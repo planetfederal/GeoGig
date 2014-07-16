@@ -31,7 +31,7 @@ import com.beust.jcommander.Parameters;
  * <p>
  * Usage:
  * <ul>
- * <li> {@code geogit serve [-p <port>] [<directory>]}
+ * <li> {@code geogig serve [-p <port>] [<directory>]}
  * </ul>
  * </p>
  * 
@@ -53,8 +53,8 @@ public class Serve extends AbstractCommand {
 
         String loc = repo != null && repo.size() > 0 ? repo.get(0) : ".";
 
-        GeoGIG geogit = loadGeoGIT(loc, cli);
-        Application application = new Main(geogit);
+        GeoGIG geogig = loadGeoGIG(loc, cli);
+        Application application = new Main(geogig);
 
         Component comp = new Component();
 
@@ -77,15 +77,15 @@ public class Serve extends AbstractCommand {
         }
     }
 
-    GeoGIG loadGeoGIT(String repo, GeogigCLI cli) {
+    GeoGIG loadGeoGIG(String repo, GeogigCLI cli) {
         Platform platform = new DefaultPlatform();
         platform.setWorkingDir(new File(repo));
 
-        GeoGIG geogit = new GeoGIG(cli.getGeogitInjector(), platform.pwd());
-        if (geogit.command(ResolveGeogigDir.class).call().isPresent()) {
-            geogit.getRepository();
+        GeoGIG geogig = new GeoGIG(cli.getGeogigInjector(), platform.pwd());
+        if (geogig.command(ResolveGeogigDir.class).call().isPresent()) {
+            geogig.getRepository();
         }
 
-        return geogit;
+        return geogig;
     }
 }

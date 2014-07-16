@@ -28,7 +28,7 @@ import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 
 /**
- * Provides a method of performing concurrent operations on a single Geogit repository.
+ * Provides a method of performing concurrent operations on a single Geogig repository.
  * 
  * @see org.locationtech.geogig.api.plumbing.TransactionBegin
  * @see org.locationtech.geogig.api.plumbing.TransactionEnd

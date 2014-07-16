@@ -21,7 +21,7 @@ import org.locationtech.geogig.web.api.ResponseWriter;
 import com.google.common.base.Preconditions;
 
 /**
- * Provides a way of getting object descriptions from GeoGit.
+ * Provides a way of getting object descriptions from GeoGig.
  * 
  * Note: This class does not use the internal CatObject implementation.
  */
@@ -49,10 +49,10 @@ public class CatWebOp extends AbstractWebAPICommand {
     @Override
     public void run(CommandContext context) {
         Preconditions.checkArgument(object != null && !object.equals(ObjectId.NULL));
-        final Context geogit = this.getCommandLocator(context);
+        final Context geogig = this.getCommandLocator(context);
 
-        Preconditions.checkState(geogit.stagingDatabase().exists(object));
-        final RevObject revObject = geogit.stagingDatabase().get(object);
+        Preconditions.checkState(geogig.stagingDatabase().exists(object));
+        final RevObject revObject = geogig.stagingDatabase().get(object);
         switch (revObject.getType()) {
         case COMMIT:
             context.setResponseContent(new CommandResponse() {

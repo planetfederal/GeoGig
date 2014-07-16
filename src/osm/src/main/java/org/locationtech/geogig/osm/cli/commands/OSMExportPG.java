@@ -104,7 +104,7 @@ public class OSMExportPG extends AbstractPGCommand implements CLICommand {
                 if (overwrite) {
                     featureStore.removeFeatures(Filter.INCLUDE);
                 }
-                ExportOp op = cli.getGeogit().command(ExportOp.class).setFeatureStore(featureStore)
+                ExportOp op = cli.getGeogig().command(ExportOp.class).setFeatureStore(featureStore)
                         .setPath(path).setFeatureTypeConversionFunction(function);
                 try {
                     op.setProgressListener(cli.getProgressListener()).call();

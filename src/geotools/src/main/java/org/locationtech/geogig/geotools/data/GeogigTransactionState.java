@@ -40,7 +40,7 @@ class GeogigTransactionState implements State {
 
     private ContentEntry entry;
 
-    private GeogigTransaction geogitTx;
+    private GeogigTransaction geogigTx;
 
     private Transaction tx;
 
@@ -51,8 +51,8 @@ class GeogigTransactionState implements State {
         this.entry = entry;
     }
 
-    public Optional<GeogigTransaction> getGeogitTransaction() {
-        return Optional.fromNullable(this.geogitTx);
+    public Optional<GeogigTransaction> getGeogigTransaction() {
+        return Optional.fromNullable(this.geogigTx);
     }
 
     @Override
@@ -68,23 +68,23 @@ class GeogigTransactionState implements State {
         if (transaction == null) {
             // Transaction.removeState has been called (during
             // transaction.close())
-            if (this.geogitTx != null) {
+            if (this.geogigTx != null) {
                 // throw new
                 // IllegalStateException("Transaction is attempting to "
-                // + "close a non committed or aborted geogit transaction");
-                geogitTx.abort();
+                // + "close a non committed or aborted geogig transaction");
+                geogigTx.abort();
             }
-            this.geogitTx = null;
+            this.geogigTx = null;
         } else {
-            if (this.geogitTx != null) {
-                geogitTx.abort();
+            if (this.geogigTx != null) {
+                geogigTx.abort();
             }
             GeoGigDataStore dataStore = (GeoGigDataStore) entry.getDataStore();
             Context commandLocator = dataStore.getCommandLocator(this.tx);
-            this.geogitTx = commandLocator.command(TransactionBegin.class).call();
+            this.geogigTx = commandLocator.command(TransactionBegin.class).call();
             // checkout the working branch
             final String workingBranch = dataStore.getOrFigureOutBranch();
-            this.geogitTx.command(CheckoutOp.class).setForce(true).setSource(workingBranch).call();
+            this.geogigTx.command(CheckoutOp.class).setForce(true).setSource(workingBranch).call();
         }
     }
 
@@ -95,7 +95,7 @@ class GeogigTransactionState implements State {
 
     @Override
     public void commit() throws IOException {
-        Preconditions.checkState(this.geogitTx != null);
+        Preconditions.checkState(this.geogigTx != null);
         /*
          * This follows suite with the hack set on GeoSever's
          * org.geoserver.wfs.Transaction.getDatastoreTransaction()
@@ -107,9 +107,9 @@ class GeogigTransactionState implements State {
         final String author = fullName.isPresent() ? fullName.get() : txUserName.orNull();
         String commitMessage = getTransactionProperty(VERSIONING_COMMIT_MESSAGE).orNull();
 
-        this.geogitTx.command(AddOp.class).call();
+        this.geogigTx.command(AddOp.class).call();
         try {
-            CommitOp commitOp = this.geogitTx.command(CommitOp.class);
+            CommitOp commitOp = this.geogigTx.command(CommitOp.class);
             if (txUserName != null) {
                 commitOp.setAuthor(author, email.orNull());
             }
@@ -123,13 +123,13 @@ class GeogigTransactionState implements State {
         }
 
         try {
-            this.geogitTx.setAuthor(author, email.orNull()).commit();
+            this.geogigTx.setAuthor(author, email.orNull()).commit();
         } catch (ConflictsException e) {
             // TODO: how should this be handled?
-            this.geogitTx.abort();
+            this.geogigTx.abort();
         }
 
-        this.geogitTx = null;
+        this.geogigTx = null;
     }
 
     private Optional<String> getTransactionProperty(final String propName) {
@@ -141,7 +141,7 @@ class GeogigTransactionState implements State {
     }
 
     private String composeDefaultCommitMessage() {
-        Iterator<DiffEntry> indexDiffs = this.geogitTx.command(DiffIndex.class).call();
+        Iterator<DiffEntry> indexDiffs = this.geogigTx.command(DiffIndex.class).call();
         int added = 0, removed = 0, modified = 0;
         StringBuilder msg = new StringBuilder();
         while (indexDiffs.hasNext()) {
@@ -191,9 +191,9 @@ class GeogigTransactionState implements State {
 
     @Override
     public void rollback() throws IOException {
-        Preconditions.checkState(this.geogitTx != null);
-        this.geogitTx.abort();
-        this.geogitTx = null;
+        Preconditions.checkState(this.geogigTx != null);
+        this.geogigTx.abort();
+        this.geogigTx = null;
     }
 
 }

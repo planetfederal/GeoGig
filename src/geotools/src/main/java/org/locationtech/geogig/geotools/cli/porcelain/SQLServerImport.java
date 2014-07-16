@@ -77,7 +77,7 @@ public class SQLServerImport extends AbstractSQLServerCommand implements CLIComm
             cli.getConsole().println("Importing from database " + commonArgs.database);
 
             ProgressListener progressListener = cli.getProgressListener();
-            cli.getGeogit().command(ImportOp.class).setAll(all).setTable(table).setAlter(alter)
+            cli.getGeogig().command(ImportOp.class).setAll(all).setTable(table).setAlter(alter)
                     .setDestinationPath(destTable).setOverwrite(!add).setDataStore(dataStore)
                     .setAdaptToDefaultFeatureType(!forceFeatureType)
                     .setProgressListener(progressListener).call();

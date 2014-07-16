@@ -105,7 +105,7 @@ public class GeoJsonImport extends AbstractGeoJsonCommand implements CLICommand 
                 if (destPath == null) {
                     destPath = dataStore.getSchema(dataStore.getNames().get(0)).getTypeName();
                 }
-                Optional<RevFeatureType> ft = cli.getGeogit().command(RevObjectParse.class)
+                Optional<RevFeatureType> ft = cli.getGeogig().command(RevObjectParse.class)
                         .setRefSpec("WORK_HEAD:" + destPath).call(RevFeatureType.class);
                 // If there is previous data in the destination tree, we try to get the name of the
                 // geom attribute.
@@ -122,7 +122,7 @@ public class GeoJsonImport extends AbstractGeoJsonCommand implements CLICommand 
                 cli.getConsole().println("Importing from GeoJSON " + geoJSON);
 
                 ProgressListener progressListener = cli.getProgressListener();
-                cli.getGeogit().command(ImportOp.class).setAll(true).setTable(null).setAlter(alter)
+                cli.getGeogig().command(ImportOp.class).setAll(true).setTable(null).setAlter(alter)
                         .setOverwrite(!add).setDestinationPath(destTable).setDataStore(dataStore)
                         .setFidAttribute(fidAttribute).setGeometryNameOverride(geomName)
                         .setAdaptToDefaultFeatureType(!forceFeatureType)

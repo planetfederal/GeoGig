@@ -29,7 +29,7 @@ import com.google.common.base.Optional;
 import com.google.common.collect.Maps;
 
 /**
- * This command creates an empty geogit repository - basically a .geogit directory with
+ * This command creates an empty geogig repository - basically a .geogig directory with
  * subdirectories for the object, refs, index, and config databases. An initial HEAD that references
  * the HEAD of the master branch is also created.
  * <p>
@@ -37,13 +37,13 @@ import com.google.common.collect.Maps;
  * <p>
  * Usage:
  * <ul>
- * <li> {@code geogit init [<directory>]}
+ * <li> {@code geogig init [<directory>]}
  * </ul>
  * 
  * @see InitOp
  */
 @RequiresRepository(false)
-@Parameters(commandNames = "init", commandDescription = "Create an empty geogit repository or reinitialize an existing one")
+@Parameters(commandNames = "init", commandDescription = "Create an empty geogig repository or reinitialize an existing one")
 public class Init extends AbstractCommand implements CLICommand {
 
     @Parameter(description = "Repository location (directory).", required = false, arity = 1)
@@ -75,21 +75,21 @@ public class Init extends AbstractCommand implements CLICommand {
         final boolean repoExisted;
         final Repository repository;
         {
-            GeoGIG geogit = cli.getGeogit();
-            if (geogit == null) {
-                Context geogitInjector = cli.getGeogitInjector();
-                geogit = new GeoGIG(geogitInjector);
+            GeoGIG geogig = cli.getGeogig();
+            if (geogig == null) {
+                Context geogigInjector = cli.getGeogigInjector();
+                geogig = new GeoGIG(geogigInjector);
             }
-            repoExisted = determineIfRepoExists(targetDirectory, geogit);
+            repoExisted = determineIfRepoExists(targetDirectory, geogig);
             final Map<String, String> suppliedConfiguration = splitConfig(config);
 
             try {
-                repository = geogit.command(InitOp.class).setConfig(suppliedConfiguration)
+                repository = geogig.command(InitOp.class).setConfig(suppliedConfiguration)
                         .setTarget(targetDirectory).call();
             } catch (IllegalArgumentException e) {
                 throw new CommandFailedException(e.getMessage(), e);
             } finally {
-                geogit.close();
+                geogig.close();
             }
         }
 
@@ -101,26 +101,26 @@ public class Init extends AbstractCommand implements CLICommand {
         }
         String message;
         if (repoExisted) {
-            message = "Reinitialized existing Geogit repository in "
+            message = "Reinitialized existing Geogig repository in "
                     + repoDirectory.getAbsolutePath();
         } else {
-            message = "Initialized empty Geogit repository in " + repoDirectory.getAbsolutePath();
+            message = "Initialized empty Geogig repository in " + repoDirectory.getAbsolutePath();
         }
         cli.getConsole().println(message);
     }
 
-    private boolean determineIfRepoExists(final File targetDirectory, GeoGIG geogit) {
+    private boolean determineIfRepoExists(final File targetDirectory, GeoGIG geogig) {
         final boolean repoExisted;
 
-        final File currentDirectory = geogit.getPlatform().pwd();
+        final File currentDirectory = geogig.getPlatform().pwd();
         try {
-            geogit.getPlatform().setWorkingDir(targetDirectory);
+            geogig.getPlatform().setWorkingDir(targetDirectory);
         } catch (IllegalArgumentException e) {
             return false;
         }
-        final Optional<URL> currentRepoUrl = geogit.command(ResolveGeogigDir.class).call();
+        final Optional<URL> currentRepoUrl = geogig.command(ResolveGeogigDir.class).call();
         repoExisted = currentRepoUrl.isPresent();
-        geogit.getPlatform().setWorkingDir(currentDirectory);
+        geogig.getPlatform().setWorkingDir(currentDirectory);
         return repoExisted;
     }
 

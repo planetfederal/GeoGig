@@ -47,7 +47,7 @@ class HeapMemoryMetricsService extends AbstractScheduledService {
                 return;
             }
         } catch (ConfigException e) {
-            return;// not in a geogit repository
+            return;// not in a geogig repository
         }
 
         MemoryUsage heap = MEMORY_MX_BEAN.getHeapMemoryUsage();

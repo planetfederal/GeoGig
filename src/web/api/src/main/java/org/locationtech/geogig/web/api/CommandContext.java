@@ -14,7 +14,7 @@ public interface CommandContext {
     /**
      * @return the {@link GeoGIG} for this context.
      */
-    GeoGIG getGeoGIT();
+    GeoGIG getGeoGIG();
 
     /**
      * Sets the response for the context.

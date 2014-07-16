@@ -1,23 +1,23 @@
 Feature: "branch" command
     In order to work separately from the main history
-    As a Geogit User
+    As a Geogig User
     I want to be able to create, delete and list branches
     
   Scenario: Try to create a branch while not in a repository
     Given I am in an empty directory
       And I run the command "branch newBranch"
-     Then the response should contain "Not in a geogit repository"
+     Then the response should contain "Not in a geogig repository"
       
   Scenario: Try to delete a branch while not in a repository
     Given I am in an empty directory
       And I run the command "branch --delete newBranch"
-     Then the response should contain "Not in a geogit repository"
+     Then the response should contain "Not in a geogig repository"
       And it should exit with non-zero exit code 
      
-  Scenario: Try to list branches while not in a geogit repository
+  Scenario: Try to list branches while not in a geogig repository
     Given I am in an empty directory
       And I run the command "branch"
-     Then the response should contain "Not in a geogit repository"
+     Then the response should contain "Not in a geogig repository"
       And it should exit with non-zero exit code 
      
   Scenario: Try to create a branch without having made any commits
@@ -174,7 +174,7 @@ Feature: "branch" command
   Scenario: Try to rename a branch without being in a repository
     Given I am in an empty directory
      When I run the command "branch --rename branch2"
-    Then the response should contain "Not in a geogit repository"
+    Then the response should contain "Not in a geogig repository"
     
   Scenario: Try to rename a branch without specifying a name
     Given I have a repository

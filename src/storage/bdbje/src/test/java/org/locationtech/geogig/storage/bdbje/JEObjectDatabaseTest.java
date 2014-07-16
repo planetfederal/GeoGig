@@ -37,7 +37,7 @@ public class JEObjectDatabaseTest extends Assert {
     @Before
     public void setUp() {
         File root = folder.getRoot();
-        folder.newFolder(".geogit");
+        folder.newFolder(".geogig");
         File home = folder.newFolder("home");
         platform = new TestPlatform(root);
         platform.setUserHome(home);

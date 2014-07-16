@@ -49,7 +49,7 @@ public class SLDescribe extends AbstractSLCommand implements CLICommand {
         try {
             cli.getConsole().println("Fetching table...");
 
-            Optional<Map<String, String>> propertyMap = cli.getGeogit().command(DescribeOp.class)
+            Optional<Map<String, String>> propertyMap = cli.getGeogig().command(DescribeOp.class)
                     .setTable(table).setDataStore(dataStore).call();
 
             if (propertyMap.isPresent()) {

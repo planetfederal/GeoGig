@@ -45,11 +45,11 @@ import com.google.common.collect.Lists;
  * <p>
  * Usage:
  * <ul>
- * <li> {@code geogit diff [-- <path>...]}: compare working tree and index
- * <li> {@code geogit diff <commit> [-- <path>...]}: compare the working tree with the given commit
- * <li> {@code geogit diff --cached [-- <path>...]}: compare the index with the HEAD commit
- * <li> {@code geogit diff --cached <commit> [-- <path>...]}: compare the index with the given commit
- * <li> {@code geogit diff <commit1> <commit2> [-- <path>...]}: compare {@code commit1} with
+ * <li> {@code geogig diff [-- <path>...]}: compare working tree and index
+ * <li> {@code geogig diff <commit> [-- <path>...]}: compare the working tree with the given commit
+ * <li> {@code geogig diff --cached [-- <path>...]}: compare the index with the HEAD commit
+ * <li> {@code geogig diff --cached <commit> [-- <path>...]}: compare the index with the given commit
+ * <li> {@code geogig diff <commit1> <commit2> [-- <path>...]}: compare {@code commit1} with
  * {@code commit2}, where {@code commit1} is the eldest or left side of the diff.
  * </ul>
  * 
@@ -94,14 +94,14 @@ public class Diff extends AbstractCommand implements CLICommand {
         checkParameter(!(cached && refSpec.size() > 1),
                 "--cached allows zero or one ref specs to compare the index with.");
 
-        GeoGIG geogit = cli.getGeogit();
+        GeoGIG geogig = cli.getGeogig();
 
         String oldVersion = resolveOldVersion();
         String newVersion = resolveNewVersion();
 
         List<String> paths = removeEmptyPaths();
         if (bounds) {
-            DiffBounds diff = geogit.command(DiffBounds.class).setOldVersion(oldVersion)
+            DiffBounds diff = geogig.command(DiffBounds.class).setOldVersion(oldVersion)
                     .setNewVersion(newVersion).setCompareIndex(cached);
             diff.setPathFilters(paths);
             CoordinateReferenceSystem crs = parseCrs();
@@ -109,7 +109,7 @@ public class Diff extends AbstractCommand implements CLICommand {
                 diff.setCRS(crs);
             }
             DiffSummary<BoundingBox, BoundingBox> diffBounds = diff.call();
-            BoundsDiffPrinter.print(geogit, cli.getConsole(), diffBounds);
+            BoundsDiffPrinter.print(geogig, cli.getConsole(), diffBounds);
             return;
         }
         if (count) {
@@ -119,7 +119,7 @@ public class Diff extends AbstractCommand implements CLICommand {
             if (newVersion == null) {
                 newVersion = cached ? Ref.STAGE_HEAD : Ref.WORK_HEAD;
             }
-            DiffCount cdiff = geogit.command(DiffCount.class).setOldVersion(oldVersion)
+            DiffCount cdiff = geogig.command(DiffCount.class).setOldVersion(oldVersion)
                     .setNewVersion(newVersion);
             cdiff.setFilter(paths);
             DiffObjectCount count = cdiff.call();
@@ -130,7 +130,7 @@ public class Diff extends AbstractCommand implements CLICommand {
             return;
         }
 
-        DiffOp diff = geogit.command(DiffOp.class);
+        DiffOp diff = geogig.command(DiffOp.class);
         diff.setOldVersion(oldVersion).setNewVersion(newVersion).setCompareIndex(cached);
 
         Iterator<DiffEntry> entries;
@@ -160,7 +160,7 @@ public class Diff extends AbstractCommand implements CLICommand {
         DiffEntry entry;
         while (entries.hasNext()) {
             entry = entries.next();
-            printer.print(geogit, cli.getConsole(), entry);
+            printer.print(geogig, cli.getConsole(), entry);
         }
     }
 
@@ -197,7 +197,7 @@ public class Diff extends AbstractCommand implements CLICommand {
 
     private static final class BoundsDiffPrinter {
 
-        public static void print(GeoGIG geogit, ConsoleReader console,
+        public static void print(GeoGIG geogig, ConsoleReader console,
                 DiffSummary<BoundingBox, BoundingBox> diffBounds) throws IOException {
 
             BoundingBox left = diffBounds.getLeft();

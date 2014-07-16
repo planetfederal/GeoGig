@@ -44,7 +44,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterators;
 
 /**
- * Interface for the Log operation in GeoGit.
+ * Interface for the Log operation in GeoGig.
  * 
  * Web interface for {@link LogOp}
  */
@@ -204,9 +204,9 @@ public class Log extends AbstractWebAPICommand {
      */
     @Override
     public void run(final CommandContext context) {
-        final Context geogit = this.getCommandLocator(context);
+        final Context geogig = this.getCommandLocator(context);
 
-        LogOp op = geogit.command(LogOp.class).setFirstParentOnly(firstParentOnly);
+        LogOp op = geogig.command(LogOp.class).setFirstParentOnly(firstParentOnly);
 
         if (skip != null) {
             op.setSkip(skip.intValue());
@@ -219,11 +219,11 @@ public class Log extends AbstractWebAPICommand {
             Date since = new Date(0);
             Date until = new Date();
             if (this.sinceTime != null) {
-                since = new Date(geogit.command(ParseTimestamp.class).setString(this.sinceTime)
+                since = new Date(geogig.command(ParseTimestamp.class).setString(this.sinceTime)
                         .call());
             }
             if (this.untilTime != null) {
-                until = new Date(geogit.command(ParseTimestamp.class).setString(this.untilTime)
+                until = new Date(geogig.command(ParseTimestamp.class).setString(this.untilTime)
                         .call());
             }
             op.setTimeRange(new Range<Date>(Date.class, since, until));
@@ -231,13 +231,13 @@ public class Log extends AbstractWebAPICommand {
 
         if (this.since != null) {
             Optional<ObjectId> since;
-            since = geogit.command(RevParse.class).setRefSpec(this.since).call();
+            since = geogig.command(RevParse.class).setRefSpec(this.since).call();
             Preconditions.checkArgument(since.isPresent(), "Object not found '%s'", this.since);
             op.setSince(since.get());
         }
         if (this.until != null) {
             Optional<ObjectId> until;
-            until = geogit.command(RevParse.class).setRefSpec(this.until).call();
+            until = geogig.command(RevParse.class).setRefSpec(this.until).call();
             Preconditions.checkArgument(until.isPresent(), "Object not found '%s'", this.until);
             op.setUntil(until.get());
         }
@@ -271,8 +271,8 @@ public class Log extends AbstractWebAPICommand {
                     int removed = 0;
 
                     // If it's a shallow clone, the commit may not exist
-                    if (parent.equals(ObjectId.NULL) || geogit.stagingDatabase().exists(parent)) {
-                        final Iterator<DiffEntry> diff = geogit.command(DiffOp.class)
+                    if (parent.equals(ObjectId.NULL) || geogig.stagingDatabase().exists(parent)) {
+                        final Iterator<DiffEntry> diff = geogig.command(DiffOp.class)
                                 .setOldVersion(parent).setNewVersion(input.getId())
                                 .setFilter(pathFilter).call();
 
@@ -308,7 +308,7 @@ public class Log extends AbstractWebAPICommand {
 
                     @Override
                     public void write(Writer out) throws Exception {
-                        writeCSV(context.getGeoGIT(), out, log);
+                        writeCSV(context.getGeoGIG(), out, log);
                     }
                 });
             } else {
@@ -329,17 +329,17 @@ public class Log extends AbstractWebAPICommand {
 
     }
 
-    private void writeCSV(GeoGIG geogit, Writer out, Iterator<RevCommit> log) throws Exception {
+    private void writeCSV(GeoGIG geogig, Writer out, Iterator<RevCommit> log) throws Exception {
         String response = "ChangeType,FeatureId,CommitId,Parent CommitIds,Author Name,Author Email,Author Commit Time,Committer Name,Committer Email,Committer Commit Time,Commit Message";
         out.write(response);
         response = "";
         String path = paths.get(0);
         // This is the feature type object
-        Optional<NodeRef> ref = geogit.command(FindTreeChild.class).setChildPath(path)
-                .setParent(geogit.getRepository().workingTree().getTree()).call();
+        Optional<NodeRef> ref = geogig.command(FindTreeChild.class).setChildPath(path)
+                .setParent(geogig.getRepository().workingTree().getTree()).call();
         Optional<RevObject> type = Optional.absent();
         if (ref.isPresent()) {
-            type = geogit.command(RevObjectParse.class)
+            type = geogig.command(RevObjectParse.class)
                     .setRefSpec(ref.get().getMetadataId().toString()).call();
         } else {
             throw new CommandSpecException("Couldn't resolve the given path.");
@@ -360,7 +360,7 @@ public class Log extends AbstractWebAPICommand {
                 commit = log.next();
                 String parentId = commit.getParentIds().size() >= 1 ? commit.getParentIds().get(0)
                         .toString() : ObjectId.NULL.toString();
-                Iterator<DiffEntry> diff = geogit.command(DiffOp.class).setOldVersion(parentId)
+                Iterator<DiffEntry> diff = geogig.command(DiffOp.class).setOldVersion(parentId)
                         .setNewVersion(commit.getId().toString()).setFilter(path).call();
                 while (diff.hasNext()) {
                     DiffEntry entry = diff.next();
@@ -415,7 +415,7 @@ public class Log extends AbstractWebAPICommand {
                         // Feature was added or modified so we need to write out the
                         // attribute
                         // values from the feature
-                        Optional<RevObject> feature = geogit.command(RevObjectParse.class)
+                        Optional<RevObject> feature = geogig.command(RevObjectParse.class)
                                 .setObjectId(entry.newObjectId()).call();
                         RevFeature revFeature = (RevFeature) feature.get();
                         List<Optional<Object>> values = revFeature.getValues();

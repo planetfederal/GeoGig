@@ -1,6 +1,6 @@
 Feature: "squash" command
     In order to modify history of the repository
-    As a Geogit User
+    As a Geogig User
     I want to squash commits
 
 Scenario: Squash commits

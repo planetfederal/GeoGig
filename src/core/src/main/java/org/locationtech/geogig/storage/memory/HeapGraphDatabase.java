@@ -29,7 +29,7 @@ import com.google.common.collect.Maps;
 import com.google.inject.Inject;
 
 /**
- * Provides an default in memory implementation of a GeoGit Graph Database.
+ * Provides an default in memory implementation of a GeoGig Graph Database.
  */
 public class HeapGraphDatabase implements GraphDatabase {
 

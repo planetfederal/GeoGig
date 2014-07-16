@@ -14,7 +14,7 @@ import org.locationtech.geogig.storage.ObjectDatabase;
 import org.locationtech.geogig.storage.StagingDatabase;
 
 /**
- * Annotation for {@link CLICommand}s giving geogit a hint that the operation is read only for
+ * Annotation for {@link CLICommand}s giving geogig a hint that the operation is read only for
  * {@link ObjectDatabase}, {@link StagingDatabase}, and any remote repository it may connect to.
  */
 @Target(ElementType.TYPE)

@@ -1,6 +1,6 @@
 Feature: "apply" command
     In order to modify feature
-    As a Geogit User
+    As a Geogig User
     I want to insert a feature according to a definition in a file
 
 Scenario: Insert from a file

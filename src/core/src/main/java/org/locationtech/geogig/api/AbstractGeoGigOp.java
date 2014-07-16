@@ -20,7 +20,7 @@ import org.locationtech.geogig.storage.RefDatabase;
 import org.locationtech.geogig.storage.StagingDatabase;
 
 /**
- * Provides a base implementation for internal GeoGit operations.
+ * Provides a base implementation for internal GeoGig operations.
  * 
  * @param <T> the type of the result of the execution of the command
  */

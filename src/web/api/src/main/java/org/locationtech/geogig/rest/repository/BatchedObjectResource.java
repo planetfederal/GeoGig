@@ -5,7 +5,7 @@
 
 package org.locationtech.geogig.rest.repository;
 
-import static org.locationtech.geogig.rest.repository.RESTUtils.getGeogit;
+import static org.locationtech.geogig.rest.repository.RESTUtils.getGeogig;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -107,7 +107,7 @@ public class BatchedObjectResource extends Finder {
             }
 
             Request request = getRequest();
-            final GeoGIG ggit = getGeogit(request).get();
+            final GeoGIG ggit = getGeogig(request).get();
             final Repository repository = ggit.getRepository();
             final Deduplicator deduplicator = ggit.command(CreateDeduplicator.class).call();
 

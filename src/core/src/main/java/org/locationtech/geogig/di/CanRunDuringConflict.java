@@ -10,7 +10,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * An annotation to indicate that a GeoGit operation can run during merge conflicts
+ * An annotation to indicate that a GeoGig operation can run during merge conflicts
  * 
  */
 @Retention(RetentionPolicy.RUNTIME)

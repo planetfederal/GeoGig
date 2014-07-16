@@ -46,7 +46,7 @@ public abstract class AbstractNodeIndexTest extends Assert {
 
     @Before
     public void before() {
-        tempFolder.newFolder(".geogit");
+        tempFolder.newFolder(".geogig");
         File workingDirectory = tempFolder.getRoot();
         Platform platform = new TestPlatform(workingDirectory);
         executorService = Executors.newFixedThreadPool(4);

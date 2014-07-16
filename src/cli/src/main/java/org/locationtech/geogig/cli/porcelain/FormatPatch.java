@@ -58,10 +58,10 @@ public class FormatPatch extends AbstractCommand implements CLICommand {
     protected void runInternal(GeogigCLI cli) throws IOException {
         checkParameter(refSpec.size() < 3, "Commit list is too long :%s", refSpec);
 
-        GeoGIG geogit = cli.getGeogit();
+        GeoGIG geogig = cli.getGeogig();
         checkParameter(file != null, "Patch file not specified");
 
-        DiffOp diff = geogit.command(DiffOp.class).setReportTrees(true);
+        DiffOp diff = geogig.command(DiffOp.class).setReportTrees(true);
 
         String oldVersion = resolveOldVersion();
         String newVersion = resolveNewVersion();
@@ -85,7 +85,7 @@ public class FormatPatch extends AbstractCommand implements CLICommand {
             return;
         }
 
-        Patch patch = geogit.command(CreatePatchOp.class).setDiffs(entries).call();
+        Patch patch = geogig.command(CreatePatchOp.class).setDiffs(entries).call();
         FileOutputStream fos = new FileOutputStream(file);
         OutputStreamWriter out = new OutputStreamWriter(fos, "UTF-8");
         PatchSerializer.write(out, patch);

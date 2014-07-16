@@ -41,7 +41,7 @@ public class Clean extends AbstractCommand {
     @Override
     public void runInternal(GeogigCLI cli) throws IOException {
         final ConsoleReader console = cli.getConsole();
-        final GeoGIG geogit = cli.getGeogit();
+        final GeoGIG geogig = cli.getGeogig();
 
         String pathFilter = null;
         if (!path.isEmpty()) {
@@ -51,7 +51,7 @@ public class Clean extends AbstractCommand {
         if (dryRun) {
             if (pathFilter != null) {
                 // check that is a valid path
-                Repository repository = cli.getGeogit().getRepository();
+                Repository repository = cli.getGeogig().getRepository();
                 NodeRef.checkValidPath(pathFilter);
 
                 Optional<NodeRef> ref = repository.command(FindTreeChild.class).setIndex(true)
@@ -62,7 +62,7 @@ public class Clean extends AbstractCommand {
                 checkParameter(ref.get().getType() == TYPE.TREE,
                         "pathspec '%s' did not resolve to a tree", pathFilter);
             }
-            Iterator<DiffEntry> unstaged = geogit.command(DiffWorkTree.class).setFilter(pathFilter)
+            Iterator<DiffEntry> unstaged = geogig.command(DiffWorkTree.class).setFilter(pathFilter)
                     .call();
             while (unstaged.hasNext()) {
                 DiffEntry entry = unstaged.next();
@@ -71,7 +71,7 @@ public class Clean extends AbstractCommand {
                 }
             }
         } else {
-            geogit.command(CleanOp.class).setPath(pathFilter).call();
+            geogig.command(CleanOp.class).setPath(pathFilter).call();
             console.println("Clean operation completed succesfully.");
         }
     }

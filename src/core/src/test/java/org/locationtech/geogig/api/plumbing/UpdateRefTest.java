@@ -28,12 +28,12 @@ public class UpdateRefTest extends RepositoryTestCase {
     @Test
     public void testConstructorAndMutators() throws Exception {
         insertAndAdd(points1);
-        RevCommit commit1 = geogit.command(CommitOp.class).call();
-        geogit.command(BranchCreateOp.class).setName("branch1").call();
+        RevCommit commit1 = geogig.command(CommitOp.class).call();
+        geogig.command(BranchCreateOp.class).setName("branch1").call();
 
         insertAndAdd(points2);
-        RevCommit commit2 = geogit.command(CommitOp.class).call();
-        Optional<Ref> newBranch = geogit.command(UpdateRef.class).setName("refs/heads/branch1")
+        RevCommit commit2 = geogig.command(CommitOp.class).call();
+        Optional<Ref> newBranch = geogig.command(UpdateRef.class).setName("refs/heads/branch1")
                 .setNewValue(commit2.getId()).setOldValue(commit1.getId()).setReason("Testing")
                 .call();
 
@@ -44,42 +44,42 @@ public class UpdateRefTest extends RepositoryTestCase {
     @Test
     public void testNoName() {
         exception.expect(IllegalStateException.class);
-        geogit.command(UpdateRef.class).call();
+        geogig.command(UpdateRef.class).call();
     }
 
     @Test
     public void testNoValue() {
         exception.expect(IllegalStateException.class);
-        geogit.command(UpdateRef.class).setName(Ref.MASTER).call();
+        geogig.command(UpdateRef.class).setName(Ref.MASTER).call();
     }
 
     @Test
     public void testDeleteRefThatWasASymRef() throws Exception {
         insertAndAdd(points1);
-        RevCommit commit1 = geogit.command(CommitOp.class).call();
-        geogit.command(BranchCreateOp.class).setName("branch1").call();
+        RevCommit commit1 = geogig.command(CommitOp.class).call();
+        geogig.command(BranchCreateOp.class).setName("branch1").call();
 
         insertAndAdd(points2);
-        RevCommit commit2 = geogit.command(CommitOp.class).call();
+        RevCommit commit2 = geogig.command(CommitOp.class).call();
 
-        geogit.command(UpdateSymRef.class).setName("refs/heads/branch1")
+        geogig.command(UpdateSymRef.class).setName("refs/heads/branch1")
                 .setOldValue(commit1.getId().toString()).setNewValue(Ref.MASTER)
                 .setReason("this is a test").call();
 
-        geogit.command(UpdateRef.class).setName("refs/heads/branch1").setNewValue(commit2.getId())
+        geogig.command(UpdateRef.class).setName("refs/heads/branch1").setNewValue(commit2.getId())
                 .setOldValue(Ref.MASTER).call();
 
-        Optional<Ref> branchId = geogit.command(RefParse.class).setName("refs/heads/branch1")
+        Optional<Ref> branchId = geogig.command(RefParse.class).setName("refs/heads/branch1")
                 .call();
 
         assertTrue(branchId.get().getObjectId().equals(commit2.getId()));
 
-        geogit.command(UpdateRef.class).setDelete(true).setName("refs/heads/branch1").call();
+        geogig.command(UpdateRef.class).setDelete(true).setName("refs/heads/branch1").call();
     }
 
     @Test
     public void testDeleteWithNonexistentName() {
-        Optional<Ref> ref = geogit.command(UpdateRef.class).setDelete(true).setName("NoRef").call();
+        Optional<Ref> ref = geogig.command(UpdateRef.class).setDelete(true).setName("NoRef").call();
         assertFalse(ref.isPresent());
     }
 }

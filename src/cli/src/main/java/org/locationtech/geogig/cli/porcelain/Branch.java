@@ -61,14 +61,14 @@ import com.google.common.collect.Lists;
  * <p>
  * Usage:
  * <ul>
- * <li> {@code geogit branch [-c] <branchname>[<startpoint>]}: Creates a new branch with the given
+ * <li> {@code geogig branch [-c] <branchname>[<startpoint>]}: Creates a new branch with the given
  * branchname at the specified startpoint and checks it out immediately
- * <li> {@code geogit branch [--color=always] [-v] [-a]}: Lists all branches (Local and Remote) in
+ * <li> {@code geogig branch [--color=always] [-v] [-a]}: Lists all branches (Local and Remote) in
  * color with commit id and commit message
- * <li> {@code geogit branch [-r]}: List only remote branches
- * <li> {@code geogit branch [--delete] <branchname>...}: Deletes all the branches listed unless HEAD
+ * <li> {@code geogig branch [-r]}: List only remote branches
+ * <li> {@code geogig branch [--delete] <branchname>...}: Deletes all the branches listed unless HEAD
  * is pointing to it
- * <li> {@code geogit branch [--force] [--rename] [<oldBranchName>] <newBranchName>}: Renames a
+ * <li> {@code geogig branch [--force] [--rename] [<oldBranchName>] <newBranchName>}: Renames a
  * branch specified by oldBranchName or current branch if no oldBranchName is given to newBranchName
  * </ul>
  * 
@@ -112,7 +112,7 @@ public class Branch extends AbstractCommand implements CLICommand {
 
     @Override
     public void runInternal(final GeogigCLI cli) throws IOException {
-        final GeoGIG geogit = cli.getGeogit();
+        final GeoGIG geogig = cli.getGeogig();
 
         final ConsoleReader console = cli.getConsole();
 
@@ -121,7 +121,7 @@ public class Branch extends AbstractCommand implements CLICommand {
 
             for (String br : branchName) {
                 Optional<? extends Ref> deletedBranch;
-                deletedBranch = geogit.command(BranchDeleteOp.class).setName(br).call();
+                deletedBranch = geogig.command(BranchDeleteOp.class).setName(br).call();
 
                 checkParameter(deletedBranch.isPresent(), "No branch called '%s'.", br);
 
@@ -136,8 +136,8 @@ public class Branch extends AbstractCommand implements CLICommand {
             checkParameter(!branchName.isEmpty(), "You must specify a branch to rename.");
 
             if (branchName.size() == 1) {
-                Optional<Ref> headRef = geogit.command(RefParse.class).setName(Ref.HEAD).call();
-                geogit.command(BranchRenameOp.class).setNewName(branchName.get(0)).setForce(force)
+                Optional<Ref> headRef = geogig.command(RefParse.class).setName(Ref.HEAD).call();
+                geogig.command(BranchRenameOp.class).setNewName(branchName.get(0)).setForce(force)
                         .call();
                 if (headRef.isPresent()) {
                     SymRef ref = (SymRef) headRef.get();
@@ -146,7 +146,7 @@ public class Branch extends AbstractCommand implements CLICommand {
                             + branchName.get(0) + "'");
                 }
             } else {
-                geogit.command(BranchRenameOp.class).setOldName(branchName.get(0))
+                geogig.command(BranchRenameOp.class).setOldName(branchName.get(0))
                         .setNewName(branchName.get(1)).setForce(force).call();
                 console.println("renamed branch '" + branchName.get(0) + "' to '"
                         + branchName.get(1) + "'");
@@ -162,7 +162,7 @@ public class Branch extends AbstractCommand implements CLICommand {
         final String branch = branchName.get(0);
         final String origin = branchName.size() > 1 ? branchName.get(1) : Ref.HEAD;
 
-        Ref newBranch = geogit.command(BranchCreateOp.class).setName(branch).setForce(force)
+        Ref newBranch = geogig.command(BranchCreateOp.class).setName(branch).setForce(force)
                 .setOrphan(orphan).setAutoCheckout(checkout).setSource(origin).call();
 
         console.println("Created branch " + newBranch.getName());
@@ -170,15 +170,15 @@ public class Branch extends AbstractCommand implements CLICommand {
 
     private void listBranches(GeogigCLI cli) throws IOException {
         final ConsoleReader console = cli.getConsole();
-        final GeoGIG geogit = cli.getGeogit();
+        final GeoGIG geogig = cli.getGeogig();
 
         boolean local = all || !(remotes);
         boolean remote = all || remotes;
 
-        ImmutableList<Ref> branches = geogit.command(BranchListOp.class).setLocal(local)
+        ImmutableList<Ref> branches = geogig.command(BranchListOp.class).setLocal(local)
                 .setRemotes(remote).call();
 
-        final Ref currentHead = geogit.command(RefParse.class).setName(Ref.HEAD).call().get();
+        final Ref currentHead = geogig.command(RefParse.class).setName(Ref.HEAD).call().get();
 
         final int largest = verbose ? largestLenght(branches) : 0;
 
@@ -202,7 +202,7 @@ public class Branch extends AbstractCommand implements CLICommand {
                 ansi.a(Strings.repeat(" ", 1 + (largest - branchName.length())));
                 ansi.a(branchRef.getObjectId().toString().substring(0, 7)).a(" ");
 
-                Optional<RevCommit> commit = findCommit(geogit, branchRef);
+                Optional<RevCommit> commit = findCommit(geogig, branchRef);
                 if (commit.isPresent()) {
                     ansi.a(messageTitle(commit.get()));
                 }
@@ -222,12 +222,12 @@ public class Branch extends AbstractCommand implements CLICommand {
      * @param branchRef
      * @return
      */
-    private Optional<RevCommit> findCommit(GeoGIG geogit, Ref branchRef) {
+    private Optional<RevCommit> findCommit(GeoGIG geogig, Ref branchRef) {
         ObjectId commitId = branchRef.getObjectId();
         if (commitId.isNull()) {
             return Optional.absent();
         }
-        RevCommit commit = geogit.getRepository().getCommit(commitId);
+        RevCommit commit = geogig.getRepository().getCommit(commitId);
         return Optional.of(commit);
     }
 

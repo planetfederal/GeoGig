@@ -39,7 +39,7 @@ public abstract class GraphDatabaseTest {
     @Before
     public void setUp() throws Exception {
         File root = tmpFolder.getRoot();
-        tmpFolder.newFolder(".geogit");
+        tmpFolder.newFolder(".geogig");
         platform = new TestPlatform(root);
         platform.setUserHome(tmpFolder.newFolder("fake_home"));
         database = createDatabase(platform);

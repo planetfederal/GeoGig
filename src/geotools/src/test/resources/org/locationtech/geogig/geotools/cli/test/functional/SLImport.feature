@@ -1,12 +1,12 @@
 Feature: "sl import" command
-    In order to import data to Geogit
-    As a Geogit User
+    In order to import data to Geogig
+    As a Geogig User
     I want to import one or more tables from a SpatiaLite database
 
   Scenario: Try importing into an empty directory
     Given I am in an empty directory
      When I run the command "sl import --table Regions" on the SpatiaLite database
-     Then the response should start with "Not in a geogit repository"
+     Then the response should start with "Not in a geogig repository"
       
   Scenario: Try to import a SpatiaLite table
     Given I have a repository

@@ -46,7 +46,7 @@ public abstract class SQLiteGraphDatabase<T> implements GraphDatabase {
     @Override
     public void open() {
         if (cx == null) {
-            cx = connect(SQLiteStorage.geogitDir(platform));
+            cx = connect(SQLiteStorage.geogigDir(platform));
             init(cx);
         }
     }
@@ -153,7 +153,7 @@ public abstract class SQLiteGraphDatabase<T> implements GraphDatabase {
     /**
      * Opens a database connection, returning the object representing connection state.
      */
-    protected abstract T connect(File geogitDir);
+    protected abstract T connect(File geogigDir);
 
     /**
      * Closes a database connection.

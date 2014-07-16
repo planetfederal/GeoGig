@@ -74,7 +74,7 @@ public class Apply extends AbstractCommand {
         checkParameter(!patchFiles.isEmpty(), "No patch file specified");
 
         ConsoleReader console = cli.getConsole();
-        GeoGIG geogit = cli.getGeogit();
+        GeoGIG geogig = cli.getGeogig();
 
         File patchFile = new File(patchFiles.get(0));
         checkParameter(patchFile.exists(), "Patch file cannot be found");
@@ -103,7 +103,7 @@ public class Apply extends AbstractCommand {
         if (summary) {
             console.println(patch.toString());
         } else if (check) {
-            VerifyPatchResults verify = cli.getGeogit().command(VerifyPatchOp.class)
+            VerifyPatchResults verify = cli.getGeogig().command(VerifyPatchOp.class)
                     .setPatch(patch).call();
             Patch toReject = verify.getToReject();
             Patch toApply = verify.getToApply();
@@ -118,7 +118,7 @@ public class Apply extends AbstractCommand {
             }
         } else {
             try {
-                Patch rejected = geogit.command(ApplyPatchOp.class).setPatch(patch)
+                Patch rejected = geogig.command(ApplyPatchOp.class).setPatch(patch)
                         .setApplyPartial(reject).call();
                 if (reject) {
                     if (rejected.isEmpty()) {

@@ -45,7 +45,7 @@ public class PGListTest extends Assert {
                 new UnsupportedTerminal());
         cli = new GeogigCLI(consoleReader);
 
-        setUpGeogit(cli);
+        setUpGeogig(cli);
     }
 
     @After
@@ -104,7 +104,7 @@ public class PGListTest extends Assert {
                 new UnsupportedTerminal());
         GeogigCLI mockCli = spy(new GeogigCLI(consoleReader));
 
-        setUpGeogit(mockCli);
+        setUpGeogig(mockCli);
 
         when(mockCli.getConsole()).thenThrow(new MockitoException("Exception"));
         PGList listCommand = new PGList();
@@ -113,10 +113,10 @@ public class PGListTest extends Assert {
         listCommand.run(mockCli);
     }
 
-    private void setUpGeogit(GeogigCLI cli) throws Exception {
+    private void setUpGeogig(GeogigCLI cli) throws Exception {
         final File userhome = tempFolder.newFolder("mockUserHomeDir");
         final File workingDir = tempFolder.newFolder("mockWorkingDir");
-        tempFolder.newFolder("mockWorkingDir/.geogit");
+        tempFolder.newFolder("mockWorkingDir/.geogig");
 
         final Platform platform = mock(Platform.class);
         when(platform.pwd()).thenReturn(workingDir);

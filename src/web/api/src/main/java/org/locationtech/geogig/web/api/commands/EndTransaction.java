@@ -23,7 +23,7 @@ import org.locationtech.geogig.web.api.ResponseWriter;
 import com.google.common.base.Optional;
 
 /**
- * Interface for the TransactionEnd operation in GeoGit.
+ * Interface for the TransactionEnd operation in GeoGig.
  * 
  * Web interface for {@link TransactionEnd}
  */
@@ -56,7 +56,7 @@ public class EndTransaction extends AbstractWebAPICommand {
 
         final Context transaction = this.getCommandLocator(context);
 
-        TransactionEnd endTransaction = context.getGeoGIT().command(TransactionEnd.class);
+        TransactionEnd endTransaction = context.getGeoGIG().command(TransactionEnd.class);
         try {
             final boolean closed = endTransaction.setCancel(cancel)
                     .setTransaction((GeogigTransaction) transaction).call();
@@ -74,8 +74,8 @@ public class EndTransaction extends AbstractWebAPICommand {
                 }
             });
         } catch (MergeConflictsException m) {
-            final RevCommit ours = context.getGeoGIT().getRepository().getCommit(m.getOurs());
-            final RevCommit theirs = context.getGeoGIT().getRepository().getCommit(m.getTheirs());
+            final RevCommit ours = context.getGeoGIG().getRepository().getCommit(m.getOurs());
+            final RevCommit theirs = context.getGeoGIG().getRepository().getCommit(m.getTheirs());
             final Optional<ObjectId> ancestor = transaction.command(FindCommonAncestor.class)
                     .setLeft(ours).setRight(theirs).call();
             context.setResponseContent(new CommandResponse() {

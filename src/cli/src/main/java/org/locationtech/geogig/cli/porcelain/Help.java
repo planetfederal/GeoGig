@@ -17,11 +17,11 @@ import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
 
 /**
- * This command displays the usage for GeoGit or a specific command if provided.
+ * This command displays the usage for GeoGig or a specific command if provided.
  * <p>
  * Usage:
  * <ul>
- * <li> {@code geogit [--]help [<command>]}
+ * <li> {@code geogig [--]help [<command>]}
  * </ul>
  */
 @ReadOnly

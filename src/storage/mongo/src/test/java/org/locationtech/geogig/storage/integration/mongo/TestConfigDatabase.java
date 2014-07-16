@@ -23,7 +23,7 @@ public class TestConfigDatabase implements ConfigDatabase {
     {
         final IniMongoProperties properties = new IniMongoProperties();
         final String uri = properties.get("mongodb.uri", String.class).or("mongodb://localhost:27017/");
-        final String database = properties.get("mongodb.database", String.class).or("geogit");
+        final String database = properties.get("mongodb.database", String.class).or("geogig");
         overrides.put("mongodb.uri", uri);
         overrides.put("mongodb.database", database);
     }

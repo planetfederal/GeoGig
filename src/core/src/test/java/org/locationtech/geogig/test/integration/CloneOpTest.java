@@ -56,16 +56,16 @@ public class CloneOpTest extends RemoteRepositoryTestCase {
         LinkedList<RevCommit> expected = new LinkedList<RevCommit>();
 
         for (Feature f : features) {
-            ObjectId oId = insertAndAdd(remoteGeogit.geogit, f);
-            final RevCommit commit = remoteGeogit.geogit.command(CommitOp.class).call();
+            ObjectId oId = insertAndAdd(remoteGeogig.geogig, f);
+            final RevCommit commit = remoteGeogig.geogig.command(CommitOp.class).call();
             expected.addFirst(commit);
-            Optional<RevObject> childObject = remoteGeogit.geogit.command(RevObjectParse.class)
+            Optional<RevObject> childObject = remoteGeogig.geogig.command(RevObjectParse.class)
                     .setObjectId(oId).call();
             assertTrue(childObject.isPresent());
         }
 
         // Make sure the remote has all of the commits
-        Iterator<RevCommit> logs = remoteGeogit.geogit.command(LogOp.class).call();
+        Iterator<RevCommit> logs = remoteGeogig.geogig.command(LogOp.class).call();
         List<RevCommit> logged = new ArrayList<RevCommit>();
         for (; logs.hasNext();) {
             logged.add(logs.next());
@@ -74,17 +74,17 @@ public class CloneOpTest extends RemoteRepositoryTestCase {
         assertEquals(expected, logged);
 
         // Make sure the local repository has no commits prior to clone
-        logs = localGeogit.geogit.command(LogOp.class).call();
+        logs = localGeogig.geogig.command(LogOp.class).call();
         assertNotNull(logs);
         assertFalse(logs.hasNext());
 
         // clone from the remote
         CloneOp clone = clone();
         clone.setDepth(0);
-        clone.setRepositoryURL(remoteGeogit.envHome.getCanonicalPath()).call();
+        clone.setRepositoryURL(remoteGeogig.envHome.getCanonicalPath()).call();
 
         // Make sure the local repository got all of the commits
-        logs = localGeogit.geogit.command(LogOp.class).call();
+        logs = localGeogig.geogig.command(LogOp.class).call();
         logged = new ArrayList<RevCommit>();
         for (; logs.hasNext();) {
             logged.add(logs.next());
@@ -101,19 +101,19 @@ public class CloneOpTest extends RemoteRepositoryTestCase {
         List<RevTag> tags = Lists.newArrayList();
 
         for (Feature f : features) {
-            ObjectId oId = insertAndAdd(remoteGeogit.geogit, f);
-            final RevCommit commit = remoteGeogit.geogit.command(CommitOp.class).call();
+            ObjectId oId = insertAndAdd(remoteGeogig.geogig, f);
+            final RevCommit commit = remoteGeogig.geogig.command(CommitOp.class).call();
             expected.addFirst(commit);
-            Optional<RevObject> childObject = remoteGeogit.geogit.command(RevObjectParse.class)
+            Optional<RevObject> childObject = remoteGeogig.geogig.command(RevObjectParse.class)
                     .setObjectId(oId).call();
             assertTrue(childObject.isPresent());
-            RevTag tag = remoteGeogit.geogit.command(TagCreateOp.class).setCommitId(commit.getId())
+            RevTag tag = remoteGeogig.geogig.command(TagCreateOp.class).setCommitId(commit.getId())
                     .setName(f.getIdentifier().getID()).call();
             tags.add(tag);
         }
 
         // Make sure the remote has all of the commits
-        Iterator<RevCommit> logs = remoteGeogit.geogit.command(LogOp.class).call();
+        Iterator<RevCommit> logs = remoteGeogig.geogig.command(LogOp.class).call();
         List<RevCommit> logged = new ArrayList<RevCommit>();
         for (; logs.hasNext();) {
             logged.add(logs.next());
@@ -122,24 +122,24 @@ public class CloneOpTest extends RemoteRepositoryTestCase {
         assertEquals(expected, logged);
 
         // Make sure the remote has all of the tags
-        ImmutableList<RevTag> remoteTags = remoteGeogit.geogit.command(TagListOp.class).call();
+        ImmutableList<RevTag> remoteTags = remoteGeogig.geogig.command(TagListOp.class).call();
         assertEquals(tags.size(), remoteTags.size());
         for (RevTag tag : tags) {
             assertTrue(remoteTags.contains(tag));
         }
 
         // Make sure the local repository has no commits prior to clone
-        logs = localGeogit.geogit.command(LogOp.class).call();
+        logs = localGeogig.geogig.command(LogOp.class).call();
         assertNotNull(logs);
         assertFalse(logs.hasNext());
 
         // clone from the remote
         CloneOp clone = clone();
         clone.setDepth(0);
-        clone.setRepositoryURL(remoteGeogit.envHome.getCanonicalPath()).call();
+        clone.setRepositoryURL(remoteGeogig.envHome.getCanonicalPath()).call();
 
         // Make sure the local repository got all of the commits
-        logs = localGeogit.geogit.command(LogOp.class).call();
+        logs = localGeogig.geogig.command(LogOp.class).call();
         logged = new ArrayList<RevCommit>();
         for (; logs.hasNext();) {
             logged.add(logs.next());
@@ -158,7 +158,7 @@ public class CloneOpTest extends RemoteRepositoryTestCase {
          * 
          * // Make sure the local repository got all of the tags
          * 
-         * ImmutableList<RevTag> localTags = localGeogit.geogit.command(TagListOp.class).call();
+         * ImmutableList<RevTag> localTags = localGeogig.geogig.command(TagListOp.class).call();
          * 
          * assertEquals(tags.size(), localTags.size());
          * 
@@ -178,27 +178,27 @@ public class CloneOpTest extends RemoteRepositoryTestCase {
         LinkedList<RevCommit> expectedMaster = new LinkedList<RevCommit>();
         LinkedList<RevCommit> expectedBranch = new LinkedList<RevCommit>();
 
-        insertAndAdd(remoteGeogit.geogit, points1);
-        RevCommit commit = remoteGeogit.geogit.command(CommitOp.class).call();
+        insertAndAdd(remoteGeogig.geogig, points1);
+        RevCommit commit = remoteGeogig.geogig.command(CommitOp.class).call();
         expectedMaster.addFirst(commit);
         expectedBranch.addFirst(commit);
 
-        insertAndAdd(remoteGeogit.geogit, points1_modified);
-        commit = remoteGeogit.geogit.command(CommitOp.class).call();
+        insertAndAdd(remoteGeogig.geogig, points1_modified);
+        commit = remoteGeogig.geogig.command(CommitOp.class).call();
         expectedMaster.addFirst(commit);
         expectedBranch.addFirst(commit);
 
         // Create and checkout branch1
-        remoteGeogit.geogit.command(BranchCreateOp.class).setAutoCheckout(true).setName("Branch1")
+        remoteGeogig.geogig.command(BranchCreateOp.class).setAutoCheckout(true).setName("Branch1")
                 .call();
 
         // Commit a change to branch1
-        insertAndAdd(remoteGeogit.geogit, points2);
-        RevCommit branch1commit = remoteGeogit.geogit.command(CommitOp.class).call();
+        insertAndAdd(remoteGeogig.geogig, points2);
+        RevCommit branch1commit = remoteGeogig.geogig.command(CommitOp.class).call();
         expectedBranch.addFirst(branch1commit);
 
         // Make sure Branch1 has all of the commits
-        Iterator<RevCommit> logs = remoteGeogit.geogit.command(LogOp.class).call();
+        Iterator<RevCommit> logs = remoteGeogig.geogig.command(LogOp.class).call();
         List<RevCommit> logged = new ArrayList<RevCommit>();
         for (; logs.hasNext();) {
             logged.add(logs.next());
@@ -207,18 +207,18 @@ public class CloneOpTest extends RemoteRepositoryTestCase {
         assertEquals(expectedBranch, logged);
 
         // Checkout master and commit some changes
-        remoteGeogit.geogit.command(CheckoutOp.class).setSource("master").call();
+        remoteGeogig.geogig.command(CheckoutOp.class).setSource("master").call();
 
-        insertAndAdd(remoteGeogit.geogit, lines1);
-        commit = remoteGeogit.geogit.command(CommitOp.class).call();
+        insertAndAdd(remoteGeogig.geogig, lines1);
+        commit = remoteGeogig.geogig.command(CommitOp.class).call();
         expectedMaster.addFirst(commit);
 
-        insertAndAdd(remoteGeogit.geogit, lines2);
-        commit = remoteGeogit.geogit.command(CommitOp.class).call();
+        insertAndAdd(remoteGeogig.geogig, lines2);
+        commit = remoteGeogig.geogig.command(CommitOp.class).call();
         expectedMaster.addFirst(commit);
 
         // Make sure master has all of the commits
-        logs = remoteGeogit.geogit.command(LogOp.class).call();
+        logs = remoteGeogig.geogig.command(LogOp.class).call();
         logged = new ArrayList<RevCommit>();
         for (; logs.hasNext();) {
             logged.add(logs.next());
@@ -227,7 +227,7 @@ public class CloneOpTest extends RemoteRepositoryTestCase {
         assertEquals(expectedMaster, logged);
 
         // Merge branch1 into master
-        MergeReport report = remoteGeogit.geogit.command(MergeOp.class)
+        MergeReport report = remoteGeogig.geogig.command(MergeOp.class)
                 .addCommit(Suppliers.ofInstance(branch1commit.getId())).call();
 
         expectedMaster.addFirst(report.getMergeCommit());
@@ -235,14 +235,14 @@ public class CloneOpTest extends RemoteRepositoryTestCase {
         // Delete Branch1
 
         // Create and checkout branch1
-        remoteGeogit.geogit.command(BranchDeleteOp.class).setName("Branch1").call();
+        remoteGeogig.geogig.command(BranchDeleteOp.class).setName("Branch1").call();
 
         // clone from the remote
         CloneOp clone = clone();
-        clone.setRepositoryURL(remoteGeogit.envHome.getCanonicalPath()).setBranch("master").call();
+        clone.setRepositoryURL(remoteGeogig.envHome.getCanonicalPath()).setBranch("master").call();
 
         // Make sure the local repository got all of the commits
-        logs = localGeogit.geogit.command(LogOp.class).setFirstParentOnly(true).call();
+        logs = localGeogig.geogig.command(LogOp.class).setFirstParentOnly(true).call();
         logged = new ArrayList<RevCommit>();
         for (; logs.hasNext();) {
             logged.add(logs.next());
@@ -258,16 +258,16 @@ public class CloneOpTest extends RemoteRepositoryTestCase {
         LinkedList<RevCommit> expected = new LinkedList<RevCommit>();
 
         for (Feature f : features) {
-            ObjectId oId = insertAndAdd(remoteGeogit.geogit, f);
-            final RevCommit commit = remoteGeogit.geogit.command(CommitOp.class).call();
+            ObjectId oId = insertAndAdd(remoteGeogig.geogig, f);
+            final RevCommit commit = remoteGeogig.geogig.command(CommitOp.class).call();
             expected.addFirst(commit);
-            Optional<RevObject> childObject = remoteGeogit.geogit.command(RevObjectParse.class)
+            Optional<RevObject> childObject = remoteGeogig.geogig.command(RevObjectParse.class)
                     .setObjectId(oId).call();
             assertTrue(childObject.isPresent());
         }
 
         // Make sure the remote has all of the commits
-        Iterator<RevCommit> logs = remoteGeogit.geogit.command(LogOp.class).call();
+        Iterator<RevCommit> logs = remoteGeogig.geogig.command(LogOp.class).call();
         List<RevCommit> logged = new ArrayList<RevCommit>();
         for (; logs.hasNext();) {
             logged.add(logs.next());
@@ -276,17 +276,17 @@ public class CloneOpTest extends RemoteRepositoryTestCase {
         assertEquals(expected, logged);
 
         // Make sure the local repository has no commits prior to clone
-        logs = localGeogit.geogit.command(LogOp.class).call();
+        logs = localGeogig.geogig.command(LogOp.class).call();
         assertNotNull(logs);
         assertFalse(logs.hasNext());
 
         // clone from the remote
         CloneOp clone = clone();
         clone.setDepth(2);
-        clone.setRepositoryURL(remoteGeogit.envHome.getCanonicalPath()).call();
+        clone.setRepositoryURL(remoteGeogig.envHome.getCanonicalPath()).call();
 
         // Make sure the local repository got only 2 commits
-        logs = localGeogit.geogit.command(LogOp.class).call();
+        logs = localGeogig.geogig.command(LogOp.class).call();
         logged = new ArrayList<RevCommit>();
         for (; logs.hasNext();) {
             logged.add(logs.next());
@@ -304,26 +304,26 @@ public class CloneOpTest extends RemoteRepositoryTestCase {
         LinkedList<RevCommit> expectedMaster = new LinkedList<RevCommit>();
         LinkedList<RevCommit> expectedBranch = new LinkedList<RevCommit>();
 
-        insertAndAdd(remoteGeogit.geogit, points1);
-        RevCommit commit = remoteGeogit.geogit.command(CommitOp.class).call();
+        insertAndAdd(remoteGeogig.geogig, points1);
+        RevCommit commit = remoteGeogig.geogig.command(CommitOp.class).call();
         expectedMaster.addFirst(commit);
         expectedBranch.addFirst(commit);
 
         // Create and checkout branch1
-        remoteGeogit.geogit.command(BranchCreateOp.class).setAutoCheckout(true).setName("Branch1")
+        remoteGeogig.geogig.command(BranchCreateOp.class).setAutoCheckout(true).setName("Branch1")
                 .call();
 
         // Commit some changes to branch1
-        insertAndAdd(remoteGeogit.geogit, points2);
-        commit = remoteGeogit.geogit.command(CommitOp.class).call();
+        insertAndAdd(remoteGeogig.geogig, points2);
+        commit = remoteGeogig.geogig.command(CommitOp.class).call();
         expectedBranch.addFirst(commit);
 
-        insertAndAdd(remoteGeogit.geogit, points3);
-        commit = remoteGeogit.geogit.command(CommitOp.class).call();
+        insertAndAdd(remoteGeogig.geogig, points3);
+        commit = remoteGeogig.geogig.command(CommitOp.class).call();
         expectedBranch.addFirst(commit);
 
         // Make sure Branch1 has all of the commits
-        Iterator<RevCommit> logs = remoteGeogit.geogit.command(LogOp.class).call();
+        Iterator<RevCommit> logs = remoteGeogig.geogig.command(LogOp.class).call();
         List<RevCommit> logged = new ArrayList<RevCommit>();
         for (; logs.hasNext();) {
             logged.add(logs.next());
@@ -332,18 +332,18 @@ public class CloneOpTest extends RemoteRepositoryTestCase {
         assertEquals(expectedBranch, logged);
 
         // Checkout master and commit some changes
-        remoteGeogit.geogit.command(CheckoutOp.class).setSource("master").call();
+        remoteGeogig.geogig.command(CheckoutOp.class).setSource("master").call();
 
-        insertAndAdd(remoteGeogit.geogit, lines1);
-        commit = remoteGeogit.geogit.command(CommitOp.class).call();
+        insertAndAdd(remoteGeogig.geogig, lines1);
+        commit = remoteGeogig.geogig.command(CommitOp.class).call();
         expectedMaster.addFirst(commit);
 
-        insertAndAdd(remoteGeogit.geogit, lines2);
-        commit = remoteGeogit.geogit.command(CommitOp.class).call();
+        insertAndAdd(remoteGeogig.geogig, lines2);
+        commit = remoteGeogig.geogig.command(CommitOp.class).call();
         expectedMaster.addFirst(commit);
 
         // Make sure master has all of the commits
-        logs = remoteGeogit.geogit.command(LogOp.class).call();
+        logs = remoteGeogig.geogig.command(LogOp.class).call();
         logged = new ArrayList<RevCommit>();
         for (; logs.hasNext();) {
             logged.add(logs.next());
@@ -352,16 +352,16 @@ public class CloneOpTest extends RemoteRepositoryTestCase {
         assertEquals(expectedMaster, logged);
 
         // Make sure the local repository has no commits prior to clone
-        logs = localGeogit.geogit.command(LogOp.class).call();
+        logs = localGeogig.geogig.command(LogOp.class).call();
         assertNotNull(logs);
         assertFalse(logs.hasNext());
 
         // clone from the remote
         CloneOp clone = clone();
-        clone.setRepositoryURL(remoteGeogit.envHome.getCanonicalPath()).setBranch("Branch1").call();
+        clone.setRepositoryURL(remoteGeogig.envHome.getCanonicalPath()).setBranch("Branch1").call();
 
         // Make sure the local repository got all of the commits
-        logs = localGeogit.geogit.command(LogOp.class).call();
+        logs = localGeogig.geogig.command(LogOp.class).call();
         logged = new ArrayList<RevCommit>();
         for (; logs.hasNext();) {
             logged.add(logs.next());
@@ -370,9 +370,9 @@ public class CloneOpTest extends RemoteRepositoryTestCase {
         assertEquals(expectedBranch, logged);
 
         // Make sure the local master matches the remote
-        localGeogit.geogit.command(CheckoutOp.class).setSource("master").call();
+        localGeogig.geogig.command(CheckoutOp.class).setSource("master").call();
 
-        logs = localGeogit.geogit.command(LogOp.class).call();
+        logs = localGeogig.geogig.command(LogOp.class).call();
         logged = new ArrayList<RevCommit>();
         for (; logs.hasNext();) {
             logged.add(logs.next());
@@ -384,7 +384,7 @@ public class CloneOpTest extends RemoteRepositoryTestCase {
     @Test
     public void testCloneEmptyRepo() throws Exception {
         CloneOp clone = clone();
-        clone.setRepositoryURL(remoteGeogit.envHome.getCanonicalPath()).call();
+        clone.setRepositoryURL(remoteGeogig.envHome.getCanonicalPath()).call();
     }
 
     @Test

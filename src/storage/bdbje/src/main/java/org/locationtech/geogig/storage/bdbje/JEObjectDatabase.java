@@ -72,7 +72,7 @@ import com.sleepycat.je.TransactionConfig;
  */
 abstract class JEObjectDatabase extends AbstractObjectDatabase implements ObjectDatabase {
 
-    /** Name of the BDB JE Environment inside the .geogit folder used for the objects database */
+    /** Name of the BDB JE Environment inside the .geogig folder used for the objects database */
     static final String ENVIRONMENT_NAME = "objects";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JEObjectDatabase.class);

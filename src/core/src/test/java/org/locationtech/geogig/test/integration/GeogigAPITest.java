@@ -12,32 +12,32 @@ import org.opengis.feature.Feature;
 
 public class GeogigAPITest extends RepositoryTestCase {
 
-    private GeoGigAPI geogitAPI;
+    private GeoGigAPI geogigAPI;
 
     @Override
     protected void setUpInternal() throws Exception {
-        geogitAPI = new GeoGigAPI(this.repo);
+        geogigAPI = new GeoGigAPI(this.repo);
     }
 
     @Test
     public void testGetFeaturesToCommit() throws Exception {
         insertAndAdd(points1, points2);
-        Feature[] features = geogitAPI.getFeaturesToCommit(null, false);
+        Feature[] features = geogigAPI.getFeaturesToCommit(null, false);
         assertEquals(2, features.length);
     }
 
     @Test
     public void testGetFeatureFromHead() throws Exception {
         insertAndAdd(points1);
-        geogit.command(CommitOp.class).setMessage("Commit message").call();
-        Feature feature = geogitAPI.getFeatureFromHead(NodeRef.appendChild(pointsName, idP1));
+        geogig.command(CommitOp.class).setMessage("Commit message").call();
+        Feature feature = geogigAPI.getFeatureFromHead(NodeRef.appendChild(pointsName, idP1));
         assertNotNull(feature);
     }
 
     @Test
     public void testGetFeatureFromWorkingTree() throws Exception {
         insert(points1);
-        Feature feature = geogitAPI
+        Feature feature = geogigAPI
                 .getFeatureFromWorkingTree(NodeRef.appendChild(pointsName, idP1));
         assertNotNull(feature);
     }

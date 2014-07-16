@@ -52,11 +52,11 @@ public class OSMHookTest extends RepositoryTestCase {
 
         // set the hook that will trigger an unmapping when something is imported to the busstops
         // tree
-        CharSequence commitPreHookCode = "var diffs = geogit.getFeaturesToCommit(\"busstops\", false);\n"
+        CharSequence commitPreHookCode = "var diffs = geogig.getFeaturesToCommit(\"busstops\", false);\n"
                 + "if (diffs.length > 0){\n"
                 + "\tvar params = {\"path\" : \"busstops\"};\n"
-                + "\tgeogit.run(\"org.locationtech.geogig.osm.internal.OSMUnmapOp\", params)\n}";
-        File hooksFolder = new File(geogit.getPlatform().pwd(), ".geogit/hooks");
+                + "\tgeogig.run(\"org.locationtech.geogig.osm.internal.OSMUnmapOp\", params)\n}";
+        File hooksFolder = new File(geogig.getPlatform().pwd(), ".geogig/hooks");
         File commitPreHookFile = new File(hooksFolder, "pre_commit.js");
 
         Files.write(commitPreHookCode, commitPreHookFile, Charsets.UTF_8);
@@ -64,7 +64,7 @@ public class OSMHookTest extends RepositoryTestCase {
         // Import
         String filename = OSMImportOp.class.getResource("nodes.xml").getFile();
         File file = new File(filename);
-        geogit.command(OSMImportOp.class).setDataSource(file.getAbsolutePath()).call();
+        geogig.command(OSMImportOp.class).setDataSource(file.getAbsolutePath()).call();
 
         // Map
         Map<String, AttributeDefinition> fields = Maps.newHashMap();
@@ -76,14 +76,14 @@ public class OSMHookTest extends RepositoryTestCase {
         List<MappingRule> mappingRules = Lists.newArrayList();
         mappingRules.add(mappingRule);
         Mapping mapping = new Mapping(mappingRules);
-        geogit.command(AddOp.class).call();
-        geogit.command(CommitOp.class).setMessage("msg").call();
-        geogit.command(OSMMapOp.class).setMapping(mapping).call();
+        geogig.command(AddOp.class).call();
+        geogig.command(CommitOp.class).setMessage("msg").call();
+        geogig.command(OSMMapOp.class).setMapping(mapping).call();
 
-        Optional<RevFeature> revFeature = geogit.command(RevObjectParse.class)
+        Optional<RevFeature> revFeature = geogig.command(RevObjectParse.class)
                 .setRefSpec("HEAD:busstops/507464799").call(RevFeature.class);
         assertTrue(revFeature.isPresent());
-        Optional<RevFeatureType> featureType = geogit.command(ResolveFeatureType.class)
+        Optional<RevFeatureType> featureType = geogig.command(ResolveFeatureType.class)
                 .setRefSpec("HEAD:busstops/507464799").call();
         assertTrue(featureType.isPresent());
         ImmutableList<Optional<Object>> values = revFeature.get().getValues();
@@ -100,13 +100,13 @@ public class OSMHookTest extends RepositoryTestCase {
         fb.set("name", "newname");
         fb.set("id", 507464799l);
         SimpleFeature newFeature = fb.buildFeature("507464799");
-        geogit.getRepository().workingTree().insert("busstops", newFeature);
-        geogit.command(AddOp.class).call();
-        geogit.command(CommitOp.class).setMessage("msg").call(); // this should trigger the hook
+        geogig.getRepository().workingTree().insert("busstops", newFeature);
+        geogig.command(AddOp.class).call();
+        geogig.command(CommitOp.class).setMessage("msg").call(); // this should trigger the hook
 
         // check that the unmapping has been triggered and the unmapped node has the changes we
         // introduced
-        Optional<RevFeature> unmapped = geogit.command(RevObjectParse.class)
+        Optional<RevFeature> unmapped = geogig.command(RevObjectParse.class)
                 .setRefSpec("WORK_HEAD:node/507464799").call(RevFeature.class);
         assertTrue(unmapped.isPresent());
         values = unmapped.get().getValues();
@@ -115,7 +115,7 @@ public class OSMHookTest extends RepositoryTestCase {
                 "bus:yes|public_transport:platform|highway:bus_stop|VRS:ortsteil:Hoholz|name:newname|VRS:ref:68566|VRS:gemeinde:BONN",
                 values.get(3).get().toString());
         // check that unchanged nodes keep their attributes
-        Optional<RevFeature> unchanged = geogit.command(RevObjectParse.class)
+        Optional<RevFeature> unchanged = geogig.command(RevObjectParse.class)
                 .setRefSpec("WORK_HEAD:node/1633594723").call(RevFeature.class);
         values = unchanged.get().getValues();
         assertEquals("14220478", values.get(4).get().toString());

@@ -5,7 +5,7 @@
 
 package org.locationtech.geogig.rest.repository;
 
-import static org.locationtech.geogig.rest.repository.RESTUtils.getGeogit;
+import static org.locationtech.geogig.rest.repository.RESTUtils.getGeogig;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -55,9 +55,9 @@ public class DepthResource extends Resource {
             Optional<String> commit = Optional
                     .fromNullable(options.getFirstValue("commitId", null));
 
-            Optional<GeoGIG> geogit = getGeogit(request);
-            Preconditions.checkState(geogit.isPresent());
-            GeoGIG ggit = geogit.get();
+            Optional<GeoGIG> geogig = getGeogig(request);
+            Preconditions.checkState(geogig.isPresent());
+            GeoGIG ggit = geogig.get();
 
             Optional<Integer> depth = Optional.absent();
 

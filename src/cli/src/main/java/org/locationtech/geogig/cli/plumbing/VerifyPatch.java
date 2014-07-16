@@ -72,7 +72,7 @@ public class VerifyPatch extends AbstractCommand {
         Closeables.closeQuietly(reader);
         Closeables.closeQuietly(stream);
 
-        VerifyPatchResults verify = cli.getGeogit().command(VerifyPatchOp.class).setPatch(patch)
+        VerifyPatchResults verify = cli.getGeogig().command(VerifyPatchOp.class).setPatch(patch)
                 .setReverse(reverse).call();
         Patch toReject = verify.getToReject();
         Patch toApply = verify.getToApply();

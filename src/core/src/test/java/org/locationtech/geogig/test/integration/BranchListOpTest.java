@@ -23,38 +23,38 @@ public class BranchListOpTest extends RemoteRepositoryTestCase {
     protected void setUpInternal() throws Exception {
         // Commit several features to the remote
 
-        insertAndAdd(remoteGeogit.geogit, points1);
-        remoteGeogit.geogit.command(CommitOp.class).call();
+        insertAndAdd(remoteGeogig.geogig, points1);
+        remoteGeogig.geogig.command(CommitOp.class).call();
 
         // Create and checkout branch1
-        remoteGeogit.geogit.command(BranchCreateOp.class).setAutoCheckout(true).setName("Branch1")
+        remoteGeogig.geogig.command(BranchCreateOp.class).setAutoCheckout(true).setName("Branch1")
                 .call();
 
         // Commit some changes to branch1
-        insertAndAdd(remoteGeogit.geogit, points2);
-        remoteGeogit.geogit.command(CommitOp.class).call();
+        insertAndAdd(remoteGeogig.geogig, points2);
+        remoteGeogig.geogig.command(CommitOp.class).call();
 
-        insertAndAdd(remoteGeogit.geogit, points3);
-        remoteGeogit.geogit.command(CommitOp.class).call();
+        insertAndAdd(remoteGeogig.geogig, points3);
+        remoteGeogig.geogig.command(CommitOp.class).call();
 
         // Checkout master and commit some changes
-        remoteGeogit.geogit.command(CheckoutOp.class).setSource("master").call();
+        remoteGeogig.geogig.command(CheckoutOp.class).setSource("master").call();
 
-        insertAndAdd(remoteGeogit.geogit, lines1);
-        remoteGeogit.geogit.command(CommitOp.class).call();
+        insertAndAdd(remoteGeogig.geogig, lines1);
+        remoteGeogig.geogig.command(CommitOp.class).call();
 
-        insertAndAdd(remoteGeogit.geogit, lines2);
-        remoteGeogit.geogit.command(CommitOp.class).call();
+        insertAndAdd(remoteGeogig.geogig, lines2);
+        remoteGeogig.geogig.command(CommitOp.class).call();
 
         // clone from the remote
         CloneOp clone = clone();
-        clone.setRepositoryURL(remoteGeogit.envHome.getCanonicalPath()).setBranch("Branch1").call();
+        clone.setRepositoryURL(remoteGeogig.envHome.getCanonicalPath()).setBranch("Branch1").call();
     }
 
     @Test
     public void testBranchListOp() throws Exception {
 
-        ImmutableList<Ref> branches = remoteGeogit.geogit.command(BranchListOp.class)
+        ImmutableList<Ref> branches = remoteGeogig.geogig.command(BranchListOp.class)
                 .setLocal(true).setRemotes(false).call();
 
         assertEquals(Ref.HEADS_PREFIX + "Branch1", branches.get(0).getName());
@@ -64,7 +64,7 @@ public class BranchListOpTest extends RemoteRepositoryTestCase {
     @Test
     public void testRemoteListing() throws Exception {
 
-        ImmutableList<Ref> branches = localGeogit.geogit.command(BranchListOp.class).setLocal(true)
+        ImmutableList<Ref> branches = localGeogig.geogig.command(BranchListOp.class).setLocal(true)
                 .setRemotes(true).call();
 
         assertEquals(Ref.HEADS_PREFIX + "Branch1", branches.get(0).getName());

@@ -79,9 +79,9 @@ public class DiffTree extends AbstractCommand implements CLICommand {
                     "Cannot use --describe and --tree-stats simultaneously");
         }
 
-        GeoGIG geogit = cli.getGeogit();
+        GeoGIG geogig = cli.getGeogig();
 
-        org.locationtech.geogig.api.plumbing.DiffTree diff = geogit
+        org.locationtech.geogig.api.plumbing.DiffTree diff = geogig
                 .command(org.locationtech.geogig.api.plumbing.DiffTree.class);
 
         String oldVersion = resolveOldVersion();
@@ -113,16 +113,16 @@ public class DiffTree extends AbstractCommand implements CLICommand {
                         .append(LINE_BREAK);
 
                 if (diffEntry.changeType() == ChangeType.MODIFIED) {
-                    FeatureDiff featureDiff = geogit.command(DiffFeature.class)
+                    FeatureDiff featureDiff = geogig.command(DiffFeature.class)
                             .setNewVersion(Suppliers.ofInstance(diffEntry.getNewObject()))
                             .setOldVersion(Suppliers.ofInstance(diffEntry.getOldObject())).call();
                     Map<PropertyDescriptor, AttributeDiff> diffs = featureDiff.getDiffs();
                     HashSet<PropertyDescriptor> diffDescriptors = Sets.newHashSet(diffs.keySet());
                     NodeRef noderef = diffEntry.changeType() != ChangeType.REMOVED ? diffEntry
                             .getNewObject() : diffEntry.getOldObject();
-                    RevFeatureType featureType = geogit.command(RevObjectParse.class)
+                    RevFeatureType featureType = geogig.command(RevObjectParse.class)
                             .setObjectId(noderef.getMetadataId()).call(RevFeatureType.class).get();
-                    Optional<RevObject> obj = geogit.command(RevObjectParse.class)
+                    Optional<RevObject> obj = geogig.command(RevObjectParse.class)
                             .setObjectId(noderef.objectId()).call();
                     RevFeature feature = (RevFeature) obj.get();
                     ImmutableList<Optional<Object>> values = feature.getValues();
@@ -170,9 +170,9 @@ public class DiffTree extends AbstractCommand implements CLICommand {
                 } else {
                     NodeRef noderef = diffEntry.changeType() == ChangeType.ADDED ? diffEntry
                             .getNewObject() : diffEntry.getOldObject();
-                    RevFeatureType featureType = geogit.command(RevObjectParse.class)
+                    RevFeatureType featureType = geogig.command(RevObjectParse.class)
                             .setObjectId(noderef.getMetadataId()).call(RevFeatureType.class).get();
-                    Optional<RevObject> obj = geogit.command(RevObjectParse.class)
+                    Optional<RevObject> obj = geogig.command(RevObjectParse.class)
                             .setObjectId(noderef.objectId()).call();
                     RevFeature feature = (RevFeature) obj.get();
                     ImmutableList<Optional<Object>> values = feature.getValues();

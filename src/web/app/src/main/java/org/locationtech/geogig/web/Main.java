@@ -45,9 +45,9 @@ public class Main extends Application {
         super();
     }
 
-    public Main(GeoGIG geogit) {
+    public Main(GeoGIG geogig) {
         super();
-        this.repoProvider = new SingleRepositoryProvider(geogit);
+        this.repoProvider = new SingleRepositoryProvider(geogig);
     }
 
     @Override
@@ -57,9 +57,9 @@ public class Main extends Application {
 
         Map<String, Object> attributes = context.getAttributes();
 
-        GeoGIG geogit;
-        if (attributes.containsKey("geogit")) {
-            geogit = (GeoGIG) attributes.get("geogit");
+        GeoGIG geogig;
+        if (attributes.containsKey("geogig")) {
+            geogig = (GeoGIG) attributes.get("geogig");
         } else {
             // revisit, not used at all
             // ServletContext sc = (ServletContext) dispatcher.getContext()
@@ -72,11 +72,11 @@ public class Main extends Application {
             if (repo == null) {
                 return;
                 // throw new IllegalStateException(
-                // "Cannot launch geogit servlet without `repository` parameter");
+                // "Cannot launch geogig servlet without `repository` parameter");
             }
-            geogit = loadGeoGIT(repo);
+            geogig = loadGeoGIG(repo);
         }
-        repoProvider = new SingleRepositoryProvider(geogit);
+        repoProvider = new SingleRepositoryProvider(geogig);
     }
 
     @Override
@@ -119,24 +119,24 @@ public class Main extends Application {
         return decoder;
     }
 
-    static GeoGIG loadGeoGIT(String repo) {
+    static GeoGIG loadGeoGIG(String repo) {
         Platform platform = new DefaultPlatform();
         platform.setWorkingDir(new File(repo));
         Context inj = GlobalContextBuilder.builder.build();
-        GeoGIG geogit = new GeoGIG(inj, platform.pwd());
+        GeoGIG geogig = new GeoGIG(inj, platform.pwd());
 
-        if (geogit.command(ResolveGeogigDir.class).call().isPresent()) {
-            geogit.getRepository();
-            return geogit;
+        if (geogig.command(ResolveGeogigDir.class).call().isPresent()) {
+            geogig.getRepository();
+            return geogig;
         }
 
-        return geogit;
+        return geogig;
     }
 
     static void startServer(String repo) throws Exception {
-        GeoGIG geogit = loadGeoGIT(repo);
+        GeoGIG geogig = loadGeoGIG(repo);
         org.restlet.Context context = new org.restlet.Context();
-        Application application = new Main(geogit);
+        Application application = new Main(geogig);
         application.setContext(context);
         Component comp = new Component();
         comp.getDefaultHost().attach(application);
@@ -151,7 +151,7 @@ public class Main extends Application {
     public static void main(String[] args) throws Exception {
         LinkedList<String> argList = new LinkedList<String>(Arrays.asList(args));
         if (argList.size() == 0) {
-            System.out.println("provide geogit repo path");
+            System.out.println("provide geogig repo path");
             System.exit(1);
         }
         String repo = argList.pop();

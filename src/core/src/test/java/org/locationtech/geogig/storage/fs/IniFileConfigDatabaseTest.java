@@ -43,7 +43,7 @@ public class IniFileConfigDatabaseTest {
     @Test
     public void testLocal() {
         final File workingDir = tempFolder.newFolder("mockWorkingDir");
-        tempFolder.newFolder("mockWorkingDir/.geogit");
+        tempFolder.newFolder("mockWorkingDir/.geogig");
 
         final Platform platform = mock(Platform.class);
         when(platform.pwd()).thenReturn(workingDir);
@@ -96,7 +96,7 @@ public class IniFileConfigDatabaseTest {
     @Test
     public void testNoDot() {
         final File workingDir = tempFolder.newFolder("mockWorkingDir");
-        tempFolder.newFolder("mockWorkingDir/.geogit");
+        tempFolder.newFolder("mockWorkingDir/.geogig");
 
         final Platform platform = mock(Platform.class);
         when(platform.pwd()).thenReturn(workingDir);
@@ -110,7 +110,7 @@ public class IniFileConfigDatabaseTest {
     @Test
     public void testNoSection() {
         final File workingDir = tempFolder.newFolder("mockWorkingDir");
-        tempFolder.newFolder("mockWorkingDir/.geogit");
+        tempFolder.newFolder("mockWorkingDir/.geogig");
 
         final Platform platform = mock(Platform.class);
         when(platform.pwd()).thenReturn(workingDir);
@@ -124,7 +124,7 @@ public class IniFileConfigDatabaseTest {
     @Test
     public void testNoKey() {
         final File workingDir = tempFolder.newFolder("mockWorkingDir");
-        tempFolder.newFolder("mockWorkingDir/.geogit");
+        tempFolder.newFolder("mockWorkingDir/.geogig");
 
         final Platform platform = mock(Platform.class);
         when(platform.pwd()).thenReturn(workingDir);
@@ -161,7 +161,7 @@ public class IniFileConfigDatabaseTest {
     @Test
     public void testNullSectionKeyPair() {
         final File workingDir = tempFolder.newFolder("mockWorkingDir");
-        tempFolder.newFolder("mockWorkingDir/.geogit");
+        tempFolder.newFolder("mockWorkingDir/.geogig");
 
         final Platform platform = mock(Platform.class);
         when(platform.pwd()).thenReturn(workingDir);
@@ -175,7 +175,7 @@ public class IniFileConfigDatabaseTest {
     @Test
     public void testNullValue() {
         final File workingDir = tempFolder.newFolder("mockWorkingDir");
-        tempFolder.newFolder("mockWorkingDir/.geogit");
+        tempFolder.newFolder("mockWorkingDir/.geogig");
 
         final Platform platform = mock(Platform.class);
         when(platform.pwd()).thenReturn(workingDir);
@@ -191,7 +191,7 @@ public class IniFileConfigDatabaseTest {
     @Test
     public void testNumberFormatException() {
         final File workingDir = tempFolder.newFolder("mockWorkingDir");
-        tempFolder.newFolder("mockWorkingDir/.geogit");
+        tempFolder.newFolder("mockWorkingDir/.geogig");
 
         final Platform platform = mock(Platform.class);
         when(platform.pwd()).thenReturn(workingDir);
@@ -207,7 +207,7 @@ public class IniFileConfigDatabaseTest {
     @Test
     public void testNoValue() {
         final File workingDir = tempFolder.newFolder("mockWorkingDir");
-        tempFolder.newFolder("mockWorkingDir/.geogit");
+        tempFolder.newFolder("mockWorkingDir/.geogig");
 
         final Platform platform = mock(Platform.class);
         when(platform.pwd()).thenReturn(workingDir);

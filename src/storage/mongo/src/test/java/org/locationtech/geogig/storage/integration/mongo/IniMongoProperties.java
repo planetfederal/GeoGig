@@ -9,7 +9,7 @@ import org.locationtech.geogig.test.integration.OnlineTestProperties;
 public class IniMongoProperties extends OnlineTestProperties {
 
     public IniMongoProperties() {
-        super(".geogit-mongo-tests.properties", "mongodb.uri", "mongodb://localhost:27017/",
-                "mongodb.database", "geogit");
+        super(".geogig-mongo-tests.properties", "mongodb.uri", "mongodb://localhost:27017/",
+                "mongodb.database", "geogig");
     }
 }

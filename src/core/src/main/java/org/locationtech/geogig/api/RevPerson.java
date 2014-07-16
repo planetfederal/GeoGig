@@ -7,7 +7,7 @@ package org.locationtech.geogig.api;
 import com.google.common.base.Optional;
 
 /**
- * The GeoGit identity of a single individual, composed of a name and email address.
+ * The GeoGig identity of a single individual, composed of a name and email address.
  */
 public interface RevPerson {
 

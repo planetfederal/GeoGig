@@ -77,17 +77,17 @@ public class Show extends AbstractCommand implements CLICommand {
 
     private void printRaw(GeogigCLI cli) throws IOException {
         ConsoleReader console = cli.getConsole();
-        GeoGIG geogit = cli.getGeogit();
+        GeoGIG geogig = cli.getGeogig();
         for (String ref : refs) {
-            Optional<RevObject> obj = geogit.command(RevObjectParse.class).setRefSpec(ref).call();
+            Optional<RevObject> obj = geogig.command(RevObjectParse.class).setRefSpec(ref).call();
             if (!obj.isPresent()) {
                 ref = getFullRef(ref);
-                obj = geogit.command(RevObjectParse.class).setRefSpec(ref).call();
+                obj = geogig.command(RevObjectParse.class).setRefSpec(ref).call();
             }
             checkParameter(obj.isPresent(), "refspec did not resolve to any object.");
             RevObject revObject = obj.get();
             if (revObject instanceof RevFeature) {
-                Optional<RevFeatureType> opt = geogit.command(ResolveFeatureType.class)
+                Optional<RevFeatureType> opt = geogig.command(ResolveFeatureType.class)
                         .setRefSpec(ref).call();
                 if (opt.isPresent()) {
                     RevFeatureType ft = opt.get();
@@ -116,12 +116,12 @@ public class Show extends AbstractCommand implements CLICommand {
                     }
                     console.println(ansi.toString());
                 } else {
-                    CharSequence s = geogit.command(CatObject.class)
+                    CharSequence s = geogig.command(CatObject.class)
                             .setObject(Suppliers.ofInstance(revObject)).call();
                     console.println(s);
                 }
             } else {
-                CharSequence s = geogit.command(CatObject.class)
+                CharSequence s = geogig.command(CatObject.class)
                         .setObject(Suppliers.ofInstance(revObject)).call();
                 console.println(s);
             }
@@ -130,17 +130,17 @@ public class Show extends AbstractCommand implements CLICommand {
 
     public void printFormatted(GeogigCLI cli) throws IOException {
         ConsoleReader console = cli.getConsole();
-        GeoGIG geogit = cli.getGeogit();
+        GeoGIG geogig = cli.getGeogig();
         for (String ref : refs) {
-            Optional<RevObject> obj = geogit.command(RevObjectParse.class).setRefSpec(ref).call();
+            Optional<RevObject> obj = geogig.command(RevObjectParse.class).setRefSpec(ref).call();
             if (!obj.isPresent()) {
                 ref = getFullRef(ref);
-                obj = geogit.command(RevObjectParse.class).setRefSpec(ref).call();
+                obj = geogig.command(RevObjectParse.class).setRefSpec(ref).call();
             }
             checkParameter(obj.isPresent(), "refspec did not resolve to any object.");
             RevObject revObject = obj.get();
             if (revObject instanceof RevFeature) {
-                Optional<RevFeatureType> opt = geogit.command(ResolveFeatureType.class)
+                Optional<RevFeatureType> opt = geogig.command(ResolveFeatureType.class)
                         .setRefSpec(ref).call();
                 if (opt.isPresent()) {
                     RevFeatureType ft = opt.get();
@@ -162,14 +162,14 @@ public class Show extends AbstractCommand implements CLICommand {
                     }
                     console.println(ansi.toString());
                 } else {
-                    CharSequence s = geogit.command(CatObject.class)
+                    CharSequence s = geogig.command(CatObject.class)
                             .setObject(Suppliers.ofInstance(revObject)).call();
                     console.println(s);
                 }
 
             } else if (revObject instanceof RevTree) {
                 RevTree tree = (RevTree) revObject;
-                Optional<RevFeatureType> opt = geogit.command(ResolveFeatureType.class)
+                Optional<RevFeatureType> opt = geogig.command(ResolveFeatureType.class)
                         .setRefSpec(ref).call();
                 checkParameter(opt.isPresent(),
                         "Refspec must resolve to a commit, tree, feature or feature type");
@@ -194,12 +194,12 @@ public class Show extends AbstractCommand implements CLICommand {
                 ansi.a(Strings.padEnd("Committer:", 15, ' ')).fg(Color.GREEN)
                         .a(formatPerson(commit.getAuthor())).reset().newline();
                 ansi.a(Strings.padEnd("Author date:", 15, ' ')).a("(").fg(Color.RED)
-                        .a(estimateSince(geogit.getPlatform(), commit.getAuthor().getTimestamp()))
+                        .a(estimateSince(geogig.getPlatform(), commit.getAuthor().getTimestamp()))
                         .reset().a(") ").a(new Date(commit.getAuthor().getTimestamp())).newline();
                 ansi.a(Strings.padEnd("Committer date:", 15, ' '))
                         .a("(")
                         .fg(Color.RED)
-                        .a(estimateSince(geogit.getPlatform(), commit.getCommitter().getTimestamp()))
+                        .a(estimateSince(geogig.getPlatform(), commit.getCommitter().getTimestamp()))
                         .reset().a(") ").a(new Date(commit.getCommitter().getTimestamp()))
                         .newline();
                 ansi.a(Strings.padEnd("Subject:", 15, ' ')).a(commit.getMessage()).newline();
