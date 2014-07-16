@@ -4,35 +4,35 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.geogit</groupId>
-    <artifactId>geogit</artifactId>
+    <groupId>org.locationtech.geogig</groupId>
+    <artifactId>geogig</artifactId>
     <version>1.0-SNAPSHOT</version>
     <relativePath>../parent/pom.xml</relativePath>
   </parent>
 
-  <artifactId>geogit-cli-app</artifactId>
+  <artifactId>geogig-cli-app</artifactId>
   <packaging>pom</packaging>
-  <name>GeoGit CLI App</name>
+  <name>GeoGig CLI App</name>
     
   <dependencies>
     <dependency>
-      <groupId>org.geogit</groupId>
-      <artifactId>geogit-cli</artifactId>
+      <groupId>org.locationtech.geogig</groupId>
+      <artifactId>geogig-cli</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.geogit</groupId>
-      <artifactId>geogit-geotools</artifactId>
+      <groupId>org.locationtech.geogig</groupId>
+      <artifactId>geogig-geotools</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.geogit</groupId>
-      <artifactId>geogit-osm</artifactId>
+      <groupId>org.locationtech.geogig</groupId>
+      <artifactId>geogig-osm</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.geogit</groupId>
-      <artifactId>geogit-web-app</artifactId>
+      <groupId>org.locationtech.geogig</groupId>
+      <artifactId>geogig-web-app</artifactId>
       <version>${project.version}</version>
       <classifier>classes</classifier>
     </dependency>
@@ -48,7 +48,7 @@
           <!-- Extra JVM arguments that will be included in the bin scripts -->
           <extraJvmArguments>-Xmx2G -XX:MaxPermSize=128m -Dorg.geotools.referencing.forceXY=true -XX:-HeapDumpOnOutOfMemoryError</extraJvmArguments>
           <!-- set alternative assemble directory -->
-          <assembleDirectory>${project.build.directory}/geogit-build</assembleDirectory>
+          <assembleDirectory>${project.build.directory}/geogig-build</assembleDirectory>
           <repositoryLayout>flat</repositoryLayout>
           <useWildcardClassPath>true</useWildcardClassPath>
          <useAsterikClassPath>true</useAsterikClassPath>
@@ -58,16 +58,16 @@
           </platforms>
           <programs>
             <program>
-              <mainClass>org.geogit.cli.GeogitCLI</mainClass>
-              <name>geogit</name>
+              <mainClass>org.locationtech.geogig.cli.GeogitCLI</mainClass>
+              <name>geogig</name>
             </program>
             <program>
-              <mainClass>org.geogit.cli.GeogitConsole</mainClass>
-              <name>geogit-console</name>
+              <mainClass>org.locationtech.geogig.cli.GeogitConsole</mainClass>
+              <name>geogig-console</name>
             </program>
             <program>
-              <mainClass>org.geogit.cli.GeogitPy4JEntryPoint</mainClass>
-              <name>geogit-gateway</name>
+              <mainClass>org.locationtech.geogig.cli.GeogitPy4JEntryPoint</mainClass>
+              <name>geogig-gateway</name>
             </program>
           </programs>
         </configuration>
@@ -85,7 +85,7 @@
             <configuration>
                 <archive>
                     <manifest>
-                        <mainClass>org.geogit.cli.GeogitCLI</mainClass>
+                        <mainClass>org.locationtech.geogig.cli.GeogitCLI</mainClass>
                     </manifest>
                 </archive>
                 <descriptors>
@@ -97,10 +97,10 @@
                     <id>assemble-dir</id>
                     <configuration>
                         <appendAssemblyId>false</appendAssemblyId>
-                        <finalName>geogit</finalName>
+                        <finalName>geogig</finalName>
                         <archive>
                             <manifest>
-                                <mainClass>org.geogit.cli.GeogitCLI</mainClass>
+                                <mainClass>org.locationtech.geogig.cli.GeogitCLI</mainClass>
                             </manifest>
                         </archive>
                         <descriptors>
@@ -131,7 +131,7 @@
               <goal>tree</goal>
             </goals>
             <configuration>
-              <outputFile>${project.build.directory}/geogit-build/dependency-tree.txt</outputFile>
+              <outputFile>${project.build.directory}/geogig-build/dependency-tree.txt</outputFile>
             </configuration>
           </execution>
         </executions>
