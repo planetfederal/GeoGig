@@ -10,7 +10,7 @@
     </encoder>
   </appender>
 
-  <logger name="org.geogit" level="INFO" />
+  <logger name="org.locationtech.geogig" level="INFO" />
 
   <root level="WARN">
     <appender-ref ref="STDOUT" />

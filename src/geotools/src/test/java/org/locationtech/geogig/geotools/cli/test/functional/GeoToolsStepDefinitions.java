@@ -18,7 +18,7 @@ import cucumber.runtime.java.StepDefAnnotation;
 
 /**
  * Step definitions specific to the geotools module. Builds on top of the ones in the
- * {@code org.geogig.cli.test.functional} package for non geotools specific ones.
+ * {@code org.locationtech.geogig.cli.test.functional} package for non geotools specific ones.
  */
 @StepDefAnnotation
 public class GeoToolsStepDefinitions {

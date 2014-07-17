@@ -58,15 +58,15 @@
           </platforms>
           <programs>
             <program>
-              <mainClass>org.locationtech.geogig.cli.GeogitCLI</mainClass>
+              <mainClass>org.locationtech.geogig.cli.GeogigCLI</mainClass>
               <name>geogig</name>
             </program>
             <program>
-              <mainClass>org.locationtech.geogig.cli.GeogitConsole</mainClass>
+              <mainClass>org.locationtech.geogig.cli.GeogigConsole</mainClass>
               <name>geogig-console</name>
             </program>
             <program>
-              <mainClass>org.locationtech.geogig.cli.GeogitPy4JEntryPoint</mainClass>
+              <mainClass>org.locationtech.geogig.cli.GeogigPy4JEntryPoint</mainClass>
               <name>geogig-gateway</name>
             </program>
           </programs>
@@ -85,7 +85,7 @@
             <configuration>
                 <archive>
                     <manifest>
-                        <mainClass>org.locationtech.geogig.cli.GeogitCLI</mainClass>
+                        <mainClass>org.locationtech.geogig.cli.GeogigCLI</mainClass>
                     </manifest>
                 </archive>
                 <descriptors>
@@ -100,7 +100,7 @@
                         <finalName>geogig</finalName>
                         <archive>
                             <manifest>
-                                <mainClass>org.locationtech.geogig.cli.GeogitCLI</mainClass>
+                                <mainClass>org.locationtech.geogig.cli.GeogigCLI</mainClass>
                             </manifest>
                         </archive>
                         <descriptors>

@@ -10,14 +10,14 @@
     </encoder>
   </appender>
 
-  <!-- geogitdir is a variable set on the logging context by the cli application by calling the resolve-geogit-dir plumbing 
+  <!-- geogigdir is a variable set on the logging context by the cli application by calling the resolve-geogig-dir plumbing 
     command -->
   <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
 
-    <file>${geogitdir}/log/geogit.log</file>
+    <file>${geogigdir}/log/geogig.log</file>
 
     <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
-      <fileNamePattern>geogit.log.%i</fileNamePattern>
+      <fileNamePattern>geogig.log.%i</fileNamePattern>
       <minIndex>1</minIndex>
       <maxIndex>9</maxIndex>
     </rollingPolicy>
@@ -33,10 +33,10 @@
 
   <appender name="METRICS" class="ch.qos.logback.core.rolling.RollingFileAppender">
 
-    <file>${geogitdir}/log/metrics.csv</file>
+    <file>${geogigdir}/log/metrics.csv</file>
 
     <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
-      <fileNamePattern>${geogitdir}/log/metrics.csv.%i</fileNamePattern>
+      <fileNamePattern>${geogigdir}/log/metrics.csv.%i</fileNamePattern>
       <minIndex>1</minIndex>
       <maxIndex>9</maxIndex>
     </rollingPolicy>
@@ -51,10 +51,10 @@
   </appender>
   <appender name="METRICS_STACK" class="ch.qos.logback.core.rolling.RollingFileAppender">
 
-    <file>${geogitdir}/log/command_trace.txt</file>
+    <file>${geogigdir}/log/command_trace.txt</file>
 
     <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
-      <fileNamePattern>${geogitdir}/log/command_trace.txt.%i</fileNamePattern>
+      <fileNamePattern>${geogigdir}/log/command_trace.txt.%i</fileNamePattern>
       <minIndex>1</minIndex>
       <maxIndex>9</maxIndex>
     </rollingPolicy>
@@ -69,10 +69,10 @@
   </appender>
   <appender name="MEMORY" class="ch.qos.logback.core.rolling.RollingFileAppender">
 
-    <file>${geogitdir}/log/memory.csv</file>
+    <file>${geogigdir}/log/memory.csv</file>
 
     <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
-      <fileNamePattern>${geogitdir}/log/memory.csv.%i</fileNamePattern>
+      <fileNamePattern>${geogigdir}/log/memory.csv.%i</fileNamePattern>
       <minIndex>1</minIndex>
       <maxIndex>9</maxIndex>
     </rollingPolicy>

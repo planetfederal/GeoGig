@@ -70,7 +70,7 @@ public class OracleImport extends AbstractOracleCommand implements CLICommand {
      * Executes the import command using the provided options.
      * 
      * @param cli
-     * @see org.geogig.cli.AbstractOracleCommand#runInternal(org.locationtech.geogig.cli.GeogigCLI)
+     * @see org.locationtech.geogig.cli.AbstractOracleCommand#runInternal(org.locationtech.geogig.cli.GeogigCLI)
      */
     @Override
     protected void runInternal(GeogigCLI cli) throws IOException {

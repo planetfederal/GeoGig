@@ -268,7 +268,7 @@ public class DefaultStepDefinitions {
     public void I_set_up_a_hook() throws Throwable {
         File hooksDir = new File(platform.pwd(), ".geogig/hooks");
         File hook = new File(hooksDir, "pre_commit.js");
-        String script = "exception = Packages.org.geogig.api.hooks.CannotRunGeogigOperationException;\n"
+        String script = "exception = Packages.org.locationtech.geogig.api.hooks.CannotRunGeogigOperationException;\n"
                 + "msg = params.get(\"message\");\n"
                 + "if (msg.length() < 5){\n"
                 + "\tthrow new exception(\"Commit messages must have at least 5 letters\");\n"

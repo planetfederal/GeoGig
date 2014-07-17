@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>geogit console emulator</title>
+    <title>geogig console emulator</title>
     <script src="./jquery-1.7.1.min.js"></script>
     <script src="./jqconsole.min.js"></script>
     <link href="./jqconsole.css" rel="stylesheet"/>
@@ -13,8 +13,8 @@
                 return function() { return ++id; };
             })();
 
-            var welcomeText = 'Welcome to GeoGit Console. Enter a command, or type \'help\' for assistance.\n';
-            var promptText = 'geogit $ ';
+            var welcomeText = 'Welcome to GeoGig Console. Enter a command, or type \'help\' for assistance.\n';
+            var promptText = 'geogig $ ';
             var jqconsole = $('#console').jqconsole(welcomeText, promptText);
             var startPrompt = function () {
                 // Start the prompt with history enabled.

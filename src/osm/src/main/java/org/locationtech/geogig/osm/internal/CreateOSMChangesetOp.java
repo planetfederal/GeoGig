@@ -36,7 +36,7 @@ import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterators;
 
-//import org.geogig.api.plumbing.diff.DiffEntry.ChangeType;
+//import org.locationtech.geogig.api.plumbing.diff.DiffEntry.ChangeType;
 
 /**
  * Perform a diff between trees pointed out by two commits, and return the result as OSM changesets

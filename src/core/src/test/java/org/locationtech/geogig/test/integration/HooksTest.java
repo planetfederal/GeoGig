@@ -129,7 +129,7 @@ public class HooksTest extends RepositoryTestCase {
 
     @Test
     public void testFailingPostPostProcessHook() throws Exception {
-        CharSequence postHookCode = "exception = Packages.org.geogig.api.hooks.CannotRunGeogigOperationException;\n"
+        CharSequence postHookCode = "exception = Packages.org.locationtech.geogig.api.hooks.CannotRunGeogigOperationException;\n"
                 + "throw new exception();";
         File hooksFolder = new File(geogig.getPlatform().pwd(), ".geogig/hooks");
         File commitPostHookFile = new File(hooksFolder, "post_commit.js");
@@ -193,7 +193,7 @@ public class HooksTest extends RepositoryTestCase {
 
     /**
      * This command hook is discoverable through the {@link ServiceLoader} SPI as there's a
-     * {@code org.geogig.api.hooks.CommandHook} file in {@code src/test/resources/META-INF/services}
+     * {@code org.locationtech.geogig.api.hooks.CommandHook} file in {@code src/test/resources/META-INF/services}
      * but the static ENABLED flag must be set by the test case for it to be run.
      */
     public static final class ClasspathHookTest implements CommandHook {
