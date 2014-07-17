@@ -1,14 +1,14 @@
 
-.. _geogit-osm-unmap:
+.. _geogig-osm-unmap:
 
-geogit-osmunmap documentation
+geogig-osmunmap documentation
 ##############################
 
 
 
 SYNOPSIS
 ********
-geogit osm unmap <path>
+geogig osm unmap <path>
 
 
 DESCRIPTION
@@ -33,11 +33,11 @@ OPTIONS
 SEE ALSO
 ********
 
-:ref:`geogit-osm-download`
+:ref:`geogig-osm-download`
 
-:ref:`geogit-osm-map`
+:ref:`geogig-osm-map`
 
-:ref:`geogit-osm-import`
+:ref:`geogig-osm-import`
 
 BUGS
 ****

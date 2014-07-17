@@ -1,20 +1,20 @@
 
-.. _geogit-sl-describe:
+.. _geogig-sl-describe:
 
-geogit-sl-describe documentation
+geogig-sl-describe documentation
 ################################
 
 
 
 SYNOPSIS
 ********
-geogit sl describe [options] -t <table>
+geogig sl describe [options] -t <table>
 
 
 DESCRIPTION
 ***********
 
-This command describes a single table in a SpatiaLite database.  It will print out each property name along with its type. To see a list of available tables, use ``geogit sl list``.
+This command describes a single table in a SpatiaLite database.  It will print out each property name along with its type. To see a list of available tables, use ``geogig sl list``.
 
 OPTIONS
 *******    
@@ -28,7 +28,7 @@ OPTIONS
 SEE ALSO
 ********
 
-:ref:`geogit-sl-list`
+:ref:`geogig-sl-list`
 
 BUGS
 ****

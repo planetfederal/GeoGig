@@ -1,9 +1,9 @@
-GeoGit Network Synchronization
+GeoGig Network Synchronization
 ==============================
 
-For synchronization over network connections, GeoGit defines a protocol layered over HTTP.
-This document defines the operations the GeoGit server must provide, and the way that a GeoGit client is expected to use it to achieve synchronization.
-In fact, GeoGit synchronization consists of two different types of operation - a "push" in which a client copies history to a server, and a "pull" in which a client copies history from a server.
+For synchronization over network connections, GeoGig defines a protocol layered over HTTP.
+This document defines the operations the GeoGig server must provide, and the way that a GeoGig client is expected to use it to achieve synchronization.
+In fact, GeoGig synchronization consists of two different types of operation - a "push" in which a client copies history to a server, and a "pull" in which a client copies history from a server.
 
 Server operations
 =================
@@ -14,7 +14,7 @@ Manifest
 The server provides a "manifest" document advertising its named refs and their current commit ids.
 Synchronization operations generally begin with the client requesting a manifest from the server in order to assess the differences between their histories.
 
-The manifest resource responds to GET requests at ``repo/manifest`` relative to the GeoGit server and contains a line-oriented textual description of the refs.
+The manifest resource responds to GET requests at ``repo/manifest`` relative to the GeoGig server and contains a line-oriented textual description of the refs.
 Each ref includes its name and commit id (the commit id in hexadecimal notation); a prefix including the symbolic name for the ref may also be included.
 The first line should represent the HEAD symbolic ref.
 
@@ -23,7 +23,7 @@ Example
 
 .. code-block:: none
 
-    GET /geogit/repo/manifest
+    GET /geogig/repo/manifest
 
     HEAD /refs/branches/master 00000000000000000000
     /refs/branches/master 00000000000000000000
@@ -57,7 +57,7 @@ In the following example, the "want" list conveniently contains only a single co
 
 .. code-block:: none
 
-   POST /geogit/repo/exists
+   POST /geogig/repo/exists
    {
      "want" : [ "abcdefabcdefabcdef12" ],
      "have" : [ "123456567890345678ab" ]
@@ -103,7 +103,7 @@ Example
 
 .. code-block:: none
 
-   POST /geogit/repo/objects
+   POST /geogig/repo/objects
    { 
      "want": ["abcdefabcdefabcdef12"],
      "have": ["123456567890345678ab"]

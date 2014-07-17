@@ -1,14 +1,14 @@
 
-.. _geogit-sqlserver-list:
+.. _geogig-sqlserver-list:
 
-geogit-sqlserver-list documentation
+geogig-sqlserver-list documentation
 ####################################
 
 
 
 SYNOPSIS
 ********
-geogit sqlserver list [options]
+geogig sqlserver list [options]
 
 
 DESCRIPTION

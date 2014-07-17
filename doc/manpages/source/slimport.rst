@@ -1,20 +1,20 @@
 
-.. _geogit-sl-import:
+.. _geogig-sl-import:
 
-geogit-sl-import documentation
+geogig-sl-import documentation
 ##############################
 
 
 
 SYNOPSIS
 ********
-geogit sl import [options] [--all|-t <table>]
+geogig sl import [options] [--all|-t <table>]
 
 
 DESCRIPTION
 ***********
 
-This command imports one or more tables from a SpatiaLite database into the GeoGit working tree.  Either ``-t`` or ``--all`` must be set for the import process to commence.  To see a list of available tables, use ``geogit sl list``.
+This command imports one or more tables from a SpatiaLite database into the GeoGig working tree.  Either ``-t`` or ``--all`` must be set for the import process to commence.  To see a list of available tables, use ``geogig sl list``.
 
 OPTIONS
 *******    
@@ -36,7 +36,7 @@ OPTIONS
 SEE ALSO
 ********
 
-:ref:`geogit-sl-list`
+:ref:`geogig-sl-list`
 
 BUGS
 ****

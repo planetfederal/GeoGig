@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# GeoGit documentation build configuration file, created by
+# GeoGig documentation build configuration file, created by
 # sphinx-quickstart on Mon Feb 25 13:44:22 2013.
 #
 # This file is execfile()d with the current directory set to its containing dir.
@@ -40,7 +40,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'GeoGit'
+project = u'GeoGig'
 manual = u'User Manual'
 copyright = u'2013, OpenGeo'
 
@@ -96,7 +96,7 @@ pygments_style = 'sphinx'
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-html_theme = 'geogit_docs'
+html_theme = 'geogig_docs'
 html_theme_path = ['../../themes/']
 
 # Theme options are theme-specific and customize the look and feel of a theme
@@ -161,13 +161,13 @@ html_title = project + " " + release + " " + manual
 # If true, an OpenSearch description file will be output, and all pages will
 # contain a <link> tag referring to it.  The value of this option must be the
 # base URL from which the finished HTML is served.
-#html_use_opensearch =  'http://geogit.org'
+#html_use_opensearch =  'http://geogig.org'
 
 # This is the file name suffix for HTML files (e.g. ".xhtml").
 #html_file_suffix = None
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'GeoGitdocumentationdoc'
+htmlhelp_basename = 'GeoGigdocumentationdoc'
 
 
 # -- Options for LaTeX output --------------------------------------------------
@@ -186,7 +186,7 @@ latex_elements = {
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'GeoGitdocumentation.tex', u'GeoGit documentation Documentation',
+  ('index', 'GeoGigdocumentation.tex', u'GeoGig documentation Documentation',
    u'OpenGeo', 'manual'),
 ]
 
@@ -216,7 +216,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'geogitdocumentation', u'GeoGit documentation Documentation',
+    ('index', 'geogigdocumentation', u'GeoGig documentation Documentation',
      [u'OpenGeo'], 1)
 ]
 
@@ -230,8 +230,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'GeoGitdocumentation', u'GeoGit documentation Documentation',
-   u'OpenGeo', 'GeoGitdocumentation', 'One line description of project.',
+  ('index', 'GeoGigdocumentation', u'GeoGig documentation Documentation',
+   u'OpenGeo', 'GeoGigdocumentation', 'One line description of project.',
    'Miscellaneous'),
 ]
 

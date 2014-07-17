@@ -3,7 +3,7 @@
 Interacting with remote repositories
 ====================================
 
-A GeoGit repository contains a full history and it is completely autonomous. However, it is possible and useful to interact with remote copies of the same repository, as it allows different people to work collaborateively. By having a designated central repository which keeps a reference history, others can clone it, work on a cloned repo and then add their changes back to the central repository. While designating a repository as "central", it is in fact no different from the other cloned copies.
+A GeoGig repository contains a full history and it is completely autonomous. However, it is possible and useful to interact with remote copies of the same repository, as it allows different people to work collaborateively. By having a designated central repository which keeps a reference history, others can clone it, work on a cloned repo and then add their changes back to the central repository. While designating a repository as "central", it is in fact no different from the other cloned copies.
 
 All copies of a repository relatvie to the local copy are known as **remotes**.
 
@@ -16,18 +16,18 @@ Here is the command line to be used to clone a repository at ``http://myoriginal
 
 .. code-block:: console
 
-   geogit clone http://myoriginalrepo.com repo
+   geogig clone http://myoriginalrepo.com repo
 
-Once the repository is cloned, both copies are identical, and you can start working on your copy independently, following the usual GeoGit workflow.
+Once the repository is cloned, both copies are identical, and you can start working on your copy independently, following the usual GeoGig workflow.
 
 Aliases
 -------
 
-Instead of referring to a remote with its full URL, a GeoGit repository can refer to it by an **alias**. Remotes are added using the ``geogit remote`` command:
+Instead of referring to a remote with its full URL, a GeoGig repository can refer to it by an **alias**. Remotes are added using the ``geogig remote`` command:
 
 .. code-block:: console
 
-   geogit remote add origin https://myoriginalrepo.com
+   geogig remote add origin https://myoriginalrepo.com
 
 This creates an alias called ``origin`` for the repository at ``https://myoriginalrepo.com``
 
@@ -35,7 +35,7 @@ You can rename an alias with the ``rename`` argument:
 
 .. code-block:: console
 
-   geogit remote rename origin canonical
+   geogig remote rename origin canonical
 
 Pushing and pulling
 -------------------
@@ -47,19 +47,19 @@ With the remote repositories already configured, you can now interact with them 
 
 The following figure summarizes the above mechanism.
 
-.. figure:: ../img/geogit_workflow_remotes.png
+.. figure:: ../img/geogig_workflow_remotes.png
 
 To push changes from the current branch in the local repository to a remote repository named ``origin``, the following command is used:
 
 .. code-block:: console
 
-   geogit push origin
+   geogig push origin
 
 Or to specify a branch:
 
 .. code-block:: console
 
-   geogit push origin branch
+   geogig push origin branch
 
 .. note:: You must have write access to the remote repository to be able to apply local changes.
 
@@ -69,9 +69,9 @@ Retrieving the changes from a remote repository is done using the ``pull command
 
 .. code-block:: console
 
-   geogit pull origin master
+   geogig pull origin master
 
-That would bring all changes from the ``master`` branch in the ``origin`` repository into the current branch of the local repository. You can be in a branch other than ``master``. There is no need to specify the same branch as the current branch in the local repository. GeoGit will grab the commits that are missing in your local branch after comparing with the remote branch, and will merge them.
+That would bring all changes from the ``master`` branch in the ``origin`` repository into the current branch of the local repository. You can be in a branch other than ``master``. There is no need to specify the same branch as the current branch in the local repository. GeoGig will grab the commits that are missing in your local branch after comparing with the remote branch, and will merge them.
 
 A pull or push is not guaranteed to be clean, and conflicts might appear. They are solved in much the same way as a local :ref:`merge <repo.merging>` conflict.
 
@@ -89,5 +89,5 @@ The ``fetch`` command is used with only the name of the remote repository:
 
 .. code-block:: console
 
-   geogit fetch origin
+   geogig fetch origin
 

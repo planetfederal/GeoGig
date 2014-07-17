@@ -1,7 +1,7 @@
-Binary encoding of GeoGit objects
+Binary encoding of GeoGig objects
 =================================
 
-This is the format used for internal storage in the GeoGit object store.
+This is the format used for internal storage in the GeoGig object store.
 
 Conventions
 -----------
@@ -71,10 +71,10 @@ Tree
 
 .. note:: 
     In representing trees we split the count of tree contents into three fields:
-    features, trees, and buckets. Because of the way GeoGit builds trees,
+    features, trees, and buckets. Because of the way GeoGig builds trees,
     buckets must be zero when either of the other two fields is nonzero.
 
-    We should probably document how exactly GeoGit builds trees :)
+    We should probably document how exactly GeoGig builds trees :)
 
 .. code-block:: none
 

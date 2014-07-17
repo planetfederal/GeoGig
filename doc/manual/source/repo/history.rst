@@ -3,7 +3,7 @@
 Modifying history
 =================
 
-When a commit is made, a new version of the data in your repository is created and stored, along with all previous versions. The full set of commits and objects in the repository database constitutes the repository **history**. Ideally, you should change the history of a repository just by adding new commits. However, sometimes it is useful to rewrite parts of the history or to change its structure, to more clearly reflect the work that it has been done. GeoGit provides several commands and options than alter the current history of a repository.
+When a commit is made, a new version of the data in your repository is created and stored, along with all previous versions. The full set of commits and objects in the repository database constitutes the repository **history**. Ideally, you should change the history of a repository just by adding new commits. However, sometimes it is useful to rewrite parts of the history or to change its structure, to more clearly reflect the work that it has been done. GeoGig provides several commands and options than alter the current history of a repository.
 
 Modifying the history of a repository is safe as long as you are not sharing it and are sure that no one else is basing work on it. If this is not the case, pull operations from other repositories whose history has not been rewritten in the same way are likely to involve conflicts.
 
@@ -21,7 +21,7 @@ You can create a separate commit to include the second feature, but it might be 
 
 .. code-block:: console
 
-   geogit commit --amend
+   geogig commit --amend
 
 There is no need to add a commit message, since the commit command will use the one from the previous commit. It will replace the previous commit with a new one that includes the extra changes that you might have introduced, but keep the same message.
 
@@ -37,7 +37,7 @@ You can squash commits by using the ``squash`` command and providing it with a r
 
 .. code-block:: console
 
-   geogit squash HEAD~2 HEAD
+   geogig squash HEAD~2 HEAD
 
 The commit message is by default taken from the oldest commit (in this case HEAD~2), but can be supplied if needed, using the ``-m`` option.
 
@@ -45,7 +45,7 @@ You can squash commits in the middle of the history line as well:
 
 .. code-block:: console
 
-   geogit squash HEAD~5 HEAD~2
+   geogig squash HEAD~5 HEAD~2
 
 A message is not needed, but it can be supplied if needed, using the ``-m`` option.
 
@@ -62,17 +62,17 @@ When performing a rebase operation, the commits that are rebased can be squashed
 
 .. note::
 
-  Squashing is performed in ``git`` by doing an interactive rebase. The rebase operation in GeoGit doesn't have an interactive mode, so an additional command has been added for this purpose.
+  Squashing is performed in ``git`` by doing an interactive rebase. The rebase operation in GeoGig doesn't have an interactive mode, so an additional command has been added for this purpose.
 
 
 Splitting a commit
 ------------------
 
-It is also possible to split a commit into several commits. There is no command for doing this in GeoGit, but you can get the same result by running a soft reset.
+It is also possible to split a commit into several commits. There is no command for doing this in GeoGig, but you can get the same result by running a soft reset.
 
 .. code-block:: console
 
-   geogit reset --soft HEAD~1
+   geogig reset --soft HEAD~1
 
 That will put your HEAD one commit behind, discarding the most recent commit. However, your working tree and index will not be affected, so you can now commit the changes on the working tree in whatever way you choose.
 

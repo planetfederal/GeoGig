@@ -1,6 +1,6 @@
-.. _geogit-checkout:
+.. _geogig-checkout:
 
-geogit-checkout documentation
+geogig-checkout documentation
 #############################
 
 
@@ -8,8 +8,8 @@ geogit-checkout documentation
 
 SYNOPSIS
 ********
-geogit checkout [<options>] <branch> 
-geogit checkout [<branchOrCommitName>] -p <paths>...
+geogig checkout [<options>] <branch> 
+geogig checkout [<branchOrCommitName>] -p <paths>...
 
 
 DESCRIPTION

@@ -1,9 +1,9 @@
-.. GeoGit man pages master file, created by
+.. GeoGig man pages master file, created by
    sphinx-quickstart on Mon Feb 25 13:44:22 2013.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-GeoGit Manual Pages
+GeoGig Manual Pages
 ================================================
 
 Contents:
@@ -22,7 +22,7 @@ Contents:
     diff.rst
     fetch.rst
     formatpatch.rst
-    geogit.rst
+    geogig.rst
     geojson.rst
     geojsonimport.rst
     geojsonexport.rst

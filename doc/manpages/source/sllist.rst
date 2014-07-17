@@ -1,14 +1,14 @@
 
-.. _geogit-sl-list:
+.. _geogig-sl-list:
 
-geogit-sl-list documentation
+geogig-sl-list documentation
 #############################
 
 
 
 SYNOPSIS
 ********
-geogit sl list [options]
+geogig sl list [options]
 
 
 DESCRIPTION

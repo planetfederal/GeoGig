@@ -1,15 +1,15 @@
 Cherry-picking commits
 =======================
 
-The merge and rebase operations combine to different histories into a given one. sometimes, however, you might not want to combine all the differences from a branch or a set of branches, but just one single commit, or a selected number of them. GeoGit has another operation called *cherry-picking*, that can be used for that.
+The merge and rebase operations combine to different histories into a given one. sometimes, however, you might not want to combine all the differences from a branch or a set of branches, but just one single commit, or a selected number of them. GeoGig has another operation called *cherry-picking*, that can be used for that.
 
 To run a cherry picking operation, the ``cherry-pick`` command has to be used, with the following syntax
 
 ::
 
-	$geogit cherry-pick <commit>
+	$geogig cherry-pick <commit>
 
-The commit reference can be specified using any of the syntaxes supported by GeoGit, as long as it resolves to a commit. References such as ``5852e6949ba71039fded67e7f4980af4f8773869`` (a full commit ID), ``5852e69`` (a shortened commit ID), or ``branch1`` (the last commit in a branch named *branch1*), are all valid, to name a few examples.
+The commit reference can be specified using any of the syntaxes supported by GeoGig, as long as it resolves to a commit. References such as ``5852e6949ba71039fded67e7f4980af4f8773869`` (a full commit ID), ``5852e69`` (a shortened commit ID), or ``branch1`` (the last commit in a branch named *branch1*), are all valid, to name a few examples.
 
 Once the cherry-pick operation has been run, you will have a new commit in you history, with the same message and changes as the commit that you passed. You have literally applied that commit to you current branch. 
 
@@ -22,7 +22,7 @@ As in the case of both the ``merge`` and ``rebase`` commands, ``cherry-pick`` ca
 
 ::
 
-	$geogit cherry-pick 5852e694
+	$geogig cherry-pick 5852e694
 	CONFLICT: conflict in Parks/1
 
 Conflict arise whenever the changed for a given element might overwrite and additional changed introduced in the current branch. For instance, let's say the commit you are picking has changed the value of a given attribute in a given feature from "1" to "2". If in the current branch the value for that attribute and feature is "3", the cherry-picking operation will report that as a conflict. It could just change the value to "2", but that would discard the previous changes, since the original value is not the same. To avoid it, it will let you manually do the edit.
@@ -35,7 +35,7 @@ To finally commit you changes, call the ``commit`` command, reusing the informat
 
 ::
 
-	$geogit commit -c 5852e694
+	$geogig commit -c 5852e694
 
 That will perform a normal commit, but instead of asking you for a commit message, it will use the original one from the passed commit, along with its author and author timestamp.
 

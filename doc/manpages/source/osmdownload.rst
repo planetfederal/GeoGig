@@ -1,14 +1,14 @@
 
-.. _geogit-osm-download:
+.. _geogig-osm-download:
 
-geogit-osm-download documentation
+geogig-osm-download documentation
 ##################################
 
 
 
 SYNOPSIS
 ********
-geogit osm download <url> [--bbox <S W N E>] [--saveto <path>] [--message <message>] [--keep-files] [--update] [-mapping <mapping_file>] [--rebase]
+geogig osm download <url> [--bbox <S W N E>] [--saveto <path>] [--message <message>] [--keep-files] [--update] [-mapping <mapping_file>] [--rebase]
 
 
 DESCRIPTION
@@ -31,7 +31,7 @@ OPTIONS
 
 --keep-files				Do not delete the downloaded file after importing it.
     
---update					Update the current OSM data. This can be used only if a previous download operation has been executed in the repository. The filter and mapping used on that previous download will be reused, and the downloaded data is not just imported and commited to the repository, but put into a separate branch and then merged or rebased. When this switch is used, the command can be seen an OSM-based version of the :ref:`geogit-fetch` command
+--update					Update the current OSM data. This can be used only if a previous download operation has been executed in the repository. The filter and mapping used on that previous download will be reused, and the downloaded data is not just imported and commited to the repository, but put into a separate branch and then merged or rebased. When this switch is used, the command can be seen an OSM-based version of the :ref:`geogig-fetch` command
 
 --rebase 					If the ``--update`` option is used, rebase the downloaded data instead of merging it with the current branch.
 
@@ -40,11 +40,11 @@ OPTIONS
 SEE ALSO
 ********
 
-:ref:`geogit-rebase`
+:ref:`geogig-rebase`
 
-:ref:`geogit-merge`
+:ref:`geogig-merge`
 
-:ref:`geogit-osm-map`
+:ref:`geogig-osm-map`
 
 BUGS
 ****

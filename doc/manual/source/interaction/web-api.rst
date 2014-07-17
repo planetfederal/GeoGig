@@ -1,9 +1,9 @@
 Web-Api Documentation
 ==============================
 
-This will walk you through GeoGit's web-api and all of its currently supported functionality. This doc also assumes that you already know what any given command does, this is strictly how to use these commands. First I will explain an easy way to get the web-api up and running.
+This will walk you through GeoGig's web-api and all of its currently supported functionality. This doc also assumes that you already know what any given command does, this is strictly how to use these commands. First I will explain an easy way to get the web-api up and running.
 
-If you don't already have the GeoGit source from GitHub and a GeoGit repository set up do that first. Next, to get the web-api up and running after you have built the latest GeoGit go into your repository and run ``geogit serve``. This will set up a jetty server with your repository and give you access to the web-api. Now you just need to open up a web browser and go to localhost:8182/log to make sure it comes up. After you have gotten it up and running now you can test any of the commands listed here.
+If you don't already have the GeoGig source from GitHub and a GeoGig repository set up do that first. Next, to get the web-api up and running after you have built the latest GeoGig go into your repository and run ``geogig serve``. This will set up a jetty server with your repository and give you access to the web-api. Now you just need to open up a web browser and go to localhost:8182/log to make sure it comes up. After you have gotten it up and running now you can test any of the commands listed here.
 
 All web-api commands have transaction support, which means you can run the web-api commands beginTransaction to start a transaction and then use the id that is returned to do other commands on that transaction instead of the actual repository. After you are done with everything on the transaction you just have call endTransaction through the web-api and pass it the transaction id. Some commands require a transaction to preserve the stability of the repository, those that require it will have ``(-T)`` next to the name of the command in this doc. To pass the transaction id you just need to use the transactionId option and set it equal to the id that beginTransaction returns. Some commands also have other options that are required for that command to work they will have a ``(-R)`` next to them. Any options that have notes associated with them have and asterisk next to them.
 
@@ -663,7 +663,7 @@ Porcelain Commands Supported
 	
 	::
 	   
-	   Returns all of the version information for your version of GeoGit.
+	   Returns all of the version information for your version of GeoGig.
 	   	
 Plumbing Commands Supported
 -------------------------------------------------------
@@ -1023,7 +1023,7 @@ These commands can be used by using the ``repo/`` endpoint, instead of the stand
 
 - **MergeFeature**
 
-    This endpoint can be used to merge two features into a new one.  It will return the ObjectId of the new feature when the operation completes.  This endpoint must be accessed by using a POST request that contains a json object to tell GeoGit how to merge the feature.  The following is an example of the json POST data to merge a feature with 3 attributes.
+    This endpoint can be used to merge two features into a new one.  It will return the ObjectId of the new feature when the operation completes.  This endpoint must be accessed by using a POST request that contains a json object to tell GeoGig how to merge the feature.  The following is an example of the json POST data to merge a feature with 3 attributes.
     
     .. code-block:: none
     

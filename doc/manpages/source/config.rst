@@ -1,18 +1,18 @@
 
-.. _geogit-config:
+.. _geogig-config:
 
-geogit-config documentation
+geogig-config documentation
 ###########################
 
 
 
 SYNOPSIS
 ********
-geogit config [--global|--local] name [value]
-geogit config [--global|--local] --get name
-geogit config [--global|--local] --unset name
-geogit config [--global|--local] --remove-section name
-geogit config [--global|--local] -l
+geogig config [--global|--local] name [value]
+geogig config [--global|--local] --get name
+geogig config [--global|--local] --unset name
+geogig config [--global|--local] --remove-section name
+geogig config [--global|--local] -l
  
 
 
@@ -21,7 +21,7 @@ DESCRIPTION
 
 You can query/set/unset options with this command. The name is actually the section and the key separated by a dot, and the value will be escaped.
 
-By default, the config file of the current repository will be assumed.  If the --global option is set, the global ``.geogitconfig`` file will be used. If the ``--local`` option is set the config file of the current repository will be used if it exists.
+By default, the config file of the current repository will be assumed.  If the --global option is set, the global ``.geogigconfig`` file will be used. If the ``--local`` option is set the config file of the current repository will be used if it exists.
 
 OPTIONS
 *******
@@ -38,7 +38,7 @@ OPTIONS
 
 -l, --list          List all variables from the config file.
 
-GEOGIT CONFIGURATION
+GEOGIG CONFIGURATION
 ********************
 
 This list is not comprehensive; some configuration options are documented in relevant man pages.
@@ -48,7 +48,7 @@ bdbje.object_durability     Determines how safe to be when persisting objects in
 SEE ALSO
 ********
 
-geogit-init
+geogig-init
 
 BUGS
 ****

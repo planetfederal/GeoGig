@@ -1,14 +1,14 @@
 
-.. _geogit-remote-list:
+.. _geogig-remote-list:
 
-geogit-remote-list documentation
+geogig-remote-list documentation
 ################################
 
 
 
 SYNOPSIS
 ********
-geogit remote list [-v]
+geogig remote list [-v]
 
 
 DESCRIPTION
@@ -24,9 +24,9 @@ OPTIONS
 SEE ALSO
 ********
 
-:ref:`geogit-remote-add`
+:ref:`geogig-remote-add`
 
-:ref:`geogit-remote-remove`
+:ref:`geogig-remote-remove`
 
 BUGS
 ****

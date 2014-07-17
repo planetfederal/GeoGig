@@ -1,14 +1,14 @@
 
-.. _geogit-show:
+.. _geogig-show:
 
-geogit-show documentation
+geogig-show documentation
 #########################
 
 
 
 SYNOPSIS
 ********
-geogit show <reference>
+geogig show <reference>
 
 
 DESCRIPTION
@@ -16,7 +16,7 @@ DESCRIPTION
 
 Displays a description of the passed reference. The reference can be a feature, a tree, or a commit. In the case of a tree, the default feature type is described along with some other characteristics of the tree.
 
-To get a machine-readable description of an element in a geogit repository, the ``cat`` command can be used instead
+To get a machine-readable description of an element in a geogig repository, the ``cat`` command can be used instead
 
 The reference can be a SHA-1, a full refspec, or just a path. If a path is used, it's assumed to refer to an element in the working head.
 
@@ -30,7 +30,7 @@ OPTIONS
 SEE ALSO
 ********
 
-:ref:`geogit-cat`
+:ref:`geogig-cat`
 
 BUGS
 ****

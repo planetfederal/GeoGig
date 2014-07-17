@@ -3,7 +3,7 @@
 Working with repositories
 =========================
 
-This section will discuss working with GeoGit repositories.
+This section will discuss working with GeoGig repositories.
 
 .. toctree::
    :maxdepth: 2

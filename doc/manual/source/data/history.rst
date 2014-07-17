@@ -3,29 +3,29 @@
 Exploring your history
 ======================
 
-We have already seen how to explore the content of a a GeoGit repository. It is also interesting to explore its history, since it will show us what has happened since it was created. Exploring the history can answer questions such as "who has edited this feature?", "since when does this feature exist?" or "how many edits has a given person made during the last month?", just to name a few.
+We have already seen how to explore the content of a a GeoGig repository. It is also interesting to explore its history, since it will show us what has happened since it was created. Exploring the history can answer questions such as "who has edited this feature?", "since when does this feature exist?" or "how many edits has a given person made during the last month?", just to name a few.
 
-The log command, which we have already seen, is used to browse the history of a GeoGit repository. In its most basic form, as we know, it just shows a list of all commits, ordered by their commit date.
+The log command, which we have already seen, is used to browse the history of a GeoGig repository. In its most basic form, as we know, it just shows a list of all commits, ordered by their commit date.
 
 ::
 
-	$geogit log
+	$geogig log
 
 
-We can change two things in the output of the log command: the amount of information displayed for each commit, and the commits that are printed out. In the fist case, we can tell GeoGit to just show one line for each commit or, if we want the full information, to display all the changes introduced by each commit. To select which commits should be shown, we can request a restricted list of them by setting time constraints, the commits of a single author, or just the history of the current branch without merged branches, among other available options.
+We can change two things in the output of the log command: the amount of information displayed for each commit, and the commits that are printed out. In the fist case, we can tell GeoGig to just show one line for each commit or, if we want the full information, to display all the changes introduced by each commit. To select which commits should be shown, we can request a restricted list of them by setting time constraints, the commits of a single author, or just the history of the current branch without merged branches, among other available options.
 
 Setting how commits are displayed
 ----------------------------------
 
 One of the most useful options of the ``log`` command is ``--oneline``. If the usual description of a commit is too verbose for your needs, you can reduce it to just one single line, so more commits can be shown in your screen.
 
-.. note:: ``git`` uses the ``less`` command by default to page results. GeoGit just prints the commits history without paging, and it is up to you to pipe it into a console utility to page it.
+.. note:: ``git`` uses the ``less`` command by default to page results. GeoGig just prints the commits history without paging, and it is up to you to pipe it into a console utility to page it.
 
 Here you can see an example of the output that the ``log`` command produces when the ``--oneline`` option used.
 
 ::
 
-	$geogit log --oneline
+	$geogig log --oneline
 	6f250c0c74d9cb852405818f4a5e50aa971d543c Merged branch1
 	7aa528d3d3437ca8015f1dcfb8a61e197aa09dbe Changed unit in area field
 	da1534a4aae8a1b29974c040c9fb44be426c58f8 Added missing feature
@@ -38,7 +38,7 @@ The ``--stats`` option prints an additional line with the number of objects that
 
 ::
 
-	$geogit log --stats
+	$geogig log --stats
 	Commit:  6f250c0c74d9cb852405818f4a5e50aa971d543c
 	Merge: 7aa528dda1534a
 	Author:  volaya <volaya@opengeo.org>
@@ -74,7 +74,7 @@ If you actually want to know which elements have changed, the ``--summary`` will
 
 ::
 
-	$geogit log --summary
+	$geogig log --summary
 
 
 
@@ -92,7 +92,7 @@ The default log output would be like the one shown next:
 
 ::
 
-	$ geogit log --oneline
+	$ geogig log --oneline
 	86562df2e4f357b05abd2f61c5db2013185f478a Merge commit branch1
 	7844674611811fe888852ca9418028dd900f4a8e Changed unit in area field
 	be697a1404f1ead7d92b3e9c094627b3e047aae0 Added missing feature
@@ -104,7 +104,7 @@ Using the ``--first-parent`` option, the output would be like this:
 
 ::
 
-	$ geogit log --oneline --first-parent
+	$ geogig log --oneline --first-parent
 	6f250c0c74d9cb852405818f4a5e50aa971d543c Merge branch1
 	7aa528d3d3437ca8015f1dcfb8a61e197aa09dbe Changed unit in area field
 	159b517523e05083a18f5626439017663610deeb Minor changes
@@ -116,7 +116,7 @@ If, instead, you want to show the full history of the repository, including all 
 
 ::
 
-	$ geogit log --oneline -all
+	$ geogig log --oneline -all
 	adf66fe8b06bd810767de4222b387c7b2a18233f Edited wrong geometries
 	6f250c0c74d9cb852405818f4a5e50aa971d543c Merge branch1
 	7aa528d3d3437ca8015f1dcfb8a61e197aa09dbe Changed unit in area field
@@ -129,7 +129,7 @@ Some of the commits in that history correspond to the tips of its branches, so i
 
 ::
 
-	$ geogit log --oneline -all --decoration
+	$ geogig log --oneline -all --decoration
 	adf66fe8b06bd810767de4222b387c7b2a18233f (refs/heads/branch2) Edited wrong geometries
 	6f250c0c74d9cb852405818f4a5e50aa971d543c (HEAD, refs/heads/master) Merge branch1
 	7aa528d3d3437ca8015f1dcfb8a61e197aa09dbe Changed unit in area field
@@ -141,7 +141,7 @@ If you prefer to show shortened Ids, use the ``abbrev-commit`` option
 
 ::
 
-	$ geogit log --oneline -all --decoration --abbrev-commit
+	$ geogig log --oneline -all --decoration --abbrev-commit
 	adf66fe (refs/heads/branch2) Edited wrong geometries
 	6f250c0 (HEAD, refs/heads/master) Merge branch1
 	7aa528d Changed unit in area field
@@ -153,7 +153,7 @@ You can see that, in both cases, the history is displayed in chronological order
 
 ::
 
-	$ geogit log --topo-order --oneline -all --decoration
+	$ geogig log --topo-order --oneline -all --decoration
 	adf66fe8b06bd810767de4222b387c7b2a18233f (refs/heads/branch2) Edited wrong geometries
 	da1534a4aae8a1b29974c040c9fb44be426c58f8 (refs/heads/branch1) Added missing feature
 	6f250c0c74d9cb852405818f4a5e50aa971d543c (HEAD, refs/heads/master) Merge branch1
@@ -166,7 +166,7 @@ You can limit the number of commits by setting a fixed number of them or enterin
 
 ::
 
-	$ geogit log -n 2 --oneline
+	$ geogig log -n 2 --oneline
 	86562df2e4f357b05abd2f61c5db2013185f478a Merge commit branch1
 	7844674611811fe888852ca9418028dd900f4a8e Changed unit in area field
 
@@ -174,7 +174,7 @@ To set a date range, use the ``--since`` and ``--until`` commands, followed by t
 
 ::
 
-	$ geogit log --since yesterday --oneline
+	$ geogig log --since yesterday --oneline
 
 
 
@@ -184,30 +184,30 @@ If instead of dates you want to use commit Id's as limits of the history to disp
 
 ::
 
-	$ geogit log --oneline HEAD~1..HEAD~3
+	$ geogig log --oneline HEAD~1..HEAD~3
 	7844674611811fe888852ca9418028dd900f4a8e Changed unit in area field	
 	d0bb10b4aee5fe9961d361031d548df3136cada2 Minor changes
 	a87bc4f1725115d5cbdcf22a1b9914cf37911e18 First import
 
 
-Commits can also be filtered by author and committer, using the ``--author`` and ``--committer`` options respectively. The value after them is a regular expression that is used to filter the commits. For instance, to show just the commits made by a user named "geogituser", use the following line
+Commits can also be filtered by author and committer, using the ``--author`` and ``--committer`` options respectively. The value after them is a regular expression that is used to filter the commits. For instance, to show just the commits made by a user named "geogiguser", use the following line
 
 ::
 
-	$ geogit log --author geogituser
+	$ geogig log --author geogiguser
 
 All the above options can be combined to filter the resulting list of commits according to several different criteria.	
 
 Exploring the history of a single feature
 ------------------------------------------
 
-If instead of studying the history of the whole repository, you want to see who introduced changes in a certain feature, GeoGit provides an additional command. Using the ``blame`` command you will get a list of the commits that introduced the last change for each attribute, including the default geometry.
+If instead of studying the history of the whole repository, you want to see who introduced changes in a certain feature, GeoGig provides an additional command. Using the ``blame`` command you will get a list of the commits that introduced the last change for each attribute, including the default geometry.
 
 The command takes a single parameter, which is the path to the feature to analyze. Its output is a list of all the attributes in the feature, each one with a description of the commit that was the last one to change it, as shown in the example below.
 
 ::
 
-	$ geogit blame parks/1
+	$ geogig blame parks/1
 	parktype: 2d13209 volaya volaya@opengeo.org 2013-12-29 03:57:08
 	area: ea7d536 volaya volaya@opengeo.org 2013-57-12 03:57:32
 	perimeter: 2d13209 volaya volaya@opengeo.org 2013-12-29 03:57:08

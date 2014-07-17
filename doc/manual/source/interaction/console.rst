@@ -1,37 +1,37 @@
-The GeoGit Console
+The GeoGig Console
 ====================
 
-GeoGit is a command-line application that is run by calling commands in the form ``geogit <command> [options]``. Each time you call it with a sentence like that, GeoGit has to be initialized. If your session involves running several commands, a better option is to run the geogit console, which lets you run a set of commands, initializing GeoGit just once at the begining of the session.
+GeoGig is a command-line application that is run by calling commands in the form ``geogig <command> [options]``. Each time you call it with a sentence like that, GeoGig has to be initialized. If your session involves running several commands, a better option is to run the geogig console, which lets you run a set of commands, initializing GeoGig just once at the begining of the session.
 
-To start the GeoGit console, type ``geogit-console``
+To start the GeoGig console, type ``geogig-console``
 
-The prompt will show you the current folder, and in case it is a GeoGit folder, the name of the current branch (or the current commit pointed by HEAD, in case you are in a detached HEAD state).
+The prompt will show you the current folder, and in case it is a GeoGig folder, the name of the current branch (or the current commit pointed by HEAD, in case you are in a detached HEAD state).
 
 ::
 	
-	(geogit):my/current/folder (master) $
+	(geogig):my/current/folder (master) $
 
-You can enter commands just like you do on a normal console when calling GeoGit, but without having to add ``geogit`` at the beginning of each sentence. For instance, to get the history of your repository, just type ``log`` (instead of ``geogit log``).
+You can enter commands just like you do on a normal console when calling GeoGig, but without having to add ``geogig`` at the beginning of each sentence. For instance, to get the history of your repository, just type ``log`` (instead of ``geogig log``).
 
-Console commands (like  ``ls`` if you are on Linux or ``dir`` if you are running Windows) are not available in the GeoGit console.
+Console commands (like  ``ls`` if you are on Linux or ``dir`` if you are running Windows) are not available in the GeoGig console.
 
-The GeoGit console has autocompletion, which is available pressing the tab key.
+The GeoGig console has autocompletion, which is available pressing the tab key.
 
-When you finish working with GeoGit and want to go back to you shell environment, type ``exit``.
+When you finish working with GeoGig and want to go back to you shell environment, type ``exit``.
 
 
-Running GeoGit console in batch mode
+Running GeoGig console in batch mode
 ------------------------------------
 
-If you need to run several GeoGit operations in a batch script, you will be initializing GeoSgit as many times as commands you execute. Instead, you can pass the whole set of commands to the GeoGit console, and reduce the number of initializations to just one.
+If you need to run several GeoGig operations in a batch script, you will be initializing GeoSgit as many times as commands you execute. Instead, you can pass the whole set of commands to the GeoGig console, and reduce the number of initializations to just one.
 
-To do so, create a text file with all the GeoGit commands that you want to run, and run the ``geogit-console`` option followed by the path to that text file.
+To do so, create a text file with all the GeoGig commands that you want to run, and run the ``geogig-console`` option followed by the path to that text file.
 
 ::
 
-	$ geogit-console myscript.txt
+	$ geogig-console myscript.txt
 
-As when using the GeoGit console in its interactive mode, the command calls in the text file should not start with the ``geogit`` command name, but with the operation name instead. Here is an example of a simple batch file.
+As when using the GeoGig console in its interactive mode, the command calls in the text file should not start with the ``geogig`` command name, but with the operation name instead. Here is an example of a simple batch file.
 
 ::
 
@@ -39,16 +39,16 @@ As when using the GeoGit console in its interactive mode, the command calls in t
 	add
 	commit -m "First commit"
 
-.. note:: If you use GeoGit on Windows and you create a batch file to call several GeoGit commands using the normal ``geogit`` script (not ``geogit-console``), notice that the ``geogit`` command is itself a batch process. To be able to run more than a single GeoGit command, make each call in your batch file using the ``call`` command. For instance, this will not work (it will only execute the first line):
+.. note:: If you use GeoGig on Windows and you create a batch file to call several GeoGig commands using the normal ``geogig`` script (not ``geogig-console``), notice that the ``geogig`` command is itself a batch process. To be able to run more than a single GeoGig command, make each call in your batch file using the ``call`` command. For instance, this will not work (it will only execute the first line):
 
 	::	
-		geogit import shp myfile.shp
-		geogit add
-		geogit commit -m "First commit"
+		geogig import shp myfile.shp
+		geogig add
+		geogig commit -m "First commit"
 
 	Instead, use this:
 
 	::	
-		call geogit import shp myfile.shp
-		call geogit add
-		call geogit commit -m "First commit"
+		call geogig import shp myfile.shp
+		call geogig add
+		call geogig commit -m "First commit"

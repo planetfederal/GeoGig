@@ -1,13 +1,13 @@
 
-.. _geogit-remove:
+.. _geogig-remove:
 
-geogit-remove documentation
+geogig-remove documentation
 ############################
 
 
 SYNOPSIS
 ********
-geogit remove <path to remove> [<path to remove>...] [-r]
+geogig remove <path to remove> [<path to remove>...] [-r]
 
 
 DESCRIPTION
@@ -24,7 +24,7 @@ OPTIONS
 SEE ALSO
 ********
 
-:ref:`geogit-clean`
+:ref:`geogig-clean`
 
 BUGS
 ****

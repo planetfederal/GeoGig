@@ -1,4 +1,4 @@
-GeoGit User Manual
+GeoGig User Manual
 ==================
 
 .. toctree::

@@ -1,22 +1,22 @@
 
-.. _geogit-diff:
+.. _geogig-diff:
 
-geogit-diff documentation
+geogig-diff documentation
 ###########################
 
 
 
 SYNOPSIS
 ********
-geogit diff [<commit> [<commit>]] [--cached] [-- <path>[ <path>]...] 
+geogig diff [<commit> [<commit>]] [--cached] [-- <path>[ <path>]...] 
 
-geogit diff [<commit> [<commit>]] [--cached] --nogeom  [-- <path>[ <path>]...] 
+geogig diff [<commit> [<commit>]] [--cached] --nogeom  [-- <path>[ <path>]...] 
 
-geogit diff [<commit> [<commit>]] [--cached] --summary [-- <path>[ <path>]...] 
+geogig diff [<commit> [<commit>]] [--cached] --summary [-- <path>[ <path>]...] 
 
-geogit diff [<commit> [<commit>]] [--cached] --count [-- <path>[ <path>]...] 
+geogig diff [<commit> [<commit>]] [--cached] --count [-- <path>[ <path>]...] 
 
-geogit diff [<commit> [<commit>]] [--cached] --bounds [--crs EPSG:<number>] [-- <path>[ <path>]...] 
+geogig diff [<commit> [<commit>]] [--cached] --bounds [--crs EPSG:<number>] [-- <path>[ <path>]...] 
 
 
 DESCRIPTION
@@ -56,7 +56,7 @@ OPTIONS
 SEE ALSO
 ********
 
-:ref:`geogit-format-patch`
+:ref:`geogig-format-patch`
 
 BUGS
 ****
