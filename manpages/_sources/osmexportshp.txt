@@ -1,14 +1,14 @@
 
-.. _geogit-osm-export-shp:
+.. _geogig-osm-export-shp:
 
-geogit-osm-export-shp documentation
+geogig-osm-export-shp documentation
 ####################################
 
 
 
 SYNOPSIS
 ********
-geogit osm export-shp <shapefile>  --mapping <mapping_file> [--overwrite]
+geogig osm export-shp <shapefile>  --mapping <mapping_file> [--overwrite]
 
 
 DESCRIPTION
@@ -26,9 +26,9 @@ OPTIONS
 SEE ALSO
 ********
 
-:ref:`geogit-osm-export-pg`
+:ref:`geogig-osm-export-pg`
 
-:ref:`geogit-osm-export-sl`
+:ref:`geogig-osm-export-sl`
 
 BUGS
 ****

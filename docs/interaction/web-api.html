@@ -5,7 +5,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta name="viewport" content="width=device-width, maximum-scale=1">
   
-  <title>Web-Api Documentation &mdash; GeoGit 0.10.0 User Manual</title>
+  <title>Web-Api Documentation &mdash; GeoGig 1.0 User Manual</title>
   <link rel="stylesheet" href="../_static/screen.css" type="text/css" media="screen, projection" />
   <link rel="stylesheet" href="../_static/print.css" type="text/css" media="print" /> 
   <!--[if IE]>
@@ -17,15 +17,15 @@
   <script type="text/javascript">
     var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '0.10.0',
+        VERSION:     '1.0',
         COLLAPSE_MODINDEX: false,
         FILE_SUFFIX: '.html'
     };
   </script>
-      <link rel="top" title="GeoGit 0.10.0 User Manual" href="../index.html" />
-      <link rel="up" title="Other ways to interact with GeoGit" href="index.html" />
-      <link rel="next" title="Using GeoGit with OpenStreetMap data" href="osm.html" />
-      <link rel="prev" title="GeoGit Networking" href="networking.html" />
+      <link rel="top" title="GeoGig 1.0 User Manual" href="../index.html" />
+      <link rel="up" title="Other ways to interact with GeoGig" href="index.html" />
+      <link rel="next" title="Using GeoGig with OpenStreetMap data" href="osm.html" />
+      <link rel="prev" title="GeoGig Networking" href="networking.html" />
 </head>
 <body class="interaction/web-api">
     <div id="blacktop"></div>
@@ -38,12 +38,12 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="http://geogit.org"><h1>GeoGit</h1></a>
+            <a class="navbar-brand" href="http://geogig.org"><h1>GeoGig</h1></a>
           </div>
           <div class="navbar-collapse collapse navbar-right">
             <ul class="nav navbar-nav">
-              <li><a href="http://geogit.org/#install">Get Started</a></li>
-              <li><a href="http://geogit.org/docs/index.html">Documentation</a></li>
+              <li><a href="http://geogig.org/#install">Get Started</a></li>
+              <li><a href="http://geogig.org/docs/index.html">Documentation</a></li>
               <li><a href="https://github.com/boundlessgeo/GeoGit">On Github</a></li>
             </ul>
           </div><!--/.navbar-collapse -->
@@ -78,8 +78,8 @@
             </div>
 <ul id="breadcrumbs">
   
-  <li><a href="../index.html">GeoGit 0.10.0 User Manual</a> &raquo;</li>
-  <li><a href="index.html" accesskey="U">Other ways to interact with GeoGit</a> &raquo;</li>
+  <li><a href="../index.html">GeoGig 1.0 User Manual</a> &raquo;</li>
+  <li><a href="index.html" accesskey="U">Other ways to interact with GeoGig</a> &raquo;</li>
   <li>Web-Api Documentation</li>
 </ul>
 <ul id="relatedlinks" class="selfclear">
@@ -87,17 +87,17 @@
     <a href="../genindex.html" title="General Index"
        accesskey="I">index</a></li>
   <li>
-    <a href="osm.html" title="Using GeoGit with OpenStreetMap data"
+    <a href="osm.html" title="Using GeoGig with OpenStreetMap data"
        accesskey="N">next</a>|</li>
   <li>
-    <a href="networking.html" title="GeoGit Networking"
+    <a href="networking.html" title="GeoGig Networking"
        accesskey="P">previous</a>|</li>
 </ul>
         
   <div class="section" id="web-api-documentation">
 <h1>Web-Api Documentation<a class="headerlink" href="#web-api-documentation" title="Permalink to this headline">¶</a></h1>
-<p>This will walk you through GeoGit&#8217;s web-api and all of its currently supported functionality. This doc also assumes that you already know what any given command does, this is strictly how to use these commands. First I will explain an easy way to get the web-api up and running.</p>
-<p>If you don&#8217;t already have the GeoGit source from GitHub and a GeoGit repository set up do that first. Next, to get the web-api up and running after you have built the latest GeoGit go into your repository and run <tt class="docutils literal"><span class="pre">geogit</span> <span class="pre">serve</span></tt>. This will set up a jetty server with your repository and give you access to the web-api. Now you just need to open up a web browser and go to localhost:8182/log to make sure it comes up. After you have gotten it up and running now you can test any of the commands listed here.</p>
+<p>This will walk you through GeoGig&#8217;s web-api and all of its currently supported functionality. This doc also assumes that you already know what any given command does, this is strictly how to use these commands. First I will explain an easy way to get the web-api up and running.</p>
+<p>If you don&#8217;t already have the GeoGig source from GitHub and a GeoGig repository set up do that first. Next, to get the web-api up and running after you have built the latest GeoGig go into your repository and run <tt class="docutils literal"><span class="pre">geogig</span> <span class="pre">serve</span></tt>. This will set up a jetty server with your repository and give you access to the web-api. Now you just need to open up a web browser and go to localhost:8182/log to make sure it comes up. After you have gotten it up and running now you can test any of the commands listed here.</p>
 <p>All web-api commands have transaction support, which means you can run the web-api commands beginTransaction to start a transaction and then use the id that is returned to do other commands on that transaction instead of the actual repository. After you are done with everything on the transaction you just have call endTransaction through the web-api and pass it the transaction id. Some commands require a transaction to preserve the stability of the repository, those that require it will have <tt class="docutils literal"><span class="pre">(-T)</span></tt> next to the name of the command in this doc. To pass the transaction id you just need to use the transactionId option and set it equal to the id that beginTransaction returns. Some commands also have other options that are required for that command to work they will have a <tt class="docutils literal"><span class="pre">(-R)</span></tt> next to them. Any options that have notes associated with them have and asterisk next to them.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -803,7 +803,7 @@ localhost:8182/remove?path=treeName&amp;recursive=true&amp;transactionId=id
 </pre></div>
 </div>
 <p><strong>Output:</strong></p>
-<div class="highlight-python"><div class="highlight"><pre>Returns all of the version information for your version of GeoGit.
+<div class="highlight-python"><div class="highlight"><pre>Returns all of the version information for your version of GeoGig.
 </pre></div>
 </div>
 </div></blockquote>
@@ -1200,7 +1200,7 @@ localhost:8182/remove?path=treeName&amp;recursive=true&amp;transactionId=id
 <ul>
 <li><p class="first"><strong>MergeFeature</strong></p>
 <blockquote>
-<div><p>This endpoint can be used to merge two features into a new one.  It will return the ObjectId of the new feature when the operation completes.  This endpoint must be accessed by using a POST request that contains a json object to tell GeoGit how to merge the feature.  The following is an example of the json POST data to merge a feature with 3 attributes.</p>
+<div><p>This endpoint can be used to merge two features into a new one.  It will return the ObjectId of the new feature when the operation completes.  This endpoint must be accessed by using a POST request that contains a json object to tell GeoGig how to merge the feature.  The following is an example of the json POST data to merge a feature with 3 attributes.</p>
 <div class="highlight-none"><div class="highlight"><pre>{
   path: &#39;featureType/feature&#39;,
   ours: &#39;objectId for left feature&#39;,
@@ -1253,8 +1253,8 @@ localhost:8182/remove?path=treeName&amp;recursive=true&amp;transactionId=id
 
 
       <div class="selfclear pagination-nav">
-          <div class="leftwise"><strong>Previous</strong>: <a href="networking.html" title="previous chapter">GeoGit Networking</a></div>
-          <div class="rightwise"><strong>Next</strong>: <a href="osm.html" title="next chapter">Using GeoGit with OpenStreetMap data</a></div>
+          <div class="leftwise"><strong>Previous</strong>: <a href="networking.html" title="previous chapter">GeoGig Networking</a></div>
+          <div class="rightwise"><strong>Next</strong>: <a href="osm.html" title="next chapter">Using GeoGig with OpenStreetMap data</a></div>
       </div>
       <p class="centered-text"><a href="#top"><img src="../_static/arrow_up.png" alt="back to top"/></a></p>
       </div><!-- /#content> -->
@@ -1293,8 +1293,8 @@ localhost:8182/remove?path=treeName&amp;recursive=true&amp;transactionId=id
         <div class="section continue_reading">
           <h3>Continue Reading</h3>
           <ul>
-            <li>Previous: <a href="networking.html" title="previous chapter">GeoGit Networking</a></li>
-            <li>Next: <a href="osm.html" title="next chapter">Using GeoGit with OpenStreetMap data</a></li>
+            <li>Previous: <a href="networking.html" title="previous chapter">GeoGig Networking</a></li>
+            <li>Next: <a href="osm.html" title="next chapter">Using GeoGig with OpenStreetMap data</a></li>
           </ul>
         </div>
         <div class="section">
@@ -1305,7 +1305,7 @@ localhost:8182/remove?path=treeName&amp;recursive=true&amp;transactionId=id
         </div>
         <div class="section">
           <h3>License</h3>
-          <p>This project is licensed under the <a href="https://github.com/boundlessgeo/GeoGit/blob/master/LICENSE.txt">BSD New License</a>, except for the GeoServer plugin which is available under the <a href="http://geoserver.org/display/GEOS/License">GPL 2.0 License</a>.</p>
+          <p>This project is licensed under the <a href="https://github.com/boundlessgeo/GeoGit/blob/master/LICENSE.txt">BSD New License</a>.</p>
         </div>
 
   </div><!-- /#sidebar -->
@@ -1317,7 +1317,7 @@ localhost:8182/remove?path=treeName&amp;recursive=true&amp;transactionId=id
     <footer>
       <div class="container">
         <div class="row">
-          <div class=""><p class="repo-owner"><a href="https://github.com/boundlessgeo/GeoGit">GeoGit</a> is maintained by <a href="https://github.com/boundlessgeo"><img src="../_static/Boundless_Logo.png" alt="Boundless"></a></p></div>
+          <div class=""><p class="repo-owner"><a href="https://github.com/boundlessgeo/GeoGit">GeoGig</a> is maintained by <a href="https://github.com/boundlessgeo"><img src="../_static/Boundless_Logo.png" alt="Boundless"></a></p></div>
         </div>
       </div>
     </footer>

@@ -1,14 +1,14 @@
 
-.. _geogit-add:
+.. _geogig-add:
 
-geogit-add documentation
+geogig-add documentation
 #########################
 
 
 
 SYNOPSIS
 ********
-geogit add [<options>] [<pattern>...]
+geogig add [<options>] [<pattern>...]
 
 
 DESCRIPTION
@@ -18,9 +18,9 @@ This command updates the index using the current content found in the working tr
 
 The "index" holds a snapshot of the HEAD tree plus any staged changes and is used to determine what will be committed to the repository. Thus after making any changes to the working tree, and before running the commit command, you must use the add command to add any new or modified files to the index.
 
-This command can be performed multiple times before a commit. It only adds the content of the specified feature(s) at the time the add command is run; if you want subsequent changes included in the next commit, then you must run geogit add again to add the new content to the index.
+This command can be performed multiple times before a commit. It only adds the content of the specified feature(s) at the time the add command is run; if you want subsequent changes included in the next commit, then you must run geogig add again to add the new content to the index.
 
-The geogit status command can be used to obtain a summary of which files have changes that are staged for the next commit.
+The geogig status command can be used to obtain a summary of which files have changes that are staged for the next commit.
 
 OPTIONS
 *******    
@@ -32,9 +32,9 @@ OPTIONS
 SEE ALSO
 ********
 
-:ref:`geogit-status`
+:ref:`geogig-status`
 
-:ref:`geogit-commit`
+:ref:`geogig-commit`
 
 BUGS
 ****

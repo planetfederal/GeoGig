@@ -1,20 +1,20 @@
 
-.. _geogit-status:
+.. _geogig-status:
 
-geogit-status documentation
+geogig-status documentation
 ############################
 
 
 
 SYNOPSIS
 ********
-geogit status [<options>]
+geogig status [<options>]
 
 
 DESCRIPTION
 ***********
 
-Displays features that have differences between the index and the current HEAD commit and features that have differences between the working tree and the index file. The first are what you would commit by running geogit commit; the second are what you could commit by running geogit add before running geogit commit.
+Displays features that have differences between the index and the current HEAD commit and features that have differences between the working tree and the index file. The first are what you would commit by running geogig commit; the second are what you could commit by running geogig add before running geogig commit.
 
 OPTIONS
 *******
@@ -28,9 +28,9 @@ OPTIONS
 SEE ALSO
 ********
 
-:ref:`geogit-add`
+:ref:`geogig-add`
 
-:ref:`geogit-commit`
+:ref:`geogig-commit`
 
 BUGS
 ****

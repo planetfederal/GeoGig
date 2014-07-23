@@ -1,14 +1,14 @@
 
-.. _geogit-pg-list:
+.. _geogig-pg-list:
 
-geogit-pg-list documentation
+geogig-pg-list documentation
 #############################
 
 
 
 SYNOPSIS
 ********
-geogit pg list [options]
+geogig pg list [options]
 
 
 DESCRIPTION

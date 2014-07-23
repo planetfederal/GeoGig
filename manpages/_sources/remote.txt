@@ -1,11 +1,11 @@
-.. _geogit-remote:
+.. _geogig-remote:
 
-geogit-remote documentation
+geogig-remote documentation
 ###########################
 
 SYNOPSIS
 ********
-geogit remote [--help] <command> [commandargs]
+geogig remote [--help] <command> [commandargs]
 
 
 DESCRIPTION
@@ -24,16 +24,16 @@ EXAMPLES
 ********
 ::
 
-   geogit remote --help
+   geogig remote --help
 
 
 SEE ALSO
 ********
 
-:ref:`geogit-remote-add`
+:ref:`geogig-remote-add`
 
-:ref:`geogit-remote-remove`
+:ref:`geogig-remote-remove`
 
-:ref:`geogit-remote-list`
+:ref:`geogig-remote-list`
 
 

@@ -1,13 +1,13 @@
 
-.. _geogit-osm-apply-diff:
+.. _geogig-osm-apply-diff:
 
-geogit-osm-apply-diff documentation
+geogig-osm-apply-diff documentation
 ###################################
 
 
 SYNOPSIS
 ********
-geogit osm apply-diff <diff_file>
+geogig osm apply-diff <diff_file>
 
 
 DESCRIPTION
@@ -22,7 +22,7 @@ If a change in the diff cannot apply (such as, for instance, a modification of a
 SEE ALSO
 ********
 
-:ref:`geogit-osm-createchangeset`
+:ref:`geogig-osm-createchangeset`
 
 BUGS
 ****

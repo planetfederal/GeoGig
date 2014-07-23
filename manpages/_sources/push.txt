@@ -1,14 +1,14 @@
 
-.. _geogit-push:
+.. _geogig-push:
 
-geogit-push documentation
+geogig-push documentation
 #########################
 
 
 
 SYNOPSIS
 ********
-geogit push [<options>] [<repository> [<refspec>...]]
+geogig push [<options>] [<repository> [<refspec>...]]
 
 
 DESCRIPTION
@@ -26,7 +26,7 @@ OPTIONS
 SEE ALSO
 ********
 
-:ref:`geogit-clone`
+:ref:`geogig-clone`
 
 BUGS
 ****

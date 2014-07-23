@@ -5,7 +5,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta name="viewport" content="width=device-width, maximum-scale=1">
   
-  <title>Partial cloning &mdash; GeoGit 0.10.0 User Manual</title>
+  <title>Partial cloning &mdash; GeoGig 1.0 User Manual</title>
   <link rel="stylesheet" href="../_static/screen.css" type="text/css" media="screen, projection" />
   <link rel="stylesheet" href="../_static/print.css" type="text/css" media="print" /> 
   <!--[if IE]>
@@ -17,12 +17,12 @@
   <script type="text/javascript">
     var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '0.10.0',
+        VERSION:     '1.0',
         COLLAPSE_MODINDEX: false,
         FILE_SUFFIX: '.html'
     };
   </script>
-      <link rel="top" title="GeoGit 0.10.0 User Manual" href="../index.html" />
+      <link rel="top" title="GeoGig 1.0 User Manual" href="../index.html" />
       <link rel="up" title="Working with repositories" href="index.html" />
       <link rel="next" title="Command aliases" href="commandaliases.html" />
       <link rel="prev" title="Hooks" href="hooks.html" />
@@ -38,12 +38,12 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="http://geogit.org"><h1>GeoGit</h1></a>
+            <a class="navbar-brand" href="http://geogig.org"><h1>GeoGig</h1></a>
           </div>
           <div class="navbar-collapse collapse navbar-right">
             <ul class="nav navbar-nav">
-              <li><a href="http://geogit.org/#install">Get Started</a></li>
-              <li><a href="http://geogit.org/docs/index.html">Documentation</a></li>
+              <li><a href="http://geogig.org/#install">Get Started</a></li>
+              <li><a href="http://geogig.org/docs/index.html">Documentation</a></li>
               <li><a href="https://github.com/boundlessgeo/GeoGit">On Github</a></li>
             </ul>
           </div><!--/.navbar-collapse -->
@@ -78,7 +78,7 @@
             </div>
 <ul id="breadcrumbs">
   
-  <li><a href="../index.html">GeoGit 0.10.0 User Manual</a> &raquo;</li>
+  <li><a href="../index.html">GeoGig 1.0 User Manual</a> &raquo;</li>
   <li><a href="index.html" accesskey="U">Working with repositories</a> &raquo;</li>
   <li>Partial cloning</li>
 </ul>
@@ -96,7 +96,7 @@
         
   <div class="section" id="partial-cloning">
 <span id="repo-partialcloning"></span><h1>Partial cloning<a class="headerlink" href="#partial-cloning" title="Permalink to this headline">¶</a></h1>
-<p>While GeoGit can handle large amounts of data efficiently, a full repository might take a large space in your hard drive and cause simple operations to take a longer time. In this situation, it is a better idea to work with a reduced or &#8220;partial&#8221; clone of the original repository, so the size of that cloned repository is smaller and thus more efficient.</p>
+<p>While GeoGig can handle large amounts of data efficiently, a full repository might take a large space in your hard drive and cause simple operations to take a longer time. In this situation, it is a better idea to work with a reduced or &#8220;partial&#8221; clone of the original repository, so the size of that cloned repository is smaller and thus more efficient.</p>
 <p>Such a repository can mostly be used just like any other repository clone. New data can be added, new changes can be pulled from other repositories, and also additional changes can be pushed to the original repository. However, some limitations exist, which makes it important to understand how partial cloning works, in order to work correctly on it and avoid troublesome situations.</p>
 <p>This section deals with partial cloning, explaining how the cloning mechanism operates and discussing particular cases in which a partial repository behaves differently than a regular complete one.</p>
 <div class="section" id="types-of-partial-clones">
@@ -114,7 +114,7 @@
 <img alt="../_images/shallow_origin.png" src="../_images/shallow_origin.png" />
 </div>
 <p>The following command will create a shallow clone with a depth of 3 commits.</p>
-<div class="highlight-console"><div class="highlight"><pre><span class="go">geogit clone path/to/repo --depth 3</span>
+<div class="highlight-console"><div class="highlight"><pre><span class="go">geogig clone path/to/repo --depth 3</span>
 </pre></div>
 </div>
 <p>If cloning the repository with the history graph shown above, the history of the cloned repository will be like the one shown in the next figure.</p>
@@ -124,7 +124,7 @@
 <p>The depth of the cloning is taken into account when fetching the commits and corresponding data for each branch. Starting from the tip of the branch, all commits at a distance of less than the specified depth are fetched.</p>
 <p>If your repository has branches other than <tt class="docutils literal"><span class="pre">master</span></tt>, that can cause some special situations in the cloned repository. For instance, if branches are longer that the specified depth, they will become orphaned branches in the cloned repo, since the depth is not enough to reach the point in the history where the branch was created.</p>
 <p>Here you can see an example of this case, obtained by cloning the original repository, but this time with a depth of 2 commits instead of 3.</p>
-<div class="highlight-console"><div class="highlight"><pre><span class="go">geogit clone path/to/repo --depth 2</span>
+<div class="highlight-console"><div class="highlight"><pre><span class="go">geogig clone path/to/repo --depth 2</span>
 </pre></div>
 </div>
 <div class="figure">
@@ -142,7 +142,7 @@
 </div>
 <p>A shallow clone of depth 3 of a repository with the above history would actually create a full regular clone of the repo. To get a depth of 3 for the <tt class="docutils literal"><span class="pre">branch1</span></tt> branch, the clone has to go as deep as the very first commit.</p>
 <p>If you run the <tt class="docutils literal"><span class="pre">log</span></tt> command on the master branch of that repository, you will get something like this.</p>
-<div class="highlight-python"><div class="highlight"><pre>$geogit log --oneline master
+<div class="highlight-python"><div class="highlight"><pre>$geogig log --oneline master
 72134b41bd1d21be8d5e0feb3f9e2bf2f803f2fa Added Roads5
 bb0c0b6e18f88e1871cacf98489d9df10418a22d Added Roads4
 720b29a382486b573b6529acbb8d80bb7c6ab378 Added Roads3
@@ -156,9 +156,9 @@ bb0c0b6e18f88e1871cacf98489d9df10418a22d Added Roads4
 <p>On a shallow clone, operations such as <tt class="docutils literal"><span class="pre">pull</span></tt> and <tt class="docutils literal"><span class="pre">push</span></tt> can be performed as usual, since they all work on the tip of the branches (the most recent commits). A shallow clone always contains those commits, and ignores the older ones beyond the specified depth, so it should have no problems when pushing and pulling to the full remote repository from which it has been cloned, or to any other clone, whether regular or shallow.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">A <em>git</em> shallow clone is more limited than a GeoGit shallow clone, since operations such as fetch or push cannot be performed on a <em>git</em> shallow clone.</p>
+<p class="last">A <em>git</em> shallow clone is more limited than a GeoGig shallow clone, since operations such as fetch or push cannot be performed on a <em>git</em> shallow clone.</p>
 </div>
-<p>Operations that work not on the tip of the history, but at its bottom (the older commits), also behave similar to the case of a regular repository. The situation, however, is different in that, in the case of a shallow clone, bottom commits do not have their parents stored in the repository database, since those parents are beyond the depth specified when creating the shallow clone. GeoGit handles this situation by simulating that the first commit of the shallow clone is the very first commit, having no parent.</p>
+<p>Operations that work not on the tip of the history, but at its bottom (the older commits), also behave similar to the case of a regular repository. The situation, however, is different in that, in the case of a shallow clone, bottom commits do not have their parents stored in the repository database, since those parents are beyond the depth specified when creating the shallow clone. GeoGig handles this situation by simulating that the first commit of the shallow clone is the very first commit, having no parent.</p>
 <p>You can see this by running the log command with the <tt class="docutils literal"><span class="pre">--changed</span></tt> option. When run, for instance, on the shallow clone of depth 3 introduced in the first example, you would get something like this.</p>
 <div class="highlight-python"><div class="highlight"><pre>$log --changed
 
@@ -172,25 +172,25 @@ a76c6550cd45d84df09088f6efdd6747c3755643 Added Roads3
 </pre></div>
 </div>
 <p>Looking at the corresponding history figure above you can see that the specified path was, however, not affected by that commit in the original repo. The very first commit, with the <em>Added Roads1</em> message, was the one that added the specified path. Since that commit is beyond the reach of the shallow clone, it is included as part of the changes introduced by the first commit of that shallow clone, assumming that, for that repository, there was nothing in stored before that commit.</p>
-<p>Notice that GeoGit cannot modify the commit messages to actually reflect the situation in this part of the repository history, and the messages do not actually reflect the changes that are reported by the <tt class="docutils literal"><span class="pre">log</span></tt> command.</p>
+<p>Notice that GeoGig cannot modify the commit messages to actually reflect the situation in this part of the repository history, and the messages do not actually reflect the changes that are reported by the <tt class="docutils literal"><span class="pre">log</span></tt> command.</p>
 </div>
 <div class="section" id="extending-the-depth-of-a-shallow-clone">
 <h3>Extending the depth of a shallow clone<a class="headerlink" href="#extending-the-depth-of-a-shallow-clone" title="Permalink to this headline">¶</a></h3>
 <p>If anytime you want to turn your shallow clone into a regular one that contains all the history from the original repository, you can do it by calling the <tt class="docutils literal"><span class="pre">fetch</span></tt> command with the <tt class="docutils literal"><span class="pre">--full-depth</span></tt> switch.</p>
-<div class="highlight-python"><div class="highlight"><pre>$geogit fetch origin --full-depth
+<div class="highlight-python"><div class="highlight"><pre>$geogig fetch origin --full-depth
 </pre></div>
 </div>
 <p>That will get not only the new commits that might exist in the remote repository, but also the full history.</p>
 <p>to extend the shallow clone up to a certain number of commits, but not to its full history, a given depth can be specified using the <tt class="docutils literal"><span class="pre">--depth</span></tt> parameter.</p>
 <p>For example, if the shallow clone has a depth of 2, the following call will turn it into a repository with a depth of 3:</p>
-<div class="highlight-python"><div class="highlight"><pre>$ geogit fetch --depth 3
+<div class="highlight-python"><div class="highlight"><pre>$ geogig fetch --depth 3
 </pre></div>
 </div>
 </div>
 </div>
 <div class="section" id="sparse-cloning">
 <h2>Sparse cloning<a class="headerlink" href="#sparse-cloning" title="Permalink to this headline">¶</a></h2>
-<p>From the user&#8217;s point of view, a sparse clone looks similar to a shallow clone: they both create a clone of a repository which contains a subset of its data. However, their mechanisms are different. This is due to the fact that a GeoGit repository is basically created as a set of commits, so any partial clone will also have a set of commits. The difference is that in the case of the shallow clone, the actual commits that constitute the original repository can be <em>reused</em>, while in the case of a sparse clone new commits have to be created to replace those original ones. This is because a commit can add or modify both features that pass the filter and features that don&#8217;t pass it, so it cannot be fully added to the partial clone or completely discarded. Instead, a <em>partial commit</em> is generated and commited in the cloned repo, which replaces the original commit.</p>
+<p>From the user&#8217;s point of view, a sparse clone looks similar to a shallow clone: they both create a clone of a repository which contains a subset of its data. However, their mechanisms are different. This is due to the fact that a GeoGig repository is basically created as a set of commits, so any partial clone will also have a set of commits. The difference is that in the case of the shallow clone, the actual commits that constitute the original repository can be <em>reused</em>, while in the case of a sparse clone new commits have to be created to replace those original ones. This is because a commit can add or modify both features that pass the filter and features that don&#8217;t pass it, so it cannot be fully added to the partial clone or completely discarded. Instead, a <em>partial commit</em> is generated and commited in the cloned repo, which replaces the original commit.</p>
 <p>This can be seen more clearly with an example.</p>
 <div class="figure">
 <img alt="../_images/sparse_clone.png" src="../_images/sparse_clone.png" />
@@ -207,19 +207,19 @@ a76c6550cd45d84df09088f6efdd6747c3755643 Added Roads3
 <p>Numbers indicate the commits that affect each feature.</p>
 <p>In the cloned repo, the first commit (1) is replaced by a new one (1&#8217;) that just adds one of the features. The second commit (2) is not applied at all, since none of the changes it introduces affect the cloned repository, so it is skipped. The third one (3) is replaced by a new commit (3&#8217;) that just modifies the only feature in the cloned repository. In this case, the original commit could not be applied, and it also has to be modified. The original commit (3) changed both features that were in the database after commit 2, but in the sparse clone, only one of those features is found, since the other one was not added, as it falls outside the are of interest. Since comit 3 modifies a feature that does not exist in the sparse clone, it cannot be applied, and it is replaced by 3&#8217;, which just contains the changes that affect the feature that is available.</p>
 <p>If your cloned repository was to be used just by itself and never had any interaction with the original repository from where it comes from, or with other cloned ones (whether partial or complete), then a partial clone could be created just creating new commits that resulted in a partial repository. However, since interaction is important, a partial clone has to keep track of commits in the original repository, because otherwise it wouldn&#8217;t be able to interact with it.</p>
-<p>The explanations that follow assume that you understand the structure of a GeoGit repository and you are familiar with the concepts introduced in the <a class="reference internal" href="../start/intro.html#start-intro"><em>Introduction</em></a> section, since they are basically an extension of those ideas. Please review the corresponding chapter in case you need to refresh those concepts.</p>
+<p>The explanations that follow assume that you understand the structure of a GeoGig repository and you are familiar with the concepts introduced in the <a class="reference internal" href="../start/intro.html#start-intro"><em>Introduction</em></a> section, since they are basically an extension of those ideas. Please review the corresponding chapter in case you need to refresh those concepts.</p>
 <p>Let&#8217;s see why additional information is needed to keep the link between the original and the partially cloned repository. We will go back to the first example with just two commits. Here you can see the two histories, with the corresponding abbreviated Id&#8217;s of their commits.</p>
 <div class="figure">
 <img alt="../_images/sparse_clone_ids.png" src="../_images/sparse_clone_ids.png" />
 </div>
 <p>The original repository had two commits, and so does the cloned one. However, if you have a look at the Id&#8217;s of the commits, you will notice that they are different.</p>
-<p>If you remember, every element in a GeoGit repository has an Id to identify it. This Id is unique, and it&#8217;s based on the characteristics of the element. If a commit has a different commit time or a different set of changes, then its Id will also be different.  Since commits in the cloned repository have been modified, their Id&#8217;s will not match those of the original repository.</p>
+<p>If you remember, every element in a GeoGig repository has an Id to identify it. This Id is unique, and it&#8217;s based on the characteristics of the element. If a commit has a different commit time or a different set of changes, then its Id will also be different.  Since commits in the cloned repository have been modified, their Id&#8217;s will not match those of the original repository.</p>
 <p>Now imagine that you modify a feature in the cloned repo and add a new commit with that change. Your repository will have a history like this:</p>
 <div class="figure">
 <img alt="../_images/sparse_clone_and_commit.png" src="../_images/sparse_clone_and_commit.png" />
 </div>
 <p>If you run the <tt class="docutils literal"><span class="pre">cat</span></tt> command to describe the commit that you have added, it will output something like this.</p>
-<div class="highlight-python"><div class="highlight"><pre>$geogit cat HEAD
+<div class="highlight-python"><div class="highlight"><pre>$geogig cat HEAD
 id aa4f6bd33d45d84df09088f6efdd6747c3755643
 COMMIT
 tree    058c752144ed2b6e58b0e648af0a9dc821d88487
@@ -229,32 +229,32 @@ committer    volaya    volaya@opengeo.org    1366618413840    7200000
 message    Modified feature
 </pre></div>
 </div>
-<p>The <tt class="docutils literal"><span class="pre">parent</span></tt> property links a commit to the one (or several ones if it is a merge commit) that it derives from. This is what allows a GeoGit repository to communicate with other repositories and push and pull commits and data, knowing when is it possible to push and when a cloned repository is outdated and its changes cannot be pushed without risking losing data.</p>
-<p>If we had done a regular cloning, the new commit would have a parent that actually exist in the original repository, and which is in fact its HEAD. GeoGit would recognize that situation when pushing changes, and it would add just that last commit, ignoring the previous ones, since they are already in the original repository. In our case, however, the parent of the new commit (<tt class="docutils literal"><span class="pre">00f6bd73f</span></tt>) does not exist in the original repository.</p>
+<p>The <tt class="docutils literal"><span class="pre">parent</span></tt> property links a commit to the one (or several ones if it is a merge commit) that it derives from. This is what allows a GeoGig repository to communicate with other repositories and push and pull commits and data, knowing when is it possible to push and when a cloned repository is outdated and its changes cannot be pushed without risking losing data.</p>
+<p>If we had done a regular cloning, the new commit would have a parent that actually exist in the original repository, and which is in fact its HEAD. GeoGig would recognize that situation when pushing changes, and it would add just that last commit, ignoring the previous ones, since they are already in the original repository. In our case, however, the parent of the new commit (<tt class="docutils literal"><span class="pre">00f6bd73f</span></tt>) does not exist in the original repository.</p>
 <p>In the case of a shallow clone, as we have already seen, there are also some missing commits, but the situation is different, since they are missing in the local cloned repository, not in the original one. All the commits that are found in the shallow cloned repository are also found in the original repository, and have the same Id&#8217;s in both repositories. In other words, the commits are exactly the same. In the case of a sparse clone, however, that is not true, and all commits have different Id&#8217;s than the original commits upon which they have been created.</p>
 <p>If we go down the history of the spare cloned repository, we cannot find any commit that is also found in the original repository, which makes it impossible to apply our changes, or, at least, to apply them cleanly.</p>
 <p>The case is similar to what was explained in the <a class="reference internal" href="history.html#repo-history"><em>Modifying history</em></a> section, when the problems caused by rewriting the history of a repository were discussed. Basically, when a sparse clone is created, it implies a full rewriting of the history of the cloned original repository.</p>
-<p>To allow push and pull operations to be used without problems GeoGit solves this situation by keeping a mapping between the commits in the cloned repository and the ones in the original repository. This way, it can <em>translate</em> between Id&#8217;s when it performs remote operations such as pull or push.</p>
+<p>To allow push and pull operations to be used without problems GeoGig solves this situation by keeping a mapping between the commits in the cloned repository and the ones in the original repository. This way, it can <em>translate</em> between Id&#8217;s when it performs remote operations such as pull or push.</p>
 <p>The picture below shows the mapping between the histories of the original and sparse clone repositories introduced in the first example, and the added commit in the tip of the local branch.</p>
 <div class="figure">
 <img alt="../_images/partial_clone_mapping.png" src="../_images/partial_clone_mapping.png" />
 </div>
-<p>With that mapping, GeoGit knows that the second commit in your sparse clone (2&#8217;) is related to a commit in the original remote repository (in this case, commit 2). Using that information, it will know how to handle the new commit that you have added, which has 2&#8217; as its parent, and which should have commit 2 as new parent when pushed to the remote repository.</p>
-<p>Much in the same way, if new commits are added in the remote repository, a pull operation would bring just those new commits and not the ones in the previous history, although their commit Id&#8217;s are different. GeoGit can recognize that the head of your local repository, although having a different Id that is not found in the remote repository, actually corresponds to a given commit in the remote, so it will fetch only the new commits added after that commit.</p>
+<p>With that mapping, GeoGig knows that the second commit in your sparse clone (2&#8217;) is related to a commit in the original remote repository (in this case, commit 2). Using that information, it will know how to handle the new commit that you have added, which has 2&#8217; as its parent, and which should have commit 2 as new parent when pushed to the remote repository.</p>
+<p>Much in the same way, if new commits are added in the remote repository, a pull operation would bring just those new commits and not the ones in the previous history, although their commit Id&#8217;s are different. GeoGig can recognize that the head of your local repository, although having a different Id that is not found in the remote repository, actually corresponds to a given commit in the remote, so it will fetch only the new commits added after that commit.</p>
 <p>When a commit doesn&#8217;t contain any changes that affect the cloned repository, as in the second commit of the second example above, we&#8217;ve seen that it is skipped and no commit is made in the local repository. That means that the original commit cannot be mapped to it&#8217;s equivalent in the cloned repository, since there is no such equivalent. Instead, it&#8217;s mapped to the previous commit that was actually applied on the cloned repository. The relation between original commits and commits in the sparse clone is not necesarilly a 1:1</p>
 <p>The figure below shows the history mapping for the second example previously introduced.</p>
 <div class="figure">
 <img alt="../_images/partial_clone_mapping_2.png" src="../_images/partial_clone_mapping_2.png" />
 </div>
-<p>GeoGit keeps not just a mapping that relates each original commit to a sparse commit, but also another one that maps each sparse commit to the original commit it comes from. This is done to avoid ambiguity in the case above, where several original commits are mapped to a single sparse comit. When pushing commits to a remote, GeoGit must know the single origin commit that each sparse commit comes from, and the <em>original-to-sparse</em> map might not be enough to resolve that single origin. By keeping an additional mapping, GeoGit can always find a single origin commit for each sparse commit in the sparse clone.</p>
-<p>One exception to the mapping strategy described above happens when the empty commit is the last one at the tip of the branch. In that case, and to be able to synchronize new commits, it is necessary to map the last commit to an equivalent in the local repo, and not the previous non-empty sparse commit. GeoGit will create a new empty commit that does not introduce any change but acts as a placeholder and guarantees a correct synchronization.</p>
+<p>GeoGig keeps not just a mapping that relates each original commit to a sparse commit, but also another one that maps each sparse commit to the original commit it comes from. This is done to avoid ambiguity in the case above, where several original commits are mapped to a single sparse comit. When pushing commits to a remote, GeoGig must know the single origin commit that each sparse commit comes from, and the <em>original-to-sparse</em> map might not be enough to resolve that single origin. By keeping an additional mapping, GeoGig can always find a single origin commit for each sparse commit in the sparse clone.</p>
+<p>One exception to the mapping strategy described above happens when the empty commit is the last one at the tip of the branch. In that case, and to be able to synchronize new commits, it is necessary to map the last commit to an equivalent in the local repo, and not the previous non-empty sparse commit. GeoGig will create a new empty commit that does not introduce any change but acts as a placeholder and guarantees a correct synchronization.</p>
 <p>The figure shows an example of this particular case.</p>
 <div class="figure">
 <img alt="../_images/placeholder_commit.png" src="../_images/placeholder_commit.png" />
 </div>
-<p>Pull operations from a sparse clone are also <em>sparse</em>, that meaning that new commits that are fetched from the repository will also be filtered, and a new commit will be generated based on them. That commit will be added to the mapping, and the relation between it and its original counterpart will be handled by GeoGit in the same way it handles the commits that were fetched during the initial clone operation.</p>
+<p>Pull operations from a sparse clone are also <em>sparse</em>, that meaning that new commits that are fetched from the repository will also be filtered, and a new commit will be generated based on them. That commit will be added to the mapping, and the relation between it and its original counterpart will be handled by GeoGig in the same way it handles the commits that were fetched during the initial clone operation.</p>
 <p>If new data is added in the remote repository, and it does not pass the filter of the sparse clone, a fetch operation will not bring that new data into the sparse clone.</p>
-<p>A particular case happens when tracked features that were inside the filter are are modified and moved outside of it. In this case, GeoGit will continue to fetch those features and track them.</p>
+<p>A particular case happens when tracked features that were inside the filter are are modified and moved outside of it. In this case, GeoGig will continue to fetch those features and track them.</p>
 <p>For instance, let&#8217;s suppose that a new commit is introduced in our example remote repository with two commits, and that it moves one of the features that were inside the filter area to a new position outside of it.</p>
 <div class="figure">
 <img alt="../_images/sparse_moving_out.png" src="../_images/sparse_moving_out.png" />
@@ -266,7 +266,7 @@ message    Modified feature
 <h3>Creating a sparse clone<a class="headerlink" href="#creating-a-sparse-clone" title="Permalink to this headline">¶</a></h3>
 <p>As it was mentioned, a sparse clone is defined by a filter. In the most usual case, the filter is a spatial filter.</p>
 <p>To create a sparse clone, the <tt class="docutils literal"><span class="pre">clone</span></tt> command is used with the <tt class="docutils literal"><span class="pre">--filter</span></tt> option followed by the path to the file that contains the filter, as in the next example</p>
-<div class="highlight-python"><div class="highlight"><pre>$geogit clone ../geogit-repo --filter myfilter.xml
+<div class="highlight-python"><div class="highlight"><pre>$geogig clone ../geogig-repo --filter myfilter.xml
 </pre></div>
 </div>
 <p>The filter file is an Ini file which contains filters to be applied to all features, or to specific feature types. Here you can see an example of the content of one of such files.</p>
@@ -285,10 +285,10 @@ message    Modified feature
 </div>
 <div class="section" id="limitations">
 <h3>Limitations<a class="headerlink" href="#limitations" title="Permalink to this headline">¶</a></h3>
-<p>A sparse clone is a not a completely functional repository. Some operations are not allowed, since they are not compatible with the mapping strategy that GeoGit uses, and performing them could cause data loses. Most of these limitations are related to synchronizing with other repositories, or have been introduced to guarantee that synchronization operations are safe and no history or data is lost during them</p>
+<p>A sparse clone is a not a completely functional repository. Some operations are not allowed, since they are not compatible with the mapping strategy that GeoGig uses, and performing them could cause data loses. Most of these limitations are related to synchronizing with other repositories, or have been introduced to guarantee that synchronization operations are safe and no history or data is lost during them</p>
 <p>Here is a list of the main limitations of a sparse clone:</p>
 <ul class="simple">
-<li>A sparse clone cannot synchronize with another sparse clone. The mapping that is kept by the local GeoGit repository maps local commits to remote commits, but commits in a different sparse clone will have different Id&#8217;s (even if the filter used to create it is the same), so they will act as isolated clones, since there is no information they than can use to <em>understand</em> each other and synchronize their histories.</li>
+<li>A sparse clone cannot synchronize with another sparse clone. The mapping that is kept by the local GeoGig repository maps local commits to remote commits, but commits in a different sparse clone will have different Id&#8217;s (even if the filter used to create it is the same), so they will act as isolated clones, since there is no information they than can use to <em>understand</em> each other and synchronize their histories.</li>
 <li>A sparse can can only track one branch from a remote repository. The name of the branch has to specified when creating the sparse clone, using the <tt class="docutils literal"><span class="pre">branch</span></tt> switch. If not specified, the <tt class="docutils literal"><span class="pre">master</span></tt> branch from the remote repository will be fetched.</li>
 </ul>
 </div>
@@ -296,7 +296,7 @@ message    Modified feature
 <div class="section" id="interaction-between-partial-clones">
 <h2>Interaction between partial clones<a class="headerlink" href="#interaction-between-partial-clones" title="Permalink to this headline">¶</a></h2>
 <p>Partial clones can interact with the original repository from which the come from, pushing and pulling as it has been explained.  However, a sparse clone cannot communicate with a full clone of the full repository it came from, since there must be changes in the full cloned repository that are not found in the original one. If sparse changes are pushed to a clone of the full repository, the sparse clone will be unable to synchronize with the original full repository until if fetches those changes from its clone, because the sparse repository does not have the <em>full commit</em> that was made and cannot provide it during synchronization. If the full repository and its clone for some reason do not directly communicate with each other, it could be a long time before synchronization is possible again.</p>
-<p>The figure below shows an example of an ecosystem of GeoGit repositories derived from an original one using regular and sparse clones, and how they can interact with each other.</p>
+<p>The figure below shows an example of an ecosystem of GeoGig repositories derived from an original one using regular and sparse clones, and how they can interact with each other.</p>
 <p>Arrows define a possible synchronization operation between repositories, in which the local repository is at the starting point of the arrow and the remote repository at its end point. An arrow pointing from A to B means that push and pull operations can be made from A having B as the remote reository. If the line has arrows in both ends, it means that pushing and pulling is also possible from B, having A as the remote repository.</p>
 <div class="figure">
 <img alt="../_images/ecosystem.png" src="../_images/ecosystem.png" />
@@ -315,8 +315,8 @@ message    Modified feature
 </div>
 <div class="section" id="combining-shallow-and-sparse-clones">
 <h2>Combining shallow and sparse clones<a class="headerlink" href="#combining-shallow-and-sparse-clones" title="Permalink to this headline">¶</a></h2>
-<p>Although both shallow and sparse clones are created using the <tt class="docutils literal"><span class="pre">clone</span></tt> command, it is not possible to create a clone that is both shallow and sparse at the same time. That is, a command like the following one will cause GeoGit to show an error message:</p>
-<div class="highlight-python"><div class="highlight"><pre>$geogit clone /path/to/repo --depth 3 --filter path/to/filter
+<p>Although both shallow and sparse clones are created using the <tt class="docutils literal"><span class="pre">clone</span></tt> command, it is not possible to create a clone that is both shallow and sparse at the same time. That is, a command like the following one will cause GeoGig to show an error message:</p>
+<div class="highlight-python"><div class="highlight"><pre>$geogig clone /path/to/repo --depth 3 --filter path/to/filter
 </pre></div>
 </div>
 <p>You can have a sparse clone, and then create a shallow clone based on it, as it was discussed in the previous section, but a single clone that applies a filter and has only a fraction of the whole history is not possible.</p>
@@ -388,7 +388,7 @@ message    Modified feature
         </div>
         <div class="section">
           <h3>License</h3>
-          <p>This project is licensed under the <a href="https://github.com/boundlessgeo/GeoGit/blob/master/LICENSE.txt">BSD New License</a>, except for the GeoServer plugin which is available under the <a href="http://geoserver.org/display/GEOS/License">GPL 2.0 License</a>.</p>
+          <p>This project is licensed under the <a href="https://github.com/boundlessgeo/GeoGit/blob/master/LICENSE.txt">BSD New License</a>.</p>
         </div>
 
   </div><!-- /#sidebar -->
@@ -400,7 +400,7 @@ message    Modified feature
     <footer>
       <div class="container">
         <div class="row">
-          <div class=""><p class="repo-owner"><a href="https://github.com/boundlessgeo/GeoGit">GeoGit</a> is maintained by <a href="https://github.com/boundlessgeo"><img src="../_static/Boundless_Logo.png" alt="Boundless"></a></p></div>
+          <div class=""><p class="repo-owner"><a href="https://github.com/boundlessgeo/GeoGit">GeoGig</a> is maintained by <a href="https://github.com/boundlessgeo"><img src="../_static/Boundless_Logo.png" alt="Boundless"></a></p></div>
         </div>
       </div>
     </footer>

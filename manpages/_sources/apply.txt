@@ -1,13 +1,13 @@
 
-.. _geogit-apply:
+.. _geogig-apply:
 
-geogit-apply documentation
+geogig-apply documentation
 #############################
 
 
 SYNOPSIS
 ********
-geogit apply [<patch_file>] [--reject] [--summary] [--check]
+geogig apply [<patch_file>] [--reject] [--summary] [--check]
 
 
 DESCRIPTION
@@ -30,7 +30,7 @@ OPTIONS
 SEE ALSO
 ********
 
-:ref:`geogit-format-patch`
+:ref:`geogig-format-patch`
 
 BUGS
 ****

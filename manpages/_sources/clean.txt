@@ -1,14 +1,14 @@
 
-.. _geogit-clean:
+.. _geogig-clean:
 
-geogit-clean documentation
+geogig-clean documentation
 #############################
 
 
 
 SYNOPSIS
 ********
-geogit ls-tree [<path>] [--dryrun] 
+geogig ls-tree [<path>] [--dryrun] 
 
 
 DESCRIPTION
@@ -29,7 +29,7 @@ OPTIONS
 SEE ALSO
 ********
 
-:ref:`geogit-remove`
+:ref:`geogig-remove`
 
 BUGS
 ****

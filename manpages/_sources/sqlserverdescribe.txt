@@ -1,20 +1,20 @@
 
-.. _geogit-sqlserver-describe:
+.. _geogig-sqlserver-describe:
 
-geogit-sqlserver-describe documentation
+geogig-sqlserver-describe documentation
 ########################################
 
 
 
 SYNOPSIS
 ********
-geogit sqlserver describe [options] -t <table>
+geogig sqlserver describe [options] -t <table>
 
 
 DESCRIPTION
 ***********
 
-This command describes a single table in a SQLServer database.  It will print out each property name along with its type. To see a list of available tables, use ``geogit sqlserver list``.
+This command describes a single table in a SQLServer database.  It will print out each property name along with its type. To see a list of available tables, use ``geogig sqlserver list``.
 
 OPTIONS
 *******    
@@ -44,7 +44,7 @@ OPTIONS
 SEE ALSO
 ********
 
-:ref:`geogit-sqlserver-list`
+:ref:`geogig-sqlserver-list`
 
 BUGS
 ****

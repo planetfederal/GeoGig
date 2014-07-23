@@ -5,7 +5,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta name="viewport" content="width=device-width, maximum-scale=1">
   
-  <title>Using GeoGit with OpenStreetMap data &mdash; GeoGit 0.10.0 User Manual</title>
+  <title>Using GeoGig with OpenStreetMap data &mdash; GeoGig 1.0 User Manual</title>
   <link rel="stylesheet" href="../_static/screen.css" type="text/css" media="screen, projection" />
   <link rel="stylesheet" href="../_static/print.css" type="text/css" media="print" /> 
   <!--[if IE]>
@@ -17,13 +17,13 @@
   <script type="text/javascript">
     var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '0.10.0',
+        VERSION:     '1.0',
         COLLAPSE_MODINDEX: false,
         FILE_SUFFIX: '.html'
     };
   </script>
-      <link rel="top" title="GeoGit 0.10.0 User Manual" href="../index.html" />
-      <link rel="up" title="Other ways to interact with GeoGit" href="index.html" />
+      <link rel="top" title="GeoGig 1.0 User Manual" href="../index.html" />
+      <link rel="up" title="Other ways to interact with GeoGig" href="index.html" />
       <link rel="prev" title="Web-Api Documentation" href="web-api.html" />
 </head>
 <body class="interaction/osm">
@@ -37,12 +37,12 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="http://geogit.org"><h1>GeoGit</h1></a>
+            <a class="navbar-brand" href="http://geogig.org"><h1>GeoGig</h1></a>
           </div>
           <div class="navbar-collapse collapse navbar-right">
             <ul class="nav navbar-nav">
-              <li><a href="http://geogit.org/#install">Get Started</a></li>
-              <li><a href="http://geogit.org/docs/index.html">Documentation</a></li>
+              <li><a href="http://geogig.org/#install">Get Started</a></li>
+              <li><a href="http://geogig.org/docs/index.html">Documentation</a></li>
               <li><a href="https://github.com/boundlessgeo/GeoGit">On Github</a></li>
             </ul>
           </div><!--/.navbar-collapse -->
@@ -77,9 +77,9 @@
             </div>
 <ul id="breadcrumbs">
   
-  <li><a href="../index.html">GeoGit 0.10.0 User Manual</a> &raquo;</li>
-  <li><a href="index.html" accesskey="U">Other ways to interact with GeoGit</a> &raquo;</li>
-  <li>Using GeoGit with OpenStreetMap data</li>
+  <li><a href="../index.html">GeoGig 1.0 User Manual</a> &raquo;</li>
+  <li><a href="index.html" accesskey="U">Other ways to interact with GeoGig</a> &raquo;</li>
+  <li>Using GeoGig with OpenStreetMap data</li>
 </ul>
 <ul id="relatedlinks" class="selfclear">
   <li class="first">
@@ -90,21 +90,21 @@
        accesskey="P">previous</a>|</li>
 </ul>
         
-  <div class="section" id="using-geogit-with-openstreetmap-data">
-<h1>Using GeoGit with OpenStreetMap data<a class="headerlink" href="#using-geogit-with-openstreetmap-data" title="Permalink to this headline">¶</a></h1>
-<p>GeoGit can be used to version OSM data, and also to contribute changes back once the work is done. GeoGit aims to provide all the tools needed for the versioning part of a normal OSM editing workflow, adding some of its powerful tools to give additional possibilites.</p>
-<p>This section describes the GeoGit commands that interact with OSM and their usage.</p>
+  <div class="section" id="using-geogig-with-openstreetmap-data">
+<h1>Using GeoGig with OpenStreetMap data<a class="headerlink" href="#using-geogig-with-openstreetmap-data" title="Permalink to this headline">¶</a></h1>
+<p>GeoGig can be used to version OSM data, and also to contribute changes back once the work is done. GeoGig aims to provide all the tools needed for the versioning part of a normal OSM editing workflow, adding some of its powerful tools to give additional possibilites.</p>
+<p>This section describes the GeoGig commands that interact with OSM and their usage.</p>
 <div class="section" id="importing-osm-data">
 <h2>Importing OSM data<a class="headerlink" href="#importing-osm-data" title="Permalink to this headline">¶</a></h2>
-<p>Just like you can import data form a shapefile or a PostGIS database into a GeoGit repository, you can also import OSM data from a file in one of the supported OSm formats (OSM XML or pbf). The <tt class="docutils literal"><span class="pre">osm</span> <span class="pre">import</span></tt> is the command to use for that.</p>
+<p>Just like you can import data form a shapefile or a PostGIS database into a GeoGig repository, you can also import OSM data from a file in one of the supported OSm formats (OSM XML or pbf). The <tt class="docutils literal"><span class="pre">osm</span> <span class="pre">import</span></tt> is the command to use for that.</p>
 <p>The <tt class="docutils literal"><span class="pre">osm</span> <span class="pre">import</span></tt> command has the following syntax:</p>
-<div class="highlight-python"><div class="highlight"><pre>geogit osm import &lt;path_to_file&gt;
+<div class="highlight-python"><div class="highlight"><pre>geogig osm import &lt;path_to_file&gt;
 </pre></div>
 </div>
 <p>Both OSM XML and pbf formats are supported.</p>
-<p>Data in the specified file is imported into GeoGit and put into two trees: <tt class="docutils literal"><span class="pre">way</span></tt> and <tt class="docutils literal"><span class="pre">node</span></tt>, with default feature types in both cases. The feature type keeps the data in a way that makes it possible to later recreate the OSM objects and export back to an OSM XML or pbf file, as we will see.</p>
+<p>Data in the specified file is imported into GeoGig and put into two trees: <tt class="docutils literal"><span class="pre">way</span></tt> and <tt class="docutils literal"><span class="pre">node</span></tt>, with default feature types in both cases. The feature type keeps the data in a way that makes it possible to later recreate the OSM objects and export back to an OSM XML or pbf file, as we will see.</p>
 <p>You can see the definition of those feature types by using the <tt class="docutils literal"><span class="pre">show</span></tt> command on both trees.</p>
-<div class="highlight-python"><div class="highlight"><pre>$ geogit show WORK_HEAD:way
+<div class="highlight-python"><div class="highlight"><pre>$ geogig show WORK_HEAD:way
 TREE ID:  fb04b79726d7a969393308a3e40fdd47a6c7be4b
 SIZE:  5254
 NUMBER Of SUBTREES:  0
@@ -122,7 +122,7 @@ visible: &lt;BOOLEAN&gt;
 way: &lt;LINESTRING&gt;
 
 
-$geogit show WORK_HEAD:node
+$geogig show WORK_HEAD:node
 TREE ID:  98d0b69bab10307921b939aa8ee975e6eb669d17
 SIZE:  153503
 NUMBER Of SUBTREES:  0
@@ -140,7 +140,7 @@ visible: &lt;BOOLEAN&gt;
 </pre></div>
 </div>
 <p>Here is an example of a way imported into the <tt class="docutils literal"><span class="pre">way</span></tt> tree, as described by the <tt class="docutils literal"><span class="pre">`show</span></tt> command:</p>
-<div class="highlight-python"><div class="highlight"><pre>$ geogit show WORK_HEAD:way/31347480
+<div class="highlight-python"><div class="highlight"><pre>$ geogig show WORK_HEAD:way/31347480
 
 ID:  d81271b7346586c95166c43feb6e91ffe7adb9d5
 
@@ -160,9 +160,9 @@ way: LINESTRING (7.1960069 50.7399033, 7.195868 50.7399081, 7.1950788 50.739912,
 </div>
 <div class="section" id="downloading-data-from-an-osm-server">
 <h2>Downloading data from an OSM Server<a class="headerlink" href="#downloading-data-from-an-osm-server" title="Permalink to this headline">¶</a></h2>
-<p>A different way of putting OSM data into a GeoGit repository is by connecting to a OSM endpoint that supports the OSM Overpass API. In this case, the <tt class="docutils literal"><span class="pre">osm</span> <span class="pre">download</span></tt> command has to be used instead of <tt class="docutils literal"><span class="pre">osm</span> <span class="pre">import</span></tt></p>
+<p>A different way of putting OSM data into a GeoGig repository is by connecting to a OSM endpoint that supports the OSM Overpass API. In this case, the <tt class="docutils literal"><span class="pre">osm</span> <span class="pre">download</span></tt> command has to be used instead of <tt class="docutils literal"><span class="pre">osm</span> <span class="pre">import</span></tt></p>
 <p>The syntax of the commands is as follows:</p>
-<div class="highlight-python"><div class="highlight"><pre>geogit osm download [&lt;server_URL&gt;] [--filter &lt;filter_file&gt;] [--bbox &lt;S&gt; &lt;W&gt; &lt;N&gt; &lt;E&gt;]
+<div class="highlight-python"><div class="highlight"><pre>geogig osm download [&lt;server_URL&gt;] [--filter &lt;filter_file&gt;] [--bbox &lt;S&gt; &lt;W&gt; &lt;N&gt; &lt;E&gt;]
 </pre></div>
 </div>
 <p>You can specify the server from which you want to get your OSM data, just entering its URL after the <tt class="docutils literal"><span class="pre">osm</span> <span class="pre">download</span></tt> command. By default, if no URL is provided, the <tt class="docutils literal"><span class="pre">download</span></tt> command uses <tt class="docutils literal"><span class="pre">http://overpass-api.de/api/interpreter</span></tt> as endpoint.</p>
@@ -171,7 +171,7 @@ way: LINESTRING (7.1960069 50.7399033, 7.195868 50.7399081, 7.1950788 50.739912,
 <ul>
 <li><p class="first">Version information is needed to parse the downloaded data. Use the verbose mode (<tt class="docutils literal"><span class="pre">out</span> <span class="pre">meta;</span></tt>) to get the version information added.</p>
 </li>
-<li><p class="first">If your filter downloads ways, it should also download the corresponding nodes. For instance, this filter will add no data to your GeoGit repo:</p>
+<li><p class="first">If your filter downloads ways, it should also download the corresponding nodes. For instance, this filter will add no data to your GeoGig repo:</p>
 <blockquote>
 <div><div class="highlight-python"><div class="highlight"><pre>way
         [&quot;name&quot;=&quot;Gielgenstraße&quot;]
@@ -193,7 +193,7 @@ out meta;
 </li>
 </ul>
 <p>If the filter you want to set is just a bounding box filter, you can use the <tt class="docutils literal"><span class="pre">--bbox</span></tt> option as a practical alternative, as in the next example:</p>
-<div class="highlight-python"><div class="highlight"><pre>$ geogit osm download --bbox 50.7 7.1 50.8 7.25
+<div class="highlight-python"><div class="highlight"><pre>$ geogig osm download --bbox 50.7 7.1 50.8 7.25
 </pre></div>
 </div>
 <p>Values after the <tt class="docutils literal"><span class="pre">--bbox</span></tt> option represent South, West, North and East limits, respectively.</p>
@@ -201,57 +201,57 @@ out meta;
 </div>
 <div class="section" id="updating-osm-data">
 <h2>Updating OSM data<a class="headerlink" href="#updating-osm-data" title="Permalink to this headline">¶</a></h2>
-<p>If you have downloaded OSM data into your GeoGit repository using the <tt class="docutils literal"><span class="pre">download</span></tt> command, you can easily update it to get the new changes that might have been added in the central OSM planet. To do so, just run the <tt class="docutils literal"><span class="pre">osm</span> <span class="pre">download</span></tt> command with the <tt class="docutils literal"><span class="pre">--update</span></tt> switch and without specifying any filter file.</p>
-<div class="highlight-python"><div class="highlight"><pre>$ geogit osm download --update
+<p>If you have downloaded OSM data into your GeoGig repository using the <tt class="docutils literal"><span class="pre">download</span></tt> command, you can easily update it to get the new changes that might have been added in the central OSM planet. To do so, just run the <tt class="docutils literal"><span class="pre">osm</span> <span class="pre">download</span></tt> command with the <tt class="docutils literal"><span class="pre">--update</span></tt> switch and without specifying any filter file.</p>
+<div class="highlight-python"><div class="highlight"><pre>$ geogig osm download --update
 </pre></div>
 </div>
 <p>As in the case of importing, you can select a URL different to the default one, just entering it after the command.</p>
-<div class="highlight-python"><div class="highlight"><pre>$ geogit osm download http://overpass.osm.rambler.ru/ --update
+<div class="highlight-python"><div class="highlight"><pre>$ geogig osm download http://overpass.osm.rambler.ru/ --update
 </pre></div>
 </div>
-<p>The filter that you used for the latest import will be used. In case you want to get the most recent OSM data with a different filter, you should run the <tt class="docutils literal"><span class="pre">download</span></tt> command instead as explained before, which will replace the current OSM data in the geogit repository.</p>
-<p>The <tt class="docutils literal"><span class="pre">download</span></tt> command with the <tt class="docutils literal"><span class="pre">--update</span></tt> switch is similar to the <tt class="docutils literal"><span class="pre">pull</span></tt> command in a normal repository. It will get the latest version of the OSM data and put it in new temporary branch. That branch starts at the commit where you made your last update. From that point GeoGit will try to merge that branch with your current branch, doing it the usual way. If you have edited your OSM and your changes are not compatible with the changes introduced in the latest snapshot that you you have just downloaded, conflicts will be signaled, and you should resolve them.</p>
-<p>As in the case of the <tt class="docutils literal"><span class="pre">pull</span></tt> command, you can tell GeoGit to perform a rebase instead of a merge, by using the <tt class="docutils literal"><span class="pre">--rebase</span></tt> switch.</p>
+<p>The filter that you used for the latest import will be used. In case you want to get the most recent OSM data with a different filter, you should run the <tt class="docutils literal"><span class="pre">download</span></tt> command instead as explained before, which will replace the current OSM data in the geogig repository.</p>
+<p>The <tt class="docutils literal"><span class="pre">download</span></tt> command with the <tt class="docutils literal"><span class="pre">--update</span></tt> switch is similar to the <tt class="docutils literal"><span class="pre">pull</span></tt> command in a normal repository. It will get the latest version of the OSM data and put it in new temporary branch. That branch starts at the commit where you made your last update. From that point GeoGig will try to merge that branch with your current branch, doing it the usual way. If you have edited your OSM and your changes are not compatible with the changes introduced in the latest snapshot that you you have just downloaded, conflicts will be signaled, and you should resolve them.</p>
+<p>As in the case of the <tt class="docutils literal"><span class="pre">pull</span></tt> command, you can tell GeoGig to perform a rebase instead of a merge, by using the <tt class="docutils literal"><span class="pre">--rebase</span></tt> switch.</p>
 </div>
 <div class="section" id="exporting-to-osm-formats">
 <h2>Exporting to OSM formats<a class="headerlink" href="#exporting-to-osm-formats" title="Permalink to this headline">¶</a></h2>
-<p>The content of a GeoGit repository can be exported in OSM XML format, much in the same way as it works for other formats such as shapefiles. The OSM export command has the following format:</p>
-<div class="highlight-python"><div class="highlight"><pre>geogit osm export &lt;file&gt; [commitish]
+<p>The content of a GeoGig repository can be exported in OSM XML format, much in the same way as it works for other formats such as shapefiles. The OSM export command has the following format:</p>
+<div class="highlight-python"><div class="highlight"><pre>geogig osm export &lt;file&gt; [commitish]
 </pre></div>
 </div>
 <p>If the file has the <tt class="docutils literal"><span class="pre">pbf</span></tt> extension, the created file will be a pbf file. Otherwise, it will be an OSM XML file.</p>
 <p>The area to export can be restricted by using the <tt class="docutils literal"><span class="pre">--b</span></tt> option, which works just as it does in the case of the <tt class="docutils literal"><span class="pre">download</span></tt> command. Use it to define a bounding box, and only those elements intersecting the selected area will be exported.</p>
-<p>Data exported is taken from the &#8220;way&#8221; and &#8220;node&#8221; trees, and assumed to use the corresponding default feature types. In other words, it assumes OSM data in your repository has been imported either by using the <tt class="docutils literal"><span class="pre">osm</span> <span class="pre">import</span></tt> or <tt class="docutils literal"><span class="pre">osm</span> <span class="pre">download</span></tt> commands. Data in other trees in the repository will not be imported, even if it originated from OSM data and even uses the same feature type, since there is no way for GeoGit to know about it. You will notice that, for this reason, there is no path option in the syntax of the command, since the paths from which to export data are not configurable, and GeoGit uses the default OSM paths.</p>
+<p>Data exported is taken from the &#8220;way&#8221; and &#8220;node&#8221; trees, and assumed to use the corresponding default feature types. In other words, it assumes OSM data in your repository has been imported either by using the <tt class="docutils literal"><span class="pre">osm</span> <span class="pre">import</span></tt> or <tt class="docutils literal"><span class="pre">osm</span> <span class="pre">download</span></tt> commands. Data in other trees in the repository will not be imported, even if it originated from OSM data and even uses the same feature type, since there is no way for GeoGig to know about it. You will notice that, for this reason, there is no path option in the syntax of the command, since the paths from which to export data are not configurable, and GeoGig uses the default OSM paths.</p>
 <p>By default, the data at HEAD is exported. You can export from a different snapshot by entering the commit reference after the export file path.</p>
 <p>For instance:</p>
-<div class="highlight-python"><div class="highlight"><pre>$ geogit export myexportedfile.pbf HEAD~3
+<div class="highlight-python"><div class="highlight"><pre>$ geogig export myexportedfile.pbf HEAD~3
 </pre></div>
 </div>
-<p>OSM formats should be used as a part of a normal OSM workflow, both for importing and exporting. If you plan to edit your data and create new versions in your GeoGit repository that you can later contribute back to the OSM planet, either the OSM XML format or the pbf format have to be used. Other formats will not guarantee that the relation between nodes and ways is kept, and the result of a workflow might result in a new snapshot in the GeoGit repository that cannot be later exported and contributed back to the OSM planet.</p>
+<p>OSM formats should be used as a part of a normal OSM workflow, both for importing and exporting. If you plan to edit your data and create new versions in your GeoGig repository that you can later contribute back to the OSM planet, either the OSM XML format or the pbf format have to be used. Other formats will not guarantee that the relation between nodes and ways is kept, and the result of a workflow might result in a new snapshot in the GeoGig repository that cannot be later exported and contributed back to the OSM planet.</p>
 <p>The geometry of ways is not used to export, and it is assumed to match the set of nodes that are kept in the <tt class="docutils literal"><span class="pre">nodes</span></tt> attribute. That&#8217;s the reason why the OSM formats should be used instead of other formats when exporting OSM data. Using other formats can lead to unconsistent relations between nodes and ways.</p>
 <p>In short, you should use <tt class="docutils literal"><span class="pre">osm</span> <span class="pre">export</span></tt> to export your OSM data, and not commands such as <tt class="docutils literal"><span class="pre">pg</span> <span class="pre">export</span></tt> or <tt class="docutils literal"><span class="pre">shp</span> <span class="pre">export</span></tt>.</p>
-<p>To be able to use a shapefile or a PostGIS database for working with OSM data, GeoGit provides additional export commands and data mapping functionalities that will be explained later in this chapter. For now, just remember that the usual export commands are not a good idea in case you want to edit and reimport your OSM data.</p>
+<p>To be able to use a shapefile or a PostGIS database for working with OSM data, GeoGig provides additional export commands and data mapping functionalities that will be explained later in this chapter. For now, just remember that the usual export commands are not a good idea in case you want to edit and reimport your OSM data.</p>
 </div>
 <div class="section" id="exporting-differences-as-changesets">
 <h2>Exporting differences as changesets<a class="headerlink" href="#exporting-differences-as-changesets" title="Permalink to this headline">¶</a></h2>
 <p>The differences between two commits in a repository can be exported as an OSM changeset that can be used to contribute those changes to the OSM planet. To export differences as changesets, the following command has to be used:</p>
-<div class="highlight-python"><div class="highlight"><pre>geogit osm create-changeset [commit [commit]] -f &lt;changesets_file&gt;
+<div class="highlight-python"><div class="highlight"><pre>geogig osm create-changeset [commit [commit]] -f &lt;changesets_file&gt;
 </pre></div>
 </div>
 <p>The syntax is similar to the <tt class="docutils literal"><span class="pre">diff</span></tt> command, but the output will be saved to the specified file instead of printed on the console. The two commits are optional, and allow to select the snapshots to compare, with the same meaning as the equivalent parameters in the <tt class="docutils literal"><span class="pre">diff</span></tt> command.</p>
 <p>To export the differences between the working tree and the current HEAD, this would be the command line to use:</p>
-<div class="highlight-python"><div class="highlight"><pre>$ geogit osm create-changeset -f changeset.xml
+<div class="highlight-python"><div class="highlight"><pre>$ geogig osm create-changeset -f changeset.xml
 </pre></div>
 </div>
 <p>Only the <tt class="docutils literal"><span class="pre">node</span></tt> and <tt class="docutils literal"><span class="pre">way</span></tt> trees are compared to find the differences between the specified commits. Changes in other trees will be ignored, and no changeset entries will be created based on them.</p>
-<p>The changeset command accepts an addtional parameter <tt class="docutils literal"><span class="pre">--id</span></tt>. In case the OSM trees contain modified or new feature which do not have a changeset id assigned (because they haven&#8217;t been already uploaded to the OSM planet), they will have a negative changeset id to indicate that. If you pass an Id (which you have to retrieve manually from the OSM planet), GeoGit will use it to replace those negative Ids. This way, you will get a changeset file that is already prepared to be uploaded and contributed to OSM.</p>
+<p>The changeset command accepts an addtional parameter <tt class="docutils literal"><span class="pre">--id</span></tt>. In case the OSM trees contain modified or new feature which do not have a changeset id assigned (because they haven&#8217;t been already uploaded to the OSM planet), they will have a negative changeset id to indicate that. If you pass an Id (which you have to retrieve manually from the OSM planet), GeoGig will use it to replace those negative Ids. This way, you will get a changeset file that is already prepared to be uploaded and contributed to OSM.</p>
 </div>
 <div class="section" id="data-mapping">
 <h2>Data mapping<a class="headerlink" href="#data-mapping" title="Permalink to this headline">¶</a></h2>
 <p>Apart from importing the data in the default &#8220;node&#8221; and &#8220;way&#8221; trees, OSM data can also be imported in any given tree, and a custom schema can be used for the corresponding features. This is done using a data mapping. A data mapping is a set of rules, each of them defines the data to map into a given tree. Each mapping rule contains the following elements.</p>
 <ul class="simple">
 <li>A destination tree.</li>
-<li>A set of characteristics of the entities to import onto that tree, which are used as a filter over the whole OSM dataset in the Geogit repository</li>
+<li>A set of characteristics of the entities to import onto that tree, which are used as a filter over the whole OSM dataset in the Geogig repository</li>
 <li>A set of attributes for the feature type to use. Value of those attributes will be taken from the tags of the same name, if present.</li>
 </ul>
 <p>Mappings are defined in a mapping file, using JSON syntax, as in the following example:</p>
@@ -389,7 +389,7 @@ out meta;
 }
 </pre></div>
 </div>
-<p>Apart from the fields that you add to the feature type in your mapping definition, GeoGit will always add an <tt class="docutils literal"><span class="pre">id</span></tt> field with the OSM Id of the entity. This is used to track the Id and allow for unmapping, as we will later see. In the case of ways, another field is added, <tt class="docutils literal"><span class="pre">nodes</span></tt>, which contains the Id&#8217;s of nodes that belong to the way. You should avoid using <tt class="docutils literal"><span class="pre">id</span></tt> or <tt class="docutils literal"><span class="pre">nodes</span></tt> as names of your fields, as that might cause problems.</p>
+<p>Apart from the fields that you add to the feature type in your mapping definition, GeoGig will always add an <tt class="docutils literal"><span class="pre">id</span></tt> field with the OSM Id of the entity. This is used to track the Id and allow for unmapping, as we will later see. In the case of ways, another field is added, <tt class="docutils literal"><span class="pre">nodes</span></tt>, which contains the Id&#8217;s of nodes that belong to the way. You should avoid using <tt class="docutils literal"><span class="pre">id</span></tt> or <tt class="docutils literal"><span class="pre">nodes</span></tt> as names of your fields, as that might cause problems.</p>
 <p>You can also add fields from the original OSM feature without doing any transformation. To do so, add the names of the fields to add in a list in the <tt class="docutils literal"><span class="pre">defaultFields</span></tt> entry.</p>
 <p>The following fields are available. Notice that the names are case-sensitive an have to be in lower case.</p>
 <ul class="simple">
@@ -434,28 +434,28 @@ out meta;
 <ul class="simple">
 <li>When importing OSM data using the <tt class="docutils literal"><span class="pre">osm</span> <span class="pre">import</span></tt> or <tt class="docutils literal"><span class="pre">osm</span> <span class="pre">download</span></tt> commands. In both cases, the <tt class="docutils literal"><span class="pre">--mapping</span></tt> option has to be used, followed by the name of the file where the mapping is found, as in the following example.</li>
 </ul>
-<div class="highlight-python"><div class="highlight"><pre>$ geogit osm import fiji-latest.osm.pbf --mapping mymapping.txt
+<div class="highlight-python"><div class="highlight"><pre>$ geogig osm import fiji-latest.osm.pbf --mapping mymapping.txt
 </pre></div>
 </div>
 <p>Data will be imported in the usual <tt class="docutils literal"><span class="pre">way</span></tt> and <tt class="docutils literal"><span class="pre">node</span></tt> trees with the corresponding default feature types, but also in the trees defined by the mapping, and according to the filter and feature types that it defines.</p>
 <p>If you do not want the imported data to be added in <em>raw</em> format in the default trees, you can use the <tt class="docutils literal"><span class="pre">--no-raw</span></tt> switch.</p>
-<div class="highlight-python"><div class="highlight"><pre>$ geogit osm import fiji-latest.osm.pbf --mapping mymapping.txt --no-raw
+<div class="highlight-python"><div class="highlight"><pre>$ geogig osm import fiji-latest.osm.pbf --mapping mymapping.txt --no-raw
 </pre></div>
 </div>
 <p>This option is only available for the <tt class="docutils literal"><span class="pre">osm</span> <span class="pre">import</span></tt> command, but not for the <tt class="docutils literal"><span class="pre">osm</span> <span class="pre">download</span></tt> command, since the <em>raw</em> data is needed to later be able to perform operations such as update.</p>
-<p>Be aware that, when you import using the <tt class="docutils literal"><span class="pre">--no-raw</span></tt> switch, you will not be able to use OSM operations on the imported data, since GeoGit will not consider it as OSM data. When using a mapping, the mapped data is an additional version of the data that is imported in a different tree to give a more practical alternative to the <em>raw</em> one, but that data is not guaranteed to have the necessary information to be able to reconstruct OSM entities. In short, GeoGit will not track data other than the data stored in the <tt class="docutils literal"><span class="pre">way</span></tt> and <tt class="docutils literal"><span class="pre">node</span></tt> trees as OSM data, so you should not to use the <tt class="docutils literal"><span class="pre">--no-raw</span></tt> switch if you plan to do OSM-like work on the imported data.</p>
-<p>if <tt class="docutils literal"><span class="pre">--mapping</span></tt> is used and the <tt class="docutils literal"><span class="pre">--no-raw</span></tt> switch is not, the working tree and index have to be clean, and after the import and mapping, a commit will be made (just like when you use the <tt class="docutils literal"><span class="pre">download</span></tt> command, eve without mapping). This is done to allow geoGit to keep track of mappings, so then the unmmaping operations can provide additional functionality. The comit message is automatically generated, but if you want to define your own message, you can do it using the <tt class="docutils literal"><span class="pre">--message</span></tt> option</p>
-<div class="highlight-python"><div class="highlight"><pre>$ geogit osm import fiji-latest.osm.pbf --mapping mymapping.txt -message &quot;import and map Fiji data&quot;
+<p>Be aware that, when you import using the <tt class="docutils literal"><span class="pre">--no-raw</span></tt> switch, you will not be able to use OSM operations on the imported data, since GeoGig will not consider it as OSM data. When using a mapping, the mapped data is an additional version of the data that is imported in a different tree to give a more practical alternative to the <em>raw</em> one, but that data is not guaranteed to have the necessary information to be able to reconstruct OSM entities. In short, GeoGig will not track data other than the data stored in the <tt class="docutils literal"><span class="pre">way</span></tt> and <tt class="docutils literal"><span class="pre">node</span></tt> trees as OSM data, so you should not to use the <tt class="docutils literal"><span class="pre">--no-raw</span></tt> switch if you plan to do OSM-like work on the imported data.</p>
+<p>if <tt class="docutils literal"><span class="pre">--mapping</span></tt> is used and the <tt class="docutils literal"><span class="pre">--no-raw</span></tt> switch is not, the working tree and index have to be clean, and after the import and mapping, a commit will be made (just like when you use the <tt class="docutils literal"><span class="pre">download</span></tt> command, eve without mapping). This is done to allow GeoGig to keep track of mappings, so then the unmmaping operations can provide additional functionality. The comit message is automatically generated, but if you want to define your own message, you can do it using the <tt class="docutils literal"><span class="pre">--message</span></tt> option</p>
+<div class="highlight-python"><div class="highlight"><pre>$ geogig osm import fiji-latest.osm.pbf --mapping mymapping.txt -message &quot;import and map Fiji data&quot;
 </pre></div>
 </div>
 <ul class="simple">
 <li>With already imported OSM data. If you imported OSM data without a mapping, you can apply it afterwards by using the <tt class="docutils literal"><span class="pre">osm</span> <span class="pre">map</span></tt> command followed by the mapping file, as in the example below.</li>
 </ul>
-<div class="highlight-python"><div class="highlight"><pre>$ geogit osm map mymapping.txt
+<div class="highlight-python"><div class="highlight"><pre>$ geogig osm map mymapping.txt
 </pre></div>
 </div>
 <p>Also in this case, as mentioned above, a commit will be created after the mapping, and the working tree and index have to be clean before performing the mapping operation. The <tt class="docutils literal"><span class="pre">--message</span></tt> option can be used as well to set a given commit message.</p>
-<p>When exporting OSM data. OSM data can be exported to OSM formats using the <tt class="docutils literal"><span class="pre">osm</span> <span class="pre">export</span></tt> command, and also to other formats using commands such as <tt class="docutils literal"><span class="pre">shp</span> <span class="pre">export</span></tt> or <tt class="docutils literal"><span class="pre">pg</span> <span class="pre">export</span></tt>. In these two last cases, the feature type created in the destination file or database is the same one used it the <tt class="docutils literal"><span class="pre">way</span></tt> or <tt class="docutils literal"><span class="pre">node</span></tt> tree. That is, the default one used for storing the <em>raw</em> OSM data in GeoGit. Additional commands are available to export a mapped set of features.</p>
+<p>When exporting OSM data. OSM data can be exported to OSM formats using the <tt class="docutils literal"><span class="pre">osm</span> <span class="pre">export</span></tt> command, and also to other formats using commands such as <tt class="docutils literal"><span class="pre">shp</span> <span class="pre">export</span></tt> or <tt class="docutils literal"><span class="pre">pg</span> <span class="pre">export</span></tt>. In these two last cases, the feature type created in the destination file or database is the same one used it the <tt class="docutils literal"><span class="pre">way</span></tt> or <tt class="docutils literal"><span class="pre">node</span></tt> tree. That is, the default one used for storing the <em>raw</em> OSM data in GeoGig. Additional commands are available to export a mapped set of features.</p>
 <ul class="simple">
 <li><tt class="docutils literal"><span class="pre">osm</span> <span class="pre">export-shp</span></tt>. Export to a shapefile</li>
 <li><tt class="docutils literal"><span class="pre">osm</span> <span class="pre">export-pg</span></tt>. Export to a PostGIS database</li>
@@ -467,9 +467,9 @@ out meta;
 </div>
 <p>These commands all have a syntax similar to the equivalent export commands such as <tt class="docutils literal"><span class="pre">shp</span> <span class="pre">export</span></tt> or <tt class="docutils literal"><span class="pre">pg</span> <span class="pre">export</span></tt>, but without the <tt class="docutils literal"><span class="pre">--alter</span></tt>, <tt class="docutils literal"><span class="pre">--defaulttype</span></tt> and <tt class="docutils literal"><span class="pre">--featuretype</span></tt> options. Instead, the <tt class="docutils literal"><span class="pre">--mapping</span></tt> option must be used to specify the file that contains the mapping to use. Also, a path cannot be specified, since the operation will always take the OSM data from the default <em>raw</em> locations at the <tt class="docutils literal"><span class="pre">way</span></tt> and <tt class="docutils literal"><span class="pre">node</span></tt> trees.</p>
 <p>Below you can see some examples:</p>
-<div class="highlight-python"><div class="highlight"><pre>$ geogit osm export-shp ./myexportfile.shp --mapping ./mymappingfile.json
+<div class="highlight-python"><div class="highlight"><pre>$ geogig osm export-shp ./myexportfile.shp --mapping ./mymappingfile.json
 
-$ geogit osm export-pg --port 54321 --database geogit --mapping ./mymappingfile.json --user geogit --password geogit
+$ geogig osm export-pg --port 54321 --database geogig --mapping ./mymappingfile.json --user geogig --password geogig
 </pre></div>
 </div>
 <p>When exporting to a shapefile, the mapping file should contain a single rule. If the mapping contains more than one mapping rule, only the first one will be used.</p>
@@ -483,9 +483,9 @@ $ geogit osm export-pg --port 54321 --database geogit --mapping ./mymappingfile.
 </div>
 <div class="section" id="data-unmapping">
 <h2>Data unmapping<a class="headerlink" href="#data-unmapping" title="Permalink to this headline">¶</a></h2>
-<p>Mapped OSM data can also be used to modify the original OSM data that is kept in the default <tt class="docutils literal"><span class="pre">node</span></tt> and <tt class="docutils literal"><span class="pre">way</span></tt> trees. This way, you can export your data using a mapping, modifiy that mapped data, reimport it, and then tell GeoGit to reflect those changes back in the original data, which is the one used for all OSM tasks such as generating changesets, remapping to a different feature type, etc.</p>
+<p>Mapped OSM data can also be used to modify the original OSM data that is kept in the default <tt class="docutils literal"><span class="pre">node</span></tt> and <tt class="docutils literal"><span class="pre">way</span></tt> trees. This way, you can export your data using a mapping, modifiy that mapped data, reimport it, and then tell GeoGig to reflect those changes back in the original data, which is the one used for all OSM tasks such as generating changesets, remapping to a different feature type, etc.</p>
 <p>To unmap the data in a tree in your repository, the <tt class="docutils literal"><span class="pre">osm</span> <span class="pre">unmap</span></tt> command should be used, with the following syntax:</p>
-<div class="highlight-python"><div class="highlight"><pre>geogit osm unmap &lt;tree_path&gt;
+<div class="highlight-python"><div class="highlight"><pre>geogig osm unmap &lt;tree_path&gt;
 </pre></div>
 </div>
 <p>If you add new entities, they will just be added to the corresponding <tt class="docutils literal"><span class="pre">way</span></tt> or <tt class="docutils literal"><span class="pre">node</span></tt> trees. In case the entity already existed, the modified version from you mapped data is merged with the information that is stored in the default location and was not mapped. Those tags that are defined for an entity (and, as such, stored in the <tt class="docutils literal"><span class="pre">way</span></tt> or <tt class="docutils literal"><span class="pre">node</span></tt> trees) but are not used to create attributes in the mapped feature type, are reused when unmapping. Let&#8217;s see it with an example.</p>
@@ -512,8 +512,8 @@ phone:5555986154
 </div>
 <p>Basically, you are mapping all fire stations to a new feature type which just contains the station name and its location.</p>
 <p>Now, in your exported data, you modified the name of the above firestation from &#8220;Unnamed fire station&#8221; to &#8220;Central fire station&#8221;. After that, you imported the data to a <tt class="docutils literal"><span class="pre">fire_stations</span></tt> tree using the <tt class="docutils literal"><span class="pre">pg</span> <span class="pre">import</span></tt> command.</p>
-<p>The <tt class="docutils literal"><span class="pre">firestations</span></tt> tree contains your changes, but the corresponding feature in the <tt class="docutils literal"><span class="pre">node</span></tt> tree is not updated. You can tell GeoGit to update it, by running the unmap command, as shown below.</p>
-<div class="highlight-python"><div class="highlight"><pre>$ geogit unmap fire_stations
+<p>The <tt class="docutils literal"><span class="pre">firestations</span></tt> tree contains your changes, but the corresponding feature in the <tt class="docutils literal"><span class="pre">node</span></tt> tree is not updated. You can tell GeoGig to update it, by running the unmap command, as shown below.</p>
+<div class="highlight-python"><div class="highlight"><pre>$ geogig unmap fire_stations
 </pre></div>
 </div>
 <p>The corresponding feature will be updated, and will have the following tags.</p>
@@ -527,20 +527,20 @@ phone:5555986154
 <p>In the case of ways, the <tt class="docutils literal"><span class="pre">nodes</span></tt> field will be recomputed based on the geometry. If the geometry has changed and new points have been added to the corresponding line of polygon, new nodes will be added accordingly.</p>
 <p>The unmapping operation also considers deleted features, by comparing with the state of your mapped tree just after the last mapping operation (that&#8217;s the reason why a commit is created after mapping, to be able to locate that snapshot). All features that have been deleted from those that existed at that commit just after the mapping was performed, will be deleted from the canonical trees as well. A deleted way will not cause its corresponding nodes to be deleted, but only the canonical representation of the way itself.</p>
 </div>
-<div class="section" id="an-osm-workflow-using-geogit">
-<h2>An OSM workflow using GeoGit<a class="headerlink" href="#an-osm-workflow-using-geogit" title="Permalink to this headline">¶</a></h2>
-<p>The following is a short exercise demonstrating how GeoGit can be used as part of a workflow involving OSM data.</p>
+<div class="section" id="an-osm-workflow-using-geogig">
+<h2>An OSM workflow using GeoGig<a class="headerlink" href="#an-osm-workflow-using-geogig" title="Permalink to this headline">¶</a></h2>
+<p>The following is a short exercise demonstrating how GeoGig can be used as part of a workflow involving OSM data.</p>
 <p>First, let&#8217;s initialize the repository.</p>
-<div class="highlight-python"><div class="highlight"><pre>$ geogit init
+<div class="highlight-python"><div class="highlight"><pre>$ geogig init
 </pre></div>
 </div>
 <p>For this example, we will be working on a small area define by a bounding box. The first step is to get the data corresponding to that area. We will be using a bounding box filtering, which will retrieve all the data within the area, including both ways and nodes.</p>
 <p>Run the following command:</p>
-<div class="highlight-python"><div class="highlight"><pre>$ geogit osm download --bbox 40 0 40.01 0.01
+<div class="highlight-python"><div class="highlight"><pre>$ geogig osm download --bbox 40 0 40.01 0.01
 </pre></div>
 </div>
-<p>Your OSM data should now be in your GeoGit repository, and a new commit should have been made.</p>
-<div class="highlight-python"><div class="highlight"><pre>$ geogit log
+<p>Your OSM data should now be in your GeoGig repository, and a new commit should have been made.</p>
+<div class="highlight-python"><div class="highlight"><pre>$ geogig log
 Commit:  d972aa12d9fdf9ac4192fb81da131e77c3867acf
 Author:  volaya &lt;volaya@opengeo.org&gt;
 Date:    (4 minutes ago) 2013-06-03 14:37:21 +0300
@@ -548,19 +548,19 @@ Subject: Updated OSM data
 </pre></div>
 </div>
 <p>If you want to edit that data and work on it, you can export it using the <tt class="docutils literal"><span class="pre">osm</span> <span class="pre">export</span></tt> command.</p>
-<div class="highlight-python"><div class="highlight"><pre>$ geogit osm export exported.xml
+<div class="highlight-python"><div class="highlight"><pre>$ geogig osm export exported.xml
 </pre></div>
 </div>
 <p>You can open the <tt class="docutils literal"><span class="pre">exported.xml</span></tt> file in a software such as JOSM and edit it. Once it is edited, export it back to an OSM file.</p>
-<p>To create a new snapshot in the geogit repository with the edited data, just import the new OSM file.</p>
-<div class="highlight-python"><div class="highlight"><pre>$ geogit osm import editedWithJosm.xml
+<p>To create a new snapshot in the geogig repository with the edited data, just import the new OSM file.</p>
+<div class="highlight-python"><div class="highlight"><pre>$ geogig osm import editedWithJosm.xml
 </pre></div>
 </div>
 <p>and then add and commit it</p>
-<div class="highlight-python"><div class="highlight"><pre>$ geogit add
-$ geogit commit -m &quot;Edited OSM data&quot;
+<div class="highlight-python"><div class="highlight"><pre>$ geogig add
+$ geogig commit -m &quot;Edited OSM data&quot;
 [...]
-$ geogit log
+$ geogig log
 Commit: a465736fdabc6d6b5a3289499bba695328a6b43c
 Author:  volaya &lt;volaya@opengeo.org&gt;
 Date:    (15 seconds ago) 2013-05-21 12:37:33 +0300
@@ -573,7 +573,7 @@ Subject: Update OSM to changeset 16215593
 </pre></div>
 </div>
 <p>Another way of editing your data is to export it using a mapping. Let&#8217;s see how to do it.</p>
-<p>Create a file named <tt class="docutils literal"><span class="pre">mapping.json</span></tt> in your GeoGit repository folder, with the following content:</p>
+<p>Create a file named <tt class="docutils literal"><span class="pre">mapping.json</span></tt> in your GeoGig repository folder, with the following content:</p>
 <div class="highlight-python"><div class="highlight"><pre>  {&quot;rules&quot;:[
     {
 &quot;name&quot;:&quot;power&quot;,
@@ -589,7 +589,7 @@ Subject: Update OSM to changeset 16215593
 </pre></div>
 </div>
 <p>Now export the OSM data that you downloaded, using the above mapping.</p>
-<div class="highlight-python"><div class="highlight"><pre>$ geogit osm export-shp exported.shp --mapping mapping.json
+<div class="highlight-python"><div class="highlight"><pre>$ geogig osm export-shp exported.shp --mapping mapping.json
 </pre></div>
 </div>
 <p>The resulting database file can be imported into a desktop GIS such as QGIS. Here&#8217;s how the attributes table of the imported layer would look like:</p>
@@ -597,12 +597,12 @@ Subject: Update OSM to changeset 16215593
 <img alt="../_images/qgis_osm.png" src="../_images/qgis_osm.png" />
 </div>
 <p>Let&#8217;s edit one of the features in the layer (don&#8217;t worry, we are not going to commit the changes back to OSM, so we can modify it even if the new data is not real). Take the feature with the Id <tt class="docutils literal"><span class="pre">1399057662</span></tt>, move its corresponding point to a different place and change the value of the <tt class="docutils literal"><span class="pre">power</span></tt> attribute from <tt class="docutils literal"><span class="pre">tower</span></tt> to <tt class="docutils literal"><span class="pre">pole</span></tt>.</p>
-<p>Save it to the same <tt class="docutils literal"><span class="pre">export.shp</span></tt> file and then import it back into the GeoGit repository using the following command:</p>
-<div class="highlight-python"><div class="highlight"><pre>$ geogit shp import export.shp -d power
+<p>Save it to the same <tt class="docutils literal"><span class="pre">export.shp</span></tt> file and then import it back into the GeoGig repository using the following command:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ geogig shp import export.shp -d power
 </pre></div>
 </div>
 <p>The imported data is now in the <tt class="docutils literal"><span class="pre">power</span></tt> tree.</p>
-<div class="highlight-python"><div class="highlight"><pre>$ geogit show WORK_HEAD:power
+<div class="highlight-python"><div class="highlight"><pre>$ geogig show WORK_HEAD:power
 TREE ID:  cd6d05d0fe0c527a78e56ef4ec7439a494a6229c
 SIZE:  130
 NUMBER Of SUBTREES:  0
@@ -616,7 +616,7 @@ the_geom: &lt;POINT&gt;
 </pre></div>
 </div>
 <p>The node we have edited is not updated in the <tt class="docutils literal"><span class="pre">node</span></tt> tree, as you can see by running the following command:</p>
-<div class="highlight-python"><div class="highlight"><pre>$ geogit show WORK_HEAD:node/1399057662
+<div class="highlight-python"><div class="highlight"><pre>$ geogig show WORK_HEAD:node/1399057662
 ID:  9877ef1ed87f5e9e85a00416e681f3a0238725b9
 
 ATTRIBUTES
@@ -631,11 +631,11 @@ visible: true
 </pre></div>
 </div>
 <p>To update the data in the &#8220;node&#8221; tree, we can run the <tt class="docutils literal"><span class="pre">osm</span> <span class="pre">unmap</span></tt> command:</p>
-<div class="highlight-python"><div class="highlight"><pre>$ geogit osm unmap power
+<div class="highlight-python"><div class="highlight"><pre>$ geogig osm unmap power
 </pre></div>
 </div>
 <p>Now the node should have been updated.</p>
-<div class="highlight-python"><div class="highlight"><pre>$ geogit show WORK_HEAD:node/1399057662
+<div class="highlight-python"><div class="highlight"><pre>$ geogig show WORK_HEAD:node/1399057662
 ID:  ff6663ccec292fb2c06dcea5ec8b539be9cb50fb
 
 ATTRIBUTES
@@ -650,17 +650,17 @@ visible: true
 </pre></div>
 </div>
 <p>You can now add and commit your changes.</p>
-<p>To merge those changes (no matter which one of the above method you have used to edit the OSM data in your GeoGit repository) with the current data in the OSM planet, in case there have been changes, use the <tt class="docutils literal"><span class="pre">update</span></tt> switch.</p>
-<div class="highlight-python"><div class="highlight"><pre>$ geogit download --update
+<p>To merge those changes (no matter which one of the above method you have used to edit the OSM data in your GeoGig repository) with the current data in the OSM planet, in case there have been changes, use the <tt class="docutils literal"><span class="pre">update</span></tt> switch.</p>
+<div class="highlight-python"><div class="highlight"><pre>$ geogig download --update
 </pre></div>
 </div>
 <p>If there are conflicts, the operation will be stopped and you should resolve them as usual. If not, the, changes will merged with the changes you just added when importing the xml file. If there are no changes since the last time you fetched data from the OSM server, no commit will be made, and the repository will not be changed by the update operation.</p>
 <p>Finally, you can export the new changes that you have introduced, as a changeset, ready to be contributed to the OSM planet. The commits to compare depend on the workflow that you have followed. In the case above, you can get them by comparing the current HEAD with its second parent, which corresponds to the branch that was created with the changes downloaded in the update operation, in case there were changes (otherwise, there would be no merge operation, since it was not necessary).</p>
-<div class="highlight-python"><div class="highlight"><pre>$ geogit create-changeset HEAD^2 HEAD -f changeset.xml
+<div class="highlight-python"><div class="highlight"><pre>$ geogig create-changeset HEAD^2 HEAD -f changeset.xml
 </pre></div>
 </div>
 <p>Or you can just compare your current HEAD to what you had after your first import.</p>
-<div class="highlight-python"><div class="highlight"><pre>$ geogit create-changeset 58b84cee8f4 HEAD -f changeset.xml
+<div class="highlight-python"><div class="highlight"><pre>$ geogig create-changeset 58b84cee8f4 HEAD -f changeset.xml
 </pre></div>
 </div>
 </div>
@@ -692,7 +692,7 @@ visible: true
       </div>
       <h3 class="pngfix">Table Of Contents</h3>
         <ul>
-<li><a class="reference internal" href="#">Using GeoGit with OpenStreetMap data</a><ul>
+<li><a class="reference internal" href="#">Using GeoGig with OpenStreetMap data</a><ul>
 <li><a class="reference internal" href="#importing-osm-data">Importing OSM data</a></li>
 <li><a class="reference internal" href="#downloading-data-from-an-osm-server">Downloading data from an OSM Server</a></li>
 <li><a class="reference internal" href="#updating-osm-data">Updating OSM data</a></li>
@@ -700,7 +700,7 @@ visible: true
 <li><a class="reference internal" href="#exporting-differences-as-changesets">Exporting differences as changesets</a></li>
 <li><a class="reference internal" href="#data-mapping">Data mapping</a></li>
 <li><a class="reference internal" href="#data-unmapping">Data unmapping</a></li>
-<li><a class="reference internal" href="#an-osm-workflow-using-geogit">An OSM workflow using GeoGit</a></li>
+<li><a class="reference internal" href="#an-osm-workflow-using-geogig">An OSM workflow using GeoGig</a></li>
 </ul>
 </li>
 </ul>
@@ -721,7 +721,7 @@ visible: true
         </div>
         <div class="section">
           <h3>License</h3>
-          <p>This project is licensed under the <a href="https://github.com/boundlessgeo/GeoGit/blob/master/LICENSE.txt">BSD New License</a>, except for the GeoServer plugin which is available under the <a href="http://geoserver.org/display/GEOS/License">GPL 2.0 License</a>.</p>
+          <p>This project is licensed under the <a href="https://github.com/boundlessgeo/GeoGit/blob/master/LICENSE.txt">BSD New License</a>.</p>
         </div>
 
   </div><!-- /#sidebar -->
@@ -733,7 +733,7 @@ visible: true
     <footer>
       <div class="container">
         <div class="row">
-          <div class=""><p class="repo-owner"><a href="https://github.com/boundlessgeo/GeoGit">GeoGit</a> is maintained by <a href="https://github.com/boundlessgeo"><img src="../_static/Boundless_Logo.png" alt="Boundless"></a></p></div>
+          <div class=""><p class="repo-owner"><a href="https://github.com/boundlessgeo/GeoGit">GeoGig</a> is maintained by <a href="https://github.com/boundlessgeo"><img src="../_static/Boundless_Logo.png" alt="Boundless"></a></p></div>
         </div>
       </div>
     </footer>

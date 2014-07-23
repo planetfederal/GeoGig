@@ -1,17 +1,17 @@
-.. _geogit-shp:
+.. _geogig-shp:
 
-geogit-shp documentation
+geogig-shp documentation
 #########################
 
 SYNOPSIS
 ********
-geogit shp [--help] <command> [commandargs]
+geogig shp [--help] <command> [commandargs]
 
 
 DESCRIPTION
 ***********
 
-The shapefile command extension is meant to provide a means for importing and exporting geospatial data to and from GeoGit through shapefiles.
+The shapefile command extension is meant to provide a means for importing and exporting geospatial data to and from GeoGig through shapefiles.
 
 
 OPTIONS
@@ -24,14 +24,14 @@ EXAMPLES
 ********
 ::
 
-   geogit shp --help
+   geogig shp --help
 
 
 SEE ALSO
 ********
 
-:ref:`geogit-shp-import`
+:ref:`geogig-shp-import`
 
-:ref:`geogit-shp-export`
+:ref:`geogig-shp-export`
 
 

@@ -1,14 +1,14 @@
 
-.. _geogit-remote-add:
+.. _geogig-remote-add:
 
-geogit-remote-add documentation
+geogig-remote-add documentation
 ###############################
 
 
 
 SYNOPSIS
 ********
-geogit remote add [-t <branch>] <name> <url>
+geogig remote add [-t <branch>] <name> <url>
 
 
 DESCRIPTION
@@ -26,9 +26,9 @@ OPTIONS
 SEE ALSO
 ********
 
-:ref:`geogit-remote-list`
+:ref:`geogig-remote-list`
 
-:ref:`geogit-remote-remove`
+:ref:`geogig-remote-remove`
 
 BUGS
 ****

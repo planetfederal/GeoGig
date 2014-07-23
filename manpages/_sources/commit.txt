@@ -1,14 +1,14 @@
 
-.. _geogit-commit:
+.. _geogig-commit:
 
-geogit-commit documentation
+geogig-commit documentation
 ############################
 
 
 
 SYNOPSIS
 ********
-geogit commit [-m <msg>] [<path_filter>...] [-c <commitish>] [--amend]
+geogig commit [-m <msg>] [<path_filter>...] [-c <commitish>] [--amend]
 
 
 DESCRIPTION
@@ -33,9 +33,9 @@ OPTIONS
 SEE ALSO
 ********
 
-:ref:`geogit-add`
+:ref:`geogig-add`
 
-:ref:`geogit-status`
+:ref:`geogig-status`
 
 BUGS
 ****

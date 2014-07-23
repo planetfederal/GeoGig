@@ -5,7 +5,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta name="viewport" content="width=device-width, maximum-scale=1">
   
-  <title>GeoGit Technical Manual &mdash; GeoGit 0.10.0 Technical Manual</title>
+  <title>GeoGig Technical Manual &mdash; GeoGig 1.0 Technical Manual</title>
   <link rel="stylesheet" href="_static/screen.css" type="text/css" media="screen, projection" />
   <link rel="stylesheet" href="_static/print.css" type="text/css" media="print" /> 
   <!--[if IE]>
@@ -17,14 +17,14 @@
   <script type="text/javascript">
     var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.10.0',
+        VERSION:     '1.0',
         COLLAPSE_MODINDEX: false,
         FILE_SUFFIX: '.html'
     };
   </script>
   <link rel="shortcut icon" href="_static/favicon.ico"/>
-      <link rel="top" title="GeoGit 0.10.0 Technical Manual" href="#" />
-      <link rel="next" title="Binary encoding of GeoGit objects" href="geogit-binary.html" />
+      <link rel="top" title="GeoGig 1.0 Technical Manual" href="#" />
+      <link rel="next" title="Binary encoding of GeoGig objects" href="geogig-binary.html" />
 </head>
 <body class="index">
     <div id="blacktop"></div>
@@ -37,12 +37,12 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="http://geogit.org"><h1>GeoGit</h1></a>
+            <a class="navbar-brand" href="http://geogig.org"><h1>GeoGig</h1></a>
           </div>
           <div class="navbar-collapse collapse navbar-right">
             <ul class="nav navbar-nav">
-              <li><a href="http://geogit.org/#install">Get Started</a></li>
-              <li><a href="http://geogit.org/docs/index.html">Documentation</a></li>
+              <li><a href="http://geogig.org/#install">Get Started</a></li>
+              <li><a href="http://geogig.org/docs/index.html">Documentation</a></li>
               <li><a href="https://github.com/boundlessgeo/GeoGit">On Github</a></li>
             </ul>
           </div><!--/.navbar-collapse -->
@@ -77,47 +77,47 @@
             </div>
 <ul id="breadcrumbs">
   
-  <li>GeoGit 0.10.0 Technical Manual</li>
+  <li>GeoGig 1.0 Technical Manual</li>
 </ul>
 <ul id="relatedlinks" class="selfclear">
   <li class="first">
     <a href="genindex.html" title="General Index"
        accesskey="I">index</a></li>
   <li>
-    <a href="geogit-binary.html" title="Binary encoding of GeoGit objects"
+    <a href="geogig-binary.html" title="Binary encoding of GeoGig objects"
        accesskey="N">next</a>|</li>
 </ul>
         
-  <div class="section" id="geogit-technical-manual">
-<h1>GeoGit Technical Manual<a class="headerlink" href="#geogit-technical-manual" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="geogig-technical-manual">
+<h1>GeoGig Technical Manual<a class="headerlink" href="#geogig-technical-manual" title="Permalink to this headline">¶</a></h1>
 <p>Contents:</p>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="geogit-binary.html">Binary encoding of GeoGit objects</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="geogit-binary.html#conventions">Conventions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="geogit-binary.html#commit">Commit</a></li>
-<li class="toctree-l2"><a class="reference internal" href="geogit-binary.html#tree">Tree</a></li>
-<li class="toctree-l2"><a class="reference internal" href="geogit-binary.html#feature">Feature</a></li>
-<li class="toctree-l2"><a class="reference internal" href="geogit-binary.html#featuretype">FeatureType</a></li>
-<li class="toctree-l2"><a class="reference internal" href="geogit-binary.html#tag">Tag</a></li>
+<li class="toctree-l1"><a class="reference internal" href="geogig-binary.html">Binary encoding of GeoGig objects</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="geogig-binary.html#conventions">Conventions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="geogig-binary.html#commit">Commit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="geogig-binary.html#tree">Tree</a></li>
+<li class="toctree-l2"><a class="reference internal" href="geogig-binary.html#feature">Feature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="geogig-binary.html#featuretype">FeatureType</a></li>
+<li class="toctree-l2"><a class="reference internal" href="geogig-binary.html#tag">Tag</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="geogit-network-sync.html">GeoGit Network Synchronization</a></li>
-<li class="toctree-l1"><a class="reference internal" href="geogit-network-sync.html#server-operations">Server operations</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="geogit-network-sync.html#manifest">Manifest</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="geogit-network-sync.html#example">Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="geogig-network-sync.html">GeoGig Network Synchronization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="geogig-network-sync.html#server-operations">Server operations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="geogig-network-sync.html#manifest">Manifest</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="geogig-network-sync.html#example">Example</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="geogit-network-sync.html#existence-check">Existence Check</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="geogit-network-sync.html#id1">Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="geogig-network-sync.html#existence-check">Existence Check</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="geogig-network-sync.html#id1">Example</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="geogit-network-sync.html#bulk-objects">Bulk Objects</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="geogit-network-sync.html#id2">Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="geogig-network-sync.html#bulk-objects">Bulk Objects</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="geogig-network-sync.html#id2">Example</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="geogit-network-sync.html#bulk-send">Bulk Send</a></li>
-<li class="toctree-l2"><a class="reference internal" href="geogit-network-sync.html#reference-update">Reference Update</a></li>
+<li class="toctree-l2"><a class="reference internal" href="geogig-network-sync.html#bulk-send">Bulk Send</a></li>
+<li class="toctree-l2"><a class="reference internal" href="geogig-network-sync.html#reference-update">Reference Update</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="plumbing_commands.html">Plumbing commands</a><ul>
@@ -134,27 +134,27 @@
 <li class="toctree-l2"><a class="reference internal" href="plumbing_commands.html#blame">blame</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="developers.html">GeoGit for developers</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="developers.html">GeoGig for developers</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="developers.html#building">Building</a></li>
 <li class="toctree-l2"><a class="reference internal" href="developers.html#working-with-eclipse">Working with eclipse</a></li>
 <li class="toctree-l2"><a class="reference internal" href="developers.html#programming-guide">Programming guide</a></li>
 <li class="toctree-l2"><a class="reference internal" href="developers.html#technical-documentation">Technical documentation</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="geogit-merge-conflicts.html">GeoGit merge conflicts strategy</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="geogit-merge-conflicts.html#possible-merge-scenarios">Possible merge scenarios</a></li>
-<li class="toctree-l2"><a class="reference internal" href="geogit-merge-conflicts.html#the-conflict-file-during-a-conflicted-merge-operation">The conflict file during a conflicted merge operation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="geogit-merge-conflicts.html#the-working-tree-file-during-a-conflicted-merge-operation">The working tree file during a conflicted merge operation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="geogit-merge-conflicts.html#references-during-a-conflicted-merge-operation">References during a conflicted merge operation.</a></li>
-<li class="toctree-l2"><a class="reference internal" href="geogit-merge-conflicts.html#some-implementation-details">Some implementation details</a></li>
-<li class="toctree-l2"><a class="reference internal" href="geogit-merge-conflicts.html#mergetool">MergeTool</a></li>
-<li class="toctree-l2"><a class="reference internal" href="geogit-merge-conflicts.html#import-of-solved-elements">Import of solved elements</a></li>
-<li class="toctree-l2"><a class="reference internal" href="geogit-merge-conflicts.html#tree-feature-type-changes">Tree/Feature type changes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="geogig-merge-conflicts.html">GeoGig merge conflicts strategy</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="geogig-merge-conflicts.html#possible-merge-scenarios">Possible merge scenarios</a></li>
+<li class="toctree-l2"><a class="reference internal" href="geogig-merge-conflicts.html#the-conflict-file-during-a-conflicted-merge-operation">The conflict file during a conflicted merge operation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="geogig-merge-conflicts.html#the-working-tree-file-during-a-conflicted-merge-operation">The working tree file during a conflicted merge operation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="geogig-merge-conflicts.html#references-during-a-conflicted-merge-operation">References during a conflicted merge operation.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="geogig-merge-conflicts.html#some-implementation-details">Some implementation details</a></li>
+<li class="toctree-l2"><a class="reference internal" href="geogig-merge-conflicts.html#mergetool">MergeTool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="geogig-merge-conflicts.html#import-of-solved-elements">Import of solved elements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="geogig-merge-conflicts.html#tree-feature-type-changes">Tree/Feature type changes</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="sparse-clone.html">Sparse clone</a></li>
 <li class="toctree-l1"><a class="reference internal" href="osm.html">OSM</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="osm.html#problems-to-solve-things-to-consider-about-osm-commands-in-geogit">Problems to solve / Things to consider  about OSM commands in GeoGit:</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="osm.html#problems-to-solve-things-to-consider-about-osm-commands-in-geogig">Problems to solve / Things to consider  about OSM commands in GeoGig:</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="osm.html#updating">1. Updating</a></li>
 <li class="toctree-l3"><a class="reference internal" href="osm.html#unmapping-of-ways">2. Unmapping of ways</a></li>
 <li class="toctree-l3"><a class="reference internal" href="osm.html#updating-new-entities">3. Updating new entities</a></li>
@@ -169,7 +169,7 @@
 
 
       <div class="selfclear pagination-nav">
-          <div class="rightwise"><strong>Next</strong>: <a href="geogit-binary.html" title="next chapter">Binary encoding of GeoGit objects</a></div>
+          <div class="rightwise"><strong>Next</strong>: <a href="geogig-binary.html" title="next chapter">Binary encoding of GeoGig objects</a></div>
       </div>
       <p class="centered-text"><a href="#top"><img src="_static/arrow_up.png" alt="back to top"/></a></p>
       </div><!-- /#content> -->
@@ -194,7 +194,7 @@
         <div class="section continue_reading">
           <h3>Continue Reading</h3>
           <ul>
-            <li>Next: <a href="geogit-binary.html" title="next chapter">Binary encoding of GeoGit objects</a></li>
+            <li>Next: <a href="geogig-binary.html" title="next chapter">Binary encoding of GeoGig objects</a></li>
           </ul>
         </div>
         <div class="section">
@@ -205,7 +205,7 @@
         </div>
         <div class="section">
           <h3>License</h3>
-          <p>This project is licensed under the <a href="https://github.com/boundlessgeo/GeoGit/blob/master/LICENSE.txt">BSD New License</a>, except for the GeoServer plugin which is available under the <a href="http://geoserver.org/display/GEOS/License">GPL 2.0 License</a>.</p>
+          <p>This project is licensed under the <a href="https://github.com/boundlessgeo/GeoGit/blob/master/LICENSE.txt">BSD New License</a>.</p>
         </div>
 
   </div><!-- /#sidebar -->
@@ -217,7 +217,7 @@
     <footer>
       <div class="container">
         <div class="row">
-          <div class=""><p class="repo-owner"><a href="https://github.com/boundlessgeo/GeoGit">GeoGit</a> is maintained by <a href="https://github.com/boundlessgeo"><img src="_static/Boundless_Logo.png" alt="Boundless"></a></p></div>
+          <div class=""><p class="repo-owner"><a href="https://github.com/boundlessgeo/GeoGit">GeoGig</a> is maintained by <a href="https://github.com/boundlessgeo"><img src="_static/Boundless_Logo.png" alt="Boundless"></a></p></div>
         </div>
       </div>
     </footer>

@@ -1,17 +1,17 @@
-.. _geogit-geojson:
+.. _geogig-geojson:
 
-geogit-geojson documentation
+geogig-geojson documentation
 ############################
 
 SYNOPSIS
 ********
-geogit geojson [--help] <command> [commandargs]
+geogig geojson [--help] <command> [commandargs]
 
 
 DESCRIPTION
 ***********
 
-The geojson command extension is meant to provide a means for importing and exporting geospatial data to and from GeoGit through GeoJSON files.
+The geojson command extension is meant to provide a means for importing and exporting geospatial data to and from GeoGig through GeoJSON files.
 
 
 OPTIONS
@@ -24,12 +24,12 @@ EXAMPLES
 ********
 ::
 
-   geogit geojson --help
+   geogig geojson --help
 
 
 SEE ALSO
 ********
 
-:ref:`geogit-geojson-import`
+:ref:`geogig-geojson-import`
 
-:ref:`geogit-geojson-export`
+:ref:`geogig-geojson-export`

@@ -1,14 +1,14 @@
 
-.. _geogit-osm-map:
+.. _geogig-osm-map:
 
-geogit-osm-map documentation
+geogig-osm-map documentation
 ############################
 
 
 
 SYNOPSIS
 ********
-geogit osm map <file> [<message>]
+geogig osm map <file> [<message>]
 
 
 DESCRIPTION
@@ -30,7 +30,7 @@ A mapping description is an array of mapping rules, each of them with the follow
 - ``fields`` describes the attributes for the feature type, as ``tag_name:{"name":field_name, "type":field_type}`` values. Usually, ``tag_name`` and ``field_name`` will be identical, so the name of the tag is used as the field name. However, you can use a different name for the field, which will act as an alias for the tag.
   Valid types for the ``field_type`` are ``INTEGER, FLOAT, DOUBLE, LONG SHORT, POINT LINE, POLYGON, STRING, DATE``. Only one of the geometry types can be used for a field in a mapping rule. This defines the type of entities that will be used, so it acts as a filter as well. So, if you add a field of type ``POINT``, it will use only those entities represented as a points. That is, it will use only nodes. ``LINESTRING``  and ``POLYGON`` will cause only ways to be used. In both cases, all ways are used, even if they are not closed (they will be automatically closed to create the polygon). It is up to you to define the criteria for a way to be suitable for creating a polygon, such as, for instance, requiring the ``area=yes`` or "building=yes" tag/value pair.
 
-  Apart from the fields that you add to the feature type in your mapping definition, GeoGit will always add an ``id`` field with the OSM Id of the entity. This is used to track the Id and allow for unmapping. In the case of ways, another field is added, ``nodes``, which contains the Id's of nodes that belong to the way. You should avoid using ``id`` or ``nodes`` as names of your fields, as that might cause problems.
+  Apart from the fields that you add to the feature type in your mapping definition, GeoGig will always add an ``id`` field with the OSM Id of the entity. This is used to track the Id and allow for unmapping. In the case of ways, another field is added, ``nodes``, which contains the Id's of nodes that belong to the way. You should avoid using ``id`` or ``nodes`` as names of your fields, as that might cause problems.
 
 A commit will be created after the mapping, and the working tree and index have to be clean before performing the mapping operation. The ``--message`` option can be used as well to set a given commit message.
 
@@ -45,9 +45,9 @@ OPTIONS
 SEE ALSO
 ********
 
-:ref:`geogit-osm-import`
+:ref:`geogig-osm-import`
 
-:ref:`geogit-osm-unmap`
+:ref:`geogig-osm-unmap`
 
 BUGS
 ****

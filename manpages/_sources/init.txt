@@ -1,20 +1,20 @@
 
-.. _geogit-init:
+.. _geogig-init:
 
-geogit-init documentation
+geogig-init documentation
 #########################
 
 
 
 SYNOPSIS
 ********
-geogit init [<directory>] [--config <config_param> <config_value> [<config_param> <config_value> ...]] 
+geogig init [<directory>] [--config <config_param> <config_value> [<config_param> <config_value> ...]] 
 
 
 DESCRIPTION
 ***********
 
-This command creates an empty `geogit` repository - basically a ``.geogit`` directory with subdirectories for the object, refs, index, and config databases. An initial HEAD that references the HEAD of the master branch is also created.
+This command creates an empty `geogig` repository - basically a ``.geogig`` directory with subdirectories for the object, refs, index, and config databases. An initial HEAD that references the HEAD of the master branch is also created.
 
 
 OPTIONS
