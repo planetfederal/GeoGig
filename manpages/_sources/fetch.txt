@@ -1,14 +1,14 @@
 
-.. _geogit-fetch:
+.. _geogig-fetch:
 
-geogit-fetch documentation
+geogig-fetch documentation
 ###########################
 
 
 
 SYNOPSIS
 ********
-geogit fetch [--depth <depth>] [--all] [--prune] [--fulldepth] [<repository>...]
+geogig fetch [--depth <depth>] [--all] [--prune] [--fulldepth] [<repository>...]
 
 
 DESCRIPTION
@@ -32,9 +32,9 @@ OPTIONS
 SEE ALSO
 ********
 
-:ref:`geogit-clone`
+:ref:`geogig-clone`
 
-:ref:`geogit-pull`
+:ref:`geogig-pull`
 
 BUGS
 ****

@@ -1,18 +1,18 @@
 
-.. _geogit-merge:
+.. _geogig-merge:
 
-geogit-merge documentation
+geogig-merge documentation
 ##########################
 
 
 
 SYNOPSIS
 ********
-geogit merge [-m <message>] <commitish>...
+geogig merge [-m <message>] <commitish>...
 
 DESCRIPTION
 ***********
-Incorporates changes from the named commits (since the time their histories diverged from the current branch) into the current branch. This command is used by ``geogit pull`` to incorporate changes from another repository and can be used by hand to merge changes from one branch into another.
+Incorporates changes from the named commits (since the time their histories diverged from the current branch) into the current branch. This command is used by ``geogig pull`` to incorporate changes from another repository and can be used by hand to merge changes from one branch into another.
 
 Merging two branches can result in unmerged changes if there are conflict between changes introduced in the histories being merged. Conflicted elements have to be fied, and then the changes have to be commited. No commit message is needed in that case when calling the ``commit`` command, since it will reuse the merge commit message.
 
@@ -34,11 +34,11 @@ OPTIONS
 SEE ALSO
 ********
 
-:ref:`geogit-log`
+:ref:`geogig-log`
 
-:ref:`geogit-pull`
+:ref:`geogig-pull`
 
-:ref:`geogit-commit`
+:ref:`geogig-commit`
 
 BUGS
 ****

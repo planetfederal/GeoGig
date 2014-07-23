@@ -1,14 +1,14 @@
 
-.. _geogit-tag:
+.. _geogig-tag:
 
-geogit-tag documentation
+geogig-tag documentation
 #########################
 
 
 
 SYNOPSIS
 ********
-geogit tag <tag_name> [tag_commit] -m <message> [-d]
+geogig tag <tag_name> [tag_commit] -m <message> [-d]
 
 
 DESCRIPTION

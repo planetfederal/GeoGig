@@ -1,7 +1,7 @@
 
-.. _geogit-osm-export-pg:
+.. _geogig-osm-export-pg:
 
-geogit-osm-export-pg documentation
+geogig-osm-export-pg documentation
 ###################################
 
 
@@ -9,7 +9,7 @@ geogit-osm-export-pg documentation
 SYNOPSIS
 ********
 
-geogit osm export-pg [options] --mapping <mapping_file>
+geogig osm export-pg [options] --mapping <mapping_file>
 
 
 DESCRIPTION
@@ -42,9 +42,9 @@ OPTIONS
 SEE ALSO
 ********
 
-:ref:`geogit-osm-export-shp`
+:ref:`geogig-osm-export-shp`
 
-:ref:`geogit-osm-export-sl`
+:ref:`geogig-osm-export-sl`
 
 
 BUGS

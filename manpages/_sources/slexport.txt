@@ -1,14 +1,14 @@
 
-.. _geogit-sl-export:
+.. _geogig-sl-export:
 
-geogit-sl-export documentation
+geogig-sl-export documentation
 ##############################
 
 
 
 SYNOPSIS
 ********
-geogit sl export [options] <feature_type> <table>
+geogig sl export [options] <feature_type> <table>
 
 
 DESCRIPTION
@@ -34,7 +34,7 @@ OPTIONS
 SEE ALSO
 ********
 
-:ref:`geogit-sl-list`
+:ref:`geogig-sl-list`
 
 BUGS
 ****

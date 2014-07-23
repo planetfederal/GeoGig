@@ -5,7 +5,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta name="viewport" content="width=device-width, maximum-scale=1">
   
-  <title>Introduction &mdash; GeoGit 0.10.0 User Manual</title>
+  <title>Introduction &mdash; GeoGig 1.0 User Manual</title>
   <link rel="stylesheet" href="../_static/screen.css" type="text/css" media="screen, projection" />
   <link rel="stylesheet" href="../_static/print.css" type="text/css" media="print" /> 
   <!--[if IE]>
@@ -17,15 +17,15 @@
   <script type="text/javascript">
     var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '0.10.0',
+        VERSION:     '1.0',
         COLLAPSE_MODINDEX: false,
         FILE_SUFFIX: '.html'
     };
   </script>
-      <link rel="top" title="GeoGit 0.10.0 User Manual" href="../index.html" />
-      <link rel="up" title="Starting out with GeoGit" href="index.html" />
+      <link rel="top" title="GeoGig 1.0 User Manual" href="../index.html" />
+      <link rel="up" title="Starting out with GeoGig" href="index.html" />
       <link rel="next" title="Installation" href="installation.html" />
-      <link rel="prev" title="Starting out with GeoGit" href="index.html" />
+      <link rel="prev" title="Starting out with GeoGig" href="index.html" />
 </head>
 <body class="start/intro">
     <div id="blacktop"></div>
@@ -38,12 +38,12 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="http://geogit.org"><h1>GeoGit</h1></a>
+            <a class="navbar-brand" href="http://geogig.org"><h1>GeoGig</h1></a>
           </div>
           <div class="navbar-collapse collapse navbar-right">
             <ul class="nav navbar-nav">
-              <li><a href="http://geogit.org/#install">Get Started</a></li>
-              <li><a href="http://geogit.org/docs/index.html">Documentation</a></li>
+              <li><a href="http://geogig.org/#install">Get Started</a></li>
+              <li><a href="http://geogig.org/docs/index.html">Documentation</a></li>
               <li><a href="https://github.com/boundlessgeo/GeoGit">On Github</a></li>
             </ul>
           </div><!--/.navbar-collapse -->
@@ -78,8 +78,8 @@
             </div>
 <ul id="breadcrumbs">
   
-  <li><a href="../index.html">GeoGit 0.10.0 User Manual</a> &raquo;</li>
-  <li><a href="index.html" accesskey="U">Starting out with GeoGit</a> &raquo;</li>
+  <li><a href="../index.html">GeoGig 1.0 User Manual</a> &raquo;</li>
+  <li><a href="index.html" accesskey="U">Starting out with GeoGig</a> &raquo;</li>
   <li>Introduction</li>
 </ul>
 <ul id="relatedlinks" class="selfclear">
@@ -90,23 +90,23 @@
     <a href="installation.html" title="Installation"
        accesskey="N">next</a>|</li>
   <li>
-    <a href="index.html" title="Starting out with GeoGit"
+    <a href="index.html" title="Starting out with GeoGig"
        accesskey="P">previous</a>|</li>
 </ul>
         
   <div class="section" id="introduction">
 <span id="start-intro"></span><h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
-<p>GeoGit is a <strong>Distributed Version Control System (DVCS) specially designed to handle geospatial data</strong>. It takes inspiration from the source code versioning system <a class="reference external" href="http://git-scm.com">Git</a>, but employs an approach best suited to the nature of the data it manages.</p>
-<p>Users familiar with Git should find it easy to use GeoGit, though some commands and ideas differ from the corresponding Git ones. For users new to version control systems, this document provides a complete description without assuming familiarity.</p>
-<p>This user guide does not cover all possible uses of each GeoGit command, but instead introduces the most common operations and workflows. For more information, feel free to explore the GeoGit manpages to learn more about other options not covered here.</p>
+<p>GeoGig is a <strong>Distributed Version Control System (DVCS) specially designed to handle geospatial data</strong>. It takes inspiration from the source code versioning system <a class="reference external" href="http://git-scm.com">Git</a>, but employs an approach best suited to the nature of the data it manages.</p>
+<p>Users familiar with Git should find it easy to use GeoGig, though some commands and ideas differ from the corresponding Git ones. For users new to version control systems, this document provides a complete description without assuming familiarity.</p>
+<p>This user guide does not cover all possible uses of each GeoGig command, but instead introduces the most common operations and workflows. For more information, feel free to explore the GeoGig manpages to learn more about other options not covered here.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">GeoGit development is ongoing, but it is still considered unstable, so functionality is subject to change. This documentation reflects the planned functionality that should be available once a stable version is released. While almost everything described here is already implemented and functioning, deviations may occur.</p>
+<p class="last">GeoGig development is ongoing, but it is still considered unstable, so functionality is subject to change. This documentation reflects the planned functionality that should be available once a stable version is released. While almost everything described here is already implemented and functioning, deviations may occur.</p>
 </div>
-<div class="section" id="geogit-areas">
-<h2>GeoGit areas<a class="headerlink" href="#geogit-areas" title="Permalink to this headline">¶</a></h2>
-<p>The following is a brief introduction to how GeoGit works and how it handles your data, and also how a GeoGit repository interacts with other repositories. These concepts will be explained in greater detail in the following sections.</p>
-<p>GeoGit stores its content in a repository which has three areas: the <strong>working tree</strong>, the <strong>staging area</strong>, and the <strong>database</strong>.</p>
+<div class="section" id="geogig-areas">
+<h2>GeoGig areas<a class="headerlink" href="#geogig-areas" title="Permalink to this headline">¶</a></h2>
+<p>The following is a brief introduction to how GeoGig works and how it handles your data, and also how a GeoGig repository interacts with other repositories. These concepts will be explained in greater detail in the following sections.</p>
+<p>GeoGig stores its content in a repository which has three areas: the <strong>working tree</strong>, the <strong>staging area</strong>, and the <strong>database</strong>.</p>
 <ul class="simple">
 <li>The <strong>working tree</strong> is the area of the repository where the work is actually done on the data. Data in the working tree is not part of a defined version, but instead can be edited and altered before turning it into a new version that will be safely stored. This means that if you put data on the working tree and then edit it (without copying it to the repository database), the version prior to those edits cannot be recovered.</li>
 <li>The <strong>staging area</strong>, sometimes also referred as the &#8220;index,&#8221; is an intermediate area where data is stored before moving it to the database. Data in the staging area is said to be &#8220;staged for committing.&#8221;</li>
@@ -117,7 +117,7 @@
 <h2>Workflow<a class="headerlink" href="#workflow" title="Permalink to this headline">¶</a></h2>
 <p>The process of versioning geospatial data consists of the following:</p>
 <ol class="arabic simple">
-<li>Importing geospatial data into the working tree so it can be managed by GeoGit</li>
+<li>Importing geospatial data into the working tree so it can be managed by GeoGig</li>
 <li>Moving data from the working tree to the staging area</li>
 <li>Committing to database</li>
 </ol>
@@ -127,30 +127,30 @@
 </div>
 <p>The following figure summarizes the above concepts.</p>
 <div class="figure">
-<img alt="../_images/geogit_workflow.png" src="../_images/geogit_workflow.png" />
-<p class="caption">GeoGit workflow</p>
+<img alt="../_images/geogig_workflow.png" src="../_images/geogig_workflow.png" />
+<p class="caption">GeoGig workflow</p>
 </div>
 <p>The names in the arrows indicate the corresponding commands for each operation. All commands will be described in the following sections.</p>
 </div>
 <div class="section" id="versions">
 <h2>Versions<a class="headerlink" href="#versions" title="Permalink to this headline">¶</a></h2>
-<p>As you add new data to the repository database, GeoGit creates new versions that define the history of the repository. While some versioning systems store the differences between consecutive versions, GeoGit stores the full set of objects that comprise each version. For instance, if you have changed a feature by modifying its geometry, GeoGit will store the full definition of that feature, which will be kept in the database along with the previous version of the same feature.</p>
+<p>As you add new data to the repository database, GeoGig creates new versions that define the history of the repository. While some versioning systems store the differences between consecutive versions, GeoGig stores the full set of objects that comprise each version. For instance, if you have changed a feature by modifying its geometry, GeoGig will store the full definition of that feature, which will be kept in the database along with the previous version of the same feature.</p>
 <p>For features not modified from one version to another, the corresponding objects are not stored again, and the new version points to the same previous object. So while each version is a new set of objects, the data for these objects is only stored once.</p>
 </div>
 <div class="section" id="collaboration">
 <h2>Collaboration<a class="headerlink" href="#collaboration" title="Permalink to this headline">¶</a></h2>
-<p>GeoGit is designed to ease collaboration among people working on the same data. Your repository can accept changes from other people working on the same data, and you can share with them your own changes. Instead of a single repository, there can be an ecosystem of connected repositories, each of them working independently, but communicating and interacting when needed. GeoGit has tools to make this collaboration as easy as possible, and to ensure a fluid coordination between a group of collaborators using and editing the same dataset.</p>
-<p>The following image shows an extended version of the GeoGit workflow presented before, including the interaction with other GeoGit repositories.</p>
+<p>GeoGig is designed to ease collaboration among people working on the same data. Your repository can accept changes from other people working on the same data, and you can share with them your own changes. Instead of a single repository, there can be an ecosystem of connected repositories, each of them working independently, but communicating and interacting when needed. GeoGig has tools to make this collaboration as easy as possible, and to ensure a fluid coordination between a group of collaborators using and editing the same dataset.</p>
+<p>The following image shows an extended version of the GeoGig workflow presented before, including the interaction with other GeoGig repositories.</p>
 <div class="figure">
-<img alt="../_images/geogit_workflow_remotes1.png" src="../_images/geogit_workflow_remotes1.png" />
+<img alt="../_images/geogig_workflow_remotes1.png" src="../_images/geogig_workflow_remotes1.png" />
 </div>
-<p><strong>GeoGit works independently of the storage format that you use for your data.</strong> It handles only the versioning, ensuring that each revision is stored safely and can be recovered when needed it.</p>
+<p><strong>GeoGig works independently of the storage format that you use for your data.</strong> It handles only the versioning, ensuring that each revision is stored safely and can be recovered when needed it.</p>
 </div>
 </div>
 
 
       <div class="selfclear pagination-nav">
-          <div class="leftwise"><strong>Previous</strong>: <a href="index.html" title="previous chapter">Starting out with GeoGit</a></div>
+          <div class="leftwise"><strong>Previous</strong>: <a href="index.html" title="previous chapter">Starting out with GeoGig</a></div>
           <div class="rightwise"><strong>Next</strong>: <a href="installation.html" title="next chapter">Installation</a></div>
       </div>
       <p class="centered-text"><a href="#top"><img src="../_static/arrow_up.png" alt="back to top"/></a></p>
@@ -176,7 +176,7 @@
       <h3 class="pngfix">Table Of Contents</h3>
         <ul>
 <li><a class="reference internal" href="#">Introduction</a><ul>
-<li><a class="reference internal" href="#geogit-areas">GeoGit areas</a></li>
+<li><a class="reference internal" href="#geogig-areas">GeoGig areas</a></li>
 <li><a class="reference internal" href="#workflow">Workflow</a></li>
 <li><a class="reference internal" href="#versions">Versions</a></li>
 <li><a class="reference internal" href="#collaboration">Collaboration</a></li>
@@ -189,7 +189,7 @@
         <div class="section continue_reading">
           <h3>Continue Reading</h3>
           <ul>
-            <li>Previous: <a href="index.html" title="previous chapter">Starting out with GeoGit</a></li>
+            <li>Previous: <a href="index.html" title="previous chapter">Starting out with GeoGig</a></li>
             <li>Next: <a href="installation.html" title="next chapter">Installation</a></li>
           </ul>
         </div>
@@ -201,7 +201,7 @@
         </div>
         <div class="section">
           <h3>License</h3>
-          <p>This project is licensed under the <a href="https://github.com/boundlessgeo/GeoGit/blob/master/LICENSE.txt">BSD New License</a>, except for the GeoServer plugin which is available under the <a href="http://geoserver.org/display/GEOS/License">GPL 2.0 License</a>.</p>
+          <p>This project is licensed under the <a href="https://github.com/boundlessgeo/GeoGit/blob/master/LICENSE.txt">BSD New License</a>.</p>
         </div>
 
   </div><!-- /#sidebar -->
@@ -213,7 +213,7 @@
     <footer>
       <div class="container">
         <div class="row">
-          <div class=""><p class="repo-owner"><a href="https://github.com/boundlessgeo/GeoGit">GeoGit</a> is maintained by <a href="https://github.com/boundlessgeo"><img src="../_static/Boundless_Logo.png" alt="Boundless"></a></p></div>
+          <div class=""><p class="repo-owner"><a href="https://github.com/boundlessgeo/GeoGit">GeoGig</a> is maintained by <a href="https://github.com/boundlessgeo"><img src="../_static/Boundless_Logo.png" alt="Boundless"></a></p></div>
         </div>
       </div>
     </footer>

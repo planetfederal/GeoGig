@@ -1,22 +1,22 @@
 
-.. _geogit-osm-import:
+.. _geogig-osm-import:
 
-geogit-osm-import documentation
+geogig-osm-import documentation
 ################################
 
 
 
 SYNOPSIS
 ********
-geogit osm import <filename> [--add] <repository> [<directory>] [--filter <file>] [--depth <depth>]
+geogig osm import <filename> [--add] <repository> [<directory>] [--filter <file>] [--depth <depth>]
 
 
 DESCRIPTION
 ***********
 
-Imports OSM data from a file into the working tree of the repository. Optionally, a data mapping can be performed. See :ref:`geogit-osm-map` for more information about how to define a mapping.
+Imports OSM data from a file into the working tree of the repository. Optionally, a data mapping can be performed. See :ref:`geogig-osm-map` for more information about how to define a mapping.
 
-Data in the specified file is imported into GeoGit and put into two trees: ``way`` and ``node``, with default feature types in both cases.
+Data in the specified file is imported into GeoGig and put into two trees: ``way`` and ``node``, with default feature types in both cases.
 
 if a mapping is used and the canonical representations are also added to the repository (that is, if the ``--no-raw`` switch is not used) the working tree and index have to be clean, and after the import and mapping, a commit will be made . The comit message is automatically generated. A custom commit message cna be defined using the  ``--message`` option.
 
@@ -37,11 +37,11 @@ OPTIONS
 SEE ALSO
 ********
 
-:ref:`geogit-osm-download`
+:ref:`geogig-osm-download`
 
-:ref:`geogit-osm-map`
+:ref:`geogig-osm-map`
 
-:ref:`geogit-osm-unmap`
+:ref:`geogig-osm-unmap`
 
 BUGS
 ****

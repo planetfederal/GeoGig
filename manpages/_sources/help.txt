@@ -1,6 +1,6 @@
-.. _geogit-help:
+.. _geogig-help:
 
-geogit-help documentation
+geogig-help documentation
 #########################
 
 
@@ -8,13 +8,13 @@ geogit-help documentation
 
 SYNOPSIS
 ********
-geogit [--]help [<command>]
+geogig [--]help [<command>]
 
 
 DESCRIPTION
 ***********
 
-This command displays the usage for GeoGit or a specific command if provided.
+This command displays the usage for GeoGig or a specific command if provided.
 
 SEE ALSO
 ********

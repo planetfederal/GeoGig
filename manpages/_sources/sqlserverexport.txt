@@ -1,14 +1,14 @@
 
-.. _geogit-sqlserver-export:
+.. _geogig-sqlserver-export:
 
-geogit-sqlserver-export documentation
+geogig-sqlserver-export documentation
 ######################################
 
 
 
 SYNOPSIS
 ********
-geogit sqlserver export [options] <feature_type> <table>
+geogig sqlserver export [options] <feature_type> <table>
 
 
 DESCRIPTION
@@ -50,7 +50,7 @@ OPTIONS
 SEE ALSO
 ********
 
-:ref:`geogit-sqlserver-list`
+:ref:`geogig-sqlserver-list`
 
 BUGS
 ****

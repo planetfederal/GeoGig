@@ -1,17 +1,17 @@
-.. _geogit-pg:
+.. _geogig-pg:
 
-geogit-pg documentation
+geogig-pg documentation
 #########################
 
 SYNOPSIS
 ********
-geogit pg [--help] <command> [commandargs]
+geogig pg [--help] <command> [commandargs]
 
 
 DESCRIPTION
 ***********
 
-The PostGIS command extension is meant to provide a means for importing and exporting geospatial data to and from GeoGit into a PostGIS database.
+The PostGIS command extension is meant to provide a means for importing and exporting geospatial data to and from GeoGig into a PostGIS database.
 
 
 OPTIONS
@@ -24,18 +24,18 @@ EXAMPLES
 ********
 ::
 
-   geogit pg --help
+   geogig pg --help
 
 
 SEE ALSO
 ********
 
-:ref:`geogit-pg-import`
+:ref:`geogig-pg-import`
 
-:ref:`geogit-pg-export`
+:ref:`geogig-pg-export`
 
-:ref:`geogit-pg-describe`
+:ref:`geogig-pg-describe`
 
-:ref:`geogit-pg-list`
+:ref:`geogig-pg-list`
 
 

@@ -1,6 +1,6 @@
-.. _geogit-branch:
+.. _geogig-branch:
 
-geogit-branch documentation
+geogig-branch documentation
 ############################
 
 
@@ -8,9 +8,9 @@ geogit-branch documentation
 
 SYNOPSIS
 ********
-geogit branch [<options>] [<branchname> [<startpoint>]]
-geogit branch --delete <branchname>...
-geogit branch --rename [--force] [<oldBranchName>] <newBranchName>
+geogig branch [<options>] [<branchname> [<startpoint>]]
+geogig branch --delete <branchname>...
+geogig branch --rename [--force] [<oldBranchName>] <newBranchName>
 
 DESCRIPTION
 ***********

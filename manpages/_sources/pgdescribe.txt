@@ -1,20 +1,20 @@
 
-.. _geogit-pg-describe:
+.. _geogig-pg-describe:
 
-geogit-pg-describe documentation
+geogig-pg-describe documentation
 ################################
 
 
 
 SYNOPSIS
 ********
-geogit pg describe [options] -t <table>
+geogig pg describe [options] -t <table>
 
 
 DESCRIPTION
 ***********
 
-This command describes a single table in a PostGIS database.  It will print out each property name along with its type. To see a list of available tables, use ``geogit pg list``.
+This command describes a single table in a PostGIS database.  It will print out each property name along with its type. To see a list of available tables, use ``geogig pg list``.
 
 OPTIONS
 *******    
@@ -36,7 +36,7 @@ OPTIONS
 SEE ALSO
 ********
 
-:ref:`geogit-pg-list`
+:ref:`geogig-pg-list`
 
 BUGS
 ****

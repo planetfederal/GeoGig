@@ -1,17 +1,17 @@
-.. _geogit-sl:
+.. _geogig-sl:
 
-geogit-sl documentation
+geogig-sl documentation
 #########################
 
 SYNOPSIS
 ********
-geogit sl [--help] <command> [commandargs]
+geogig sl [--help] <command> [commandargs]
 
 
 DESCRIPTION
 ***********
 
-The SpatiaLite command extension provides a means for importing and exporting geospatial data to and from GeoGit into a SpatiaLite database.
+The SpatiaLite command extension provides a means for importing and exporting geospatial data to and from GeoGig into a SpatiaLite database.
 
 
 OPTIONS
@@ -24,19 +24,19 @@ EXAMPLES
 ********
 ::
 
-   geogit sl --help
+   geogig sl --help
 
 
 SEE ALSO
 ********
 
-:ref:`geogit-sl-import`
+:ref:`geogig-sl-import`
 
-:ref:`geogit-sl-export`
+:ref:`geogig-sl-export`
 
-:ref:`geogit-sl-describe`
+:ref:`geogig-sl-describe`
 
-:ref:`geogit-sl-list`
+:ref:`geogig-sl-list`
 
 
 

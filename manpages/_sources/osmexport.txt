@@ -1,14 +1,14 @@
 
-.. _geogit-export:
+.. _geogig-export:
 
-geogit-osmexport documentation
+geogig-osmexport documentation
 ###############################
 
 
 
 SYNOPSIS
 ********
-geogit osm export <file> [commitish] [--bbox] [--overwrite]
+geogig osm export <file> [commitish] [--bbox] [--overwrite]
 
 
 DESCRIPTION
@@ -30,11 +30,11 @@ OPTIONS
 SEE ALSO
 ********
 
-:ref:`geogit-osm-export-pg`
+:ref:`geogig-osm-export-pg`
 
-:ref:`geogit-osm-export-shp`
+:ref:`geogig-osm-export-shp`
 
-:ref:`geogit-osm-export-sl`
+:ref:`geogig-osm-export-sl`
 
 
 BUGS

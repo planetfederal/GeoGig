@@ -1,14 +1,14 @@
 
-.. _geogit-osm-import-history:
+.. _geogig-osm-import-history:
 
-geogit-osmimporthistory documentation
+geogig-osmimporthistory documentation
 ##############################
 
 
 
 SYNOPSIS
 ********
-geogit import-history [options] <OSM api URL. eg: http://api.openstreetmap.org/api/0.6>
+geogig import-history [options] <OSM api URL. eg: http://api.openstreetmap.org/api/0.6>
 
 
 DESCRIPTION
@@ -37,9 +37,9 @@ OPTIONS
 SEE ALSO
 ********
 
-:ref:`geogit-osm-download`
+:ref:`geogig-osm-download`
 
-:ref:`geogit-osm-import`
+:ref:`geogig-osm-import`
 
 BUGS
 ****

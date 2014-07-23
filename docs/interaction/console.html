@@ -5,7 +5,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta name="viewport" content="width=device-width, maximum-scale=1">
   
-  <title>The GeoGit Console &mdash; GeoGit 0.10.0 User Manual</title>
+  <title>The GeoGig Console &mdash; GeoGig 1.0 User Manual</title>
   <link rel="stylesheet" href="../_static/screen.css" type="text/css" media="screen, projection" />
   <link rel="stylesheet" href="../_static/print.css" type="text/css" media="print" /> 
   <!--[if IE]>
@@ -17,15 +17,15 @@
   <script type="text/javascript">
     var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '0.10.0',
+        VERSION:     '1.0',
         COLLAPSE_MODINDEX: false,
         FILE_SUFFIX: '.html'
     };
   </script>
-      <link rel="top" title="GeoGit 0.10.0 User Manual" href="../index.html" />
-      <link rel="up" title="Other ways to interact with GeoGit" href="index.html" />
-      <link rel="next" title="GeoGit Networking" href="networking.html" />
-      <link rel="prev" title="Other ways to interact with GeoGit" href="index.html" />
+      <link rel="top" title="GeoGig 1.0 User Manual" href="../index.html" />
+      <link rel="up" title="Other ways to interact with GeoGig" href="index.html" />
+      <link rel="next" title="GeoGig Networking" href="networking.html" />
+      <link rel="prev" title="Other ways to interact with GeoGig" href="index.html" />
 </head>
 <body class="interaction/console">
     <div id="blacktop"></div>
@@ -38,12 +38,12 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="http://geogit.org"><h1>GeoGit</h1></a>
+            <a class="navbar-brand" href="http://geogig.org"><h1>GeoGig</h1></a>
           </div>
           <div class="navbar-collapse collapse navbar-right">
             <ul class="nav navbar-nav">
-              <li><a href="http://geogit.org/#install">Get Started</a></li>
-              <li><a href="http://geogit.org/docs/index.html">Documentation</a></li>
+              <li><a href="http://geogig.org/#install">Get Started</a></li>
+              <li><a href="http://geogig.org/docs/index.html">Documentation</a></li>
               <li><a href="https://github.com/boundlessgeo/GeoGit">On Github</a></li>
             </ul>
           </div><!--/.navbar-collapse -->
@@ -78,42 +78,42 @@
             </div>
 <ul id="breadcrumbs">
   
-  <li><a href="../index.html">GeoGit 0.10.0 User Manual</a> &raquo;</li>
-  <li><a href="index.html" accesskey="U">Other ways to interact with GeoGit</a> &raquo;</li>
-  <li>The GeoGit Console</li>
+  <li><a href="../index.html">GeoGig 1.0 User Manual</a> &raquo;</li>
+  <li><a href="index.html" accesskey="U">Other ways to interact with GeoGig</a> &raquo;</li>
+  <li>The GeoGig Console</li>
 </ul>
 <ul id="relatedlinks" class="selfclear">
   <li class="first">
     <a href="../genindex.html" title="General Index"
        accesskey="I">index</a></li>
   <li>
-    <a href="networking.html" title="GeoGit Networking"
+    <a href="networking.html" title="GeoGig Networking"
        accesskey="N">next</a>|</li>
   <li>
-    <a href="index.html" title="Other ways to interact with GeoGit"
+    <a href="index.html" title="Other ways to interact with GeoGig"
        accesskey="P">previous</a>|</li>
 </ul>
         
-  <div class="section" id="the-geogit-console">
-<h1>The GeoGit Console<a class="headerlink" href="#the-geogit-console" title="Permalink to this headline">¶</a></h1>
-<p>GeoGit is a command-line application that is run by calling commands in the form <tt class="docutils literal"><span class="pre">geogit</span> <span class="pre">&lt;command&gt;</span> <span class="pre">[options]</span></tt>. Each time you call it with a sentence like that, GeoGit has to be initialized. If your session involves running several commands, a better option is to run the geogit console, which lets you run a set of commands, initializing GeoGit just once at the begining of the session.</p>
-<p>To start the GeoGit console, type <tt class="docutils literal"><span class="pre">geogit-console</span></tt></p>
-<p>The prompt will show you the current folder, and in case it is a GeoGit folder, the name of the current branch (or the current commit pointed by HEAD, in case you are in a detached HEAD state).</p>
-<div class="highlight-python"><div class="highlight"><pre>(geogit):my/current/folder (master) $
+  <div class="section" id="the-geogig-console">
+<h1>The GeoGig Console<a class="headerlink" href="#the-geogig-console" title="Permalink to this headline">¶</a></h1>
+<p>GeoGig is a command-line application that is run by calling commands in the form <tt class="docutils literal"><span class="pre">geogig</span> <span class="pre">&lt;command&gt;</span> <span class="pre">[options]</span></tt>. Each time you call it with a sentence like that, GeoGig has to be initialized. If your session involves running several commands, a better option is to run the geogig console, which lets you run a set of commands, initializing GeoGig just once at the begining of the session.</p>
+<p>To start the GeoGig console, type <tt class="docutils literal"><span class="pre">geogig-console</span></tt></p>
+<p>The prompt will show you the current folder, and in case it is a GeoGig folder, the name of the current branch (or the current commit pointed by HEAD, in case you are in a detached HEAD state).</p>
+<div class="highlight-python"><div class="highlight"><pre>(geogig):my/current/folder (master) $
 </pre></div>
 </div>
-<p>You can enter commands just like you do on a normal console when calling GeoGit, but without having to add <tt class="docutils literal"><span class="pre">geogit</span></tt> at the beginning of each sentence. For instance, to get the history of your repository, just type <tt class="docutils literal"><span class="pre">log</span></tt> (instead of <tt class="docutils literal"><span class="pre">geogit</span> <span class="pre">log</span></tt>).</p>
-<p>Console commands (like  <tt class="docutils literal"><span class="pre">ls</span></tt> if you are on Linux or <tt class="docutils literal"><span class="pre">dir</span></tt> if you are running Windows) are not available in the GeoGit console.</p>
-<p>The GeoGit console has autocompletion, which is available pressing the tab key.</p>
-<p>When you finish working with GeoGit and want to go back to you shell environment, type <tt class="docutils literal"><span class="pre">exit</span></tt>.</p>
-<div class="section" id="running-geogit-console-in-batch-mode">
-<h2>Running GeoGit console in batch mode<a class="headerlink" href="#running-geogit-console-in-batch-mode" title="Permalink to this headline">¶</a></h2>
-<p>If you need to run several GeoGit operations in a batch script, you will be initializing GeoSgit as many times as commands you execute. Instead, you can pass the whole set of commands to the GeoGit console, and reduce the number of initializations to just one.</p>
-<p>To do so, create a text file with all the GeoGit commands that you want to run, and run the <tt class="docutils literal"><span class="pre">geogit-console</span></tt> option followed by the path to that text file.</p>
-<div class="highlight-python"><div class="highlight"><pre>$ geogit-console myscript.txt
+<p>You can enter commands just like you do on a normal console when calling GeoGig, but without having to add <tt class="docutils literal"><span class="pre">geogig</span></tt> at the beginning of each sentence. For instance, to get the history of your repository, just type <tt class="docutils literal"><span class="pre">log</span></tt> (instead of <tt class="docutils literal"><span class="pre">geogig</span> <span class="pre">log</span></tt>).</p>
+<p>Console commands (like  <tt class="docutils literal"><span class="pre">ls</span></tt> if you are on Linux or <tt class="docutils literal"><span class="pre">dir</span></tt> if you are running Windows) are not available in the GeoGig console.</p>
+<p>The GeoGig console has autocompletion, which is available pressing the tab key.</p>
+<p>When you finish working with GeoGig and want to go back to you shell environment, type <tt class="docutils literal"><span class="pre">exit</span></tt>.</p>
+<div class="section" id="running-geogig-console-in-batch-mode">
+<h2>Running GeoGig console in batch mode<a class="headerlink" href="#running-geogig-console-in-batch-mode" title="Permalink to this headline">¶</a></h2>
+<p>If you need to run several GeoGig operations in a batch script, you will be initializing GeoSgit as many times as commands you execute. Instead, you can pass the whole set of commands to the GeoGig console, and reduce the number of initializations to just one.</p>
+<p>To do so, create a text file with all the GeoGig commands that you want to run, and run the <tt class="docutils literal"><span class="pre">geogig-console</span></tt> option followed by the path to that text file.</p>
+<div class="highlight-python"><div class="highlight"><pre>$ geogig-console myscript.txt
 </pre></div>
 </div>
-<p>As when using the GeoGit console in its interactive mode, the command calls in the text file should not start with the <tt class="docutils literal"><span class="pre">geogit</span></tt> command name, but with the operation name instead. Here is an example of a simple batch file.</p>
+<p>As when using the GeoGig console in its interactive mode, the command calls in the text file should not start with the <tt class="docutils literal"><span class="pre">geogig</span></tt> command name, but with the operation name instead. Here is an example of a simple batch file.</p>
 <div class="highlight-python"><div class="highlight"><pre>import shp myfile.shp
 add
 commit -m &quot;First commit&quot;
@@ -121,19 +121,19 @@ commit -m &quot;First commit&quot;
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>If you use GeoGit on Windows and you create a batch file to call several GeoGit commands using the normal <tt class="docutils literal"><span class="pre">geogit</span></tt> script (not <tt class="docutils literal"><span class="pre">geogit-console</span></tt>), notice that the <tt class="docutils literal"><span class="pre">geogit</span></tt> command is itself a batch process. To be able to run more than a single GeoGit command, make each call in your batch file using the <tt class="docutils literal"><span class="pre">call</span></tt> command. For instance, this will not work (it will only execute the first line):</p>
+<p>If you use GeoGig on Windows and you create a batch file to call several GeoGig commands using the normal <tt class="docutils literal"><span class="pre">geogig</span></tt> script (not <tt class="docutils literal"><span class="pre">geogig-console</span></tt>), notice that the <tt class="docutils literal"><span class="pre">geogig</span></tt> command is itself a batch process. To be able to run more than a single GeoGig command, make each call in your batch file using the <tt class="docutils literal"><span class="pre">call</span></tt> command. For instance, this will not work (it will only execute the first line):</p>
 <dl class="docutils">
 <dt>::</dt>
-<dd>geogit import shp myfile.shp
-geogit add
-geogit commit -m &#8220;First commit&#8221;</dd>
+<dd>geogig import shp myfile.shp
+geogig add
+geogig commit -m &#8220;First commit&#8221;</dd>
 </dl>
 <p>Instead, use this:</p>
 <dl class="last docutils">
 <dt>::</dt>
-<dd>call geogit import shp myfile.shp
-call geogit add
-call geogit commit -m &#8220;First commit&#8221;</dd>
+<dd>call geogig import shp myfile.shp
+call geogig add
+call geogig commit -m &#8220;First commit&#8221;</dd>
 </dl>
 </div>
 </div>
@@ -141,8 +141,8 @@ call geogit commit -m &#8220;First commit&#8221;</dd>
 
 
       <div class="selfclear pagination-nav">
-          <div class="leftwise"><strong>Previous</strong>: <a href="index.html" title="previous chapter">Other ways to interact with GeoGit</a></div>
-          <div class="rightwise"><strong>Next</strong>: <a href="networking.html" title="next chapter">GeoGit Networking</a></div>
+          <div class="leftwise"><strong>Previous</strong>: <a href="index.html" title="previous chapter">Other ways to interact with GeoGig</a></div>
+          <div class="rightwise"><strong>Next</strong>: <a href="networking.html" title="next chapter">GeoGig Networking</a></div>
       </div>
       <p class="centered-text"><a href="#top"><img src="../_static/arrow_up.png" alt="back to top"/></a></p>
       </div><!-- /#content> -->
@@ -166,8 +166,8 @@ call geogit commit -m &#8220;First commit&#8221;</dd>
       </div>
       <h3 class="pngfix">Table Of Contents</h3>
         <ul>
-<li><a class="reference internal" href="#">The GeoGit Console</a><ul>
-<li><a class="reference internal" href="#running-geogit-console-in-batch-mode">Running GeoGit console in batch mode</a></li>
+<li><a class="reference internal" href="#">The GeoGig Console</a><ul>
+<li><a class="reference internal" href="#running-geogig-console-in-batch-mode">Running GeoGig console in batch mode</a></li>
 </ul>
 </li>
 </ul>
@@ -177,8 +177,8 @@ call geogit commit -m &#8220;First commit&#8221;</dd>
         <div class="section continue_reading">
           <h3>Continue Reading</h3>
           <ul>
-            <li>Previous: <a href="index.html" title="previous chapter">Other ways to interact with GeoGit</a></li>
-            <li>Next: <a href="networking.html" title="next chapter">GeoGit Networking</a></li>
+            <li>Previous: <a href="index.html" title="previous chapter">Other ways to interact with GeoGig</a></li>
+            <li>Next: <a href="networking.html" title="next chapter">GeoGig Networking</a></li>
           </ul>
         </div>
         <div class="section">
@@ -189,7 +189,7 @@ call geogit commit -m &#8220;First commit&#8221;</dd>
         </div>
         <div class="section">
           <h3>License</h3>
-          <p>This project is licensed under the <a href="https://github.com/boundlessgeo/GeoGit/blob/master/LICENSE.txt">BSD New License</a>, except for the GeoServer plugin which is available under the <a href="http://geoserver.org/display/GEOS/License">GPL 2.0 License</a>.</p>
+          <p>This project is licensed under the <a href="https://github.com/boundlessgeo/GeoGit/blob/master/LICENSE.txt">BSD New License</a>.</p>
         </div>
 
   </div><!-- /#sidebar -->
@@ -201,7 +201,7 @@ call geogit commit -m &#8220;First commit&#8221;</dd>
     <footer>
       <div class="container">
         <div class="row">
-          <div class=""><p class="repo-owner"><a href="https://github.com/boundlessgeo/GeoGit">GeoGit</a> is maintained by <a href="https://github.com/boundlessgeo"><img src="../_static/Boundless_Logo.png" alt="Boundless"></a></p></div>
+          <div class=""><p class="repo-owner"><a href="https://github.com/boundlessgeo/GeoGit">GeoGig</a> is maintained by <a href="https://github.com/boundlessgeo"><img src="../_static/Boundless_Logo.png" alt="Boundless"></a></p></div>
         </div>
       </div>
     </footer>
