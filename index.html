@@ -13,7 +13,7 @@
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 
-    <title>GeoGit by Boundless</title>
+    <title>GeoGig by Boundless</title>
   </head>
 
   <body data-spy="scroll" data-target="#blacktop" data-offset="20">
@@ -33,7 +33,7 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#"><span class="logo"></span> <h1>GeoGit</h1></a>
+            <a class="navbar-brand" href="#"><span class="logo"></span> <h1>GeoGig</h1></a>
           </div>
           <div class="navbar-collapse collapse navbar-right">
             <ul class="nav navbar-nav">
@@ -60,21 +60,21 @@
       <div class="container">
         <div class="row">
           <div class="col-md-7">
-              <p class="first">GeoGit is an open source tool that draws inspiration from <a href="http://git-scm.com/">Git</a>, but adapts its core concepts to handle distributed versioning of geospatial data.</p>
+              <p class="first">GeoGig is an open source tool that draws inspiration from <a href="http://git-scm.com/">Git</a>, but adapts its core concepts to handle distributed versioning of geospatial data.</p>
               <h1 class="light copy">Track GeoSpatial Data Edits</h1>
               <p>Users are able to import raw geospatial data (currently from Shapefiles, PostGIS or SpatiaLite) in to a repository where every change to the data is tracked. These changes can be viewed in a history, reverted to older versions, branched in to sandboxed areas, merged back in, and pushed to remote repositories.</p>
 
-              <p>GeoGit is written in Java, and available under the <a href="http://github.com/boundlessgeo/GeoGit/blob/master/LICENSE.txt">BSD License</a>.</p>
+              <p>GeoGig is written in Java, and available under the <a href="http://github.com/boundlessgeo/GeoGit/blob/master/LICENSE.txt">BSD License</a>.</p>
 
             </div>
             <div class="col-md-offset-1 col-md-4">
-              <a href="http://sourceforge.net/projects/geogit/files/latest/download" class="btn download"> <span class="zipfile"></span> <div class="download-ziptxt">DOWNLOAD <br/>0.10 Release .zip</div></a>
+              <a href="http://sourceforge.net/projects/geogig/files/latest/download" class="btn download"> <span class="zipfile"></span> <div class="download-ziptxt">DOWNLOAD <br/>0.10 Release .zip</div></a>
               <ul class="list-unstyled">
                 <li><a href="#install" class="page-link"><span class="pagelink link-install"> </span> Quick Start</a></li>
                 <li><a href="#docs" class="page-link"><span class="pagelink link-docs"> </span> Docs</a></li>
                 <li><a href="#participate" class="page-link"><span class="pagelink link-participate"> </span> Participate</a></li>
               </ul>
-              <p class="alpha">We are firmly in 'alpha' mode, working to release early and often, so please join us. Testing, documentation, ideas and patches are all greatly appreciated. Don&apos;t hesitate to <a href="http://groups.google.com/a/boundlessgeo.com/forum/#!forum/geogit" target="_blank">get in touch</a> with any issues, feedback or encouragement.</p>
+              <p class="alpha">We are firmly in 'alpha' mode, working to release early and often, so please join us. Testing, documentation, ideas and patches are all greatly appreciated. Don&apos;t hesitate to <a href="http://groups.google.com/a/boundlessgeo.com/forum/#!forum/geogig" target="_blank">get in touch</a> with any issues, feedback or encouragement.</p>
             </div>
           </div>
         </div>
@@ -88,9 +88,9 @@
 
               <h2>Quick Start</h2>
 
-              <p>1. Download <a href="http://sourceforge.net/projects/geogit/files/latest/download">Version 0.10.0</a> from SourceForge. <br />(Or if you have homebrew, run <strong>'brew install geogit'</strong> and skip to 3.)</p> 
+              <p>1. Download <a href="http://sourceforge.net/projects/geogig/files/latest/download">Version 0.10.0</a> from SourceForge. <br /></p>/
 
-              <p>2. Unzip the <em>geogit-cli-app-0.10.0.zip</em> to an applications directory, and then add the unzipped <code>geogit/bin/</code> folder to your <strong>PATH</strong>.</p>
+              <p>2. Unzip the <em>geogig-cli-app-0.10.0.zip</em> to an applications directory, and then add the unzipped <code>geogig/bin/</code> folder to your <strong>PATH</strong>.</p>
 
               <p>3. Import your spatial data to get started:
 
@@ -98,21 +98,21 @@
                 <div class="quickstart_shell">
                   <p class="line">
                     <span class="path">~$</span>
-                    <span class="command">geogit help</span>
+                    <span class="command">geogig help</span>
                   </p>
                   <p class="line">
-                    <span class="output"> List geogit commands</span>
-                  </p>
-                  <p class="line">
-                    <span class="path">~/new-folder $</span>
-                    <span class="command">geogit init</span>
-                  </p>
-                  <p class="line">
-                    <span class="output"> Initialise a geogit repository in new-folder</span>
+                    <span class="output"> List geogig commands</span>
                   </p>
                   <p class="line">
                     <span class="path">~/new-folder $</span>
-                    <span class="command">geogit shp import</span>
+                    <span class="command">geogig init</span>
+                  </p>
+                  <p class="line">
+                    <span class="output"> Initialise a geogig repository in new-folder</span>
+                  </p>
+                  <p class="line">
+                    <span class="path">~/new-folder $</span>
+                    <span class="command">geogig shp import</span>
                     <span class="input">your_shapefile</span>
                   </p>
                   <p class="line">
@@ -120,24 +120,24 @@
                   </p>
                   <p class="line">
                     <span class="path">~/new-folder $</span>
-                    <span class="command">geogit ls</span>
+                    <span class="command">geogig ls</span>
                   </p>
                   <p class="line">
-                    <span class="output"> What's in your geogit repository</span>
+                    <span class="output"> What's in your geogig repository</span>
                   </p>
                   <p class="line">
                     <span class="path">~/new-folder $</span>
-                    <span class="command">geogit status</span>
+                    <span class="command">geogig status</span>
                   </p>
                   <p class="line">
                     <span class="output"> What you can commit to a snapshot</span>
                   </p>
                 </div>
 
-              <p>See more GeoGit instructions in our <a href="/docs/start/tutorial.html">GeoGit Tutorial</a> or try the <a href="/workshop/index.html">GeoGit Workshop</a>.</p></p>
+              <p>See more GeoGig instructions in our <a href="/docs/start/tutorial.html">GeoGig Tutorial</a> or try the <a href="/workshop/index.html">GeoGig Workshop</a>.</p></p>
 
               <p>4. Additional 
-              information on how GeoGit works is available at the full <a href="http://geogit.org/docs/index.html">User Manual</a>.</p>
+              information on how GeoGig works is available at the full <a href="http://geogig.org/docs/index.html">User Manual</a>.</p>
             </div>
           </div>
         </div>
@@ -151,21 +151,21 @@
 
               <h2>Docs</h2>
 
-              <p>GeoGit documentation is available online:
+              <p>GeoGig documentation is available online:
                 <ul class="list-unstyled" style="line-height: 200%; margin-left: 20px;">
-                  <li> <a href="http://geogit.org/docs/index.html">User Manual</a> </li>
-                  <li> <a href='http://geogit.org/technical/'>Technical Manual</a> </li>
-                  <li> <a href='http://geogit.org/manpages/'>man pages</a> </li>
-                  <li> <a href='http://geogit.org/workshop/'>Workshop</a> </li>
+                  <li> <a href="http://geogig.org/docs/index.html">User Manual</a> </li>
+                  <li> <a href='http://geogig.org/technical/'>Technical Manual</a> </li>
+                  <li> <a href='http://geogig.org/manpages/'>man pages</a> </li>
+                  <li> <a href='http://geogig.org/workshop/'>Workshop</a> </li>
                 </ul>
               </p>
 
-              <p>The User Manual can also be downloaded with the geogit install <a href="http://sourceforge.net/projects/geogit/files/geogit-0.10.0/">here</a>.</p>
+              <p>The User Manual can also be downloaded with the geogig install <a href="http://sourceforge.net/projects/geogig/files/geogig-0.10.0/">here</a>.</p>
 
               <p>For background reading see these papers on the spatial distributed versioning <a href="http://boundlessgeo.com/whitepaper/new-approach-working-geospatial-data-part-1/">Concept</a>, <a href="http://boundlessgeo.com/whitepaper/distributed-versioning-geospatial-data-part-2/">Implementation</a> and <a href='http://boundlessgeo.com/whitepaper/distributed-versioning-geospatial-data-part-3/'>Potential Development</a>.</p>
           </div>
           <div class="col-md-5">
-            <a href="images/geogit_workflow.png" target="_blank"><img class="workflow_diagram" src="images/geogit_workflow.png" alt="geogit workflow overview" /></a>
+            <a href="images/geogig_workflow.png" target="_blank"><img class="workflow_diagram" src="images/geogig_workflow.png" alt="geogig workflow overview" /></a>
           </div>
         </div>
       </section>
@@ -179,10 +179,10 @@
               <h2>Participate</h2>
 
               <p>The project is hosted on github: <a href="http://github.com/boundlessgeo/GeoGit">http://github.com/boundlessgeo/GeoGit</a></p>
-              <p>Discussion takes place on our <a href="https://groups.google.com/a/boundlessgeo.com/forum/#!forum/geogit">GeoGit Google Group</a>. 
+              <p>Discussion takes place on our <a href="https://groups.google.com/a/boundlessgeo.com/forum/#!forum/geogig">GeoGig Google Group</a>. 
               Please join and introduce yourself, we'd love to help, and to figure out ways for you to get involved.</p>
 
-              <p>There is also a GeoGit IRC channel on <a href="http://freenode.net/">freenode</a> (#geogit). GeoGit developers can usually be found there.</p>
+              <p>There is also a GeoGig IRC channel on <a href="http://freenode.net/">freenode</a> (#geogig). GeoGig developers can usually be found there.</p>
 
               <p>Participation is encouraged using the github <em>fork</em> and <em>pull request</em> workflow:</p>
 
@@ -197,7 +197,7 @@
               <p>For those who can't code help on documentation is always appreciated, all docs can be found at 
               <a href="http://github.com/boundlessgeo/GeoGit/tree/master/doc/">http://github.com/boundlessgeo/GeoGit/tree/master/doc/</a> and contributed to by editing in ReStructuredText and using standard GitHub workflows.</p>
 
-              <p>Our build is <a href="http://ares.boundlessgeo.com/jenkins/view/geogit/">actively monitored using Hudson</a>.</p>
+              <p>Our build is <a href="http://ares.boundlessgeo.com/jenkins/view/geogig/">actively monitored using Hudson</a>.</p>
 
           </div>
           <div class="col-md-5 hidden-sm hidden-xs">
@@ -227,7 +227,7 @@
                 </ul>
               </p>
 
-              <p class="devmore">View <a href="https://github.com/boundlessgeo/GeoGit/graphs/contributors">more GeoGit contributors</a> on Github.</p>
+              <p class="devmore">View <a href="https://github.com/boundlessgeo/GeoGit/graphs/contributors">more GeoGig contributors</a> on Github.</p>
 
               <p class="col-sm-offset-10 col-sm-1"><a href="#top"><img src="images/arrow_up.png" alt="back to top"/></a></p>
 
@@ -240,7 +240,7 @@
     <footer>
       <div class="container">
         <div class="row">
-          <div class=""><p class="repo-owner"><a href="http://github.com/boundlessgeo/GeoGit">GeoGit</a> is maintained by <a href="http://github.com/boundlessgeo"><img src="images/Boundless_Logo.png" alt="Boundless"></a></p></div>
+          <div class=""><p class="repo-owner"><a href="http://github.com/boundlessgeo/GeoGit">GeoGig</a> is maintained by <a href="http://github.com/boundlessgeo"><img src="images/Boundless_Logo.png" alt="Boundless"></a></p></div>
         </div>
       </div>
     </footer>
