@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<osm version="0.6" generator="OpenStreetMap server" copyright="OpenStreetMap and contributors" attribution="http://www.openstreetmap.org/copyright" license="http://opendatacommons.org/licenses/odbl/1-0/">
-  <changeset id="7" user="guggis" uid="1" created_at="2009-09-03T12:06:47Z" closed_at="2009-09-03T13:06:48Z" open="false" min_lat="46.9233674" min_lon="7.3919882" max_lat="46.9235048" max_lon="7.3958646">
-    <tag k="created_by" v="JOSM/1.5 (2024 SVN de)"/>
-    <tag k="comment" v="asdfasdfsdf"/>
-  </changeset>
-</osm>
