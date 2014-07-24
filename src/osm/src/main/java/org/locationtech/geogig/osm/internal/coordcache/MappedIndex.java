@@ -1,3 +1,7 @@
+/* Copyright (c) 2013 OpenPlans. All rights reserved.
+ * This code is licensed under the BSD New License, available at the root
+ * application directory.
+ */
 package org.locationtech.geogig.osm.internal.coordcache;
 
 import static com.google.common.base.Preconditions.checkState;
