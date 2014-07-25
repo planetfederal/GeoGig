@@ -1,11 +1,11 @@
 ######################################################
-GeoGit - Geospatial Distributed Version Control System
+GeoGig - Geospatial Distributed Version Control System
 ######################################################
 
 .. image:: https://travis-ci.org/boundlessgeo/GeoGit.png?branch=master
    :target: https://travis-ci.org/boundlessgeo/GeoGit
 
-Welcome to the GeoGit project, exploring the use of distributed management of spatial data. GeoGit draws inspiration from `Git <http://git-scm.com/>`_, but adapts its core concepts to handle versioning of geospatial data. Users are able to import raw geospatial data (currently from Shapefiles, PostGIS or SpatiaLite) in to a repository where every change to the data is tracked. These changes can be viewed in a history, reverted to older versions, branched in to sandboxed areas, merged back in, and pushed to remote repositories. GeoGit is written in Java, available under the BSD License.
+Welcome to the GeoGig project, exploring the use of distributed management of spatial data. GeoGig draws inspiration from `Git <http://git-scm.com/>`_, but adapts its core concepts to handle versioning of geospatial data. Users are able to import raw geospatial data (currently from Shapefiles, PostGIS or SpatiaLite) in to a repository where every change to the data is tracked. These changes can be viewed in a history, reverted to older versions, branched in to sandboxed areas, merged back in, and pushed to remote repositories. GeoGig is written in Java, available under the BSD License.
 
 For background reading see these two papers on the spatial distributed versioning `Concept <http://boundlessgeo.com/whitepaper/new-approach-working-geospatial-data-part-1/>`_, 
 `Implementation <http://boundlessgeo.com/whitepaper/distributed-versioning-geospatial-data-part-2//>`_, and `Potential Development <http://boundlessgeo.com/whitepaper/distributed-versioning-geospatial-data-part-3/>`_.
@@ -24,24 +24,25 @@ interface to import data and work with repositories.
 Download
 =========
 
-`Version 0.7.0 <http://sourceforge.net/projects/geogit/files/geogit-0.7.0/geogit-cli-app-0.7.0.zip/download>`_ from SourceForge. Documentation available for `download <http://sourceforge.net/projects/geogit/files/geogit-0.7.0/geogit-user-mannual-0.7.0.zip/download>`_ and `online <http://geogit.org/docs/index.html>`_.
+No release downloads available yet. Keep tuned for the first 1.0 release candidate soon.
+.. `Version 0.7.0 <http://sourceforge.net/projects/geogit/files/geogit-0.7.0/geogit-cli-app-0.7.0.zip/download>`_ from SourceForge. Documentation available for `download <http://sourceforge.net/projects/geogit/files/geogit-0.7.0/geogit-user-mannual-0.7.0.zip/download>`_ and `online <http://geogig.org/docs/index.html>`_.
 
 Installation
 ============
 
-Unzip the geogit-cli-app-0.7.0.zip to an applications directory, and then add the unzipped geogit/bin/ folder to your PATH.
+Unzip the geogig-cli-app-0.7.0.zip to an applications directory, and then add the unzipped geogig/bin/ folder to your PATH.
 
 Running
 =======
 
-See the `QuickStart <http://geogit.org/#install>`_ guide for an introduction to GeoGit. Additional information available at the full `Manual <http://geogit.org/docs/index.html>`_.
+See the `QuickStart <http://geogig.org/#install>`_ guide for an introduction to GeoGig. Additional information available at the full `Manual <http://geogig.org/docs/index.html>`_.
 
 Developing
 ===========
 
-If you want to get involved in the development of GeoGit, build GeoGit yourself or know more about the technical details behind GeoGit, check the `developers section <https://github.com/boundlessgeo/GeoGit/blob/master/doc/technical/source/developers.rst>`_.
+If you want to get involved in the development of GeoGig, build GeoGig yourself or know more about the technical details behind GeoGig, check the `developers section <https://github.com/locationtech/geogig/blob/master/doc/technical/source/developers.rst>`_.
 
 Participation
 =============
 
-Everyone is invited to participate in GeoGit and help in its development. Check the `How to help <https://github.com/boundlessgeo/GeoGit/blob/master/helping.rst>`_ section to read about how you can help us improve GeoGit.
+Everyone is invited to participate in GeoGig and help in its development. Check the `How to help <https://github.com/locationtech/geogig/master/helping.rst>`_ section to read about how you can help us improve GeoGig.
