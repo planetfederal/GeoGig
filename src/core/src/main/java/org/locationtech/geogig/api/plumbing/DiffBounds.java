@@ -47,7 +47,6 @@ import com.vividsolutions.jts.geom.Envelope;
  * Computes the bounds of the difference between the two trees instead of the actual diffs.
  * 
  */
-
 public class DiffBounds extends AbstractGeoGigOp<DiffSummary<BoundingBox, BoundingBox>> {
 
     private String oldVersion;

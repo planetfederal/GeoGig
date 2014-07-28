@@ -38,7 +38,7 @@ public final class DiffPathTracker {
         return metadataId(leftTrees.peek());
     }
 
-    public Optional<ObjectId> currentrightMetadataId() {
+    public Optional<ObjectId> currentRightMetadataId() {
         return metadataId(rightTrees.peek());
     }
 

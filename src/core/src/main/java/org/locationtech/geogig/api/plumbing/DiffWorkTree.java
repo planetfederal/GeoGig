@@ -73,7 +73,7 @@ public class DiffWorkTree extends AbstractGeoGigOp<Iterator<DiffEntry>> implemen
         DiffTree diff = command(DiffTree.class).setReportTrees(this.reportTrees)
                 .setOldTree(oldTree.getId()).setNewTree(newTree.getId());
         if (this.pathFilter != null) {
-            diff.setFilter(ImmutableList.of(pathFilter));
+            diff.setPathFilter(ImmutableList.of(pathFilter));
         }
         return diff.call();
     }

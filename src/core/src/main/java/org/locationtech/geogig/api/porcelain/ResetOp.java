@@ -113,7 +113,7 @@ public class ResetOp extends AbstractGeoGigOp<Boolean> {
             for (String pattern : patterns) {
                 DiffTree diffOp = command(DiffTree.class)
                         .setOldTree(repository.index().getTree().getId())
-                        .setNewTree(oldCommit.getTreeId()).setFilterPath(pattern);
+                        .setNewTree(oldCommit.getTreeId()).setPathFilter(pattern);
 
                 Iterator<DiffEntry> diff = diffOp.call();
 
