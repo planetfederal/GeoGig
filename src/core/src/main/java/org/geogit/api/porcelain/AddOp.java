@@ -15,6 +15,7 @@ import org.geogit.api.AbstractGeoGitOp;
 import org.geogit.api.ObjectId;
 import org.geogit.api.ProgressListener;
 import org.geogit.api.Ref;
+import org.geogit.api.RevObject.TYPE;
 import org.geogit.api.RevTree;
 import org.geogit.api.plumbing.RevParse;
 import org.geogit.api.plumbing.UpdateRef;
@@ -103,6 +104,10 @@ public class AddOp extends AbstractGeoGitOp<WorkingTree> {
             unstaged = Iterators.filter(unstaged, new Predicate<DiffEntry>() {
                 @Override
                 public boolean apply(@Nullable DiffEntry input) {
+                    // HACK: avoid reporting changed trees
+                    if (input.isChange() && input.getOldObject().getType().equals(TYPE.TREE)) {
+                        return false;
+                    }
                     return input.getOldObject() != null;
                 }
             });

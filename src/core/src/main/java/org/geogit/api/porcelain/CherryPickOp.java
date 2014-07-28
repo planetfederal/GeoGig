@@ -14,7 +14,7 @@ import org.geogit.api.SymRef;
 import org.geogit.api.plumbing.DiffTree;
 import org.geogit.api.plumbing.RefParse;
 import org.geogit.api.plumbing.UpdateRef;
-import org.geogit.api.plumbing.WriteTree;
+import org.geogit.api.plumbing.WriteTree2;
 import org.geogit.api.plumbing.diff.DiffEntry;
 import org.geogit.api.plumbing.merge.Conflict;
 import org.geogit.api.plumbing.merge.ConflictsWriteOp;
@@ -94,7 +94,7 @@ public class CherryPickOp extends AbstractGeoGitOp<RevCommit> {
             // stage changes
             index().stage(getProgressListener(), diff, 0);
             // write new tree
-            ObjectId newTreeId = command(WriteTree.class).call();
+            ObjectId newTreeId = command(WriteTree2.class).call();
             RevCommit newCommit = command(CommitOp.class).setCommit(commitToApply).call();
 
             repository.workingTree().updateWorkHead(newTreeId);

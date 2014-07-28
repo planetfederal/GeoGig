@@ -15,7 +15,6 @@ import org.geogit.api.ObjectId;
 import org.geogit.api.Ref;
 import org.geogit.api.RevTree;
 import org.geogit.api.plumbing.diff.DiffEntry;
-import org.geogit.api.plumbing.diff.DiffTreeWalk;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
@@ -85,10 +84,11 @@ public class DiffIndex extends AbstractGeoGitOp<Iterator<DiffEntry>> implements
 
         final RevTree newTree = index().getTree();
 
-        DiffTreeWalk treeWalk = new DiffTreeWalk(stagingDatabase(), rootTree, newTree);
-        treeWalk.setFilter(this.pathFilters);
-        treeWalk.setReportTrees(reportTrees);
-        return treeWalk.get();
+        DiffTree diff = command(DiffTree.class).setFilter(this.pathFilters)
+                .setReportTrees(this.reportTrees).setOldTree(rootTree.getId())
+                .setNewTree(newTree.getId());
+
+        return diff.call();
     }
 
     /**

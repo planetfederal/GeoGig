@@ -29,6 +29,7 @@ import org.geogit.api.plumbing.ResolveGeogitDir;
 import org.geogit.api.plumbing.UpdateRef;
 import org.geogit.api.plumbing.UpdateSymRef;
 import org.geogit.api.plumbing.WriteTree;
+import org.geogit.api.plumbing.WriteTree2;
 import org.geogit.api.plumbing.diff.DiffEntry;
 import org.geogit.api.plumbing.merge.Conflict;
 import org.geogit.api.plumbing.merge.ConflictsReadOp;
@@ -444,7 +445,7 @@ public class RebaseOp extends AbstractGeoGitOp<Boolean> {
                 index().stage(getProgressListener(), diff, 0);
 
                 // write new tree
-                ObjectId newTreeId = command(WriteTree.class).call();
+                ObjectId newTreeId = command(WriteTree2.class).call();
 
                 long timestamp = platform.currentTimeMillis();
                 // Create new commit
@@ -496,7 +497,7 @@ public class RebaseOp extends AbstractGeoGitOp<Boolean> {
             }
         } else {
             // write new tree
-            ObjectId newTreeId = command(WriteTree.class).call();
+            ObjectId newTreeId = command(WriteTree2.class).call();
 
             long timestamp = platform.currentTimeMillis();
             // Create new commit

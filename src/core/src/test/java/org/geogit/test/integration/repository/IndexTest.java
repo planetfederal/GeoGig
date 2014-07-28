@@ -22,7 +22,7 @@ import org.geogit.api.plumbing.LsTreeOp;
 import org.geogit.api.plumbing.LsTreeOp.Strategy;
 import org.geogit.api.plumbing.RevObjectParse;
 import org.geogit.api.plumbing.UpdateRef;
-import org.geogit.api.plumbing.WriteTree;
+import org.geogit.api.plumbing.WriteTree2;
 import org.geogit.api.porcelain.AddOp;
 import org.geogit.repository.StagingArea;
 import org.geogit.repository.WorkingTree;
@@ -83,7 +83,7 @@ public class IndexTest extends RepositoryTestCase {
 
         // this new root tree must exist on the repo db, but is not set as the current head. In
         // fact, it is headless, as there's no commit pointing to it. CommitOp does that.
-        ObjectId newRootTreeId = geogit.command(WriteTree.class)
+        ObjectId newRootTreeId = geogit.command(WriteTree2.class)
                 .setOldRoot(tree(repo.getHead().get().getObjectId())).call();
 
         assertNotNull(newRootTreeId);
@@ -119,11 +119,11 @@ public class IndexTest extends RepositoryTestCase {
         workTree.delete(linesName, lines1.getIdentifier().getID());
         geogit.command(AddOp.class).call();
 
-        newRootTreeId = geogit.command(WriteTree.class).setOldRoot(tree(newRootTreeId)).call(); // newRootTreeId
-                                                                                                // =
-                                                                                                // index.writeTree(newRootTreeId,
-                                                                                                // new
-                                                                                                // NullProgressListener());
+        newRootTreeId = geogit.command(WriteTree2.class).setOldRoot(tree(newRootTreeId)).call(); // newRootTreeId
+                                                                                                 // =
+                                                                                                 // index.writeTree(newRootTreeId,
+                                                                                                 // new
+                                                                                                 // NullProgressListener());
 
         assertNotNull(newRootTreeId);
         assertFalse(repo.getRootTreeId().equals(newRootTreeId));
@@ -340,7 +340,7 @@ public class IndexTest extends RepositoryTestCase {
 
         final ObjectId newRepoTreeId1;
         {
-            newRepoTreeId1 = geogit.command(WriteTree.class)
+            newRepoTreeId1 = geogit.command(WriteTree2.class)
                     .setOldRoot(tree(repo.getHead().get().getObjectId())).call();
 
             // assertEquals(index.getDatabase().getStagedRootRef().getObjectId(), newRepoTreeId1);
@@ -376,7 +376,7 @@ public class IndexTest extends RepositoryTestCase {
         {
             // write comparing the the previously generated tree instead of the repository HEAD, as
             // it was not updated (no commit op was performed)
-            newRepoTreeId2 = geogit.command(WriteTree.class).setOldRoot(tree(newRepoTreeId1))
+            newRepoTreeId2 = geogit.command(WriteTree2.class).setOldRoot(tree(newRepoTreeId1))
                     .call();
 
             // assertEquals(index.getDatabase().getStagedRootRef().getObjectId(), newRepoTreeId2);
@@ -424,7 +424,7 @@ public class IndexTest extends RepositoryTestCase {
         {
             // write comparing the the previously generated tree instead of the repository HEAD, as
             // it was not updated (no commit op was performed)
-            newRepoTreeId3 = geogit.command(WriteTree.class).setOldRoot(tree(newRepoTreeId2))
+            newRepoTreeId3 = geogit.command(WriteTree2.class).setOldRoot(tree(newRepoTreeId2))
                     .call();
 
             // assertEquals(index.getDatabase().getStagedRootRef().getObjectId(), newRepoTreeId3);

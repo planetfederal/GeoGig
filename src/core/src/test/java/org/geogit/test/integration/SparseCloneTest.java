@@ -482,7 +482,7 @@ public class SparseCloneTest extends RemoteRepositoryTestCase {
         assertTrue(childObject.isPresent());
         assertEquals(commit,
                 remoteGeogit.geogit.getRepository().objectDatabase().getCommit(commit.getId()));
-        System.err.println(commit.getId());
+
         PullOp pull = pull();
         pull.call();
 

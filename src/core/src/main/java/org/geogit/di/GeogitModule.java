@@ -22,7 +22,6 @@ import org.geogit.storage.ObjectDatabase;
 import org.geogit.storage.ObjectSerializingFactory;
 import org.geogit.storage.RefDatabase;
 import org.geogit.storage.StagingDatabase;
-import org.geogit.storage.datastream.DataStreamSerializationFactoryV1;
 import org.geogit.storage.datastream.DataStreamSerializationFactoryV2;
 import org.geogit.storage.fs.FileObjectDatabase;
 import org.geogit.storage.fs.FileRefDatabase;
@@ -66,7 +65,7 @@ public class GeogitModule extends AbstractModule {
         Provider<ExecutorService> fineGrainedExecutor = new Provider<ExecutorService>() {
             @Override
             public ExecutorService get() {
-                int availableProcessors = Runtime.getRuntime().availableProcessors();
+                int availableProcessors = Math.max(2, Runtime.getRuntime().availableProcessors());
                 return Executors.newFixedThreadPool(availableProcessors);
             }
         };

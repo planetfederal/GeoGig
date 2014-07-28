@@ -153,7 +153,12 @@ public abstract class RemoteRepositoryTestCase {
         }
 
         private ContextBuilder createInjectorBuilder() {
-            Platform testPlatform = new TestPlatform(envHome);
+            Platform testPlatform = new TestPlatform(envHome){
+                @Override
+                public long currentTimeMillis(){
+                    return 1000;
+                }
+            };
             return new TestContextBuilder(testPlatform);
         }
     }

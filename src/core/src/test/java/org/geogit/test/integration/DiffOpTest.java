@@ -13,12 +13,12 @@ import org.geogit.api.NodeRef;
 import org.geogit.api.ObjectId;
 import org.geogit.api.Ref;
 import org.geogit.api.RevCommit;
+import org.geogit.api.RevObject.TYPE;
 import org.geogit.api.plumbing.DiffIndex;
 import org.geogit.api.plumbing.DiffTree;
 import org.geogit.api.plumbing.DiffWorkTree;
 import org.geogit.api.plumbing.diff.DiffEntry;
 import org.geogit.api.plumbing.diff.DiffEntry.ChangeType;
-import org.geogit.api.plumbing.diff.DiffTreeWalk;
 import org.geogit.api.porcelain.AddOp;
 import org.geogit.api.porcelain.CommitOp;
 import org.geogit.api.porcelain.DiffOp;
@@ -35,8 +35,8 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 
 /**
- * Unit test suite for {@link DiffOp}, must cover {@link DiffTreeWalk} too as well as
- * {@link DiffIndex}, {@link DiffWorkTree}, and {@link DiffTree}
+ * Unit test suite for {@link DiffOp}, must cover {@link DiffIndex}, {@link DiffWorkTree}, and
+ * {@link DiffTree}
  * 
  */
 public class DiffOpTest extends RepositoryTestCase {
@@ -580,8 +580,11 @@ public class DiffOpTest extends RepositoryTestCase {
         insert(points3);
         List<DiffEntry> difflist = toList(diffOp.setReportTrees(true).call());
         assertNotNull(difflist);
-        assertEquals(1, difflist.size());
-
+        assertEquals(2, difflist.size());
+        assertEquals(ChangeType.MODIFIED, difflist.get(0).changeType());
+        assertEquals(TYPE.TREE, difflist.get(0).getOldObject().getType());
+        assertEquals(ChangeType.ADDED, difflist.get(1).changeType());
+        assertEquals(TYPE.FEATURE, difflist.get(1).getNewObject().getType());
     }
 
 }
