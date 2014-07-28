@@ -10,19 +10,33 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Nullable;
 
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.locationtech.geogig.api.AbstractGeoGigOp;
+import org.locationtech.geogig.api.Bucket;
+import org.locationtech.geogig.api.Node;
+import org.locationtech.geogig.api.NodeRef;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.RevTree;
+import org.locationtech.geogig.api.plumbing.diff.BoundsFilteringDiffConsumer;
 import org.locationtech.geogig.api.plumbing.diff.DiffEntry;
-import org.locationtech.geogig.api.plumbing.diff.DiffTreeWalk;
+import org.locationtech.geogig.api.plumbing.diff.DiffPathTracker;
+import org.locationtech.geogig.api.plumbing.diff.DiffTreeVisitor;
+import org.locationtech.geogig.api.plumbing.diff.DiffTreeVisitor.Consumer;
+import org.locationtech.geogig.api.plumbing.diff.PathFilteringDiffConsumer;
 import org.locationtech.geogig.storage.ObjectDatabase;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Supplier;
+import com.google.common.base.Throwables;
+import com.google.common.collect.AbstractIterator;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 
 /**
@@ -33,6 +47,8 @@ public class DiffTree extends AbstractGeoGigOp<Iterator<DiffEntry>> implements
         Supplier<Iterator<DiffEntry>> {
 
     private final List<String> pathFilters = Lists.newLinkedList();
+
+    private ReferencedEnvelope boundsFilter;
 
     private String oldRefSpec;
 
@@ -122,10 +138,9 @@ public class DiffTree extends AbstractGeoGigOp<Iterator<DiffEntry>> implements
      * @see DiffEntry
      */
     @Override
-    protected  Iterator<DiffEntry> _call() throws IllegalArgumentException {
+    protected Iterator<DiffEntry> _call() throws IllegalArgumentException {
         checkNotNull(oldRefSpec, "old version not specified");
         checkNotNull(newRefSpec, "new version not specified");
-
         final RevTree oldTree;
         final RevTree newTree;
 
@@ -149,11 +164,139 @@ public class DiffTree extends AbstractGeoGigOp<Iterator<DiffEntry>> implements
             newTree = RevTree.EMPTY;
         }
 
-        DiffTreeWalk treeWalk = new DiffTreeWalk(stagingDatabase(), oldTree, newTree);
-        treeWalk.setFilter(pathFilters);
-        treeWalk.setReportTrees(reportTrees);
-        treeWalk.setRecursive(recursive);
-        return treeWalk.get();
+        if (oldTree.equals(newTree)) {
+            return Iterators.emptyIterator();
+        }
+
+        ObjectDatabase leftSource = resolveSource(oldTree.getId());
+        ObjectDatabase rightSource = resolveSource(newTree.getId());
+        final DiffTreeVisitor visitor = new DiffTreeVisitor(oldTree, newTree, leftSource,
+                rightSource);
+
+        final DiffEntryProducer diffProducer = new DiffEntryProducer();
+        diffProducer.setReportTrees(this.reportTrees);
+        diffProducer.setRecursive(this.recursive);
+
+        Thread producerThread = new Thread() {
+            @Override
+            public void run() {
+                Consumer consumer = diffProducer;
+                if (boundsFilter != null) {
+                    consumer = new BoundsFilteringDiffConsumer(boundsFilter, consumer);
+                }
+                if (!pathFilters.isEmpty()) {
+                    consumer = new PathFilteringDiffConsumer(pathFilters, consumer);
+                }
+
+                visitor.walk(consumer);
+            }
+        };
+        producerThread.setDaemon(true);
+        producerThread.start();
+
+        Iterator<DiffEntry> consumerIterator = new AbstractIterator<DiffEntry>() {
+            @Override
+            protected DiffEntry computeNext() {
+                BlockingQueue<DiffEntry> entries = diffProducer.entries;
+                boolean finished = diffProducer.isFinished();
+                boolean empty = entries.isEmpty();
+                while (!finished || !empty) {
+                    try {
+                        DiffEntry entry = entries.poll(10, TimeUnit.MILLISECONDS);
+                        if (entry != null) {
+                            return entry;
+                        }
+                        finished = diffProducer.isFinished();
+                        empty = entries.isEmpty();
+                    } catch (InterruptedException e) {
+                        throw Throwables.propagate(e);
+                    }
+                }
+                return endOfData();
+            }
+        };
+        return consumerIterator;
+    }
+
+    private ObjectDatabase resolveSource(ObjectId treeId) {
+        return objectDatabase().equals(treeId) ? objectDatabase() : stagingDatabase();
+    }
+
+    private static class DiffEntryProducer implements Consumer {
+
+        private DiffPathTracker tracker = new DiffPathTracker();
+
+        private boolean reportFeatures = true, reportTrees = false;
+
+        private BlockingQueue<DiffEntry> entries = new ArrayBlockingQueue<>(10);
+
+        private boolean finished;
+
+        private boolean recursive = true;
+
+        @Override
+        public void feature(Node left, Node right) {
+            if (this.reportFeatures) {
+                String treePath = tracker.getCurrentPath();
+
+                NodeRef oldRef = left == null ? null : new NodeRef(left, treePath, tracker
+                        .currentLeftMetadataId().or(ObjectId.NULL));
+                NodeRef newRef = right == null ? null : new NodeRef(right, treePath, tracker
+                        .currentrightMetadataId().or(ObjectId.NULL));
+
+                entries.offer(new DiffEntry(oldRef, newRef));
+            }
+        }
+
+        public void setRecursive(boolean recursive) {
+            this.recursive = recursive;
+        }
+
+        public void setReportTrees(boolean reportTrees) {
+            this.reportTrees = reportTrees;
+        }
+
+        public boolean isFinished() {
+            return finished;
+        }
+
+        @Override
+        public boolean tree(Node left, Node right) {
+            final String parentPath = tracker.getCurrentPath();
+            tracker.tree(left, right);
+            if (reportTrees) {
+                if (parentPath != null) {// do not report the root tree
+                    NodeRef oldRef = left == null ? null : new NodeRef(left, parentPath, tracker
+                            .currentLeftMetadataId().or(ObjectId.NULL));
+
+                    NodeRef newRef = right == null ? null : new NodeRef(right, parentPath, tracker
+                            .currentrightMetadataId().or(ObjectId.NULL));
+                    entries.offer(new DiffEntry(oldRef, newRef));
+                }
+            }
+            if (recursive) {
+                return true;
+            }
+            return parentPath == null;
+        }
+
+        @Override
+        public void endTree(Node left, Node right) {
+            tracker.endTree(left, right);
+            if (tracker.isEmpty()) {
+                finished = true;
+            }
+        }
+
+        @Override
+        public boolean bucket(int bucketIndex, int bucketDepth, Bucket left, Bucket right) {
+            return true;
+        }
+
+        @Override
+        public void endBucket(int bucketIndex, int bucketDepth, Bucket left, Bucket right) {
+            // no action required
+        }
     }
 
     /**

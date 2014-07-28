@@ -24,6 +24,7 @@ import org.locationtech.geogig.api.plumbing.LsTreeOp.Strategy;
 import org.locationtech.geogig.api.plumbing.RevObjectParse;
 import org.locationtech.geogig.api.plumbing.UpdateRef;
 import org.locationtech.geogig.api.plumbing.WriteTree;
+import org.locationtech.geogig.api.plumbing.WriteTree2;
 import org.locationtech.geogig.api.porcelain.AddOp;
 import org.locationtech.geogig.repository.StagingArea;
 import org.locationtech.geogig.repository.WorkingTree;
@@ -119,11 +120,11 @@ public class IndexTest extends RepositoryTestCase {
         workTree.delete(linesName, lines1.getIdentifier().getID());
         geogig.command(AddOp.class).call();
 
-        newRootTreeId = geogig.command(WriteTree.class).setOldRoot(tree(newRootTreeId)).call(); // newRootTreeId
-                                                                                                // =
-                                                                                                // index.writeTree(newRootTreeId,
-                                                                                                // new
-                                                                                                // NullProgressListener());
+        newRootTreeId = geogig.command(WriteTree2.class).setOldRoot(tree(newRootTreeId)).call(); // newRootTreeId
+                                                                                                 // =
+                                                                                                 // index.writeTree(newRootTreeId,
+                                                                                                 // new
+                                                                                                 // NullProgressListener());
 
         assertNotNull(newRootTreeId);
         assertFalse(repo.getRootTreeId().equals(newRootTreeId));
@@ -340,7 +341,7 @@ public class IndexTest extends RepositoryTestCase {
 
         final ObjectId newRepoTreeId1;
         {
-            newRepoTreeId1 = geogig.command(WriteTree.class)
+            newRepoTreeId1 = geogig.command(WriteTree2.class)
                     .setOldRoot(tree(repo.getHead().get().getObjectId())).call();
 
             // assertEquals(index.getDatabase().getStagedRootRef().getObjectId(), newRepoTreeId1);
@@ -376,7 +377,7 @@ public class IndexTest extends RepositoryTestCase {
         {
             // write comparing the the previously generated tree instead of the repository HEAD, as
             // it was not updated (no commit op was performed)
-            newRepoTreeId2 = geogig.command(WriteTree.class).setOldRoot(tree(newRepoTreeId1))
+            newRepoTreeId2 = geogig.command(WriteTree2.class).setOldRoot(tree(newRepoTreeId1))
                     .call();
 
             // assertEquals(index.getDatabase().getStagedRootRef().getObjectId(), newRepoTreeId2);
@@ -424,7 +425,7 @@ public class IndexTest extends RepositoryTestCase {
         {
             // write comparing the the previously generated tree instead of the repository HEAD, as
             // it was not updated (no commit op was performed)
-            newRepoTreeId3 = geogig.command(WriteTree.class).setOldRoot(tree(newRepoTreeId2))
+            newRepoTreeId3 = geogig.command(WriteTree2.class).setOldRoot(tree(newRepoTreeId2))
                     .call();
 
             // assertEquals(index.getDatabase().getStagedRootRef().getObjectId(), newRepoTreeId3);

@@ -14,13 +14,13 @@ import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.Ref;
 import org.locationtech.geogig.api.RevTree;
 import org.locationtech.geogig.api.plumbing.diff.DiffEntry;
-import org.locationtech.geogig.api.plumbing.diff.DiffTreeWalk;
 import org.locationtech.geogig.repository.StagingArea;
 import org.locationtech.geogig.repository.WorkingTree;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Supplier;
+import com.google.common.collect.ImmutableList;
 
 /**
  * Compares the features in the {@link WorkingTree working tree} and the {@link StagingArea index}
@@ -70,11 +70,12 @@ public class DiffWorkTree extends AbstractGeoGigOp<Iterator<DiffEntry>> implemen
         final RevTree oldTree = ref.isPresent() ? getOldTree() : index().getTree();
         final RevTree newTree = workingTree().getTree();
 
-        DiffTreeWalk treeWalk = new DiffTreeWalk(stagingDatabase(), oldTree, newTree);
-        treeWalk.addFilter(pathFilter);
-        treeWalk.setReportTrees(reportTrees);
-
-        return treeWalk.get();
+        DiffTree diff = command(DiffTree.class).setReportTrees(this.reportTrees)
+                .setOldTree(oldTree.getId()).setNewTree(newTree.getId());
+        if (this.pathFilter != null) {
+            diff.setFilter(ImmutableList.of(pathFilter));
+        }
+        return diff.call();
     }
 
     /**

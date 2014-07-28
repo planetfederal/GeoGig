@@ -161,8 +161,9 @@ public class AddOpTest extends RepositoryTestCase {
         // stage only Lines changed
         geogig.command(AddOp.class).setUpdateOnly(true).addPattern(pointsName).call();
         List<DiffEntry> staged = toList(repo.index().getStaged(null));
-        assertEquals(1, staged.size());
-        assertEquals(idP1, staged.get(0).newName());
+        assertEquals(2, staged.size());
+        assertEquals(pointsName, staged.get(0).newName());
+        assertEquals(idP1, staged.get(1).newName());
 
         List<DiffEntry> unstaged = toList(repo.workingTree().getUnstaged(null));
 

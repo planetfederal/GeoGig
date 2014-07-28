@@ -41,7 +41,7 @@ public abstract class FilteredDiffIterator extends AbstractIterator<DiffEntry> {
      *         refers to are automatically added to the local objects database
      */
     public abstract boolean isAutoIngesting();
-    
+
     /**
      * Constructs a new {@code FilteredDiffIterator}.
      * 
@@ -64,6 +64,14 @@ public abstract class FilteredDiffIterator extends AbstractIterator<DiffEntry> {
         while (source.hasNext()) {
             DiffEntry input = source.next();
 
+            // HACK: ignore diff entries reporting a change to a tree, the feature changes will come
+            // next and the new tree is built from them. I'm not totally sure this is the best way
+            // to handle this situation but the unit tests are written expecting this behavior
+            // probably as a side effect of a bug in TreeDiffEntryIterator (used to be called by
+            // DiffTree) that doesn't report tree changes even is setReportTrees(true) was set.
+            if (input.isChange() && input.getOldObject().getType().equals(TYPE.TREE)) {
+                continue;
+            }
             NodeRef oldObject = filter(input.getOldObject());
             NodeRef newObject;
             if (oldObject != null) {

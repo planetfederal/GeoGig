@@ -14,12 +14,12 @@ import org.locationtech.geogig.api.NodeRef;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.Ref;
 import org.locationtech.geogig.api.RevCommit;
+import org.locationtech.geogig.api.RevObject.TYPE;
 import org.locationtech.geogig.api.plumbing.DiffIndex;
 import org.locationtech.geogig.api.plumbing.DiffTree;
 import org.locationtech.geogig.api.plumbing.DiffWorkTree;
 import org.locationtech.geogig.api.plumbing.diff.DiffEntry;
 import org.locationtech.geogig.api.plumbing.diff.DiffEntry.ChangeType;
-import org.locationtech.geogig.api.plumbing.diff.DiffTreeWalk;
 import org.locationtech.geogig.api.porcelain.AddOp;
 import org.locationtech.geogig.api.porcelain.CommitOp;
 import org.locationtech.geogig.api.porcelain.DiffOp;
@@ -35,8 +35,8 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 
 /**
- * Unit test suite for {@link DiffOp}, must cover {@link DiffTreeWalk} too as well as
- * {@link DiffIndex}, {@link DiffWorkTree}, and {@link DiffTree}
+ * Unit test suite for {@link DiffOp}, must cover {@link DiffIndex}, {@link DiffWorkTree}, and
+ * {@link DiffTree}
  * 
  */
 public class DiffOpTest extends RepositoryTestCase {
@@ -580,8 +580,11 @@ public class DiffOpTest extends RepositoryTestCase {
         insert(points3);
         List<DiffEntry> difflist = toList(diffOp.setReportTrees(true).call());
         assertNotNull(difflist);
-        assertEquals(1, difflist.size());
-
+        assertEquals(2, difflist.size());
+        assertEquals(ChangeType.MODIFIED, difflist.get(0).changeType());
+        assertEquals(TYPE.TREE, difflist.get(0).getOldObject().getType());
+        assertEquals(ChangeType.ADDED, difflist.get(1).changeType());
+        assertEquals(TYPE.FEATURE, difflist.get(1).getNewObject().getType());
     }
 
 }

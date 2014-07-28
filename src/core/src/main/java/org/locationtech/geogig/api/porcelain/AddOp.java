@@ -15,6 +15,7 @@ import org.locationtech.geogig.api.AbstractGeoGigOp;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.ProgressListener;
 import org.locationtech.geogig.api.Ref;
+import org.locationtech.geogig.api.RevObject.TYPE;
 import org.locationtech.geogig.api.RevTree;
 import org.locationtech.geogig.api.plumbing.RevParse;
 import org.locationtech.geogig.api.plumbing.UpdateRef;
@@ -103,6 +104,10 @@ public class AddOp extends AbstractGeoGigOp<WorkingTree> {
             unstaged = Iterators.filter(unstaged, new Predicate<DiffEntry>() {
                 @Override
                 public boolean apply(@Nullable DiffEntry input) {
+                    // HACK: avoid reporting changed trees
+                    if (input.isChange() && input.getOldObject().getType().equals(TYPE.TREE)) {
+                        return false;
+                    }
                     return input.getOldObject() != null;
                 }
             });

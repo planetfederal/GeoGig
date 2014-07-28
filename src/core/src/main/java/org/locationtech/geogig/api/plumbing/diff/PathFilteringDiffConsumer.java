@@ -39,8 +39,11 @@ public class PathFilteringDiffConsumer extends DiffTreeVisitor.ForwardingConsume
 
     @Override
     public void endTree(Node left, Node right) {
+        String currentPath = tracker.getCurrentPath();
         tracker.endTree(left, right);
-        super.endTree(left, right);
+        if (filter.treeApplies(currentPath)) {
+            super.endTree(left, right);
+        }
     }
 
     @Override
@@ -60,39 +63,6 @@ public class PathFilteringDiffConsumer extends DiffTreeVisitor.ForwardingConsume
 
         if (filter.featureApplies(featurePath)) {
             super.feature(left, right);
-        }
-    }
-
-    private static final class DiffPathTracker {
-
-        private String currentPath;
-
-        public String getCurrentPath() {
-            return currentPath;
-        }
-
-        public String tree(Node left, Node right) {
-            String name = name(left, right);
-            if (currentPath == null) {
-                currentPath = name;
-            } else {
-                currentPath = NodeRef.appendChild(currentPath, name);
-            }
-            return currentPath;
-        }
-
-        public String endTree(Node left, Node right) {
-            if (NodeRef.ROOT.equals(currentPath)) {
-                currentPath = null;
-            } else {
-                String fullPath = currentPath;
-                currentPath = NodeRef.parentPath(fullPath);
-            }
-            return currentPath;
-        }
-
-        public String name(Node left, Node right) {
-            return left == null ? right.getName() : left.getName();
         }
     }
 

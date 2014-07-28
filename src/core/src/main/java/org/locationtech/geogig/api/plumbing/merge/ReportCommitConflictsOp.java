@@ -113,7 +113,9 @@ public class ReportCommitConflictsOp extends AbstractGeoGigOp<MergeScenarioRepor
                 if (TYPE.TREE.equals(type)) {
                     // TODO:see how to do this. For now, we will pass any change as a conflicted
                     // one
-                    report.addUnconflicted(diff);
+                    if (!diff.isChange()) {
+                        report.addUnconflicted(diff);
+                    }
                 } else {
                     String refSpec = Ref.HEAD + ":" + path;
                     obj = command(RevObjectParse.class).setRefSpec(refSpec).call();

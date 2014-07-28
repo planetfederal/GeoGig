@@ -14,7 +14,7 @@ import org.locationtech.geogig.api.SymRef;
 import org.locationtech.geogig.api.plumbing.DiffTree;
 import org.locationtech.geogig.api.plumbing.RefParse;
 import org.locationtech.geogig.api.plumbing.UpdateRef;
-import org.locationtech.geogig.api.plumbing.WriteTree;
+import org.locationtech.geogig.api.plumbing.WriteTree2;
 import org.locationtech.geogig.api.plumbing.diff.DiffEntry;
 import org.locationtech.geogig.api.plumbing.merge.Conflict;
 import org.locationtech.geogig.api.plumbing.merge.ConflictsWriteOp;
@@ -94,7 +94,7 @@ public class CherryPickOp extends AbstractGeoGigOp<RevCommit> {
             // stage changes
             index().stage(getProgressListener(), diff, 0);
             // write new tree
-            ObjectId newTreeId = command(WriteTree.class).call();
+            ObjectId newTreeId = command(WriteTree2.class).call();
             RevCommit newCommit = command(CommitOp.class).setCommit(commitToApply).call();
 
             repository.workingTree().updateWorkHead(newTreeId);

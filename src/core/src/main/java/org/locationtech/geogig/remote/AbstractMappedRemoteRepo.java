@@ -42,9 +42,11 @@ import org.locationtech.geogig.storage.ObjectDatabase;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
+import com.google.common.base.Predicate;
 import com.google.common.base.Suppliers;
 import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterators;
 
 /**
  * Abstract base implementation for mapped (sparse) clone.
@@ -224,11 +226,18 @@ public abstract class AbstractMappedRemoteRepo implements IRemoteRepo {
                 graphDatabase.map(commit.getId(), ObjectId.NULL);
             }
 
-            if (changes.hasNext()) {
+            Iterator<DiffEntry> it = Iterators.filter(changes, new Predicate<DiffEntry>() {
+                @Override
+                public boolean apply(DiffEntry e) {
+                    return true;
+                }
+            });
+
+            if (it.hasNext()) {
                 // Create new commit
                 WriteTree writeTree = localRepository.command(WriteTree.class)
                         .setOldRoot(Suppliers.ofInstance(rootTree))
-                        .setDiffSupplier(Suppliers.ofInstance((Iterator<DiffEntry>) changes));
+                        .setDiffSupplier(Suppliers.ofInstance((Iterator<DiffEntry>) it));
 
                 if (changes.isAutoIngesting()) {
                     // the iterator already ingests objects into the ObjectDatabase

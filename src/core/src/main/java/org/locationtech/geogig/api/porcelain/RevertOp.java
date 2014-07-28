@@ -28,7 +28,7 @@ import org.locationtech.geogig.api.plumbing.RefParse;
 import org.locationtech.geogig.api.plumbing.ResolveGeogigDir;
 import org.locationtech.geogig.api.plumbing.UpdateRef;
 import org.locationtech.geogig.api.plumbing.UpdateSymRef;
-import org.locationtech.geogig.api.plumbing.WriteTree;
+import org.locationtech.geogig.api.plumbing.WriteTree2;
 import org.locationtech.geogig.api.plumbing.diff.DiffEntry;
 import org.locationtech.geogig.api.plumbing.merge.Conflict;
 import org.locationtech.geogig.api.plumbing.merge.ConflictsReadOp;
@@ -294,17 +294,17 @@ public class RevertOp extends AbstractGeoGigOp<Boolean> {
         }
 
         // get changes (in reverse)
-        Iterator<DiffEntry> diffs = command(DiffTree.class).setNewTree(parentTreeId)
-                .setOldTree(commit.getTreeId()).setReportTrees(true).call();
+        Iterator<DiffEntry> reverseDiff = command(DiffTree.class).setNewTree(parentTreeId)
+                .setOldTree(commit.getTreeId()).setReportTrees(false).call();
 
         ObjectId headTreeId = repository.getCommit(revertHead).getTreeId();
         final RevTree headTree = repository.getTree(headTreeId);
 
         ArrayList<Conflict> conflicts = new ArrayList<Conflict>();
         DiffEntry diff;
-        while (diffs.hasNext()) {
-            diff = diffs.next();
-            if (diff.oldObjectId().equals(ObjectId.NULL)) {
+        while (reverseDiff.hasNext()) {
+            diff = reverseDiff.next();
+            if (diff.isAdd()) {
                 // Feature was deleted
                 Optional<NodeRef> node = command(FindTreeChild.class).setChildPath(diff.newPath())
                         .setIndex(true).setParent(headTree).call();
@@ -342,7 +342,7 @@ public class RevertOp extends AbstractGeoGigOp<Boolean> {
     private void createCommit(RevCommit commit) {
 
         // write new tree
-        ObjectId newTreeId = command(WriteTree.class).call();
+        ObjectId newTreeId = command(WriteTree2.class).call();
         long timestamp = platform().currentTimeMillis();
         String committerName = resolveCommitter();
         String committerEmail = resolveCommitterEmail();

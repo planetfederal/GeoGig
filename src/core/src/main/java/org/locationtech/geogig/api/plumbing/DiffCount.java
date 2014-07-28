@@ -17,7 +17,6 @@ import org.locationtech.geogig.api.RevTree;
 import org.locationtech.geogig.api.plumbing.diff.DiffCountConsumer;
 import org.locationtech.geogig.api.plumbing.diff.DiffObjectCount;
 import org.locationtech.geogig.api.plumbing.diff.DiffTreeVisitor;
-import org.locationtech.geogig.api.plumbing.diff.DiffTreeWalk;
 import org.locationtech.geogig.api.plumbing.diff.PathFilteringDiffConsumer;
 import org.locationtech.geogig.storage.StagingDatabase;
 
@@ -25,8 +24,7 @@ import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 
 /**
- * A faster alternative to count the number of diffs between two trees than walking a
- * {@link DiffTreeWalk} iterator.
+ * Counts differences between two trees.
  * 
  * @see DiffCountConsumer
  */

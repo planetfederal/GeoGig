@@ -28,7 +28,7 @@ import org.locationtech.geogig.api.plumbing.RefParse;
 import org.locationtech.geogig.api.plumbing.ResolveGeogigDir;
 import org.locationtech.geogig.api.plumbing.UpdateRef;
 import org.locationtech.geogig.api.plumbing.UpdateSymRef;
-import org.locationtech.geogig.api.plumbing.WriteTree;
+import org.locationtech.geogig.api.plumbing.WriteTree2;
 import org.locationtech.geogig.api.plumbing.diff.DiffEntry;
 import org.locationtech.geogig.api.plumbing.merge.Conflict;
 import org.locationtech.geogig.api.plumbing.merge.ConflictsReadOp;
@@ -444,7 +444,7 @@ public class RebaseOp extends AbstractGeoGigOp<Boolean> {
                 index().stage(getProgressListener(), diff, 0);
 
                 // write new tree
-                ObjectId newTreeId = command(WriteTree.class).call();
+                ObjectId newTreeId = command(WriteTree2.class).call();
 
                 long timestamp = platform.currentTimeMillis();
                 // Create new commit
@@ -496,7 +496,7 @@ public class RebaseOp extends AbstractGeoGigOp<Boolean> {
             }
         } else {
             // write new tree
-            ObjectId newTreeId = command(WriteTree.class).call();
+            ObjectId newTreeId = command(WriteTree2.class).call();
 
             long timestamp = platform.currentTimeMillis();
             // Create new commit

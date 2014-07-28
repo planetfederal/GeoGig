@@ -56,7 +56,7 @@ Feature: "status" command
       And the response should contain "8 total."
       And the response should contain "Changes not staged for commit"
       And the response should contain "2 total."
-      And the response should contain 20 lines
+      And the response should contain 21 lines
       
   Scenario: Try to get the status of a repository with unstaged changes specifying all
     Given I have a repository
@@ -100,7 +100,7 @@ Feature: "status" command
       And the response should contain "8 total."
       And the response should contain "Changes not staged for commit"
       And the response should contain "2 total."
-      And the response should contain 20 lines
+      And the response should contain 21 lines
       
    Scenario: Try to get the status of a repository with unstaged changes using a limit
     Given I have a repository
