@@ -301,7 +301,7 @@ public class WriteTree2 extends AbstractGeoGitOp<ObjectId> {
 
         Supplier<Iterator<DiffEntry>> diffs = command(DiffTree.class).setRecursive(false)
                 .setReportTrees(false).setOldTree(leftTreeId).setNewTree(rightTreeId)
-                .setFilter(strippedPathFilters);
+                .setPathFilter(strippedPathFilters);
 
         // move new blobs from the index to the repository (note: this could be parallelized)
         Supplier<Iterator<Node>> nodesToMove = asNodeSupplierOfNewContents(diffs,

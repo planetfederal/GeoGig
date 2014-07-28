@@ -95,7 +95,7 @@ public class DiffTree extends AbstractCommand implements CLICommand {
         } else {
             diffEntries = Iterators.emptyIterator();
             for (String path : paths) {
-                Iterator<DiffEntry> moreEntries = diff.setFilterPath(path)
+                Iterator<DiffEntry> moreEntries = diff.setPathFilter(path)
                         .setProgressListener(cli.getProgressListener()).call();
                 diffEntries = Iterators.concat(diffEntries, moreEntries);
             }

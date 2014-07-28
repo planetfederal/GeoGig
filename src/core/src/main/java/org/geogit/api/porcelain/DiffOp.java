@@ -143,7 +143,7 @@ public class DiffOp extends AbstractGeoGitOp<Iterator<DiffEntry>> implements Ite
         } else {
 
             iterator = command(DiffTree.class).setOldVersion(oldRefSpec).setNewVersion(newRefSpec)
-                    .setFilterPath(pathFilter).setReportTrees(reportTrees).call();
+                    .setPathFilter(pathFilter).setReportTrees(reportTrees).call();
         }
 
         return iterator;

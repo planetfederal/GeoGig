@@ -163,7 +163,7 @@ public class OSMUnmapOp extends AbstractGeoGitOp<RevTree> {
         // with its state just after the mapping was created.
 
         if (entry.isPresent()) {
-            Iterator<DiffEntry> diffs = command(DiffTree.class).setFilterPath(path)
+            Iterator<DiffEntry> diffs = command(DiffTree.class).setPathFilter(path)
                     .setNewTree(workingTree().getTree().getId())
                     .setOldTree(entry.get().getPostMappingId()).call();
 
