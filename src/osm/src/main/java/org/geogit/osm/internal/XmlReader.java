@@ -1,8 +1,7 @@
 /* Copyright (c) 2013 OpenPlans. All rights reserved.
- * This code is licensed under the GNU GPL 2.0 license, available at the root
+ * This code is licensed under the BSD New License, available at the root
  * application directory.
  */
-// This software is released into the Public Domain.  See copying.txt for details.
 package org.geogit.osm.internal;
 
 import java.io.File;

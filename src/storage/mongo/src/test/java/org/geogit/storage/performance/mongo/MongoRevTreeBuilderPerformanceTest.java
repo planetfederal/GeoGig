@@ -1,5 +1,5 @@
-/* Copyright (c) 2011 TOPP - www.openplans.org. All rights reserved.
- * This code is licensed under the LGPL 2.1 license, available at the root
+/* Copyright (c) 2013 OpenPlans. All rights reserved.
+ * This code is licensed under the BSD New License, available at the root
  * application directory.
  */
 package org.geogit.storage.performance.mongo;
