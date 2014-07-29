@@ -1,21 +1,21 @@
 
-.. _geogit-rebase:
+.. _geogig-rebase:
 
-geogit-rebase documentation
+geogig-rebase documentation
 ############################
 
 
 
 SYNOPSIS
 ********
-geogit rebase [--onto <newbase>] [<upstream>] [<branch>] [--abort] [--continue] [--continue <message>] [--skip]
+geogig rebase [--onto <newbase>] [<upstream>] [<branch>] [--abort] [--continue] [--continue <message>] [--skip]
 
 
 DESCRIPTION
 ***********
 Forward-port local commits to the updated upstream head.
 
-If <branch> is specified, geogit rebase will perform an automatic geogit checkout <branch> before doing anything else. Otherwise it remains on the current branch.
+If <branch> is specified, geogig rebase will perform an automatic geogig checkout <branch> before doing anything else. Otherwise it remains on the current branch.
 
 All changes made by commits in the current branch but that are not in <upstream> are saved to a temporary area.
 
@@ -42,7 +42,7 @@ OPTIONS
 SEE ALSO
 ********
 
-:ref:`geogit-log`
+:ref:`geogig-log`
 
 BUGS
 ****

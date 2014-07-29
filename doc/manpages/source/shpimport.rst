@@ -1,14 +1,14 @@
 
-.. _geogit-shp-import:
+.. _geogig-shp-import:
 
-geogit-shp-import documentation
+geogig-shp-import documentation
 ################################
 
 
 
 SYNOPSIS
 ********
-geogit shp import <shapefile> [<shapefile>]... [--path <path>] [--fid-attrib <attrib_name>] [--add] [--alter]
+geogig shp import <shapefile> [<shapefile>]... [--path <path>] [--fid-attrib <attrib_name>] [--add] [--alter]
 
 
 OPTIONS
@@ -30,7 +30,7 @@ OPTIONS
 DESCRIPTION
 ***********
 
-This command imports features from one or more shapefiles into the GeoGit working tree.
+This command imports features from one or more shapefiles into the GeoGig working tree.
 
 BUGS
 ****

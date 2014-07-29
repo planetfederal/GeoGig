@@ -4,40 +4,40 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.geogit</groupId>
-    <artifactId>geogit</artifactId>
-    <version>0.11-SNAPSHOT</version>
+    <groupId>org.locationtech.geogig</groupId>
+    <artifactId>geogig</artifactId>
+    <version>1.0-SNAPSHOT</version>
     <relativePath>../parent/pom.xml</relativePath>
   </parent>
 
-  <artifactId>geogit-cli</artifactId>
+  <artifactId>geogig-cli</artifactId>
   <packaging>jar</packaging>
-  <name>GeoGit Command Line Interface</name>
+  <name>GeoGig Command Line Interface</name>
 
   <dependencies>
     <dependency>
-      <groupId>org.geogit</groupId>
-      <artifactId>geogit-core</artifactId>
+      <groupId>org.locationtech.geogig</groupId>
+      <artifactId>geogig-core</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.geogit</groupId>
-      <artifactId>geogit-bdbje</artifactId>
+      <groupId>org.locationtech.geogig</groupId>
+      <artifactId>geogig-bdbje</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.geogit</groupId>
-      <artifactId>geogit-mongodb</artifactId>
+      <groupId>org.locationtech.geogig</groupId>
+      <artifactId>geogig-mongodb</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.geogit</groupId>
-      <artifactId>geogit-sqlite-xerial</artifactId>
+      <groupId>org.locationtech.geogig</groupId>
+      <artifactId>geogig-sqlite-xerial</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.geogit</groupId>
-      <artifactId>geogit-metrics</artifactId>
+      <groupId>org.locationtech.geogig</groupId>
+      <artifactId>geogig-metrics</artifactId>
       <version>${project.version}</version>
     </dependency>
 
@@ -98,15 +98,15 @@
 
     <!-- Test scope dependencies -->
     <dependency>
-      <groupId>org.geogit</groupId>
-      <artifactId>geogit-core</artifactId>
+      <groupId>org.locationtech.geogig</groupId>
+      <artifactId>geogig-core</artifactId>
       <version>${project.version}</version>
       <classifier>tests</classifier>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.geogit</groupId>
-      <artifactId>geogit-bdbje</artifactId>
+      <groupId>org.locationtech.geogig</groupId>
+      <artifactId>geogig-bdbje</artifactId>
       <version>${project.version}</version>
       <classifier>tests</classifier>
       <scope>test</scope>

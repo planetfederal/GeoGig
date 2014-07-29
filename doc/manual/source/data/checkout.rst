@@ -3,7 +3,7 @@
 Checking out a previous version
 =================================
 
-All the versions stored in a GeoGit repository are available and can be used. We already know how to refer to an object from a previous version, by using the reference syntax explained in :ref:`referencing`. That allows us to describe that element or to use it for a certain operation.
+All the versions stored in a GeoGig repository are available and can be used. We already know how to refer to an object from a previous version, by using the reference syntax explained in :ref:`referencing`. That allows us to describe that element or to use it for a certain operation.
 
 A different way of recovering a given version of the data kept in the repository is to bring all the changes to the working tree, so we can actually work on that data. Notice that this could be used, for instance, to export it and make that version of the repository available for an external application. However, you can export from a given commit without having to checkout and then export from the working tree, as it was explained in the :ref:`exporting` section.
 
@@ -15,7 +15,7 @@ The following is a valid command that will update the version in the working tre
 
 ::
 
-	$ geogit checkout HEAD~5
+	$ geogig checkout HEAD~5
 
 
 Apart from updating the working tree, the ``checkout`` command updates the HEAD ``reference``, which will now point to the commit from where the data to update the working tree was taken. 
@@ -26,7 +26,7 @@ To go back to the most recent state, where you were before checking out the prev
 
 ::
 
-	$ geogit checkout master
+	$ geogig checkout master
 
 Reseting to a previous commit
 ------------------------------
@@ -41,7 +41,7 @@ To reset to the commit 5 commits ago, use the following:
 
 ::
 
-	$ geogit reset HEAD~5 --hard
+	$ geogig reset HEAD~5 --hard
 
-That will update all 3 areas in GeoGit (working tree, staging area and database) to the specified commit. This is known as a hard reset. You can also perform a mixed reset (only updates the staging area and database, but not the working tree, with the ``--mixed`` option), or a soft reset (only updates the database, with the ``--soft`` option).
+That will update all 3 areas in GeoGig (working tree, staging area and database) to the specified commit. This is known as a hard reset. You can also perform a mixed reset (only updates the staging area and database, but not the working tree, with the ``--mixed`` option), or a soft reset (only updates the database, with the ``--soft`` option).
 

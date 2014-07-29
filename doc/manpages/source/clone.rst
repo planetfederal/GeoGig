@@ -1,22 +1,22 @@
 
-.. _geogit-clone:
+.. _geogig-clone:
 
-geogit-clone documentation
+geogig-clone documentation
 ###########################
 
 
 
 SYNOPSIS
 ********
-geogit clone [--branch <name>] <repository> [<directory>] [--filter <file>] [--depth <depth>]
+geogig clone [--branch <name>] <repository> [<directory>] [--filter <file>] [--depth <depth>]
 
 
 DESCRIPTION
 ***********
 
-Clones a repository into a newly created directory, creates remote-tracking branches for each branch in the cloned repository (visible using geogit branch -r), and creates and checks out an initial branch that is forked from the cloned repository's currently active branch.
+Clones a repository into a newly created directory, creates remote-tracking branches for each branch in the cloned repository (visible using geogig branch -r), and creates and checks out an initial branch that is forked from the cloned repository's currently active branch.
 
-After the clone, a plain geogit fetch without arguments will update all the remote-tracking branches, and a geogit pull without arguments will in addition merge the remote master branch into the current master branch, if any.
+After the clone, a plain geogig fetch without arguments will update all the remote-tracking branches, and a geogig pull without arguments will in addition merge the remote master branch into the current master branch, if any.
 
 This default configuration is achieved by creating references to the remote branch heads under refs/remotes/origin and by initializing remote.origin.url and remote.origin.fetch configuration variables.
 
@@ -31,16 +31,16 @@ OPTIONS
     
 --filter <file>					Ini file containing the filter to be used to create a sparse clone.
 
---config <config_name>=<config_value>[,<config_name>=<config_value>]  Initial configuration parameters for the new repository.  See the documentation for geogit init
+--config <config_name>=<config_value>[,<config_name>=<config_value>]  Initial configuration parameters for the new repository.  See the documentation for geogig init
 
 SEE ALSO
 ********
 
-:ref:`geogit-fetch`
+:ref:`geogig-fetch`
 
-:ref:`geogit-pull`
+:ref:`geogig-pull`
 
-:ref:`geogit-push`
+:ref:`geogig-push`
 
 BUGS
 ****

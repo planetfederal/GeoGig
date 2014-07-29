@@ -3,7 +3,7 @@
 Branches
 ========
 
-It is possible to work with a GeoGit repository in a linear fashion, adding new commits one after another. However, GeoGit allows for managing several histories in our repository, creating a tree-like structure. These separate histories are called **branches**.
+It is possible to work with a GeoGig repository in a linear fashion, adding new commits one after another. However, GeoGig allows for managing several histories in our repository, creating a tree-like structure. These separate histories are called **branches**.
 
 The following figure shows a branch-based workflow.
 
@@ -36,7 +36,7 @@ To create a new branch use the following command:
 
 .. code-block:: console
 
-   geogit branch newbranch
+   geogig branch newbranch
 
 Where ``newbranch`` is the name of the new branch.
 
@@ -44,24 +44,24 @@ The above command creates a new branch, but does not change to be working on tha
 
 .. code-block:: console
 
-   geogit checkout newbranch
+   geogig checkout newbranch
 
 To create a new branch and move to that branch in one command, use the ``-c`` option::
 
 .. code-block:: console
 
-   geogit branch -c newbranch
+   geogig branch -c newbranch
 
-When performing a branch checkout, GeoGit puts the data from the tip of that branch (the most recent commit) in the working tree. For this reason, the working tree has to be clean (no unstaged changes) before doing a checkout. 
+When performing a branch checkout, GeoGig puts the data from the tip of that branch (the most recent commit) in the working tree. For this reason, the working tree has to be clean (no unstaged changes) before doing a checkout. 
 
 Branch references
 -----------------
 
-When a branch is created, a reference is created with the name of the branch. That reference will always point to the latest commit made on that branch. When the branch is checked out, GeoGit changes the ``HEAD`` reference to point at the reference denoting the branch you have checked out. So if ``HEAD`` was linked to the ``master`` branch and its corresponding reference, but after a checkout of a different branch ``HEAD`` changes automatically.
+When a branch is created, a reference is created with the name of the branch. That reference will always point to the latest commit made on that branch. When the branch is checked out, GeoGig changes the ``HEAD`` reference to point at the reference denoting the branch you have checked out. So if ``HEAD`` was linked to the ``master`` branch and its corresponding reference, but after a checkout of a different branch ``HEAD`` changes automatically.
 
 The name of the branch is itself a valid reference. For this reason, you can use it to reference an object under that branch. For instance, to see a description of a feature named ``1`` in a tree called ``parks`` in the ``edits`` branch, you can use the following command:
 
 .. code-block:: console
 
-   geogit show edits:parks/1
+   geogig show edits:parks/1
 

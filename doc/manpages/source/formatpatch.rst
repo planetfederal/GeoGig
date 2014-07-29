@@ -1,13 +1,13 @@
-.. _geogit-format-patch:
+.. _geogig-format-patch:
 
-geogit-format-patch documentation
+geogig-format-patch documentation
 ###################################
 
 
 
 SYNOPSIS
 ********
-geogit format-patch <commit1> <commit2> [-- <path>...] -f <patch_file>
+geogig format-patch <commit1> <commit2> [-- <path>...] -f <patch_file>
 
 
 DESCRIPTION
@@ -32,9 +32,9 @@ OPTIONS
 SEE ALSO
 ********
 
-:ref:`geogit-apply`
+:ref:`geogig-apply`
 
-:ref:`geogit-diff`
+:ref:`geogig-diff`
 
 BUGS
 ****

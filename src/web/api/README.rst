@@ -1,5 +1,5 @@
 *******************
-GeoGit Web API
+GeoGig Web API
 *******************
 
 Proof-of-concept straw-man web API for a single repository.
@@ -40,24 +40,24 @@ First, build the whole project via the `parent` module.
 
 To run the jetty server via maven, in the web module directory, run:
 
-  mvn -o exec:java -Dexec.mainClass=org.geogit.web.Main -Dexec.args=PATH_TO_YOUR_REPO
+  mvn -o exec:java -Dexec.mainClass=org.locationtech.geogig.web.Main -Dexec.args=PATH_TO_YOUR_REPO
 
 In Servlet Container
 --------------------
 
-Build the geogit.war like this:
+Build the geogig.war like this:
 
   mvn package
 
 The output should tell you where the war is. Something like:
 
-  Building war: <project-home>/geogit/src/web/target/geogit-web-0.2-SNAPSHOT.war
+  Building war: <project-home>/geogig/src/web/target/geogig-web-0.2-SNAPSHOT.war
 
 Deploy the war to your container and ensure one of the two points to the full
 path to your repository:
 
 * servlet parameter `repository`
-* java system property `org.geogit.web.repository`
+* java system property `org.locationtech.geogig.web.repository`
 
 URLS
 ====
@@ -134,7 +134,7 @@ The Future
 ==========
 
 It would be trivial to expand the URL routing to one or more directory roots containing one
-or more geogit repositories. For example:
+or more geogig repositories. For example:
 
   http://host/{directory}/{repo}/{command} 
 

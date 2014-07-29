@@ -1,14 +1,14 @@
 
-.. _geogit-remote-remove:
+.. _geogig-remote-remove:
 
-geogit-remote-remove documentation
+geogig-remote-remove documentation
 ##################################
 
 
 
 SYNOPSIS
 ********
-geogit remote rm <name>
+geogig remote rm <name>
 
 
 DESCRIPTION
@@ -19,9 +19,9 @@ Remove the remote named <name>. All remote-tracking branches and configuration s
 SEE ALSO
 ********
 
-:ref:`geogit-remote-add`
+:ref:`geogig-remote-add`
 
-:ref:`geogit-remote-list`
+:ref:`geogig-remote-list`
 
 BUGS
 ****

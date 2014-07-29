@@ -1,6 +1,6 @@
 Prerequisites
-    GeoGit installation (and configured)
-    GeoServer with GeoGit Extension
+    GeoGig installation (and configured)
+    GeoServer with GeoGig Extension
     PostGIS
     shp2pgsql
     QGIS 2.0
@@ -22,57 +22,57 @@ Setup a PostGIS Database
 Convert the Shapefiles for use with PostGIS
     for a in `ls *.shp`; do shp2pgsql -S -c $a > $a.sql; done
 Load the Shapefiles into PostGIS
-    for a in `ls *.sql`; do psql -d geogit_ethiopia -U geogit -f $a; done
+    for a in `ls *.sql`; do psql -d geogig_ethiopia -U geogig -f $a; done
 View the PostGIS Layers in QGIS
     Add the PostGIS Connection
     Add the Layers (specify the SRID)
     Add a baselayer (bing)
     Explore the layers
-Setup a geogit repository
-    mkdir geogit_ethiopia
-    geogit init
-Import the layers from PostGIS to geogit
-    geogit pg import --database geogit_ethiopia --user geogit --password geogit --all
-    geogit add
-    geogit commit -m "Initial add"
+Setup a geogig repository
+    mkdir geogig_ethiopia
+    geogig init
+Import the layers from PostGIS to geogig
+    geogig pg import --database geogig_ethiopia --user geogig --password geogig --all
+    geogig add
+    geogig commit -m "Initial add"
 Examine the log
-    geogit log
+    geogig log
 Edit the PostGIS Layer in QGIS
     Start an Editing session for buildings
     Add some buildings & Give them attributes
     Save edits
-Commit changes from PostGIS to GeoGit Repo
-    geogit pg import --database geogit_ethiopia --user geogit --password geogit --table buildings
-    geogit add
-    geogit commit -m "Added buildings"
+Commit changes from PostGIS to GeoGig Repo
+    geogig pg import --database geogig_ethiopia --user geogig --password geogig --table buildings
+    geogig add
+    geogig commit -m "Added buildings"
 Inspect the log and the diff
-    geogit log
-    geogit diff <sha> <sha>
+    geogig log
+    geogig diff <sha> <sha>
 Clone the repo from the filesystem
-    geogit clone ./ethiopia ethiopia-clone
+    geogig clone ./ethiopia ethiopia-clone
 Inspect the Clone
     cd ethiopia clone
-    geogit log
+    geogig log
 Make some more edits in PostGIS
     Start Editing
     Add a building and attributes
     Close edit session and save edits
-Commit edits to original GeoGit Repo
-    geogit pg import
-    geogit add
-    geogit commit -m "Added more buildings"
+Commit edits to original GeoGig Repo
+    geogig pg import
+    geogig add
+    geogig commit -m "Added more buildings"
 Pull changes into clone
-    geogit pull
+    geogig pull
 Inspect Log & diff
-    geogit log
-    geogit diff <sha> <sha>
+    geogig log
+    geogig diff <sha> <sha>
 Expose Clone with Webservices using GeoServer
     Configure repo as Store
     Publish Layers
     View Layer Preview
     Inspect WFS/WMS
 Add the clone as a remote to the original repo
-    geogit remote add clone http://localhost:8080/geoserver/geogit/opengeo:ethiopia
+    geogig remote add clone http://localhost:8080/geoserver/geogig/opengeo:ethiopia
 Make more Edits against PostGIS in QGIS
     Start Editing Session
     Add new Features
@@ -80,14 +80,14 @@ Make more Edits against PostGIS in QGIS
     Modify Existing Attributes
     End Editing Session and save
 Import Edits to original repo
-    geogit pg import
-    geogit add
-    geogit commit -m "More building changes"
+    geogig pg import
+    geogig add
+    geogig commit -m "More building changes"
 Push Edits to clone via remote api
-    geogit push
+    geogig push
 Inspect the web API
-    http://localhost:8080/geoserver/geogit/opengeo:ethiopia/log.json
-    http://localhost:8080/geoserver/geogit/opengeo:ethiopia/diff.json?oldRefSpec=commitId1&newRefSpec=commidId2&showGeometryChanges=true&show=100
+    http://localhost:8080/geoserver/geogig/opengeo:ethiopia/log.json
+    http://localhost:8080/geoserver/geogig/opengeo:ethiopia/diff.json?oldRefSpec=commitId1&newRefSpec=commidId2&showGeometryChanges=true&show=100
 Edit against the WFS with GeoExplorer
     http://localhost:8080/geoexplorer/composer/
     Add the buildings layer
@@ -95,12 +95,12 @@ Edit against the WFS with GeoExplorer
     Create  new Feature
     Edit an existing feature
 Pull Changes to original repo
-    geogit pull
-    geogit log
+    geogig pull
+    geogig log
     "modified 1 features via unversioned legacy client."
     "added buildings/fid-7a47ad_141eb0f1bb2_-7fe9"
 Export the changes to the PostGIS DB
-    geogit pg export --database geogit_ethiopia --user geogit --password geogit --alter --overwrite --defaulttype
+    geogig pg export --database geogig_ethiopia --user geogig --password geogig --alter --overwrite --defaulttype
 Refresh the PostGIS Layer in QGIS to see that it matches
 
 

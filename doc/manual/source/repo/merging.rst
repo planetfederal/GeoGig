@@ -11,11 +11,11 @@ The following graphic describes this procedure:
 
 .. figure:: ../img/merged.png
 
-Merging is done using the ``geogit merge`` command. Change to the **destination branch** (in most cases, ``master``) and perform the following command:
+Merging is done using the ``geogig merge`` command. Change to the **destination branch** (in most cases, ``master``) and perform the following command:
 
 .. code-block:: console
 
-   geogit merge mybranch
+   geogig merge mybranch
 
 That will add new commits from the ``mybranch`` branch to the ``master`` branch.
 
@@ -23,13 +23,13 @@ Once you have merged your changes, you may wish to delete the branch. Do this by
 
 .. code-block:: console
 
-   geogit branch -d mybranch
+   geogig branch -d mybranch
 
 
 Merge conflicts
 ---------------
 
-When merging two branches, the changes made may not be compatible. For instance, if both branches have modified the same attribute value of the same feature, that will cause a conflicting situation that GeoGit cannot solve automatically. In such a case, GeoGit will merge all the compatible changes and leave the conflicting ones marked, so they can be manually resolved and then committed.
+When merging two branches, the changes made may not be compatible. For instance, if both branches have modified the same attribute value of the same feature, that will cause a conflicting situation that GeoGig cannot solve automatically. In such a case, GeoGig will merge all the compatible changes and leave the conflicting ones marked, so they can be manually resolved and then committed.
 
 When a merge operation finds conflicts and it cannot automatically merge all the changes, it shows a message like the one shown below:
 
@@ -40,13 +40,13 @@ When a merge operation finds conflicts and it cannot automatically merge all the
    CONFLICT: Merge conflict in parks/1
    Automatic merge failed. Fix conflicts and then commit the result.
 
-You can check which elements are conflicted by running the ``geogit status`` command. The result will be similar to the one shown next:
+You can check which elements are conflicted by running the ``geogig status`` command. The result will be similar to the one shown next:
 
 .. code-block:: console
   
    # On branch master
    # Unmerged paths:
-   #   (use "geogit add/rm <path/to/fid>..." as appropriate to mark resolution
+   #   (use "geogig add/rm <path/to/fid>..." as appropriate to mark resolution
    #
    #      unmerged  parks/2
    #      unmerged  parks/3
@@ -83,7 +83,7 @@ The following cases will not produce a merge conflict when the following situati
 * Modifying the geometry of a feature, but when changes are compatible and can be both incorporated.
 * Making the same modification to a feature geometry.
 
-In general, whenever the situation doesn't have a clear way of being solved, GeoGit will report a conflict for the sake of safety.
+In general, whenever the situation doesn't have a clear way of being solved, GeoGig will report a conflict for the sake of safety.
 
 
 
@@ -93,11 +93,11 @@ Showing conflicts
 
 The ``conflicts`` command can be used to describe the current unmerged elements. There are three ways of displaying conflicts:
 
-#. Running ``geogit conflicts`` will print the full descriptions of the versions involved in the conflict: the common ancestor, "ours" (current branch) and "theirs" (the branch to merge). The descriptions of the involved elements are the same ones that would be obtained by calling the GeoGit ``cat`` command on each of them.
+#. Running ``geogig conflicts`` will print the full descriptions of the versions involved in the conflict: the common ancestor, "ours" (current branch) and "theirs" (the branch to merge). The descriptions of the involved elements are the same ones that would be obtained by calling the GeoGig ``cat`` command on each of them.
 
-#. Running ``geogit conflicts --diff`` will output a representation with diff-like syntax instead of full descriptions, showing only those attributes the differ. It uses the same syntax as the ``diff`` command, which is described in the :ref:`differences` section, which makes it easier to see why the conflict arises and how to solve it.
+#. Running ``geogig conflicts --diff`` will output a representation with diff-like syntax instead of full descriptions, showing only those attributes the differ. It uses the same syntax as the ``diff`` command, which is described in the :ref:`differences` section, which makes it easier to see why the conflict arises and how to solve it.
 
-#. Running ``geogit conflicts --ids-only`` will return just the IDs of the three versions corresponding to each unmerged element.
+#. Running ``geogig conflicts --ids-only`` will return just the IDs of the three versions corresponding to each unmerged element.
 
 Solving using the merge tool
 ----------------------------
@@ -111,10 +111,10 @@ Merging more than two branches
 
 The ``merge`` command accepts more than one single branch name as entry. If several branch names are provided, it will perform what is know as an **octopus merge**.
 
-The following situations will cause GeoGit to fail the octopus merge process:
+The following situations will cause GeoGig to fail the octopus merge process:
 
 * A conflict on any type exist, whether it is a conflict between two branches or between many of them at the same time.
-* A feature has been edited by at least two branches, and the changes introduced are not identical. Even if the changes are compatible (for instance, if branches have edited values for different attributes), GeoGit will not perform an automerge in this case, and the merge operation won't be executed.
+* A feature has been edited by at least two branches, and the changes introduced are not identical. Even if the changes are compatible (for instance, if branches have edited values for different attributes), GeoGig will not perform an automerge in this case, and the merge operation won't be executed.
 
 In these cases, you will have to merge branches individually, solving conflicts for each of them one be on.
 
@@ -124,27 +124,27 @@ Unlike a standard two branch merge, where the process will partially complete, a
 Staging a merged version of an conflicted element 
 -------------------------------------------------
 
-Using the ``geogit add`` command, features can be staged in the usual way. When a feature is staged, it is not in a conflicted state. Running the ``add`` command will solve the conflicted merge. Before this can be done, you must pick which version of the commit to merge.
+Using the ``geogig add`` command, features can be staged in the usual way. When a feature is staged, it is not in a conflicted state. Running the ``add`` command will solve the conflicted merge. Before this can be done, you must pick which version of the commit to merge.
 
-GeoGit uses "ours" and "theirs" notation, with "ours" referring to the current branch, and "theirs" referring to the other branch.
+GeoGig uses "ours" and "theirs" notation, with "ours" referring to the current branch, and "theirs" referring to the other branch.
 
 To select the feature from the current branch: 
 
 .. code-block:: console
 
-  geogit checkout -p <path_to_feature> --ours
+  geogig checkout -p <path_to_feature> --ours
 
 To select the feature from the other branch:
 
 .. code-block:: console
 
-  geogit checkout -p <path_to_feature> --theirs
+  geogig checkout -p <path_to_feature> --theirs
 
-Alternately, you can import a new feature using one of the importing tools from GeoGit, or delete the conflicted feature entirely using the ``rm`` command. The latter option will remove it from both the working tree and the index, as well as the commit.. Their is no need to call ``add`` afterwards, unless you have staged some other element to solve a different conflict.
+Alternately, you can import a new feature using one of the importing tools from GeoGig, or delete the conflicted feature entirely using the ``rm`` command. The latter option will remove it from both the working tree and the index, as well as the commit.. Their is no need to call ``add`` afterwards, unless you have staged some other element to solve a different conflict.
 
 Once you have the correct version that you want to commit, run ``add`` to stage it and then run ``commit`` to finally commit your resolved elements and finish the merge.
 
-In a standard commit, you usually must supply a commit message using the ``-m`` switch. In the case of a merge, you can also run ``geogit merge`` without a commit message. In the conflict case, the default message would look something like this:
+In a standard commit, you usually must supply a commit message using the ``-m`` switch. In the case of a merge, you can also run ``geogig merge`` without a commit message. In the conflict case, the default message would look something like this:
 
 .. code-block:: console
 
@@ -163,8 +163,8 @@ You can abort the merge operation and restore it to the original state it had be
 
 .. code-block:: console
 
-   geogit reset --hard ORIG_HEAD
-   geogit merge --abort
+   geogig reset --hard ORIG_HEAD
+   geogig merge --abort
 
 .. warning:: This is not like git. The ``--abort`` here is just a reset operation.
 
@@ -175,8 +175,8 @@ You can abort the merge operation and restore it to the original state it had be
   Commenting this out here for now but saving it
 
 
-  geogit conflicts
-  $geogit conflicts
+  geogig conflicts
+  $geogig conflicts
   parks/2
 
   Ancestor    27207309879802a99d161b063b8f958d179be3b0

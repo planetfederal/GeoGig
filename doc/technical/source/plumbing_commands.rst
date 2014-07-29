@@ -1,9 +1,9 @@
 Plumbing commands
 ==================
 
-Commands described in the user documentation (so-called *porcelain* commands) are meant to be used by a human user, and their output might not be well suited to be parsed or for machine consumption. Also, the output is not guaranteed to be stable, and it might change if, for instance, internationalization is added to GeoGit in the future.
+Commands described in the user documentation (so-called *porcelain* commands) are meant to be used by a human user, and their output might not be well suited to be parsed or for machine consumption. Also, the output is not guaranteed to be stable, and it might change if, for instance, internationalization is added to GeoGig in the future.
 
-When a stable, machine-readable output is needed, the so-called plumbing commands have to be used instead of the porcelain commands, to guarantee that the output they produce is suitable for being used by other applications, such as a GeoGit front-end, or a script that automates some GeoGit-based task.
+When a stable, machine-readable output is needed, the so-called plumbing commands have to be used instead of the porcelain commands, to guarantee that the output they produce is suitable for being used by other applications, such as a GeoGig front-end, or a script that automates some GeoGig-based task.
 
 This document describes plumbing commands and how they replace the corresponding porcelain commands. Detail description of their output format can also be found here.
 
@@ -30,18 +30,18 @@ The following are some examples of the output produced by the ``ls-tree`` comman
 
 ::
 
-	$geogit ls-tree -v parks
+	$geogig ls-tree -v parks
 	6beb800506a526e151e8f77c422c111cd54bcf7e tree 292f917fbd5153fcfb3def60f5cc57f628ae1252 elevation 18.666297912597656;18.715967178344727;45.776702880859375;45.811668395996094 2 0
 	1e6988eab76ab6b9da5da4d174278cca26049ab8 tree 3a2530e0818647b70afc17d09b1d56201aeb6fd3 landuse 18.66728973388672;18.71497344970703;45.77732849121094;45.811126708984375 3 0
 
-	$geogit ls-tree -v -r
+	$geogig ls-tree -v -r
 	6beb800506a526e151e8f77c422c111cd54bcf7e feature c42b927161372297a4c04640cd42a641da2c14be elevation/1 18.69426727294922;18.69426727294922;45.80892562866211;45.80892562866211
 	6beb800506a526e151e8f77c422c111cd54bcf7e feature 43c0c94a353406eb4e0c10d616d54dea3e7a875f elevation/2 18.694978713989258;18.694978713989258;45.808895111083984;45.808895111083984
 	1e6988eab76ab6b9da5da4d174278cca26049ab8 feature da06caf087e0eea927896b9fd4b8a4cdc34ffc70 landuse/1 18.676733016967773;18.71497344970703;45.77738571166992;45.81097412109375
 	1e6988eab76ab6b9da5da4d174278cca26049ab8 feature 3fc0459c87a4f46df3ec01d0dc64ce7de8ae6511 landuse/2 18.670719146728516;18.672962188720703;45.7775993347168;45.77836608886719
 	1e6988eab76ab6b9da5da4d174278cca26049ab8 feature e7d870b11be957a488c026ef5e4c8123145fbb3e landuse/3 18.707529067993164;18.714677810668945;45.77732849121094;45.78892517089844
 
-	$geogit ls-tree -r -t
+	$geogig ls-tree -r -t
 	elevation
 	landuse
 	elevation/1
@@ -123,7 +123,7 @@ The last line is repeated as many times as affected features are found.
 cat
 ----
 
-The ``cat`` command replaces the ``show`` command produces a text description of elements in a GeoGit repository. The format for the different types of objects is as follows. An example has been added in each case.
+The ``cat`` command replaces the ``show`` command produces a text description of elements in a GeoGig repository. The format for the different types of objects is as follows. An example has been added in each case.
 
 
 Commit

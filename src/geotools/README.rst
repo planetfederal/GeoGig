@@ -1,11 +1,11 @@
 ######################################################
-GeoGit GeoTools Extension
+GeoGig GeoTools Extension
 ######################################################
 
-This extension to GeoGit is meant to provide a means for importing and exporting
-geospatial data to and from GeoGit into a variety of data stores.
+This extension to GeoGig is meant to provide a means for importing and exporting
+geospatial data to and from GeoGig into a variety of data stores.
 
-GeoGit Details
+GeoGig Details
 =======
 
 Project Lead: `Gabriel Roldan <https://github.com/groldan>`_
@@ -22,7 +22,7 @@ As indicated above the code is distributed under an `Modified BSD <LICENSE.txt>`
 Build
 =====
 
-The GeoGit GeoTools extension is built using Maven::
+The GeoGig GeoTools extension is built using Maven::
   
   cd src
   mvn clean install
@@ -36,10 +36,10 @@ Functional tests require a PostGIS database that can be used for testing, and ar
   
 The PostGIS database must be populated with the test tables from the .sql file::
 
-  'src/test/resources/org/geogit/geotools/cli/test/functional/geogit_pg_test.sql'
+  'src/test/resources/org/geogig/geotools/cli/test/functional/geogig_pg_test.sql'
   
 When the functional tests are run for the first time, a database configuration file will be created at the
-user root directory called '.geogit-pg-tests.properties'.  Open this file and enter the connection information
+user root directory called '.geogig-pg-tests.properties'.  Open this file and enter the connection information
 for the test database.
 
 Additional Profiles
@@ -58,7 +58,7 @@ Participation
 
 The project is hosted on github:
 
-* https://github.com/opengeo/GeoGit
+* https://github.com/opengeo/GeoGig
 
 Participation is encouraged using the github *fork* and *pull request* workflow::
 
@@ -68,10 +68,10 @@ Participation is encouraged using the github *fork* and *pull request* workflow:
 
 Project resources:
 
-* `Full on-line project documentation <http://opengeo.github.com/GeoGit>`_
-* `GeoGit Discussion Group <https://groups.google.com/a/opengeo.org/group/geogit/>`_
-* The build is `actively monitored using hudson <http://hudson.opengeo.org/hudson/view/geogit/>`_
-* https://github.com/opengeo/GeoGit/issues
+* `Full on-line project documentation <http://opengeo.github.com/GeoGig>`_
+* `GeoGig Discussion Group <https://groups.google.com/a/opengeo.org/group/geogig/>`_
+* The build is `actively monitored using hudson <http://hudson.opengeo.org/hudson/view/geogig/>`_
+* https://github.com/opengeo/GeoGig/issues
 
 Additional resources:
 

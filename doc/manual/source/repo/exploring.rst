@@ -3,11 +3,11 @@
 Exploring a repository
 ======================
 
-The entire contents of a GeoGit repository are stored in the ``.geogit`` directory.
+The entire contents of a GeoGig repository are stored in the ``.geogig`` directory.
 
-Unlike a version control system like Git, the content of the current working tree cannot be explored directly as a normal folder containing files, so they are stored instead in a database which holds the complete structure of the repository. This means that any files stored in the same directory that contains the ``.geogit`` directory will be ignored by GeoGit.
+Unlike a version control system like Git, the content of the current working tree cannot be explored directly as a normal folder containing files, so they are stored instead in a database which holds the complete structure of the repository. This means that any files stored in the same directory that contains the ``.geogig`` directory will be ignored by GeoGig.
 
-Therefore, exploring a GeoGit repository must be done using GeoGit commands. The main commands used for this task are:
+Therefore, exploring a GeoGig repository must be done using GeoGig commands. The main commands used for this task are:
 
 * ``ls``: lists the content of a tree
 * ``show``: prints a formatted version of an element of the repository
@@ -19,13 +19,13 @@ The basic ``ls`` command takes the following form:
 
 .. code-block:: console
 
-   geogit ls [ref]:[path]
+   geogig ls [ref]:[path]
 
 The ``[ref]:[path]`` parameter defines the path to be listed. If it contains no ``ref`` part, it will list the given path in the current working tree. To list the same path in a different reference, a full reference can be provided. For instance, to list the content of ``parks`` in the current HEAD, the following line should be used:
 
 .. code-block:: console
   
-   geogit ls HEAD:parks
+   geogig ls HEAD:parks
 
 The provided reference and path should resolve to a tree. Since features do not contains other elements, their content cannot be listed with the ``ls`` command, but instead must be used with the ``show`` command.
 
@@ -34,7 +34,7 @@ An object ID can be used directly instead of a ``[ref]:[path]``. So one can use 
 The options available for the ``ls`` command control how the list of elements under the given path is printed.
 
 * The ``-v`` option (for "**verbose**") will list not just the name of the objects, but also the object's ID and the ID of the corresponding feature type.
-* The ``-r`` option will list the contents of subtrees **recursively**. The names of these subtrees are not shown in the listing, but you can specify GeoGit to add them by using the ``-t`` option along with ``-d``.
+* The ``-r`` option will list the contents of subtrees **recursively**. The names of these subtrees are not shown in the listing, but you can specify GeoGig to add them by using the ``-t`` option along with ``-d``.
 * The ``-a`` option (for "**abbreviate**") will show IDs in their abbreviated form. Use a number to determine how many digits of the ID to display (``-a 7`` for seven digit IDs).
 
 Here are some examples of the ``ls`` command:
@@ -43,7 +43,7 @@ Recursive list:
 
 .. code-block:: console
 
-   geogit ls -r -t
+   geogig ls -r -t
 
 .. code-block:: console
 
@@ -58,7 +58,7 @@ Verbose list:
 
 .. code-block:: console
 
-   geogit ls -v parks
+   geogig ls -v parks
 
 .. code-block:: console
 
@@ -72,7 +72,7 @@ Verbose and recursive list:
 
 .. code-block:: console
 
-   geogit ls -v -r -t
+   geogig ls -v -r -t
 
 .. code-block:: console
 
@@ -87,7 +87,7 @@ Verbose and recursive list with seven digit IDs:
 
 .. code-block:: console
 
-   geogit ls -v -r -t -a 7
+   geogig ls -v -r -t -a 7
 
 .. code-block:: console
 
@@ -102,7 +102,7 @@ Verbose and recursive list with seven digit IDs:
 Showing features
 ----------------
 
-Describing an element in a GeoGit repository is done using the ``show`` command. It can be used to describe any type of object, unlike ``ls`` which needs to resolve to a tree.
+Describing an element in a GeoGig repository is done using the ``show`` command. It can be used to describe any type of object, unlike ``ls`` which needs to resolve to a tree.
 
 The ``show`` command prints a formatted description of a given element. This description is a human-readable version of the element. 
 
@@ -114,7 +114,7 @@ The example below shows the use of the ``show`` command with a tree:
 
 .. code-block:: console
 
-   geogit show parks
+   geogig show parks
 
 .. code-block:: console
 
@@ -140,7 +140,7 @@ When specifying a single feature, the ``show`` command prints the values of all 
 
 .. code-block:: console
   
-   geogit show HEAD:parks/1
+   geogig show HEAD:parks/1
 
 .. code-block:: console
 
@@ -162,7 +162,7 @@ The following example shows the output of the ``show`` command when used on a co
 
 .. code-block:: console
 
-   geogit show 509a481257c5791f50f5a35087e432247f9dc8b7
+   geogig show 509a481257c5791f50f5a35087e432247f9dc8b7
 
 .. code-block:: console
 
@@ -178,14 +178,14 @@ You can also use a reference like ``HEAD`` to show the current state of the repo
 
 .. code-block:: console
 
-   geogit show HEAD
+   geogig show HEAD
 
 Globbing
 --------
 
-Some commands in GeoGit, such as ``ls`` and ``show``, support using wildcards. This way, you can more easily select a set of objects without having to type the name of each of them.
+Some commands in GeoGig, such as ``ls`` and ``show``, support using wildcards. This way, you can more easily select a set of objects without having to type the name of each of them.
 
-GeoGit uses globbing notation similar to the program `ant <http://ant.apache.org>`_, supporting the most common wildcards, namely ``*``, ``?`` and ``**``.
+GeoGig uses globbing notation similar to the program `ant <http://ant.apache.org>`_, supporting the most common wildcards, namely ``*``, ``?`` and ``**``.
 
 * The ``*`` character can be any string of any length (including zero)
 * The ``?`` represents a single character.
@@ -193,7 +193,7 @@ GeoGit uses globbing notation similar to the program `ant <http://ant.apache.org
 
 For instance, the string ``roads/**/???`` will return all features with a name containing only three characters in any path under ``roads``. That includes ``roads/N501``, and also ``roads/spain/madrid/N501``
 
-Since objects are not stored in the filesystem, but in the repository database, the expansion of wildcards is not (and should not be) performed by the command-line interpreter, but by the GeoGit interpreter itself.
+Since objects are not stored in the filesystem, but in the repository database, the expansion of wildcards is not (and should not be) performed by the command-line interpreter, but by the GeoGig interpreter itself.
 
 .. note:: For more information, please see the section about `directory-based tasks <http://ant.apache.org/manual/dirtasks.html>`_ in the ant manual.
 

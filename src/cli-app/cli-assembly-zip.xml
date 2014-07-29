@@ -10,8 +10,8 @@
   
     <fileSets>
         <fileSet>
-            <directory>target/geogit</directory>
-            <outputDirectory>geogit</outputDirectory>
+            <directory>target/geogig</directory>
+            <outputDirectory>geogig</outputDirectory>
             <includes>
                 <include>LICENSE.txt</include>
                 <include>man/**</include>
@@ -21,8 +21,8 @@
             <directoryMode>0755</directoryMode>
         </fileSet>
         <fileSet>
-            <directory>target/geogit</directory>
-            <outputDirectory>geogit</outputDirectory>
+            <directory>target/geogig</directory>
+            <outputDirectory>geogig</outputDirectory>
             <includes>
                 <include>bin/**</include>
             </includes>

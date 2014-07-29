@@ -1,55 +1,55 @@
 .. _start.tutorial:
 
-GeoGit tutorial
+GeoGig tutorial
 ===============
 
-GeoGit is a Distributed Version Control System (DVCS) for geospatial data.
+GeoGig is a Distributed Version Control System (DVCS) for geospatial data.
 
-This document is a short introduction to the main ideas and elements of GeoGit. It describes how to set up and use GeoGit to version spatial data, introducing the following operations:
+This document is a short introduction to the main ideas and elements of GeoGig. It describes how to set up and use GeoGig to version spatial data, introducing the following operations:
 
-* Importing unversioned spatial data into GeoGit
+* Importing unversioned spatial data into GeoGig
 * Making changes and storing snapshots ("commit")
 * Maintaining independent lines of modifications ("branch")
 * Integrating changes from separate branches ("merge")
 * Resolving conflicting edits
 * Synchronizing data across a network ("push" and "pull")
 * Marking specific versions of the data ("tag")
-* Exporting data from GeoGit to a shapefile
+* Exporting data from GeoGig to a shapefile
 
-This tutorial assumes no prior experience with GeoGit. More details can be found in later sections.
+This tutorial assumes no prior experience with GeoGig. More details can be found in later sections.
 
 Installation
 ------------
 
-Follow the instructions on the :ref:`start.installation` page to install GeoGit.
+Follow the instructions on the :ref:`start.installation` page to install GeoGig.
 
 Configuration
 -------------
 
-Before we start working with geospatial data in GeoGit, you have to provide GeoGit with an user name and email, using the ``config`` command, substituting your name and email:
+Before we start working with geospatial data in GeoGig, you have to provide GeoGig with an user name and email, using the ``config`` command, substituting your name and email:
 
 .. code-block:: console
 
-   geogit config --global user.name "Author"
-   geogit config --global user.email "author@example.com"
+   geogig config --global user.name "Author"
+   geogig config --global user.email "author@example.com"
 
 Initialization
 --------------
 
-First, we must create a new repository. Create a directory folder that will contain the repository, move into it, and initialize the GeoGit repository typing
+First, we must create a new repository. Create a directory folder that will contain the repository, move into it, and initialize the GeoGig repository typing
 
 .. code-block:: console
 
-   geogit init
+   geogig init
 
-Now your GeoGit repository is ready to manage and version your geospatial data. Note that a :file:`.geogit` directory was created.
+Now your GeoGig repository is ready to manage and version your geospatial data. Note that a :file:`.geogig` directory was created.
 
 Sample data
 -----------
 
 :download:`Download the tutorial sample data <../tutorial_data.zip>`
 
-This archive contains multiple directories, named ``snapshot1`` through ``snapshot5``. Each directory contains a single shapefile, that all contain slight variations. For the purposes of this tutorial, each shapefile will be considered a "snapshot" of the data in time. We will use these snapshots to simulate the creation and editing of the data in GeoGit.
+This archive contains multiple directories, named ``snapshot1`` through ``snapshot5``. Each directory contains a single shapefile, that all contain slight variations. For the purposes of this tutorial, each shapefile will be considered a "snapshot" of the data in time. We will use these snapshots to simulate the creation and editing of the data in GeoGig.
 
 .. todo:: Perhaps more details about the differences between the five shapefiles.
 
@@ -58,13 +58,13 @@ Extract the archive into the repository directory created in the previous step.
 Importing data
 --------------
 
-To work with data in GeoGit, it has to first be imported into the repository **working tree**.
+To work with data in GeoGig, it has to first be imported into the repository **working tree**.
 
 We will start by importing the ``snapshot1/parks.shp`` shapefile, using the following command
 
 .. code-block:: console
 
-   geogit shp import snapshot1/parks.shp
+   geogig shp import snapshot1/parks.shp
 
 The response will look like this:
 
@@ -76,13 +76,13 @@ The response will look like this:
    100%
    snapshot1/parks.shp imported successfully.
 
-The data from the shapefile is now in the working tree. This means it is not versioned yet, but it is now in a format that GeoGit can understand, so it can be aware of the data and the changes you might introduce.
+The data from the shapefile is now in the working tree. This means it is not versioned yet, but it is now in a format that GeoGig can understand, so it can be aware of the data and the changes you might introduce.
 
 Run the following command to verify that your data is actually in the working tree:
 
 .. code-block:: console
 
-   geogit ls -r
+   geogig ls -r
 
 The response will look like this:
 
@@ -93,7 +93,7 @@ The response will look like this:
            1
            3
 
-Features from the shapefile are added to the working tree under a tree named ``Root tree``. A **tree** in a GeoGit repository is analogous to a directory in a filesystem. Features are named as numbers, reflecting the order in which they are found in the source data. It is not necesarily the same order in which they are listed by the ``ls`` command.
+Features from the shapefile are added to the working tree under a tree named ``Root tree``. A **tree** in a GeoGig repository is analogous to a directory in a filesystem. Features are named as numbers, reflecting the order in which they are found in the source data. It is not necesarily the same order in which they are listed by the ``ls`` command.
 
 .. todo:: Why the difference?
 
@@ -101,14 +101,14 @@ Running the ``status`` command will give you information about the data you have
 
 .. code-block:: console
 
-   geogit status
+   geogig status
 
 .. code-block:: console
 
    # On branch master
    # Changes not staged for commit:
-   #   (use "geogit add <path/to/fid>..." to update what will be committed
-   #   (use "geogit checkout -- <path/to/fid>..." to discard changes in working directory
+   #   (use "geogig add <path/to/fid>..." to update what will be committed
+   #   (use "geogig checkout -- <path/to/fid>..." to discard changes in working directory
    #
    #      added  parks
    #      added  parks/2
@@ -119,11 +119,11 @@ Running the ``status`` command will give you information about the data you have
 Adding data
 -----------
 
-To tell GeoGit that you want to version data in the working tree, you have to add it to the **staging area**. To do it, run the following command:
+To tell GeoGig that you want to version data in the working tree, you have to add it to the **staging area**. To do it, run the following command:
 
 .. code-block:: console
 
-   geogit add
+   geogig add
 
 The response will look like this:
 
@@ -135,13 +135,13 @@ The response will look like this:
    3 features and 1 trees staged for commit
    0 features and 0 trees not staged for commit
 
-Now your data is ready to be used to create a snapshot (a **commit** in GeoGit terminology).
+Now your data is ready to be used to create a snapshot (a **commit** in GeoGig terminology).
 
 If you run the ``status`` command again, you will see a different output, since your data has now been added and is ready to be versioned. 
 
 .. code-block:: console
 
-   geogit status
+   geogig status
 
 The response will look like this:
 
@@ -149,7 +149,7 @@ The response will look like this:
 
    # On branch master
    # Changes to be committed:
-   #   (use "geogit reset HEAD <path/to/fid>..." to unstage)
+   #   (use "geogig reset HEAD <path/to/fid>..." to unstage)
    #
    #      added  parks
    #      added  parks/2
@@ -168,7 +168,7 @@ Type the following command:
 
 .. code-block:: console
 
-   geogit commit -m "first version"
+   geogig commit -m "first version"
 
 The response will look like this:
 
@@ -183,19 +183,19 @@ The text between quotes after the ``-m`` option is the commit message, which des
 Making edits
 ------------
 
-To create a new version, follow the same procedure as before: import new data, add it, and then commit. All editing of data must be done externally to GeoGit. We'll see this next.
+To create a new version, follow the same procedure as before: import new data, add it, and then commit. All editing of data must be done externally to GeoGig. We'll see this next.
 
 The :file:`snapshot2/parks.shp` file contains the same data as the first file, but with an extra feature. Import this file.
 
 .. code-block:: console
 
-  geogit shp import snapshot2/parks.shp
+  geogig shp import snapshot2/parks.shp
 
-If you run the ``status`` command after importing (and before adding), you will see it reports one added element. GeoGit will only report modifications to features that have been changed.
+If you run the ``status`` command after importing (and before adding), you will see it reports one added element. GeoGig will only report modifications to features that have been changed.
 
 .. code-block:: console
 
-   geogit status
+   geogig status
 
 The response will look like this:
 
@@ -203,8 +203,8 @@ The response will look like this:
 
    # On branch master
    # Changes not staged for commit:
-   #   (use "geogit add <path/to/fid>..." to update what will be committed
-   #   (use "geogit checkout -- <path/to/fid>..." to discard changes in working directory
+   #   (use "geogig add <path/to/fid>..." to update what will be committed
+   #   (use "geogig checkout -- <path/to/fid>..." to discard changes in working directory
    #
    #      added  parks/4
    # 1 total.
@@ -213,7 +213,7 @@ Now add the new feature:
 
 .. code-block:: console
 
-   geogit add
+   geogig add
 
 .. code-block:: console
 
@@ -227,7 +227,7 @@ Then commit to create a new version:
 
 .. code-block:: console
 
-   geogit commit -m "first modification"
+   geogig commit -m "first modification"
 
 .. code-block:: console
 
@@ -242,7 +242,7 @@ You can use the ``log`` command to see the history of your repository. The histo
 
 .. code-block:: console
 
-   geogit log
+   geogig log
 
 .. code-block:: console
 
@@ -265,7 +265,7 @@ To create a new branch named "myedits", run the following command:
 
 .. code-block:: console
 
-   geogit branch myedits -c
+   geogig branch myedits -c
 
 The response will look like this:
 
@@ -273,7 +273,7 @@ The response will look like this:
 
    Created branch refs/heads/myedits
 
-The ``-c`` option tells GeoGit to not only create the branch, but also switch the repository to be working on that branch. Everything done now will be added to this new history line.
+The ``-c`` option tells GeoGig to not only create the branch, but also switch the repository to be working on that branch. Everything done now will be added to this new history line.
 
 .. note:: The default branch is named ``master``.
 
@@ -281,9 +281,9 @@ Now use the :file:`snapshot3/parks.shp` file to create a new snapshot (once agai
 
 .. code-block:: console
 
-   geogit shp import snapshot3/parks.shp
-   geogit add
-   geogit commit -m "added new feature"
+   geogig shp import snapshot3/parks.shp
+   geogig add
+   geogig commit -m "added new feature"
 
 The ``log`` command will show a history like this:
 
@@ -315,7 +315,7 @@ First **move to the branch where you want the changes to go**, in this case ``ma
 
 .. code-block:: console
 
-   geogit checkout master
+   geogig checkout master
 
 The response will look like this:
 
@@ -327,7 +327,7 @@ The ``log`` command will show the following history. Use the ``--oneline`` optio
 
 .. code-block:: console
  
-   geogit log --oneline
+   geogig log --oneline
 
 The response will look like this:
 
@@ -342,7 +342,7 @@ To merge the work done in the ``myedits`` branch into the current ``master`` bra
 
 .. code-block:: console
 
-   geogit merge myedits
+   geogig merge myedits
 
 The response will look like this:
 
@@ -356,7 +356,7 @@ Now the commit introduced in the ``myedits`` branch is now present in ``master``
 
 .. code-block:: console
 
-   geogit log --oneline
+   geogig log --oneline
 
 .. code-block:: console
 
@@ -373,10 +373,10 @@ To see this in action, create a new branch named ``fix``, and create a commit ba
 
 .. code-block:: console
 
-   geogit branch fix -c
-   geogit shp import snapshot4/parks.shp
-   geogit add
-   geogit commit -m "fix branch edits"
+   geogig branch fix -c
+   geogig shp import snapshot4/parks.shp
+   geogig add
+   geogig commit -m "fix branch edits"
 
 This new shapefile changes a geometry, and updates the corresponding area field to reflect that change.
 
@@ -384,16 +384,16 @@ Now go back to the ``master`` branch and create a new commit with the data in :f
 
 .. code-block:: console
 
-   geogit checkout master
-   geogit shp import snapshot5/parks.shp
-   geogit add
-   geogit commit -m "master branch edits"
+   geogig checkout master
+   geogig shp import snapshot5/parks.shp
+   geogig add
+   geogig commit -m "master branch edits"
 
-This is a conflict situation, as the same data has been changed differently in two branches. If you try to merge the ``fix`` branch into ``master``, GeoGit cannot automatically resolve this situation and so will fail.
+This is a conflict situation, as the same data has been changed differently in two branches. If you try to merge the ``fix`` branch into ``master``, GeoGig cannot automatically resolve this situation and so will fail.
 
 .. code-block:: console
 
-   geogit merge fix
+   geogig merge fix
 
 .. code-block:: console
 
@@ -405,14 +405,14 @@ You can see that there is a conflict by running the ``status`` command:
 
 .. code-block:: console
 
-   geogit status
+   geogig status
 
 .. code-block:: console
 
    # On branch master
    #
    # Unmerged paths:
-   #   (use "geogit add/rm <path/to/fid>..." as appropriate to mark resolution
+   #   (use "geogig add/rm <path/to/fid>..." as appropriate to mark resolution
    #
    #      unmerged  parks/5
    # 1 total.
@@ -423,7 +423,7 @@ You can get more details about the conflict by running the ``conflicts`` command
 
 .. code-block:: console
 
-   geogit conflicts --diff
+   geogig conflicts --diff
 
 The response will look like this (edited for brevity):
 
@@ -448,7 +448,7 @@ Assume we want to use the changed feature in the ``fix`` branch. Since we are in
 
 .. code-block:: console
 
-   geogit checkout -p parks/5 --theirs
+   geogig checkout -p parks/5 --theirs
 
 The response will look like this:
 
@@ -460,7 +460,7 @@ That puts the ``fix`` branch version in the working tree, overwriting what was t
 
 .. code-block:: console
 
-   geogit add
+   geogig add
 
 .. code-block:: console
 
@@ -474,7 +474,7 @@ Now that the conflict has been resolved, you may commit the change. There is no 
 
 .. code-block:: console
 
-   geogit commit
+   geogig commit
 
 
 Tagging a version
@@ -486,22 +486,22 @@ To do so, use the ``tag`` command:
 
 .. code-block:: console
 
-   geogit tag -m "First official version"
+   geogig tag -m "First official version"
 
 Now you can refer to the current version with that name.
 
 .. todo:: Example?
 
-Exporting from a GeoGit repository
+Exporting from a GeoGig repository
 ----------------------------------
 
-Data can be exported from a GeoGit repository into several formats, ready to be used by external applications.
+Data can be exported from a GeoGig repository into several formats, ready to be used by external applications.
 
 To export a given tree to a shapefile, use the ``shp export`` command.
 
 .. code-block:: console
 
-   geogit shp export parks parks.shp
+   geogig shp export parks parks.shp
 
 .. code-block:: console
 
@@ -515,28 +515,28 @@ Past/other versions can be exported by prefixing the tree name with a commit ID 
 
 .. code-block:: console
 
-   geogit shp export c04d0a968696744bdc32bf865f9675a2e55bf447:parks parks.shp
+   geogig shp export c04d0a968696744bdc32bf865f9675a2e55bf447:parks parks.shp
 
 Use "HEAD" notation to export changes relative to the current working revision. For example, ``HEAD~1`` refers to the second-most recent commit, ``HEAD~2`` refers to the commit prior to that, etc.
 
 .. code-block:: console
 
-   geogit shp export HEAD~1:parks parks.shp
+   geogig shp export HEAD~1:parks parks.shp
 
 Synchronizing repositories
 --------------------------
 
-A GeoGit repository can interact with other GeoGit repositories that are working with the same data. Other GeoGit repositories are know as **remotes**.
+A GeoGig repository can interact with other GeoGig repositories that are working with the same data. Other GeoGig repositories are know as **remotes**.
 
 In our situation, we created a new repository from scratch using the ``init`` command. But if we wanted to start with a copy of an existing repository (referred to as the ``origin``), use the ``clone`` command.
 
-Let's clone the repository we have been working on. Create a new directory in your file system, move into it and run the following command (replacing the path with the location of the original GeoGit repository):
+Let's clone the repository we have been working on. Create a new directory in your file system, move into it and run the following command (replacing the path with the location of the original GeoGig repository):
 
 .. code-block:: console
 
    mkdir /path/to/newrepo
    cd /path/to/newrepo
-   geogit clone /path/to/origrepo
+   geogig clone /path/to/origrepo
 
 The response will look like this:
 
@@ -552,15 +552,15 @@ You can merge commits from the ``origin`` repository to this new repository by u
 
 .. code-block:: console
 
-   geogit pull origin
+   geogig pull origin
 
 To move your local changes from your repository into ``origin``, use the ``push`` command:
 
 .. code-block:: console
 
-   geogit push origin
+   geogig push origin
 
 Tutorial complete
 -----------------
 
-This tour has given you the basics of managing data with GeoGit. Read on to the rest of the GeoGit Manual to learn more.
+This tour has given you the basics of managing data with GeoGig. Read on to the rest of the GeoGig Manual to learn more.

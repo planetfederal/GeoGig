@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# GeoGit documentation build configuration file, created by
+# GeoGig documentation build configuration file, created by
 # sphinx-quickstart on Tue Oct 28 10:01:09 2008.
 #
 # This file is execfile()d with the current directory set to its containing dir.
@@ -23,43 +23,43 @@ import sys, os, string
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('geogit', 'geogit', 'Runs a geogit command', ['OpenGeo <http://opengeo.org>'], '1'),
-    ('init', 'geogit-init', 'Create and initialize a new geogit repository', ['OpenGeo <http://opengeo.org>'], '1'),
-    ('add', 'geogit-add', 'Stage changes to the index to prepare for commit', ['OpenGeo <http://opengeo.org>'], '1'),
-    ('branch', 'geogit-branch', 'Create, delete, or list branches', ['OpenGeo <http://opengeo.org'], '1'),
-    ('checkout', 'geogit-checkout', 'Checkout a branch', ['OpenGeo <http://opengeo.org'], '1'),
-    ('commit', 'geogit-commit', 'Commits staged changes to the repository', ['OpenGeo <http://opengeo.org>'], '1'),
-    ('config', 'geogit-config', 'Get and set repository or global options', ['OpenGeo <http://opengeo.org>'], '1'),
-    ('cherrypick', 'geogit-cherrypick', 'Apply the changes introduced by some existing commits', ['OpenGeo <http://opengeo.org>'], '1'),
-    ('diff', 'geogit-diff', 'Show changes between two tree-ish references.', ['OpenGeo <http://opengeo.org>'], '1'),
-    ('log', 'geogit-log', 'Show commit logs', ['OpenGeo <http://opengeo.org>'], '1'),
-    ('help', 'geogit-help', 'Get help for a command', ['OpenGeo <http://opengeo.org'], 1),
-    ('status', 'geogit-status', 'Show the working tree and index status', ['OpenGeo <http://opengeo.org>'], '1'),
-    ('merge', 'geogit-merge', 'Merge two or more histories into one', ['OpenGeo <http://opengeo.org>'], '1'),
-    ('rebase', 'geogit-rebase', 'Forward-port local commits to the updated upstream head', ['OpenGeo <http://opengeo.org>'], '1'),
-    ('reset', 'geogit-reset', 'Reset current HEAD to the specified state', ['OpenGeo <http://opengeo.org>'], '1'),
-    ('remote', 'geogit-remote', 'Remote management command extension', ['OpenGeo <http://opengeo.org>'], '1'),
-    ('remoteadd', 'geogit-remote-add', 'Add a repository whose branches should be tracked', ['OpenGeo <http://opengeo.org>'], '1'),
-    ('remotelist', 'geogit-remote-list', 'List all repositories being tracked', ['OpenGeo <http://opengeo.org>'], '1'),
-    ('remoteremove', 'geogit-remote-remove', 'Remove a repository whose branches are being tracked', ['OpenGeo <http://opengeo.org>'], '1'),
-    ('revert', 'geogit-revert', 'Revert changes that were committed', ['OpenGeo <http://opengeo.org>'], '1'),
-    ('clone', 'geogit-clone', 'Clone a repository into a new directory', ['OpenGeo <http://opengeo.org>'], '1'),
-    ('fetch', 'geogit-fetch', 'Download objects and refs from another repository', ['OpenGeo <http://opengeo.org>'], '1'),
-    ('pull', 'geogit-pull', 'Fetch from and merge with another repository or a local branch', ['OpenGeo <http://opengeo.org>'], '1'),
-    ('push', 'geogit-push', 'Update remote refs along with associated objects', ['OpenGeo <http://opengeo.org>'], '1'),
-    ('pg', 'geogit-pg', 'PostGIS command extension', ['OpenGeo <http://opengeo.org>'], '1'),
-    ('pgimport', 'geogit-pg-import', 'Import features from a PostGIS database', ['OpenGeo <http://opengeo.org>'], '1'),
-    ('pgexport', 'geogit-pg-export', 'Export features to a PostGIS database', ['OpenGeo <http://opengeo.org>'], '1'),
-    ('pglist', 'geogit-pg-list', 'List tables in a PostGIS database', ['OpenGeo <http://opengeo.org>'], '1'),
-    ('pgdescribe', 'geogit-pg-describe', 'Describe properties of a table in a PostGIS database', ['OpenGeo <http://opengeo.org>'], '1'),
-    ('sl', 'geogit-sl', 'SpatiaLite command extension', ['OpenGeo <http://opengeo.org>'], '1'),
-    ('slimport', 'geogit-sl-import', 'Import features from a SpatiaLite database', ['OpenGeo <http://opengeo.org>'], '1'),
-    ('slexport', 'geogit-sl-export', 'Export features to a SpatiaLite database', ['OpenGeo <http://opengeo.org>'], '1'),
-    ('sllist', 'geogit-sl-list', 'List tables in a SpatiaLite database', ['OpenGeo <http://opengeo.org>'], '1'),
-    ('sldescribe', 'geogit-sl-describe', 'Describe properties of a table in a SpatiaLite database', ['OpenGeo <http://opengeo.org>'], '1'),
-    ('shp', 'geogit-shp', 'Shapefile command extension', ['OpenGeo <http://opengeo.org>'], '1'),
-    ('shpimport', 'geogit-shp-import', 'Import features from shapefiles', ['OpenGeo <http://opengeo.org>'], '1'),
-    ('shpexport', 'geogit-shp-export', 'Import features to shapefiles', ['OpenGeo <http://opengeo.org>'], '1')
+    ('geogig', 'geogig', 'Runs a geogig command', ['OpenGeo <http://opengeo.org>'], '1'),
+    ('init', 'geogig-init', 'Create and initialize a new geogig repository', ['OpenGeo <http://opengeo.org>'], '1'),
+    ('add', 'geogig-add', 'Stage changes to the index to prepare for commit', ['OpenGeo <http://opengeo.org>'], '1'),
+    ('branch', 'geogig-branch', 'Create, delete, or list branches', ['OpenGeo <http://opengeo.org'], '1'),
+    ('checkout', 'geogig-checkout', 'Checkout a branch', ['OpenGeo <http://opengeo.org'], '1'),
+    ('commit', 'geogig-commit', 'Commits staged changes to the repository', ['OpenGeo <http://opengeo.org>'], '1'),
+    ('config', 'geogig-config', 'Get and set repository or global options', ['OpenGeo <http://opengeo.org>'], '1'),
+    ('cherrypick', 'geogig-cherrypick', 'Apply the changes introduced by some existing commits', ['OpenGeo <http://opengeo.org>'], '1'),
+    ('diff', 'geogig-diff', 'Show changes between two tree-ish references.', ['OpenGeo <http://opengeo.org>'], '1'),
+    ('log', 'geogig-log', 'Show commit logs', ['OpenGeo <http://opengeo.org>'], '1'),
+    ('help', 'geogig-help', 'Get help for a command', ['OpenGeo <http://opengeo.org'], 1),
+    ('status', 'geogig-status', 'Show the working tree and index status', ['OpenGeo <http://opengeo.org>'], '1'),
+    ('merge', 'geogig-merge', 'Merge two or more histories into one', ['OpenGeo <http://opengeo.org>'], '1'),
+    ('rebase', 'geogig-rebase', 'Forward-port local commits to the updated upstream head', ['OpenGeo <http://opengeo.org>'], '1'),
+    ('reset', 'geogig-reset', 'Reset current HEAD to the specified state', ['OpenGeo <http://opengeo.org>'], '1'),
+    ('remote', 'geogig-remote', 'Remote management command extension', ['OpenGeo <http://opengeo.org>'], '1'),
+    ('remoteadd', 'geogig-remote-add', 'Add a repository whose branches should be tracked', ['OpenGeo <http://opengeo.org>'], '1'),
+    ('remotelist', 'geogig-remote-list', 'List all repositories being tracked', ['OpenGeo <http://opengeo.org>'], '1'),
+    ('remoteremove', 'geogig-remote-remove', 'Remove a repository whose branches are being tracked', ['OpenGeo <http://opengeo.org>'], '1'),
+    ('revert', 'geogig-revert', 'Revert changes that were committed', ['OpenGeo <http://opengeo.org>'], '1'),
+    ('clone', 'geogig-clone', 'Clone a repository into a new directory', ['OpenGeo <http://opengeo.org>'], '1'),
+    ('fetch', 'geogig-fetch', 'Download objects and refs from another repository', ['OpenGeo <http://opengeo.org>'], '1'),
+    ('pull', 'geogig-pull', 'Fetch from and merge with another repository or a local branch', ['OpenGeo <http://opengeo.org>'], '1'),
+    ('push', 'geogig-push', 'Update remote refs along with associated objects', ['OpenGeo <http://opengeo.org>'], '1'),
+    ('pg', 'geogig-pg', 'PostGIS command extension', ['OpenGeo <http://opengeo.org>'], '1'),
+    ('pgimport', 'geogig-pg-import', 'Import features from a PostGIS database', ['OpenGeo <http://opengeo.org>'], '1'),
+    ('pgexport', 'geogig-pg-export', 'Export features to a PostGIS database', ['OpenGeo <http://opengeo.org>'], '1'),
+    ('pglist', 'geogig-pg-list', 'List tables in a PostGIS database', ['OpenGeo <http://opengeo.org>'], '1'),
+    ('pgdescribe', 'geogig-pg-describe', 'Describe properties of a table in a PostGIS database', ['OpenGeo <http://opengeo.org>'], '1'),
+    ('sl', 'geogig-sl', 'SpatiaLite command extension', ['OpenGeo <http://opengeo.org>'], '1'),
+    ('slimport', 'geogig-sl-import', 'Import features from a SpatiaLite database', ['OpenGeo <http://opengeo.org>'], '1'),
+    ('slexport', 'geogig-sl-export', 'Export features to a SpatiaLite database', ['OpenGeo <http://opengeo.org>'], '1'),
+    ('sllist', 'geogig-sl-list', 'List tables in a SpatiaLite database', ['OpenGeo <http://opengeo.org>'], '1'),
+    ('sldescribe', 'geogig-sl-describe', 'Describe properties of a table in a SpatiaLite database', ['OpenGeo <http://opengeo.org>'], '1'),
+    ('shp', 'geogig-shp', 'Shapefile command extension', ['OpenGeo <http://opengeo.org>'], '1'),
+    ('shpimport', 'geogig-shp-import', 'Import features from shapefiles', ['OpenGeo <http://opengeo.org>'], '1'),
+    ('shpexport', 'geogig-shp-export', 'Import features to shapefiles', ['OpenGeo <http://opengeo.org>'], '1')
 ]
 
 # General configuration
@@ -80,16 +80,16 @@ extensions = ['sphinx.ext.todo']
 
 # Add any paths that contain custom themes here, relative to this directory.
 html_theme_path = ['../../themes/']
-html_theme = 'geogit_docs'
+html_theme = 'geogig_docs'
 
 # The suffix of source filenames.
 source_suffix = '.rst'
 
 # The master toctree document.
-master_doc = 'geogit'
+master_doc = 'geogig'
 
 # General substitutions.
-project = u'GeoGit'
+project = u'GeoGig'
 manual = u'Man Pages'
 copyright = u'OpenGeo <http://opengeo.org>'
 
@@ -97,12 +97,12 @@ copyright = u'OpenGeo <http://opengeo.org>'
 # other places throughout the built documents.
 #
 # The short X.Y version.
-version = '0.11'
+version = '1.0'
 # The full version, including alpha/beta/rc tags.
-release = '0.11-SNAPSHOT'
+release = '1.0-SNAPSHOT'
 # Users don't need to see the "SNAPSHOT" notation when it's there
 if release.find('SNAPSHOT') != -1:
-   release = '0.11'
+   release = '1.0'
 
 # There are two options for replacing |today|: either, you set today to some
 # non-false value, then it is used:
@@ -137,7 +137,7 @@ pygments_style = 'sphinx'
 
 # Options for HTML output
 # -----------------------
-html_theme = 'geogit_docs'
+html_theme = 'geogig_docs'
 html_theme_path = ['../../themes']
 
 if os.environ.get('HTML_THEME_PATH'):
@@ -205,7 +205,7 @@ html_use_index = True
 #html_file_suffix = ''
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'GeoGitUserManual'
+htmlhelp_basename = 'GeoGigUserManual'
 
 
 # Options for LaTeX output
@@ -220,13 +220,13 @@ htmlhelp_basename = 'GeoGitUserManual'
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, document class [howto/manual]).
 latex_documents = [
-  ('index', 'GeoGitUserManual.tex', u'GeoGit User Manual',
-   u'GeoGit', 'manual'),
+  ('index', 'GeoGigUserManual.tex', u'GeoGig User Manual',
+   u'GeoGig', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
 # the title page.
-latex_logo = '../../themes/geogit/static/GeoGit.png'
+latex_logo = '../../themes/geogig/static/GeoGig.png'
 
 # For "manual" documents, if this is true, then toplevel headings are parts,
 # not chapters.

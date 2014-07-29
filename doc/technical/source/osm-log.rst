@@ -1,10 +1,10 @@
-There are two types of OSM data entries stored for a geogit repo in which OSM data is used:
+There are two types of OSM data entries stored for a geogig repo in which OSM data is used:
 
-- Entries corresponding to download/update operations, which relate an OSM changeset to a commit in the geogit repo
+- Entries corresponding to download/update operations, which relate an OSM changeset to a commit in the geogig repo
 - Entries corresponding to mappings, which store the tree ids before and after mapping operations.
 - Entries corresponding to filters, which stores filters used when downloading OSM data
 
-All entries are stored in the correpsoning files in a folder named ``osm`` under the ``.geogit`` folder
+All entries are stored in the correpsoning files in a folder named ``osm`` under the ``.geogig`` folder
 
 The changeset entries are stored in a file named ``log``. When a dowload operation is performed and a filter or mapping is used, a new entry is added to the file. The entry contains the ObjectId of the tree after the OSM data was imported updated, the latest changeset id and its timestamp. This can be used later to know if the OSM in the repo is up to date.
 

@@ -1,14 +1,14 @@
 
-.. _geogit-shp-export:
+.. _geogig-shp-export:
 
-geogit-shp-export documentation
+geogig-shp-export documentation
 ################################
 
 
 
 SYNOPSIS
 ********
-geogit shp export <refspec>:<path> <shapefile> [-o]
+geogig shp export <refspec>:<path> <shapefile> [-o]
 
 
 DESCRIPTION

@@ -1,14 +1,14 @@
 
-.. _geogit-pg-export:
+.. _geogig-pg-export:
 
-geogit-pg-export documentation
+geogig-pg-export documentation
 ###############################
 
 
 
 SYNOPSIS
 ********
-geogit pg export [options] <feature_type> <table>
+geogig pg export [options] <feature_type> <table>
 
 
 DESCRIPTION
@@ -42,7 +42,7 @@ OPTIONS
 SEE ALSO
 ********
 
-:ref:`geogit-pg-list`
+:ref:`geogig-pg-list`
 
 BUGS
 ****

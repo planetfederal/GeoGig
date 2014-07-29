@@ -1,20 +1,20 @@
 
-.. _geogit-sqlserver-import:
+.. _geogig-sqlserver-import:
 
-geogit-sqlserver-import documentation
+geogig-sqlserver-import documentation
 ######################################
 
 
 
 SYNOPSIS
 ********
-geogit sqlserver import [options] [--all|-t <table>]
+geogig sqlserver import [options] [--all|-t <table>]
 
 
 DESCRIPTION
 ***********
 
-This command imports one or more tables from a SQLServer database into the GeoGit working tree.  Either ``-t`` or ``--all`` must be set for the import process to commence.  To see a list of available tables, use ``geogit sqlserver list``.
+This command imports one or more tables from a SQLServer database into the GeoGig working tree.  Either ``-t`` or ``--all`` must be set for the import process to commence.  To see a list of available tables, use ``geogig sqlserver list``.
 
 OPTIONS
 *******    
@@ -53,7 +53,7 @@ OPTIONS
 SEE ALSO
 ********
 
-:ref:`geogit-sqlserver-list`
+:ref:`geogig-sqlserver-list`
 
 BUGS
 ****

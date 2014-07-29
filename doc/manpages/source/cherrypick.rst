@@ -1,14 +1,14 @@
 
-.. _geogit-cherrypick:
+.. _geogig-cherrypick:
 
-geogit-cherrypick documentation
+geogig-cherrypick documentation
 ###############################
 
 
 
 SYNOPSIS
 ********
-geogit cherry-pick <commitish>
+geogig cherry-pick <commitish>
 
 
 DESCRIPTION
@@ -25,7 +25,7 @@ OPTIONS
 SEE ALSO
 ********
 
-:ref:`geogit-commit`
+:ref:`geogig-commit`
 
 BUGS
 ****

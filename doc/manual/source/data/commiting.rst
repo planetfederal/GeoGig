@@ -3,26 +3,26 @@
 Commiting changes
 ==================
 
-Once the data is in the staging area, it has to be committed to be finally stored in the database of the GeoGit repository and to create a persistent version of that data.
+Once the data is in the staging area, it has to be committed to be finally stored in the database of the GeoGig repository and to create a persistent version of that data.
 
 Commiting data from the staging area to the database is done using the ``commit`` command, as shown below
 
 ::
 
-	$ geogit commit -m "First commit"
+	$ geogig commit -m "First commit"
 	100%
 	[5852e6949ba71039fded67e7f4980af4f8773869] First commit
 	Committed, counting objects...3 features added, 0 changed, 0 deleted.
 
-The ``-m`` option tells geogit that the string following it is to be used as the commit message. All commits must have a message that describe which kind of modifications you are commiting, so as to describe the difference that will exist between the new version you are creating and the latest one.
+The ``-m`` option tells geogig that the string following it is to be used as the commit message. All commits must have a message that describe which kind of modifications you are commiting, so as to describe the difference that will exist between the new version you are creating and the latest one.
 
-.. note:: The ``-m`` option is mandatory. If not provided, GeoGit will not show the default editor, as Git does, but complain and tell you to provide a message instead.
+.. note:: The ``-m`` option is mandatory. If not provided, GeoGig will not show the default editor, as Git does, but complain and tell you to provide a message instead.
 
 The list of all commits made so far can be obtained by using the ``log`` command.
 
 ::
 
-	$ geogit log
+	$ geogig log
 	Commit:  5852e6949ba71039fded67e7f4980af4f8773869
 	Author:  volaya <volaya@opengeo.org>
 	Date:    (1 day ago) 2013-02-25 15:31:24 +0100

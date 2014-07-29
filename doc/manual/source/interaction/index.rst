@@ -1,9 +1,9 @@
 .. _interaction:
 
-Other ways to interact with GeoGit
+Other ways to interact with GeoGig
 ==================================
 
-This section will discuss alternate ways of interacting with GeoGit, both local and remote.
+This section will discuss alternate ways of interacting with GeoGig, both local and remote.
 
 .. toctree::
    :maxdepth: 2

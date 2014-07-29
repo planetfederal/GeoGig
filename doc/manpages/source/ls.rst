@@ -1,14 +1,14 @@
 
-.. _geogit-ls:
+.. _geogig-ls:
 
-geogit-ls documentation
+geogig-ls documentation
 #############################
 
 
 SYNOPSIS
 ********
 
-geogit ls  <[refspec]:[path]> [--verbose] [--abbrev] [-t] [-d] [-r]
+geogig ls  <[refspec]:[path]> [--verbose] [--abbrev] [-t] [-d] [-r]
 
 
 DESCRIPTION

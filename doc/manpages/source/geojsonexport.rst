@@ -1,13 +1,13 @@
-.. _geogit-geojson-export:
+.. _geogig-geojson-export:
 
-geogit-geojson-export documentation
+geogig-geojson-export documentation
 ###################################
 
 
 
 SYNOPSIS
 ********
-geogit geojson export <refspec>:<path> <geojson> [-o]
+geogig geojson export <refspec>:<path> <geojson> [-o]
 
 
 DESCRIPTION

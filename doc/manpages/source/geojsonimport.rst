@@ -1,20 +1,20 @@
 
-.. _geogit-geojson-import:
+.. _geogig-geojson-import:
 
-geogit-geojson-import documentation
+geogig-geojson-import documentation
 ###################################
 
 
 
 SYNOPSIS
 ********
-geogit geojson import <geojson> [<geojson>]... [--path <path>] [--fid-attrib <attrib_name>] [--add] [--alter]
+geogig geojson import <geojson> [<geojson>]... [--path <path>] [--fid-attrib <attrib_name>] [--add] [--alter]
 
 
 DESCRIPTION
 ***********
 
-This command imports features from one or more GeoJSON files into the GeoGit working tree.
+This command imports features from one or more GeoJSON files into the GeoGig working tree.
 
 
 OPTIONS

@@ -1,9 +1,9 @@
 .. _start:
 
-Starting out with GeoGit
+Starting out with GeoGig
 ========================
 
-This section will introduce you to GeoGit, including installation and a tutorial.
+This section will introduce you to GeoGig, including installation and a tutorial.
 
 .. toctree::
    :maxdepth: 2

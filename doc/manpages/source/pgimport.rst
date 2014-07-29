@@ -1,20 +1,20 @@
 
-.. _geogit-pg-import:
+.. _geogig-pg-import:
 
-geogit-pg-import documentation
+geogig-pg-import documentation
 ##############################
 
 
 
 SYNOPSIS
 ********
-geogit pg import [connection_options] [--all|-t <table>]  [--path <path>] [--add] [--alter]
+geogig pg import [connection_options] [--all|-t <table>]  [--path <path>] [--add] [--alter]
 
 
 DESCRIPTION
 ***********
 
-This command imports one or more tables from a PostGIS database into the GeoGit working tree.  Either ``-t`` or ``--all`` must be set for the import process to commence.  To see a list of available tables, use ``geogit pg list``.
+This command imports one or more tables from a PostGIS database into the GeoGig working tree.  Either ``-t`` or ``--all`` must be set for the import process to commence.  To see a list of available tables, use ``geogig pg list``.
 
 OPTIONS
 *******    
@@ -50,7 +50,7 @@ OPTIONS
 SEE ALSO
 ********
 
-:ref:`geogit-pg-list`
+:ref:`geogig-pg-list`
 
 BUGS
 ****

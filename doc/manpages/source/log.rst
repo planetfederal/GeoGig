@@ -1,14 +1,14 @@
 
-.. _geogit-log:
+.. _geogig-log:
 
-geogit-log documentation
+geogig-log documentation
 #########################
 
 
 
 SYNOPSIS
 ********
-geogit log [-p <path>...] [[<until>]|[<since>..<until>]] [<options>]
+geogig log [-p <path>...] [[<until>]|[<since>..<until>]] [<options>]
 
 
 DESCRIPTION

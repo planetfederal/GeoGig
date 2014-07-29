@@ -1,12 +1,12 @@
 
-.. _geogit-revert:
+.. _geogig-revert:
 
-geogit-revert documentation
+geogig-revert documentation
 ###########################
 
 SYNOPSIS
 ********
-geogit revert <commit>...
+geogig revert <commit>...
 
 DESCRIPTION
 ***********

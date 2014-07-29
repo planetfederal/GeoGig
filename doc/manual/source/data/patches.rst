@@ -5,11 +5,11 @@ Creating and applying patches
 
 Patches are files that store all the differences that exists between two states A and B of a repository. Patches can be applied to another repository, to alter it based on those differences. Since patches are self-contained, a patch can be created to store a set of changes, sent and applied on a different repository, so this second repository will see those changes reflected in its working tree. 
 
-GeoGit patches are created using the ``format-patch`` command. The syntax of this command is similar to the ``diff`` command. Instead of being printed, differences are written to a patch file, which has to be defined using the ``-f`` option. The following example shows the most basic usage
+GeoGig patches are created using the ``format-patch`` command. The syntax of this command is similar to the ``diff`` command. Instead of being printed, differences are written to a patch file, which has to be defined using the ``-f`` option. The following example shows the most basic usage
 
 ::
 
-	$ geogit format-patch -f changes.patch
+	$ geogig format-patch -f changes.patch
 
 This will create a patch file named ``changes.patch``, which contains the differences between the index and the current working tree.
 
@@ -17,15 +17,15 @@ To store the differences that correspond to a single path named ``roads``, the f
 
 ::
 
-	$ geogit format-patch -f changes.path -- roads
+	$ geogig format-patch -f changes.path -- roads
 
 Once the patch is created, it can be applied using the ``apply`` command. To apply the patch created in the previous example, the following command should be executed.
 
 ::
 
-	$ geogit apply changes.patch
+	$ geogig apply changes.patch
 
-If the patch can be applied, the working tree will be changed according to the differences stored in the patch. If not, GeoGit will inform the user that the patch cannot be applied.
+If the patch can be applied, the working tree will be changed according to the differences stored in the patch. If not, GeoGig will inform the user that the patch cannot be applied.
 
 A patch can be applied onto the working tree of a repository, if it meets the following conditions:
 
@@ -40,14 +40,14 @@ Before applying the patch, we can check that it can be applied on the current in
 
 ::
 	
-	$ geogit apply --check changes.path
+	$ geogig apply --check changes.path
 
 
-If the patch cannot be applied, GeoGit will show a list of conflicting changes, along with those ones the can be safely applied, like the one shown next.
+If the patch cannot be applied, GeoGig will show a list of conflicting changes, along with those ones the can be safely applied, like the one shown next.
 
 ::
 
-	$ geogit apply --check changes.patch
+	$ geogig apply --check changes.patch
 	Error: Patch cannot be applied
 
 	Applicable entries:
@@ -73,13 +73,13 @@ The ``--reverse`` option is compatible with other options of the ``apply`` comma
 
 ::
 
-	$ geogit --reverse --summary changes.patch
+	$ geogig --reverse --summary changes.patch
 	
 
 Difference between patch files and output of ``diff`` command
 --------------------------------------------------------------
 
-Unlike in the case of using git, redirecting the output of the GeoGit``diff`` command to a file will not create a valid patch that can later be used with the ``apply`` command. This is due to the different nature of the data that is handled by GeoGit. The ``diff`` command tries to create a human-readable version of the difference, but does not include some information needed to apply the patch, such as full descriptions of features types that are created by the patch, or a full listing of modified coordinates, in case a geometry has been modified.
+Unlike in the case of using git, redirecting the output of the GeoGig``diff`` command to a file will not create a valid patch that can later be used with the ``apply`` command. This is due to the different nature of the data that is handled by GeoGig. The ``diff`` command tries to create a human-readable version of the difference, but does not include some information needed to apply the patch, such as full descriptions of features types that are created by the patch, or a full listing of modified coordinates, in case a geometry has been modified.
 
 When describing the content of a patch using the ``--summary`` option, the summary is presented in the human-readable version, although in the case of modified geometries the result is not exactly the same one output by the ``diff`` command.
 
