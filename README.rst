@@ -2,8 +2,8 @@
 GeoGig - Geospatial Distributed Version Control System
 ######################################################
 
-.. image:: https://travis-ci.org/boundlessgeo/GeoGit.png?branch=master
-   :target: https://travis-ci.org/boundlessgeo/GeoGit
+.. image:: https://travis-ci.org/boundlessgeo/GeoGig.png?branch=master
+   :target: https://travis-ci.org/boundlessgeo/GeoGig
 
 Welcome to the GeoGig project, exploring the use of distributed management of spatial data. GeoGig draws inspiration from `Git <http://git-scm.com/>`_, but adapts its core concepts to handle versioning of geospatial data. Users are able to import raw geospatial data (currently from Shapefiles, PostGIS or SpatiaLite) in to a repository where every change to the data is tracked. These changes can be viewed in a history, reverted to older versions, branched in to sandboxed areas, merged back in, and pushed to remote repositories. GeoGig is written in Java, available under the BSD License.
 
@@ -24,12 +24,12 @@ Download
 =========
 
 No release downloads available yet. Keep tuned for the first 1.0 release candidate soon.
-.. `Version 0.7.0 <http://sourceforge.net/projects/geogit/files/geogit-0.7.0/geogit-cli-app-0.7.0.zip/download>`_ from SourceForge. Documentation available for `download <http://sourceforge.net/projects/geogit/files/geogit-0.7.0/geogit-user-mannual-0.7.0.zip/download>`_ and `online <http://geogig.org/docs/index.html>`_.
+.. `Version 0.7.0 <http://sourceforge.net/projects/geogig/files/geogig-0.7.0/geogig-cli-app-0.7.0.zip/download>`_ from SourceForge. Documentation available for `download <http://sourceforge.net/projects/geogig/files/geogig-0.7.0/geogig-user-mannual-0.7.0.zip/download>`_ and `online <http://geogig.org/docs/index.html>`_.
 
 Installation
 ============
 
-Unzip the geogig-cli-app-0.7.0.zip to an applications directory, and then add the unzipped geogig/bin/ folder to your PATH.
+Unzip the geogig-cli-app-0.1-SNAPSHOT.zip to an applications directory, and then add the unzipped geogig/bin/ folder to your PATH.
 
 Running
 =======
