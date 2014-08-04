@@ -31,6 +31,7 @@ import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.RevFeatureType;
 import org.locationtech.geogig.api.RevTree;
 import org.locationtech.geogig.api.plumbing.RevObjectParse;
+import org.locationtech.geogig.geotools.data.GeoGigDataStore.ChangeType;
 import org.locationtech.geogig.repository.WorkingTree;
 import org.opengis.feature.Feature;
 import org.opengis.feature.FeatureVisitor;
@@ -48,6 +49,10 @@ import com.google.common.base.Preconditions;
  *
  */
 class GeogigFeatureSource extends ContentFeatureSource {
+
+    private GeoGigDataStore.ChangeType changeType;
+
+    private String oldRoot;
 
     /**
      * <b>Precondition</b>: {@code entry.getDataStore() instanceof GeoGigDataStore}
@@ -287,7 +292,7 @@ class GeogigFeatureSource extends ContentFeatureSource {
         return false;
     }
 
-    private GeogigFeatureReader<SimpleFeatureType, SimpleFeature> getNativeReader(Filter filter,
+    private FeatureReader<SimpleFeatureType, SimpleFeature> getNativeReader(Filter filter,
             @Nullable Integer offset, @Nullable Integer maxFeatures) {
 
         filter = (Filter) filter.accept(new SimplifyingFilterVisitor(), null);
@@ -299,12 +304,31 @@ class GeogigFeatureSource extends ContentFeatureSource {
 
         final SimpleFeatureType schema = getSchema();
 
-        final Context commandLocator = getCommandLocator();
+        final Context context = getCommandLocator();
 
-        nativeReader = new GeogigFeatureReader<SimpleFeatureType, SimpleFeature>(commandLocator,
-                schema, filter, featureTypeTreePath, rootRef, offset, maxFeatures);
+        String compareRootRef = oldRoot();
+        GeoGigDataStore.ChangeType changeType = changeType();
+        nativeReader = new GeogigFeatureReader<SimpleFeatureType, SimpleFeature>(context, schema,
+                filter, featureTypeTreePath, rootRef, compareRootRef, changeType, offset,
+                maxFeatures);
 
         return nativeReader;
+    }
+
+    public void setChangeType(GeoGigDataStore.ChangeType changeType) {
+        this.changeType = changeType;
+    }
+
+    public void setOldRoot(String oldRoot) {
+        this.oldRoot = oldRoot;
+    }
+
+    private String oldRoot() {
+        return oldRoot == null ? ObjectId.NULL.toString() : oldRoot;
+    }
+
+    private GeoGigDataStore.ChangeType changeType() {
+        return changeType == null ? ChangeType.ADDED : changeType;
     }
 
     @Override

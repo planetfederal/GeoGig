@@ -5,6 +5,7 @@
 package org.locationtech.geogig.geotools.data;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -15,16 +16,20 @@ import org.geotools.data.FeatureSource;
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
+import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.feature.NameImpl;
 import org.geotools.geometry.jts.GeometryBuilder;
 import org.junit.Test;
 import org.locationtech.geogig.api.NodeRef;
+import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.Ref;
 import org.locationtech.geogig.api.plumbing.LsTreeOp;
 import org.locationtech.geogig.api.plumbing.LsTreeOp.Strategy;
 import org.locationtech.geogig.api.porcelain.BranchCreateOp;
 import org.locationtech.geogig.api.porcelain.CommitOp;
+import org.locationtech.geogig.geotools.data.GeoGigDataStore.ChangeType;
 import org.locationtech.geogig.test.integration.RepositoryTestCase;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -206,8 +211,9 @@ public class GeoGigDataStoreTest extends RepositoryTestCase {
         assertEquals(super.pointsType, points);
     }
 
-    private void commit() {
-        geogig.command(CommitOp.class).call();
+    private ObjectId commit() {
+        org.locationtech.geogig.api.RevCommit c = geogig.command(CommitOp.class).call();
+        return c.getId();
     }
 
     @Test
@@ -350,5 +356,77 @@ public class GeoGigDataStoreTest extends RepositoryTestCase {
         assertEquals("foo", f.getAttribute("sp"));
         assertEquals(10, f.getAttribute("ip"));
         assertTrue(line.equals((Geometry) f.getAttribute("pp")));
+    }
+
+    @Test
+    public void testGetDiffFeatureSource() throws Exception {
+        insertAndAdd(points1);
+        insertAndAdd(lines1, lines2);
+        final ObjectId c1 = commit();
+        insertAndAdd(points2);
+        final ObjectId c2 = commit();
+        deleteAndAdd(points2);
+        final ObjectId c3 = commit();
+        insertAndAdd(points1_modified);
+        final ObjectId c4 = commit();
+
+        testDiffFeatures(ObjectId.NULL, c1, 1/* added */, 0/* removed */, 0/* modified */);
+        testDiffFeatures(c1, c2, 1, 0, 0);
+        testDiffFeatures(c2, c1, 0, 1, 0);
+        testDiffFeatures(ObjectId.NULL, c2, 2, 0, 0);
+
+        testDiffFeatures(c3, c4, 0, 0, 1);
+        testDiffFeatures(c4, c3, 0, 0, 1);
+
+        testDiffFeatures(c2, c4, 0, 1, 1);
+        testDiffFeatures(c4, c2, 1, 0, 1);
+    }
+
+    private void testDiffFeatures(ObjectId oldRoot, ObjectId newRoot, int expectedAdded,
+            int expectedRemoved, int expectedChanged) throws IOException {
+
+        dataStore.setHead(newRoot.toString());
+        List<String> fids;
+
+        ChangeType changeType = ChangeType.ADDED;
+        fids = toIdList(dataStore.getDiffFeatureSource(pointsName, oldRoot.toString(), changeType)
+                .getFeatures());
+        assertEquals(changeType + fids.toString(), expectedAdded, fids.size());
+
+        changeType = ChangeType.REMOVED;
+        fids = toIdList(dataStore.getDiffFeatureSource(pointsName, oldRoot.toString(), changeType)
+                .getFeatures());
+        assertEquals(changeType + fids.toString(), expectedRemoved, fids.size());
+
+        changeType = ChangeType.CHANGED_NEW;
+        fids = toIdList(dataStore.getDiffFeatureSource(pointsName, oldRoot.toString(), changeType)
+                .getFeatures());
+        assertEquals(changeType + fids.toString(), expectedChanged, fids.size());
+
+        changeType = ChangeType.CHANGED_OLD;
+        fids = toIdList(dataStore.getDiffFeatureSource(pointsName, oldRoot.toString(), changeType)
+                .getFeatures());
+        assertEquals(changeType + fids.toString(), expectedChanged, fids.size());
+    }
+
+    private List<String> toIdList(SimpleFeatureCollection features) {
+        List<SimpleFeature> list = toList(features);
+        return Lists.transform(list, new Function<SimpleFeature, String>() {
+
+            @Override
+            public String apply(SimpleFeature f) {
+                return f.getID();
+            }
+        });
+    }
+
+    private List<SimpleFeature> toList(SimpleFeatureCollection features) {
+        List<SimpleFeature> list = new ArrayList<>();
+        try (SimpleFeatureIterator it = features.features()) {
+            while (it.hasNext()) {
+                list.add(it.next());
+            }
+        }
+        return list;
     }
 }
