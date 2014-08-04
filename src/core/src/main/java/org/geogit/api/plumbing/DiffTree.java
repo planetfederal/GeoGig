@@ -9,6 +9,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
@@ -173,6 +174,8 @@ public class DiffTree extends AbstractGeoGitOp<Iterator<DiffEntry>> implements
         diffProducer.setReportTrees(this.reportTrees);
         diffProducer.setRecursive(this.recursive);
 
+        final List<RuntimeException> producerErrors = new LinkedList<>();
+
         Thread producerThread = new Thread() {
             @Override
             public void run() {
@@ -187,8 +190,11 @@ public class DiffTree extends AbstractGeoGitOp<Iterator<DiffEntry>> implements
                 if (!pathFilters.isEmpty()) {
                     consumer = new PathFilteringDiffConsumer(pathFilters, consumer);
                 }
-
-                visitor.walk(consumer);
+                try {
+                    visitor.walk(consumer);
+                } catch (RuntimeException e) {
+                    producerErrors.add(e);
+                }
             }
         };
         producerThread.setDaemon(true);
@@ -197,6 +203,9 @@ public class DiffTree extends AbstractGeoGitOp<Iterator<DiffEntry>> implements
         Iterator<DiffEntry> consumerIterator = new AbstractIterator<DiffEntry>() {
             @Override
             protected DiffEntry computeNext() {
+                if (!producerErrors.isEmpty()) {
+                    throw new RuntimeException("Error in producer thread", producerErrors.get(0));
+                }
                 BlockingQueue<DiffEntry> entries = queue;
                 boolean finished = diffProducer.isFinished();
                 boolean empty = entries.isEmpty();
@@ -213,6 +222,11 @@ public class DiffTree extends AbstractGeoGitOp<Iterator<DiffEntry>> implements
                     }
                 }
                 return endOfData();
+            }
+
+            @Override
+            protected void finalize() {
+                diffProducer.finished = true;
             }
         };
         return consumerIterator;
@@ -325,7 +339,7 @@ public class DiffTree extends AbstractGeoGitOp<Iterator<DiffEntry>> implements
 
         private BlockingQueue<DiffEntry> entries;
 
-        private boolean finished;
+        private volatile boolean finished;
 
         private boolean recursive = true;
 
@@ -335,7 +349,7 @@ public class DiffTree extends AbstractGeoGitOp<Iterator<DiffEntry>> implements
 
         @Override
         public void feature(Node left, Node right) {
-            if (this.reportFeatures) {
+            if (!finished && reportFeatures) {
                 String treePath = tracker.getCurrentPath();
 
                 NodeRef oldRef = left == null ? null : new NodeRef(left, treePath, tracker
@@ -346,7 +360,7 @@ public class DiffTree extends AbstractGeoGitOp<Iterator<DiffEntry>> implements
                 try {
                     entries.put(new DiffEntry(oldRef, newRef));
                 } catch (InterruptedException e) {
-                    throw Throwables.propagate(e);
+                    // throw Throwables.propagate(e);
                 }
             }
         }
@@ -368,7 +382,7 @@ public class DiffTree extends AbstractGeoGitOp<Iterator<DiffEntry>> implements
             final String parentPath = tracker.getCurrentPath();
             tracker.tree(left, right);
             // System.err.printf("%s.tree(%s, %s)\n", getClass().getSimpleName(), left, right);
-            if (reportTrees) {
+            if (!finished && reportTrees) {
                 if (parentPath != null) {// do not report the root tree
                     NodeRef oldRef = left == null ? null : new NodeRef(left, parentPath, tracker
                             .currentLeftMetadataId().or(ObjectId.NULL));
@@ -378,12 +392,14 @@ public class DiffTree extends AbstractGeoGitOp<Iterator<DiffEntry>> implements
                     try {
                         entries.put(new DiffEntry(oldRef, newRef));
                     } catch (InterruptedException e) {
-                        throw Throwables.propagate(e);
+                        // throw Throwables.propagate(e);
+                        // die gracefully
+                        return false;
                     }
                 }
             }
             if (recursive) {
-                return true;
+                return !finished;
             }
             return parentPath == null;
         }
@@ -399,7 +415,7 @@ public class DiffTree extends AbstractGeoGitOp<Iterator<DiffEntry>> implements
 
         @Override
         public boolean bucket(int bucketIndex, int bucketDepth, Bucket left, Bucket right) {
-            return true;
+            return !finished;
         }
 
         @Override
