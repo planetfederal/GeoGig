@@ -16,6 +16,7 @@ import org.geogit.api.ObjectId;
 import org.geogit.api.RevFeatureType;
 import org.geogit.api.RevTree;
 import org.geogit.api.plumbing.RevObjectParse;
+import org.geogit.geotools.data.GeoGitDataStore.ChangeType;
 import org.geogit.repository.WorkingTree;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureReader;
@@ -48,6 +49,10 @@ import com.google.common.base.Preconditions;
  *
  */
 class GeogitFeatureSource extends ContentFeatureSource {
+
+    private org.geogit.geotools.data.GeoGitDataStore.ChangeType changeType;
+
+    private String oldRoot;
 
     /**
      * <b>Precondition</b>: {@code entry.getDataStore() instanceof GeoGitDataStore}
@@ -287,7 +292,7 @@ class GeogitFeatureSource extends ContentFeatureSource {
         return false;
     }
 
-    private GeogitFeatureReader<SimpleFeatureType, SimpleFeature> getNativeReader(Filter filter,
+    private FeatureReader<SimpleFeatureType, SimpleFeature> getNativeReader(Filter filter,
             @Nullable Integer offset, @Nullable Integer maxFeatures) {
 
         filter = (Filter) filter.accept(new SimplifyingFilterVisitor(), null);
@@ -299,12 +304,31 @@ class GeogitFeatureSource extends ContentFeatureSource {
 
         final SimpleFeatureType schema = getSchema();
 
-        final Context commandLocator = getCommandLocator();
+        final Context context = getCommandLocator();
 
-        nativeReader = new GeogitFeatureReader<SimpleFeatureType, SimpleFeature>(commandLocator,
-                schema, filter, featureTypeTreePath, rootRef, offset, maxFeatures);
+        String compareRootRef = oldRoot();
+        GeoGitDataStore.ChangeType changeType = changeType();
+        nativeReader = new GeogitFeatureReader<SimpleFeatureType, SimpleFeature>(context, schema,
+                filter, featureTypeTreePath, rootRef, compareRootRef, changeType, offset,
+                maxFeatures);
 
         return nativeReader;
+    }
+
+    public void setChangeType(GeoGitDataStore.ChangeType changeType) {
+        this.changeType = changeType;
+    }
+
+    public void setOldRoot(String oldRoot) {
+        this.oldRoot = oldRoot;
+    }
+
+    private String oldRoot() {
+        return oldRoot == null ? ObjectId.NULL.toString() : oldRoot;
+    }
+
+    private org.geogit.geotools.data.GeoGitDataStore.ChangeType changeType() {
+        return changeType == null ? ChangeType.ADDED : changeType;
     }
 
     @Override

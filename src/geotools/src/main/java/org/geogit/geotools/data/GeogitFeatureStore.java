@@ -86,7 +86,7 @@ class GeogitFeatureStore extends ContentFeatureStore {
         return delegate.getDataStore();
     }
 
-    public GeogitFeatureSource getFeatureSource() {
+    GeogitFeatureSource getFeatureSource() {
         return delegate;
     }
 

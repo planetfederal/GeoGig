@@ -5,40 +5,36 @@
 
 package org.geogit.geotools.data;
 
-import static com.google.common.base.Predicates.alwaysTrue;
-import static com.google.common.base.Predicates.and;
+import static com.google.common.base.Preconditions.*;
 import static com.google.common.base.Predicates.notNull;
 import static com.google.common.collect.Iterators.filter;
 import static com.google.common.collect.Iterators.transform;
 
 import java.io.IOException;
-import java.util.Comparator;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 import java.util.logging.Logger;
 
 import javax.annotation.Nullable;
 
-import org.geogit.api.Bounded;
-import org.geogit.api.Bucket;
 import org.geogit.api.Context;
 import org.geogit.api.FeatureBuilder;
-import org.geogit.api.Node;
 import org.geogit.api.NodeRef;
 import org.geogit.api.Ref;
 import org.geogit.api.RevFeature;
-import org.geogit.api.RevObject;
 import org.geogit.api.RevTree;
-import org.geogit.api.plumbing.FindTreeChild;
-import org.geogit.api.plumbing.LsTreeOp;
-import org.geogit.api.plumbing.LsTreeOp.Strategy;
+import org.geogit.api.plumbing.DiffTree;
 import org.geogit.api.plumbing.RevObjectParse;
-import org.geogit.storage.NodePathStorageOrder;
+import org.geogit.api.plumbing.diff.DiffEntry;
+import org.geogit.geotools.data.GeoGitDataStore.ChangeType;
 import org.geotools.data.FeatureReader;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.spatial.ReprojectingFilterVisitor;
 import org.geotools.filter.visitor.SpatialFilterVisitor;
+import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.util.logging.Logging;
 import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
@@ -58,20 +54,17 @@ import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterators;
-import com.google.common.collect.Sets;
 import com.vividsolutions.jts.geom.Envelope;
 
 /**
  *
  */
-class GeogitFeatureReader<T extends FeatureType, F extends Feature> implements FeatureReader<T, F>,
-        Iterator<F> {
+class GeogitFeatureReader<T extends FeatureType, F extends Feature> implements
+        FeatureReader<T, F>, Iterator<F> {
 
     private static final Logger LOGGER = Logging.getLogger(GeogitFeatureReader.class);
 
     private SimpleFeatureType schema;
-
-    private Stats stats;
 
     private Iterator<SimpleFeature> features;
 
@@ -81,127 +74,68 @@ class GeogitFeatureReader<T extends FeatureType, F extends Feature> implements F
     @Nullable
     private Integer maxFeatures;
 
-    private static class Stats implements Predicate<Bounded> {
-        public int featureHits, featureMisses, treeHits, treeMisses, bucketHits, bucketMisses;
-
-        private Envelope bounds;
-
-        public Stats(Envelope bounds) {
-            this.bounds = bounds;
-        }
-
-        @Override
-        public String toString() {
-            StringBuilder sb = new StringBuilder("Hits/misses:\n");
-            sb.append("Trees: ").append(treeHits).append('/').append(treeMisses).append('\n');
-            sb.append("Features: ").append(featureHits).append('/').append(featureMisses)
-                    .append('\n');
-            sb.append("Buckets: ").append(bucketHits).append('/').append(bucketMisses).append('\n');
-            return sb.toString();
-        }
-
-        @Override
-        public boolean apply(Bounded bounded) {
-            boolean intersects = bounds.isNull() ? true : bounded.intersects(bounds);
-            if (bounded instanceof Bucket) {
-                // {
-                // Envelope e = new Envelope();
-                // bounded.expand(e);
-                // stats.geoms.add(JTS.toGeometry(e));
-                // }
-                if (intersects)
-                    bucketHits++;
-                else
-                    bucketMisses++;
-            } else {
-                Node node;
-                if (bounded instanceof NodeRef) {
-                    node = ((NodeRef) bounded).getNode();
-                } else {
-                    node = (Node) bounded;
-                }
-                if (node.getType().equals(RevObject.TYPE.TREE)) {
-                    if (intersects)
-                        treeHits++;
-                    else
-                        treeMisses++;
-                } else {
-                    if (intersects)
-                        featureHits++;
-                    else
-                        featureMisses++;
-                }
-            }
-
-            return true;
-        }
-    }
-
     /**
-     * @param commandLocator
+     * @param context
      * @param schema
-     * @param maxFeatures
+     * @param origFilter
+     * @param typeTreePath
+     * @param headRef
+     * @param oldHeadRef
      * @param offset
-     * @param typeTree
-     * @param filter
-     * @param queryBounds
+     * @param maxFeatures
+     * @param changeType
      */
-    public GeogitFeatureReader(final Context commandLocator, final SimpleFeatureType schema,
-            final Filter origFilter, final String typeTreePath, @Nullable final String headRef,
-            @Nullable Integer offset, @Nullable Integer maxFeatures) {
+    public GeogitFeatureReader(final Context context, final SimpleFeatureType schema,
+            final Filter origFilter, final String typeTreePath, final String headRef,
+            String oldHeadRef, ChangeType changeType, @Nullable Integer offset,
+            @Nullable Integer maxFeatures) {
+        checkNotNull(context);
+        checkNotNull(schema);
+        checkNotNull(origFilter);
+        checkNotNull(typeTreePath);
+        checkNotNull(headRef);
+        checkNotNull(oldHeadRef);
+        checkNotNull(changeType);
 
         this.schema = schema;
         this.offset = offset;
         this.maxFeatures = maxFeatures;
 
         final String effectiveHead = headRef == null ? Ref.WORK_HEAD : headRef;
+        final String effectiveOldHead = oldHeadRef == null ? RevTree.EMPTY_TREE_ID.toString()
+                : oldHeadRef;
         final String typeTreeRefSpec = effectiveHead + ":" + typeTreePath;
-        final Optional<RevTree> parentTree = commandLocator.command(RevObjectParse.class)
+        final Optional<RevTree> parentTree = context.command(RevObjectParse.class)
                 .setRefSpec(typeTreeRefSpec).call(RevTree.class);
 
         Preconditions.checkArgument(parentTree.isPresent(), "Feature type tree not found: %s",
                 typeTreeRefSpec);
 
         final Filter filter = reprojectFilter(origFilter);
-        final Envelope queryBounds = getQueryBounds(filter);
+        final ReferencedEnvelope queryBounds = getQueryBounds(filter);
 
-        Predicate<Bounded> refBoundsFilter = alwaysTrue();
-        if (!queryBounds.isNull()) {
-            refBoundsFilter = new Predicate<Bounded>() {
-                private final Envelope env = queryBounds;
-
-                @Override
-                public boolean apply(final Bounded bounded) {
-                    boolean intersects = bounded.intersects(env);
-                    return intersects;
-                }
-            };
-
-            this.stats = new Stats(queryBounds);
-            refBoundsFilter = and(stats, refBoundsFilter);
+        DiffTree diffOp = context.command(DiffTree.class);
+        diffOp.setOldVersion(effectiveOldHead);
+        diffOp.setNewVersion(effectiveHead);
+        List<String> pathFilters = resolvePathFilters(typeTreePath, filter);
+        diffOp.setPathFilter(pathFilters);
+        if (!queryBounds.isEmpty()) {
+            diffOp.setBoundsFilter(queryBounds);
         }
+        diffOp.setChangeTypeFilter(changeType(changeType));
 
-        Iterator<NodeRef> featureRefs;
+        Iterator<DiffEntry> diffs = diffOp.call();
 
-        if (filter instanceof Id) {
-            final Function<FeatureId, NodeRef> idToRef;
-            idToRef = new FindFeatureRefFunction(commandLocator, parentTree.get());
-            Iterator<FeatureId> featureIds = getSortedFidsInNaturalOrder((Id) filter);
-            featureRefs = filter(transform(featureIds, idToRef), notNull());
-        } else {
-            featureRefs = commandLocator.command(LsTreeOp.class)
-                    .setStrategy(Strategy.FEATURES_ONLY).setReference(typeTreeRefSpec)
-                    .setBoundsFilter(refBoundsFilter).call();
-        }
+        Iterator<NodeRef> featureRefs = toFeatureRefs(diffs, changeType);
 
         final boolean filterSupportedByRefs = Filter.INCLUDE.equals(filter)
-                || filter instanceof BBOX;
+                || filter instanceof BBOX || filter instanceof Id;
 
         if (filterSupportedByRefs) {
             featureRefs = applyRefsOffsetLimit(featureRefs);
         }
 
-        NodeRefToFeature refToFeature = new NodeRefToFeature(commandLocator, schema);
+        NodeRefToFeature refToFeature = new NodeRefToFeature(context, schema);
         final Iterator<SimpleFeature> featuresUnfiltered = transform(featureRefs, refToFeature);
 
         FilterPredicate filterPredicate = new FilterPredicate(filter);
@@ -212,6 +146,59 @@ class GeogitFeatureReader<T extends FeatureType, F extends Feature> implements F
         this.features = featuresFiltered;
     }
 
+    private org.geogit.api.plumbing.diff.DiffEntry.ChangeType changeType(ChangeType changeType) {
+        if (changeType == null) {
+            return org.geogit.api.plumbing.diff.DiffEntry.ChangeType.ADDED;
+        }
+        switch (changeType) {
+        case ADDED:
+            return org.geogit.api.plumbing.diff.DiffEntry.ChangeType.ADDED;
+        case REMOVED:
+            return org.geogit.api.plumbing.diff.DiffEntry.ChangeType.REMOVED;
+        default:
+            return org.geogit.api.plumbing.diff.DiffEntry.ChangeType.MODIFIED;
+        }
+    }
+
+    private Iterator<NodeRef> toFeatureRefs(final Iterator<DiffEntry> diffs,
+            final ChangeType changeType) {
+
+        return Iterators.transform(diffs, new Function<DiffEntry, NodeRef>() {
+
+            private final ChangeType diffType = changeType;
+
+            @Override
+            public NodeRef apply(DiffEntry e) {
+                if (e.isAdd()) {
+                    return e.getNewObject();
+                }
+                if (e.isDelete()) {
+                    return e.getOldObject();
+                }
+                return ChangeType.CHANGED_OLD.equals(diffType) ? e.getOldObject() : e
+                        .getNewObject();
+            }
+        });
+    }
+
+    private List<String> resolvePathFilters(String typeTreePath, Filter filter) {
+        List<String> pathFilters;
+        if (filter instanceof Id) {
+            final Set<Identifier> identifiers = ((Id) filter).getIdentifiers();
+            Iterator<FeatureId> featureIds = filter(
+                    filter(identifiers.iterator(), FeatureId.class), notNull());
+            Preconditions.checkArgument(featureIds.hasNext(), "Empty Id filter");
+            pathFilters = new ArrayList<>();
+            while (featureIds.hasNext()) {
+                String fid = featureIds.next().getID();
+                pathFilters.add(NodeRef.appendChild(typeTreePath, fid));
+            }
+        } else {
+            pathFilters = ImmutableList.of(typeTreePath);
+        }
+        return pathFilters;
+    }
+
     @SuppressWarnings("unchecked")
     @Override
     public T getFeatureType() {
@@ -220,9 +207,6 @@ class GeogitFeatureReader<T extends FeatureType, F extends Feature> implements F
 
     @Override
     public void close() throws IOException {
-        if (stats != null) {
-            LOGGER.info("geogit reader stats: " + stats.toString());
-        }
     }
 
     @Override
@@ -261,48 +245,6 @@ class GeogitFeatureReader<T extends FeatureType, F extends Feature> implements F
         return featureRefs;
     }
 
-    private Iterator<FeatureId> getSortedFidsInNaturalOrder(Id filter) {
-
-        final Set<Identifier> identifiers = filter.getIdentifiers();
-
-        Iterator<FeatureId> featureIds = filter(filter(identifiers.iterator(), FeatureId.class),
-                notNull());
-
-        // used for the returned featrures to be in "natural" order
-        final Comparator<String> requestOrderMatchingStorageOrder = new NodePathStorageOrder();
-        Comparator<FeatureId> requestOrder = new Comparator<FeatureId>() {
-            @Override
-            public int compare(FeatureId o1, FeatureId o2) {
-                return requestOrderMatchingStorageOrder.compare(o1.getID(), o2.getID());
-            }
-        };
-        TreeSet<FeatureId> sortedFids = Sets.newTreeSet(requestOrder);
-        sortedFids.addAll(ImmutableList.copyOf(featureIds));
-        return sortedFids.iterator();
-    }
-
-    private static class FindFeatureRefFunction implements Function<FeatureId, NodeRef> {
-
-        private FindTreeChild command;
-
-        private RevTree parentTree;
-
-        public FindFeatureRefFunction(Context commandLocator, RevTree featureTypeTree) {
-            this.parentTree = featureTypeTree;
-            this.command = commandLocator.command(FindTreeChild.class);
-        }
-
-        @Override
-        @Nullable
-        public NodeRef apply(final FeatureId fid) {
-            final String featureName = fid.getID();
-
-            Optional<NodeRef> featureRef = command.setParent(parentTree).setChildPath(featureName)
-                    .setIndex(true).call();
-            return featureRef.orNull();
-        }
-    };
-
     private static class NodeRefToFeature implements Function<NodeRef, SimpleFeature> {
 
         private RevObjectParse parseRevFeatureCommand;
@@ -339,10 +281,14 @@ class GeogitFeatureReader<T extends FeatureType, F extends Feature> implements F
         }
     }
 
-    private Envelope getQueryBounds(Filter filter) {
-
-        final Envelope queryBounds = new Envelope();
-        Envelope bounds = (Envelope) filter.accept(new ExtractBounds(), queryBounds);
+    @Nullable
+    private ReferencedEnvelope getQueryBounds(Filter filterInNativeCrs) {
+        CoordinateReferenceSystem crs = schema.getCoordinateReferenceSystem();
+        if (crs == null) {
+            crs = DefaultEngineeringCRS.GENERIC_2D;
+        }
+        ReferencedEnvelope queryBounds = new ReferencedEnvelope(crs);
+        Envelope bounds = (Envelope) filterInNativeCrs.accept(new ExtractBounds(), queryBounds);
         if (bounds != null) {
             queryBounds.expandToInclude(bounds);
         }

@@ -32,9 +32,9 @@ import org.geogit.api.porcelain.CommitOp;
 import org.geogit.repository.WorkingTree;
 import org.geotools.data.DataStore;
 import org.geotools.data.Transaction;
+import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.store.ContentDataStore;
 import org.geotools.data.store.ContentEntry;
-import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.data.store.ContentState;
 import org.geotools.feature.NameImpl;
 import org.opengis.feature.simple.SimpleFeature;
@@ -314,7 +314,7 @@ public class GeoGitDataStore extends ContentDataStore implements DataStore {
     }
 
     @Override
-    protected ContentFeatureSource createFeatureSource(ContentEntry entry) throws IOException {
+    protected GeogitFeatureStore createFeatureSource(ContentEntry entry) throws IOException {
         return new GeogitFeatureStore(entry);
     }
 
@@ -372,5 +372,53 @@ public class GeoGitDataStore extends ContentDataStore implements DataStore {
     public void removeSchema(String name) throws IOException {
         throw new UnsupportedOperationException(
                 "removeSchema not yet supported by geogit DataStore");
+    }
+
+    public static enum ChangeType {
+        ADDED, REMOVED, CHANGED_NEW, CHANGED_OLD;
+    }
+
+    /**
+     * Builds a FeatureSource (read-only) that fetches features out of the differences between two
+     * root trees: a provided tree-ish as the left side of the comparison, and the datastore's
+     * configured HEAD as the right side of the comparison.
+     * <p>
+     * E.g., to get all features of a given feature type that were removed between a given commit
+     * and its parent:
+     * 
+     * <pre>
+     * <code>
+     * String commitId = ...
+     * GeoGigDataStore store = new GeoGigDataStore(geogig);
+     * store.setHead(commitId);
+     * FeatureSource removed = store.getDiffFeatureSource("roads", commitId + "~1", ChangeType.REMOVED);
+     * </code>
+     * </pre>
+     * 
+     * @param typeName the feature type name to look up a type tree for in the datastore's current
+     *        {@link #getOrFigureOutHead() HEAD}
+     * @param oldRoot a tree-ish string that resolves to the ROOT tree to be used as the left side
+     *        of the diff
+     * @param changeType the type of change between {@code oldRoot} and
+     *        {@link #getOrFigureOutHead() head} to pick as the features to return.
+     * @return a feature source whose features are computed out of the diff between the feature type
+     *         diffs between the given {@code oldRoot} and the datastore's
+     *         {@link #getOrFigureOutHead() HEAD}.
+     */
+    public SimpleFeatureSource getDiffFeatureSource(final String typeName, final String oldRoot,
+            final ChangeType changeType) throws IOException {
+        Preconditions.checkNotNull(typeName, "typeName");
+        Preconditions.checkNotNull(oldRoot, "oldRoot");
+        Preconditions.checkNotNull(changeType, "changeType");
+
+        final Name name = name(typeName);
+        final ContentEntry entry = ensureEntry(name);
+
+        GeogitFeatureSource featureSource = new GeogitFeatureSource(entry);
+        featureSource.setTransaction(Transaction.AUTO_COMMIT);
+        featureSource.setChangeType(changeType);
+        featureSource.setOldRoot(oldRoot);
+
+        return featureSource;
     }
 }
