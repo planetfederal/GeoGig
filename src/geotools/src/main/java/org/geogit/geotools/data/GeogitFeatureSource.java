@@ -178,7 +178,7 @@ class GeogitFeatureSource extends ContentFeatureSource {
         final Filter filter = (Filter) query.getFilter().accept(new SimplifyingFilterVisitor(),
                 null);
         final CoordinateReferenceSystem crs = getSchema().getCoordinateReferenceSystem();
-        if (Filter.INCLUDE.equals(filter)) {
+        if (Filter.INCLUDE.equals(filter) && oldRoot == null && ChangeType.ADDED.equals(changeType)) {
             NodeRef typeRef = getTypeRef();
             ReferencedEnvelope bounds = new ReferencedEnvelope(crs);
             typeRef.getNode().expand(bounds);
@@ -221,7 +221,7 @@ class GeogitFeatureSource extends ContentFeatureSource {
                 .getMaxFeatures();
 
         int size;
-        if (Filter.INCLUDE.equals(filter)) {
+        if (Filter.INCLUDE.equals(filter) && oldRoot == null && ChangeType.ADDED.equals(changeType)) {
             RevTree tree = getTypeTree();
             size = (int) tree.size();
             if (offset != null) {
@@ -319,7 +319,7 @@ class GeogitFeatureSource extends ContentFeatureSource {
         this.changeType = changeType;
     }
 
-    public void setOldRoot(String oldRoot) {
+    public void setOldRoot(@Nullable String oldRoot) {
         this.oldRoot = oldRoot;
     }
 

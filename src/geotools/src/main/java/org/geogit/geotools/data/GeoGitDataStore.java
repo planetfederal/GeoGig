@@ -20,6 +20,7 @@ import org.geogit.api.NodeRef;
 import org.geogit.api.ObjectId;
 import org.geogit.api.Ref;
 import org.geogit.api.RevObject.TYPE;
+import org.geogit.api.RevTree;
 import org.geogit.api.SymRef;
 import org.geogit.api.data.FindFeatureTypeTrees;
 import org.geogit.api.plumbing.ForEachRef;
@@ -417,7 +418,12 @@ public class GeoGitDataStore extends ContentDataStore implements DataStore {
         GeogitFeatureSource featureSource = new GeogitFeatureSource(entry);
         featureSource.setTransaction(Transaction.AUTO_COMMIT);
         featureSource.setChangeType(changeType);
-        featureSource.setOldRoot(oldRoot);
+        if (ObjectId.NULL.toString().equals(oldRoot)
+                || RevTree.EMPTY_TREE_ID.toString().equals(oldRoot)) {
+            featureSource.setOldRoot(null);
+        } else {
+            featureSource.setOldRoot(oldRoot);
+        }
 
         return featureSource;
     }
