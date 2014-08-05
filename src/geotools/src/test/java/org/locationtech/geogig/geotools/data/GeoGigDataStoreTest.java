@@ -387,26 +387,35 @@ public class GeoGigDataStoreTest extends RepositoryTestCase {
 
         dataStore.setHead(newRoot.toString());
         List<String> fids;
+        SimpleFeatureCollection features;
 
         ChangeType changeType = ChangeType.ADDED;
-        fids = toIdList(dataStore.getDiffFeatureSource(pointsName, oldRoot.toString(), changeType)
-                .getFeatures());
+        features = dataStore.getDiffFeatureSource(pointsName, oldRoot.toString(), changeType)
+                .getFeatures();
+        fids = toIdList(features);
         assertEquals(changeType + fids.toString(), expectedAdded, fids.size());
+        assertEquals(changeType + fids.toString(), expectedAdded, features.size());
 
         changeType = ChangeType.REMOVED;
-        fids = toIdList(dataStore.getDiffFeatureSource(pointsName, oldRoot.toString(), changeType)
-                .getFeatures());
+        features = dataStore.getDiffFeatureSource(pointsName, oldRoot.toString(), changeType)
+                .getFeatures();
+        fids = toIdList(features);
         assertEquals(changeType + fids.toString(), expectedRemoved, fids.size());
+        assertEquals(changeType + fids.toString(), expectedRemoved, features.size());
 
         changeType = ChangeType.CHANGED_NEW;
-        fids = toIdList(dataStore.getDiffFeatureSource(pointsName, oldRoot.toString(), changeType)
-                .getFeatures());
+        features = dataStore.getDiffFeatureSource(pointsName, oldRoot.toString(), changeType)
+                .getFeatures();
+        fids = toIdList(features);
         assertEquals(changeType + fids.toString(), expectedChanged, fids.size());
+        assertEquals(changeType + fids.toString(), expectedChanged, features.size());
 
         changeType = ChangeType.CHANGED_OLD;
-        fids = toIdList(dataStore.getDiffFeatureSource(pointsName, oldRoot.toString(), changeType)
-                .getFeatures());
+        features = dataStore.getDiffFeatureSource(pointsName, oldRoot.toString(), changeType)
+                .getFeatures();
+        fids = toIdList(features);
         assertEquals(changeType + fids.toString(), expectedChanged, fids.size());
+        assertEquals(changeType + fids.toString(), expectedChanged, features.size());
     }
 
     private List<String> toIdList(SimpleFeatureCollection features) {

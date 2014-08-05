@@ -27,6 +27,7 @@ import org.locationtech.geogig.api.NodeRef;
 import org.locationtech.geogig.api.ObjectId;
 import org.locationtech.geogig.api.Ref;
 import org.locationtech.geogig.api.RevObject.TYPE;
+import org.locationtech.geogig.api.RevTree;
 import org.locationtech.geogig.api.SymRef;
 import org.locationtech.geogig.api.data.FindFeatureTypeTrees;
 import org.locationtech.geogig.api.plumbing.ForEachRef;
@@ -417,7 +418,12 @@ public class GeoGigDataStore extends ContentDataStore implements DataStore {
         GeogigFeatureSource featureSource = new GeogigFeatureSource(entry);
         featureSource.setTransaction(Transaction.AUTO_COMMIT);
         featureSource.setChangeType(changeType);
-        featureSource.setOldRoot(oldRoot);
+        if (ObjectId.NULL.toString().equals(oldRoot)
+                || RevTree.EMPTY_TREE_ID.toString().equals(oldRoot)) {
+            featureSource.setOldRoot(null);
+        } else {
+            featureSource.setOldRoot(oldRoot);
+        }
 
         return featureSource;
     }
