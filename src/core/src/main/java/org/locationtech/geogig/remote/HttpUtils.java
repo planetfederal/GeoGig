@@ -539,9 +539,9 @@ class HttpUtils {
         return new ReportingInputStream(in, gzip);
     }
 
-    public static ReportingOutputStream newReportingOutputStream(OutputStream out,
+    public static ReportingOutputStream newReportingOutputStream(HttpURLConnection connection, OutputStream out,
             boolean gzipEncode) {
-        return new ReportingOutputStream(out, gzipEncode);
+        return new ReportingOutputStream(connection, out, gzipEncode);
     }
 
     public static class ReportingInputStream extends FilterInputStream {
@@ -588,13 +588,16 @@ class HttpUtils {
 
         private boolean gzipEncode;
 
+        private HttpURLConnection connection;
+
         private CountingOutputStream uncompressed;
 
         private CountingOutputStream compressed;
 
-        private ReportingOutputStream(OutputStream out, boolean gzipEncode) {
+        private ReportingOutputStream(HttpURLConnection connection, OutputStream out, boolean gzipEncode) {
             super(new CountingOutputStream(out));
             this.gzipEncode = gzipEncode;
+            this.connection = connection;
             if (gzipEncode) {
                 compressed = (CountingOutputStream) super.out;
                 GZIPOutputStream gzipOut;
@@ -621,6 +624,12 @@ class HttpUtils {
 
         public long unCompressedSize() {
             return uncompressed.getCount();
+        }
+
+        @Override
+        public void close() throws IOException {
+            connection.getResponseCode();
+            super.close();
         }
     }
 }

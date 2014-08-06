@@ -303,7 +303,7 @@ class HttpRemoteRepo extends AbstractRemoteRepo {
                             connection.setRequestProperty("content-length", "-1");
                             connection.setRequestProperty("content-encoding", "gzip");
                             OutputStream out = connection.getOutputStream();
-                            ReportingOutputStream rout = HttpUtils.newReportingOutputStream(out,
+                            ReportingOutputStream rout = HttpUtils.newReportingOutputStream(connection, out,
                                     true);
                             System.err.println("Connected.");
                             return rout;
