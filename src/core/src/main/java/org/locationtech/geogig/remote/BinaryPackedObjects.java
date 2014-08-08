@@ -51,12 +51,6 @@ public final class BinaryPackedObjects {
 
     private final ObjectReader<RevObject> objectReader;
 
-    /*
-     * I think the receiving end will continue to make requests until it has all of the data. If I
-     * (JD) remember correctly it was to avoid timeouts, but I'm not sure
-     */
-    private final int CAP = 100;
-
     private final ObjectDatabase database;
 
     public BinaryPackedObjects(ObjectDatabase database) {
@@ -106,7 +100,7 @@ public final class BinaryPackedObjects {
 
         LOGGER.info("obtaining post order iterator on range...");
         sw.reset().start();
-        int commitsSent = 0;
+
         Iterator<RevObject> objects = PostOrderIterator.range(want, new ArrayList<ObjectId>(
                 previsitResults), database, traverseCommits, deduplicator);
         long objectCount = 0;
@@ -115,7 +109,7 @@ public final class BinaryPackedObjects {
         try {
             OutputStream out = outputSupplier.get();
             LOGGER.info("writing objects to remote...");
-            while (objects.hasNext() && commitsSent < CAP) {
+            while (objects.hasNext()) {
                 RevObject object = objects.next();
 
                 out.write(object.getId().getRawValue());
