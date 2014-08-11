@@ -32,13 +32,13 @@ import org.locationtech.geogig.repository.Repository;
 import org.locationtech.geogig.storage.DeduplicationService;
 import org.locationtech.geogig.storage.Deduplicator;
 import org.locationtech.geogig.storage.ObjectDatabase;
+import org.locationtech.geogig.storage.datastream.DataStreamSerializationFactoryV1;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Stopwatch;
 import com.google.common.base.Supplier;
-import com.google.common.base.Suppliers;
 import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
@@ -236,8 +236,8 @@ class HttpRemoteRepo extends AbstractRemoteRepo {
             originalRemoteRefValue = remoteRef.get().getObjectId();
         }
 
-        String nameToSet =
-                remoteRef.isPresent() ? remoteRef.get().getName() : Ref.HEADS_PREFIX + refspec;
+        String nameToSet = remoteRef.isPresent() ? remoteRef.get().getName() : Ref.HEADS_PREFIX
+                + refspec;
 
         endPush(nameToSet, ref.getObjectId(), originalRemoteRefValue.toString());
     }
@@ -265,55 +265,54 @@ class HttpRemoteRepo extends AbstractRemoteRepo {
                 ImmutableList<ObjectId> have = ImmutableList.copyOf(roots);
                 final boolean traverseCommits = false;
 
-                Supplier<ReportingOutputStream> outputSupplier = getMemoizedOutputSupplier();
                 Stopwatch sw = Stopwatch.createStarted();
-                long writtenObjectsCount = packer.write(outputSupplier, toSend, have, sent,
-                        callback, traverseCommits, deduplicator);
+                ObjectFunnel objectFunnel = ObjectFunnels.newFunnel(sendObjectsConnectionFactory,
+                        DataStreamSerializationFactoryV1.INSTANCE, 1024 * 1024);
+                long writtenObjectsCount = packer.write(objectFunnel, toSend, have, sent, callback,
+                        traverseCommits, deduplicator);
+                objectFunnel.close();
                 sw.stop();
-                ReportingOutputStream out = outputSupplier.get();
-                out.flush();
-                out.close();
+                // ReportingOutputStream out = outputSupplier.get();
+                // out.flush();
+                // out.close();
 
+                // LOGGER.info(String.format("HttpRemoteRepo: Written %,d objects.\n"
+                // + "Time to process: %s.\n"
+                // + "Compressed size: %,d bytes.\nUncompressed size: %,d bytes.\n",
+                // writtenObjectsCount, sw, out.compressedSize(), out.unCompressedSize()));
                 LOGGER.info(String.format("HttpRemoteRepo: Written %,d objects.\n"
-                        + "Time to process: %s.\n"
-                        + "Compressed size: %,d bytes.\nUncompressed size: %,d bytes.\n",
-                        writtenObjectsCount, sw, out.compressedSize(), out.unCompressedSize()));
+                        + "Time to process: %s.", writtenObjectsCount, sw));
             } catch (IOException e) {
                 Throwables.propagate(e);
             }
         }
     }
 
-    private Supplier<ReportingOutputStream> getMemoizedOutputSupplier() {
-        Supplier<ReportingOutputStream> outputSupplier = Suppliers
-                .memoize(new Supplier<ReportingOutputStream>() {
-
-                    @Override
-                    public ReportingOutputStream get() {
-                        String expanded = repositoryURL.toString() + "/repo/sendobject";
-                        System.err.println("connecting to " + expanded);
-                        try {
-                            HttpURLConnection connection = (HttpURLConnection) new URL(expanded)
-                                    .openConnection();
-                            connection.setDoOutput(true);
-                            connection.setDoInput(false);
-                            connection.setUseCaches(false);
-                            connection.setRequestMethod("POST");
-                            connection.setChunkedStreamingMode(4096);
-                            connection.setRequestProperty("content-length", "-1");
-                            connection.setRequestProperty("content-encoding", "gzip");
-                            OutputStream out = connection.getOutputStream();
-                            ReportingOutputStream rout = HttpUtils.newReportingOutputStream(connection, out,
-                                    true);
-                            System.err.println("Connected.");
-                            return rout;
-                        } catch (Exception e) {
-                            throw Throwables.propagate(e);
-                        }
-                    }
-                });
-        return outputSupplier;
-    }
+    private Supplier<OutputStream> sendObjectsConnectionFactory = new Supplier<OutputStream>() {
+        @Override
+        public OutputStream get() {
+            String expanded = repositoryURL.toString() + "/repo/sendobject";
+            System.err.print("connecting to " + expanded + "...");
+            try {
+                HttpURLConnection connection = (HttpURLConnection) new URL(expanded)
+                        .openConnection();
+                connection.setDoOutput(true);
+                connection.setDoInput(true);
+                connection.setUseCaches(false);
+                connection.setRequestMethod("POST");
+                connection.setChunkedStreamingMode(4096);
+                connection.setRequestProperty("content-length", "-1");
+                connection.setRequestProperty("content-encoding", "gzip");
+                OutputStream out = connection.getOutputStream();
+                ReportingOutputStream rout = HttpUtils.newReportingOutputStream(connection, out,
+                        true);
+                System.err.println(" Connected.");
+                return rout;
+            } catch (Exception e) {
+                throw Throwables.propagate(e);
+            }
+        }
+    };
 
     /**
      * Delete a {@link Ref} from the remote repository.

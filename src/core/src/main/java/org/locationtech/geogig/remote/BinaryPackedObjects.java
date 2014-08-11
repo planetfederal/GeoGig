@@ -9,7 +9,6 @@ import static java.lang.String.format;
 import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -62,17 +61,17 @@ public final class BinaryPackedObjects {
     /**
      * @return the number of objects written
      */
-    public long write(OutputStream out, List<ObjectId> want, List<ObjectId> have,
+    public long write(ObjectFunnel funnel, List<ObjectId> want, List<ObjectId> have,
             boolean traverseCommits, Deduplicator deduplicator) throws IOException {
-        return write(Suppliers.ofInstance(out), want, have, new HashSet<ObjectId>(),
-                DEFAULT_CALLBACK, traverseCommits, deduplicator);
+        return write(funnel, want, have, new HashSet<ObjectId>(), DEFAULT_CALLBACK,
+                traverseCommits, deduplicator);
     }
 
     /**
      * @return the number of objects written
      */
-    public long write(Supplier<? extends OutputStream> outputSupplier, List<ObjectId> want,
-            List<ObjectId> have, Set<ObjectId> sent, Callback callback, boolean traverseCommits,
+    public long write(ObjectFunnel funnel, List<ObjectId> want, List<ObjectId> have,
+            Set<ObjectId> sent, Callback callback, boolean traverseCommits,
             Deduplicator deduplicator) throws IOException {
 
         for (ObjectId i : want) {
@@ -107,15 +106,11 @@ public final class BinaryPackedObjects {
         LOGGER.info("PostOrderIterator.range took {}", sw.stop());
 
         try {
-            OutputStream out = outputSupplier.get();
             LOGGER.info("writing objects to remote...");
             while (objects.hasNext()) {
                 RevObject object = objects.next();
-
-                out.write(object.getId().getRawValue());
+                funnel.funnel(object);
                 objectCount++;
-                factory.createObjectWriter(object.getType()).write(object, out);
-                out.flush();
                 callback.callback(Suppliers.ofInstance(object));
             }
         } catch (IOException e) {
