@@ -5,6 +5,7 @@
 package org.locationtech.geogig.remote;
 
 import java.io.BufferedReader;
+import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -25,6 +26,7 @@ import org.locationtech.geogig.api.Ref;
 import org.locationtech.geogig.api.RevCommit;
 import org.locationtech.geogig.api.RevObject;
 import org.locationtech.geogig.api.RevTag;
+import org.locationtech.geogig.api.porcelain.ConfigGet;
 import org.locationtech.geogig.api.porcelain.SynchronizationException;
 import org.locationtech.geogig.remote.BinaryPackedObjects.IngestResults;
 import org.locationtech.geogig.remote.HttpUtils.ReportingOutputStream;
@@ -32,6 +34,7 @@ import org.locationtech.geogig.repository.Repository;
 import org.locationtech.geogig.storage.DeduplicationService;
 import org.locationtech.geogig.storage.Deduplicator;
 import org.locationtech.geogig.storage.ObjectDatabase;
+import org.locationtech.geogig.storage.ObjectSerializingFactory;
 import org.locationtech.geogig.storage.datastream.DataStreamSerializationFactoryV1;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,6 +59,9 @@ import com.google.gson.JsonPrimitive;
 class HttpRemoteRepo extends AbstractRemoteRepo {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HttpRemoteRepo.class);
+
+    /** Default limit in bytes for push to split the sent objects */
+    private static final int DEFAULT_PUSH_BATCH_LIMIT = 4 * 1024 * 1024;
 
     private URL repositoryURL;
 
@@ -266,33 +272,72 @@ class HttpRemoteRepo extends AbstractRemoteRepo {
                 final boolean traverseCommits = false;
 
                 Stopwatch sw = Stopwatch.createStarted();
-                ObjectFunnel objectFunnel = ObjectFunnels.newFunnel(sendObjectsConnectionFactory,
-                        DataStreamSerializationFactoryV1.INSTANCE, 1024 * 1024);
-                long writtenObjectsCount = packer.write(objectFunnel, toSend, have, sent, callback,
-                        traverseCommits, deduplicator);
+                ObjectSerializingFactory serializer = DataStreamSerializationFactoryV1.INSTANCE;
+                SendObjectsConnectionFactory outFactory;
+                ObjectFunnel objectFunnel;
+
+                outFactory = new SendObjectsConnectionFactory(repositoryURL);
+                int pushBytesLimit = parsePushLimit();
+                objectFunnel = ObjectFunnels.newFunnel(outFactory, serializer, pushBytesLimit);
+                final long writtenObjectsCount = packer.write(objectFunnel, toSend, have, sent,
+                        callback, traverseCommits, deduplicator);
                 objectFunnel.close();
                 sw.stop();
-                // ReportingOutputStream out = outputSupplier.get();
-                // out.flush();
-                // out.close();
 
-                // LOGGER.info(String.format("HttpRemoteRepo: Written %,d objects.\n"
-                // + "Time to process: %s.\n"
-                // + "Compressed size: %,d bytes.\nUncompressed size: %,d bytes.\n",
-                // writtenObjectsCount, sw, out.compressedSize(), out.unCompressedSize()));
-                LOGGER.info(String.format("HttpRemoteRepo: Written %,d objects.\n"
-                        + "Time to process: %s.", writtenObjectsCount, sw));
+                long compressedSize = outFactory.compressedSize;
+                long uncompressedSize = outFactory.uncompressedSize;
+                LOGGER.info(String.format("HttpRemoteRepo: Written %,d objects."
+                        + " Time to process: %s."
+                        + " Compressed size: %,d bytes. Uncompressed size: %,d bytes.",
+                        writtenObjectsCount, sw, compressedSize, uncompressedSize));
             } catch (IOException e) {
                 Throwables.propagate(e);
             }
         }
     }
 
-    private Supplier<OutputStream> sendObjectsConnectionFactory = new Supplier<OutputStream>() {
+    private int parsePushLimit() {
+        final String confKey = "push.chunk.limit";
+        Optional<String> configLimit = localRepository.command(ConfigGet.class).setName(confKey)
+                .call();
+        int limit = DEFAULT_PUSH_BATCH_LIMIT;
+        if (configLimit.isPresent()) {
+            String climit = configLimit.get();
+            LOGGER.debug("Setting push batch limit to {} bytes as configured by {}", climit,
+                    confKey);
+            try {
+                int tmpLimit = Integer.parseInt(climit);
+                if (tmpLimit < 1024) {
+                    LOGGER.warn(
+                            "Value for push batch limit '{}' is set too low ({}). "
+                                    + "A minimum of 1024 bytes is needed. Using the default value of {} bytes",
+                            confKey, tmpLimit, limit);
+                } else {
+                    limit = tmpLimit;
+                }
+            } catch (NumberFormatException e) {
+                LOGGER.warn("Invalid config value for {}, using the default of {} bytes", confKey,
+                        limit);
+            }
+        } else {
+            LOGGER.info("No push batch limit set through {}, using the default of {} bytes",
+                    confKey, limit);
+        }
+        return limit;
+    }
+
+    private static class SendObjectsConnectionFactory implements Supplier<OutputStream> {
+        private URL repositoryURL;
+
+        public SendObjectsConnectionFactory(URL repositoryURL) {
+            this.repositoryURL = repositoryURL;
+        }
+
+        private long compressedSize, uncompressedSize;
+
         @Override
         public OutputStream get() {
             String expanded = repositoryURL.toString() + "/repo/sendobject";
-            System.err.print("connecting to " + expanded + "...");
             try {
                 HttpURLConnection connection = (HttpURLConnection) new URL(expanded)
                         .openConnection();
@@ -304,10 +349,16 @@ class HttpRemoteRepo extends AbstractRemoteRepo {
                 connection.setRequestProperty("content-length", "-1");
                 connection.setRequestProperty("content-encoding", "gzip");
                 OutputStream out = connection.getOutputStream();
-                ReportingOutputStream rout = HttpUtils.newReportingOutputStream(connection, out,
-                        true);
-                System.err.println(" Connected.");
-                return rout;
+                final ReportingOutputStream rout = HttpUtils.newReportingOutputStream(connection,
+                        out, true);
+                return new FilterOutputStream(rout) {
+                    @Override
+                    public void close() throws IOException {
+                        super.close();
+                        compressedSize += ((ReportingOutputStream) super.out).compressedSize();
+                        uncompressedSize += ((ReportingOutputStream) super.out).unCompressedSize();
+                    }
+                };
             } catch (Exception e) {
                 throw Throwables.propagate(e);
             }

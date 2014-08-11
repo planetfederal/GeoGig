@@ -11,6 +11,7 @@ import org.locationtech.geogig.api.RevObject;
 import org.locationtech.geogig.storage.ObjectSerializingFactory;
 
 import com.google.common.base.Supplier;
+import com.google.common.io.CountingOutputStream;
 
 public class ObjectFunnels {
 
@@ -18,9 +19,10 @@ public class ObjectFunnels {
         return new DirectFunnel(out, serializer);
     }
 
-    public static ObjectFunnel newFunnel(Supplier<OutputStream> outputFactory,
-            ObjectSerializingFactory serializer, final int byteLimit) {
-        return new SizeLimitingFunnel(outputFactory, serializer, byteLimit);
+    public static ObjectFunnel newFunnel(final Supplier<OutputStream> outputFactory,
+            final ObjectSerializingFactory serializer, final int byteSoftLimit) {
+
+        return new SizeLimitingFunnel(outputFactory, serializer, byteSoftLimit);
     }
 
     private static class DirectFunnel implements ObjectFunnel {
@@ -56,15 +58,15 @@ public class ObjectFunnels {
 
         private final ObjectSerializingFactory serializer;
 
-        private final int byteLimit;
+        private final int byteSofLimit;
 
-        private OutputStream currentTarget;
+        private CountingOutputStream currentTarget;
 
         public SizeLimitingFunnel(Supplier<OutputStream> outputFactory,
-                ObjectSerializingFactory serializer, int byteLimit) {
+                ObjectSerializingFactory serializer, final int byteSoftLimit) {
             this.outputFactory = outputFactory;
             this.serializer = serializer;
-            this.byteLimit = byteLimit;
+            this.byteSofLimit = byteSoftLimit;
         }
 
         @Override
@@ -77,19 +79,19 @@ public class ObjectFunnels {
 
         private OutputStream getCurrentTarget() throws IOException {
             if (currentTarget == null) {
-                currentTarget = outputFactory.get();
-            } /*
-               * else if (currentTarget.getCount() >= byteLimit) { currentTarget.close();
-               * currentTarget = new CountingOutputStream(outputFactory.get()); }
-               */
+                currentTarget = new CountingOutputStream(outputFactory.get());
+            } else if (currentTarget.getCount() >= byteSofLimit) {
+                System.err.printf("Closing stream and opening a new one, reached %,d bytes.\n",
+                        currentTarget.getCount());
+                currentTarget.close();
+                currentTarget = new CountingOutputStream(outputFactory.get());
+            }
 
             return currentTarget;
         }
 
         @Override
         public void close() throws IOException {
-            System.err.println("Closing SizeLimitingFunnel");
-            System.err.flush();
             OutputStream currentTarget = this.currentTarget;
             this.currentTarget = null;
             if (currentTarget != null) {
@@ -97,5 +99,6 @@ public class ObjectFunnels {
             }
             outputFactory = null;
         }
+
     }
 }

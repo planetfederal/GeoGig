@@ -599,18 +599,18 @@ class HttpUtils {
             super(new CountingOutputStream(out));
             this.gzipEncode = gzipEncode;
             this.connection = connection;
-            uncompressed = (CountingOutputStream) super.out;
+            compressed = (CountingOutputStream) super.out;
             if (gzipEncode) {
                 GZIPOutputStream gzipOut;
                 try {
-                    gzipOut = new GZIPOutputStream(uncompressed);
+                    gzipOut = new GZIPOutputStream(compressed);
                 } catch (IOException e) {
                     throw Throwables.propagate(e);
                 }
-                compressed = new CountingOutputStream(gzipOut);
-                super.out = compressed;
+                uncompressed = new CountingOutputStream(gzipOut);
+                super.out = uncompressed;
             } else {
-                compressed = null;
+                uncompressed = compressed;
             }
         }
 
@@ -619,7 +619,7 @@ class HttpUtils {
         }
 
         public long compressedSize() {
-            return compressed == null ? -1L : compressed.getCount();
+            return compressed.getCount();
         }
 
         public long unCompressedSize() {
