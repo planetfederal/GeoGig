@@ -89,7 +89,7 @@
     <repository>
       <id>boundlessgeo</id>
       <name>Boundlessgeo Maven Repository</name>
-      <url>http://repo.boundlessgeo.com/</url>
+      <url>http://repo.opengeo.org/</url>
       <snapshots>
         <enabled>true</enabled>
       </snapshots>
@@ -369,7 +369,7 @@
     <repository>
       <id>boundlessgeo</id>
       <name>Boundlessgeo Maven Repository</name>
-      <url>dav:http://repo.boundlessgeo.com</url>
+      <url>dav:http://repo.opengeo.org</url>
       <uniqueVersion>false</uniqueVersion>
     </repository>
   </distributionManagement>
