@@ -58,7 +58,7 @@ public class ObjectFunnels {
 
         private final ObjectSerializingFactory serializer;
 
-        private final int byteSofLimit;
+        private final int byteSoftLimit;
 
         private CountingOutputStream currentTarget;
 
@@ -66,7 +66,7 @@ public class ObjectFunnels {
                 ObjectSerializingFactory serializer, final int byteSoftLimit) {
             this.outputFactory = outputFactory;
             this.serializer = serializer;
-            this.byteSofLimit = byteSoftLimit;
+            this.byteSoftLimit = byteSoftLimit;
         }
 
         @Override
@@ -80,7 +80,7 @@ public class ObjectFunnels {
         private OutputStream getCurrentTarget() throws IOException {
             if (currentTarget == null) {
                 currentTarget = new CountingOutputStream(outputFactory.get());
-            } else if (currentTarget.getCount() >= byteSofLimit) {
+            } else if (currentTarget.getCount() >= byteSoftLimit) {
                 System.err.printf("Closing stream and opening a new one, reached %,d bytes.\n",
                         currentTarget.getCount());
                 currentTarget.close();
