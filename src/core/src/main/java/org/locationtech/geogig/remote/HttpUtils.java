@@ -539,8 +539,8 @@ class HttpUtils {
         return new ReportingInputStream(in, gzip);
     }
 
-    public static ReportingOutputStream newReportingOutputStream(HttpURLConnection connection, OutputStream out,
-            boolean gzipEncode) {
+    public static ReportingOutputStream newReportingOutputStream(HttpURLConnection connection,
+            OutputStream out, boolean gzipEncode) {
         return new ReportingOutputStream(connection, out, gzipEncode);
     }
 
@@ -590,16 +590,17 @@ class HttpUtils {
 
         private HttpURLConnection connection;
 
-        private CountingOutputStream uncompressed;
+        private final CountingOutputStream uncompressed;
 
-        private CountingOutputStream compressed;
+        private final CountingOutputStream compressed;
 
-        private ReportingOutputStream(HttpURLConnection connection, OutputStream out, boolean gzipEncode) {
+        private ReportingOutputStream(HttpURLConnection connection, OutputStream out,
+                boolean gzipEncode) {
             super(new CountingOutputStream(out));
             this.gzipEncode = gzipEncode;
             this.connection = connection;
+            compressed = (CountingOutputStream) super.out;
             if (gzipEncode) {
-                compressed = (CountingOutputStream) super.out;
                 GZIPOutputStream gzipOut;
                 try {
                     gzipOut = new GZIPOutputStream(compressed);
@@ -609,8 +610,7 @@ class HttpUtils {
                 uncompressed = new CountingOutputStream(gzipOut);
                 super.out = uncompressed;
             } else {
-                uncompressed = ((CountingOutputStream) super.out);
-                compressed = uncompressed;
+                uncompressed = compressed;
             }
         }
 
@@ -628,8 +628,15 @@ class HttpUtils {
 
         @Override
         public void close() throws IOException {
-            connection.getResponseCode();
             super.close();
+            // make sure we wait for the connection's ack before closing
+            int responseCode = connection.getResponseCode();
+            if (responseCode < 200 || responseCode > 299) {
+                throw new IOException("Error closing " + connection.getURL() + ": response code: "
+                        + responseCode);
+            }
+            // System.err.println("Response code: " + responseCode);
+            // System.err.flush();
         }
     }
 }
