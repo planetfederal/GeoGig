@@ -17,19 +17,19 @@ Project Lead: `Gabriel Roldan <https://github.com/groldan>`_
 
 License: all source code is licensed under the `BSD New License <LICENSE.txt>`_.
 
-Status: A 0.7 version has been released and it is available for download, with a full commandline 
+Status: A 1.0-beta1 version has been released and it is available for download, with a full commandline 
 interface to import data and work with repositories.
 
 Download
 =========
 
 No release downloads available yet. Keep tuned for the first 1.0 release candidate soon.
-.. `Version 0.7.0 <http://sourceforge.net/projects/geogig/files/geogig-0.7.0/geogig-cli-app-0.7.0.zip/download>`_ from SourceForge. Documentation available for `download <http://sourceforge.net/projects/geogig/files/geogig-0.7.0/geogig-user-mannual-0.7.0.zip/download>`_ and `online <http://geogig.org/docs/index.html>`_.
+.. `Version 1.0-beta1 <http://sourceforge.net/projects/geogig/files/geogig-1.0-beta1/geogig-cli-app-1.0-beta1.zip/download>`_ from SourceForge. Documentation available for `download <http://sourceforge.net/projects/geogig/files/geogig-1.0-beta1/geogig-user-mannual-1.0-beta1.zip/download>`_ and `online <http://geogig.org/docs/index.html>`_.
 
 Installation
 ============
 
-Unzip the geogig-cli-app-0.1-SNAPSHOT.zip to an applications directory, and then add the unzipped geogig/bin/ folder to your PATH.
+Unzip the geogig-cli-app-1.0-beta1.zip to an applications directory, and then add the unzipped geogig/bin/ folder to your PATH.
 
 Running
 =======
