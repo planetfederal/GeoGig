@@ -71,7 +71,6 @@
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-shapefile</artifactId>
-      <version>${gt.version}</version>
     </dependency>
 
     <dependency>
