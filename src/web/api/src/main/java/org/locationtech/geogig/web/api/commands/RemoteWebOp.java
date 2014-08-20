@@ -153,67 +153,28 @@ public class RemoteWebOp extends AbstractWebAPICommand {
     public void run(CommandContext context) {
         final Context geogig = this.getCommandLocator(context);
         if (list) {
-            final List<Remote> remotes = geogig.command(RemoteListOp.class).call();
-
-            context.setResponseContent(new CommandResponse() {
-                @Override
-                public void write(ResponseWriter out) throws Exception {
-                    out.start();
-                    out.writeRemoteListResponse(remotes, verbose);
-                    out.finish();
-                }
-            });
+            remoteList(context, geogig);
         } else if (ping) {
-            Optional<Remote> remote = geogig.command(RemoteResolve.class).setName(remoteName)
-                    .call();
-
-            if (remote.isPresent()) {
-                Optional<IRemoteRepo> remoteRepo = RemoteUtils.newRemote(
-                        GlobalContextBuilder.builder.build(), remote.get(), null, null);
-                if (remoteRepo.isPresent()) {
-                    try {
-                        remoteRepo.get().open();
-                        Ref ref = remoteRepo.get().headRef();
-                        remoteRepo.get().close();
-
-                        if (ref != null) {
-                            context.setResponseContent(new CommandResponse() {
-                                @Override
-                                public void write(ResponseWriter out) throws Exception {
-                                    out.start();
-                                    out.writeRemotePingResponse(true);
-                                    out.finish();
-                                }
-                            });
-                        }
-                        return;
-                    } catch (IOException e) {
-                        // Do nothing, we will write the response later.
-                    }
-                }
-            }
-            context.setResponseContent(new CommandResponse() {
-                @Override
-                public void write(ResponseWriter out) throws Exception {
-                    out.start();
-                    out.writeRemotePingResponse(false);
-                    out.finish();
-                }
-            });
+            remotePing(context, geogig);
         } else if (remove) {
-            if (remoteName == null || remoteName.trim().isEmpty()) {
-                throw new CommandSpecException("No remote was specified.");
-            }
-            final Remote remote;
-            try {
-                remote = geogig.command(RemoteRemoveOp.class).setName(remoteName).call();
-            } catch (RemoteException e) {
-                context.setResponseContent(CommandResponse.error(e.statusCode.toString()));
-                return;
-            } catch (Exception e) {
-                context.setResponseContent(CommandResponse.error("Aborting Remote Remove"));
-                return;
-            }
+            remoteRemove(context, geogig);
+        } else if (update) {
+            remoteUpdate(context, geogig);
+        } else {
+            remoteAdd(context, geogig);
+        }
+    }
+
+    private void remoteAdd(CommandContext context, final Context geogig) {
+        if (remoteName == null || remoteName.trim().isEmpty()) {
+            throw new CommandSpecException("No remote was specified.");
+        } else if (remoteURL == null || remoteURL.trim().isEmpty()) {
+            throw new CommandSpecException("No URL was specified.");
+        }
+        final Remote remote;
+        try {
+            remote = geogig.command(RemoteAddOp.class).setName(remoteName).setURL(remoteURL)
+                    .setUserName(username).setPassword(password).call();
             context.setResponseContent(new CommandResponse() {
                 @Override
                 public void write(ResponseWriter out) throws Exception {
@@ -222,29 +183,29 @@ public class RemoteWebOp extends AbstractWebAPICommand {
                     out.finish();
                 }
             });
-        } else if (update) {
-            if (remoteName == null || remoteName.trim().isEmpty()) {
-                throw new CommandSpecException("No remote was specified.");
-            } else if (remoteURL == null || remoteURL.trim().isEmpty()) {
-                throw new CommandSpecException("No URL was specified.");
-            }
-            final Remote newRemote;
-            try {
-                if (newName != null && !newName.trim().isEmpty() && !newName.equals(remoteName)) {
-                    newRemote = geogig.command(RemoteAddOp.class).setName(newName)
-                            .setURL(remoteURL).setUserName(username).setPassword(password).call();
-                    geogig.command(RemoteRemoveOp.class).setName(remoteName).call();
-                } else {
-                    geogig.command(RemoteRemoveOp.class).setName(remoteName).call();
-                    newRemote = geogig.command(RemoteAddOp.class).setName(remoteName)
-                            .setURL(remoteURL).setUserName(username).setPassword(password).call();
-                }
-            } catch (RemoteException e) {
-                context.setResponseContent(CommandResponse.error(e.statusCode.toString()));
-                return;
-            } catch (Exception e) {
-                context.setResponseContent(CommandResponse.error("Aborting Remote Update"));
-                return;
+        } catch (RemoteException e) {
+            context.setResponseContent(CommandResponse.error(e.statusCode.toString()));
+        } catch (Exception e) {
+            context.setResponseContent(CommandResponse.error("Aborting Remote Add"));
+        }
+    }
+
+    private void remoteUpdate(CommandContext context, final Context geogig) {
+        if (remoteName == null || remoteName.trim().isEmpty()) {
+            throw new CommandSpecException("No remote was specified.");
+        } else if (remoteURL == null || remoteURL.trim().isEmpty()) {
+            throw new CommandSpecException("No URL was specified.");
+        }
+        final Remote newRemote;
+        try {
+            if (newName != null && !newName.trim().isEmpty() && !newName.equals(remoteName)) {
+                newRemote = geogig.command(RemoteAddOp.class).setName(newName).setURL(remoteURL)
+                        .setUserName(username).setPassword(password).call();
+                geogig.command(RemoteRemoveOp.class).setName(remoteName).call();
+            } else {
+                geogig.command(RemoteRemoveOp.class).setName(remoteName).call();
+                newRemote = geogig.command(RemoteAddOp.class).setName(remoteName).setURL(remoteURL)
+                        .setUserName(username).setPassword(password).call();
             }
             context.setResponseContent(new CommandResponse() {
                 @Override
@@ -254,32 +215,79 @@ public class RemoteWebOp extends AbstractWebAPICommand {
                     out.finish();
                 }
             });
-        } else {
-            if (remoteName == null || remoteName.trim().isEmpty()) {
-                throw new CommandSpecException("No remote was specified.");
-            } else if (remoteURL == null || remoteURL.trim().isEmpty()) {
-                throw new CommandSpecException("No URL was specified.");
-            }
-            final Remote remote;
-            try {
-                remote = geogig.command(RemoteAddOp.class).setName(remoteName).setURL(remoteURL)
-                        .setUserName(username).setPassword(password).call();
-            } catch (RemoteException e) {
-                context.setResponseContent(CommandResponse.error(e.statusCode.toString()));
-                return;
-            } catch (Exception e) {
-                context.setResponseContent(CommandResponse.error("Aborting Remote Add"));
-                return;
-            }
-            context.setResponseContent(new CommandResponse() {
-                @Override
-                public void write(ResponseWriter out) throws Exception {
-                    out.start();
-                    out.writeElement("name", remote.getName());
-                    out.finish();
-                }
-            });
+        } catch (RemoteException e) {
+            context.setResponseContent(CommandResponse.error(e.statusCode.toString()));
+        } catch (Exception e) {
+            context.setResponseContent(CommandResponse.error("Aborting Remote Update"));
         }
+    }
+
+    private void remoteRemove(CommandContext context, final Context geogig) {
+        if (remoteName == null || remoteName.trim().isEmpty()) {
+            throw new CommandSpecException("No remote was specified.");
+        }
+        final Remote remote;
+        try {
+            remote = geogig.command(RemoteRemoveOp.class).setName(remoteName).call();
+        } catch (RemoteException e) {
+            context.setResponseContent(CommandResponse.error(e.statusCode.toString()));
+            return;
+        } catch (Exception e) {
+            context.setResponseContent(CommandResponse.error("Aborting Remote Remove"));
+            return;
+        }
+        context.setResponseContent(new CommandResponse() {
+            @Override
+            public void write(ResponseWriter out) throws Exception {
+                out.start();
+                out.writeElement("name", remote.getName());
+                out.finish();
+            }
+        });
+    }
+
+    private void remotePing(CommandContext context, final Context geogig) {
+        Optional<Remote> remote = geogig.command(RemoteResolve.class).setName(remoteName).call();
+
+        final boolean remotePingResponse;
+        if (remote.isPresent()) {
+            Optional<IRemoteRepo> remoteRepo = RemoteUtils.newRemote(
+                    GlobalContextBuilder.builder.build(), remote.get(), null, null);
+            Ref ref = null;
+            if (remoteRepo.isPresent()) {
+                try {
+                    remoteRepo.get().open();
+                    ref = remoteRepo.get().headRef();
+                    remoteRepo.get().close();
+                } catch (IOException e) {
+                    // Do nothing, we will write the response later.
+                }
+            }
+            remotePingResponse = ref != null;
+        } else {
+            remotePingResponse = false;
+        }
+        context.setResponseContent(new CommandResponse() {
+            @Override
+            public void write(ResponseWriter out) throws Exception {
+                out.start();
+                out.writeRemotePingResponse(remotePingResponse);
+                out.finish();
+            }
+        });
+    }
+
+    private void remoteList(CommandContext context, final Context geogig) {
+        final List<Remote> remotes = geogig.command(RemoteListOp.class).call();
+
+        context.setResponseContent(new CommandResponse() {
+            @Override
+            public void write(ResponseWriter out) throws Exception {
+                out.start();
+                out.writeRemoteListResponse(remotes, verbose);
+                out.finish();
+            }
+        });
     }
 
 }
