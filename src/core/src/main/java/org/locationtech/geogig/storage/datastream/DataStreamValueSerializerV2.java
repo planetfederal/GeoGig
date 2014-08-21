@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 
 import org.locationtech.geogig.storage.FieldType;
@@ -42,7 +42,7 @@ class DataStreamValueSerializerV2 {
 
     }
 
-    static Map<FieldType, ValueSerializer> serializers = new HashMap<FieldType, ValueSerializer>();
+    static final Map<FieldType, ValueSerializer> serializers = new EnumMap<>(FieldType.class);
     static {
         serializers.put(FieldType.NULL, new ValueSerializer() {
             @Override
