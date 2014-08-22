@@ -15,10 +15,13 @@ Details
 
 Project Lead: `Gabriel Roldan <https://github.com/groldan>`_
 
-License: all source code is licensed under the `BSD New License <LICENSE.txt>`_.
+Status: A 1.0-beta1 version has been released and it is available for download, with a full commandline interface to import data and work with repositories.
 
-Status: A 1.0-beta1 version has been released and it is available for download, with a full commandline 
-interface to import data and work with repositories.
+License - GeoGig is proudly open source:
+
+* Source code is distributed under an `Eclipse Distribution License <edl-v10.html>`_ license (which is a BSD 3 Clause License) unless otherwise stated.
+* Varint: is from the Apache Mahout project and is distributed under the `Apache License Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0>`_ .
+* DiffMatchPath: is from Neil Fraser and is distributed under the `Apache License Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0>`_ .
 
 Download
 =========

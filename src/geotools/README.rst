@@ -12,12 +12,18 @@ Project Lead: `Gabriel Roldan <https://github.com/groldan>`_
 
 Source files use the following header::
    
-   /* Copyright (c) 2013 OpenPlans. All rights reserved.
-    * This code is licensed under the Modified BSD license, available at the root
-    * application directory.
-    */
- 
-As indicated above the code is distributed under an `Modified BSD <LICENSE.txt>`_ license.
+/* Copyright (c) {creation date},{revision date} Boundless and others
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Distribution License v1.0
+ * which accompanies this distribution, and is available at
+ * https://www.eclipse.org/org/documents/edl-v10.phpl
+ * 
+ * Contributors:
+ *  Gabriel Roldan (OpenPlans) - initial implementation
+ *  Johnathan Garrett (LMN Solutions) - fix #43
+ */
+
+As indicated above the code is distributed under an `Eclipse Distribution License <LICENSE.txt>`_ license (which is a BSD 3 Clause License). The contributors section is optional, and is often used to thank those submitting pull requests.
 
 Build
 =====
