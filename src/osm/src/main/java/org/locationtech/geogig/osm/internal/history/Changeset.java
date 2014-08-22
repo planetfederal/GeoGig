@@ -5,7 +5,6 @@
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/org/documents/edl-v10.html
  *******************************************************************************/
-
 package org.locationtech.geogig.osm.internal.history;
 
 import java.util.Iterator;
