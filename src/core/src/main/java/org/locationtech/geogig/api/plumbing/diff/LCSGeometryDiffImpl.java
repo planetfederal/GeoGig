@@ -16,10 +16,10 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
-import org.locationtech.geogig.api.plumbing.diff.diff_match_patch.Diff;
-import org.locationtech.geogig.api.plumbing.diff.diff_match_patch.LinesToCharsResult;
-import org.locationtech.geogig.api.plumbing.diff.diff_match_patch.Operation;
-import org.locationtech.geogig.api.plumbing.diff.diff_match_patch.Patch;
+import org.locationtech.geogig.api.plumbing.diff.DiffMatchPatch.Diff;
+import org.locationtech.geogig.api.plumbing.diff.DiffMatchPatch.LinesToCharsResult;
+import org.locationtech.geogig.api.plumbing.diff.DiffMatchPatch.Operation;
+import org.locationtech.geogig.api.plumbing.diff.DiffMatchPatch.Patch;
 import org.locationtech.geogig.storage.FieldType;
 import org.locationtech.geogig.storage.text.TextValueSerializer;
 
@@ -46,7 +46,7 @@ public class LCSGeometryDiffImpl {
 
     private LinkedList<Patch> patches;
 
-    private diff_match_patch diffMatchPatch;
+    private DiffMatchPatch diffMatchPatch;
 
     private int totalInsertions;
 
@@ -59,7 +59,7 @@ public class LCSGeometryDiffImpl {
     public LCSGeometryDiffImpl(Optional<Geometry> oldGeom, Optional<Geometry> newGeom) {
         String oldText = oldGeom.isPresent() ? oldGeom.get().toText() : "";
         String newText = newGeom.isPresent() ? newGeom.get().toText() : "";
-        diffMatchPatch = new diff_match_patch();
+        diffMatchPatch = new DiffMatchPatch();
         LinkedList<Diff> diffs = diffMatchPatch.diff_main(oldText, newText);
         patches = diffMatchPatch.patch_make(diffs);
 
@@ -82,7 +82,7 @@ public class LCSGeometryDiffImpl {
     }
 
     private LCSGeometryDiffImpl(LinkedList<Patch> patches) {
-        diffMatchPatch = new diff_match_patch();
+        diffMatchPatch = new DiffMatchPatch();
         this.patches = patches;
     }
 
@@ -94,7 +94,7 @@ public class LCSGeometryDiffImpl {
         totalDeletions = Integer.parseInt(countings[0]);
         totalInsertions = Integer.parseInt(countings[1]);
         replacings = Integer.parseInt(countings[2]);
-        diffMatchPatch = new diff_match_patch();
+        diffMatchPatch = new DiffMatchPatch();
         String unescaped = tokens[1].replace("\\n", "\n");
         patches = (LinkedList<Patch>) diffMatchPatch.patch_fromText(unescaped);
     }

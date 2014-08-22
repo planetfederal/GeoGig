@@ -43,7 +43,7 @@ import java.util.regex.Pattern;
 /**
  * Class containing the diff, match and patch methods. Also contains the behaviour settings.
  */
-public class diff_match_patch {
+class DiffMatchPatch {
 
     // Defaults.
     // Set these on your diff_match_patch instance to override the defaults.
