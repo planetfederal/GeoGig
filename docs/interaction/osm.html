@@ -5,24 +5,26 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta name="viewport" content="width=device-width, maximum-scale=1">
   
-  <title>Using GeoGig with OpenStreetMap data &mdash; GeoGig 1.0-beta1 User Manual</title>
+  <title>Using GeoGig with OpenStreetMap data &mdash; GeoGig 1.0 User Manual</title>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,700italic,800italic,300,700,600,800,400' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" href="../_static/screen.css" type="text/css" media="screen, projection" />
-  <link rel="stylesheet" href="../_static/print.css" type="text/css" media="print" /> 
+  <link rel="stylesheet" href="../_static/print.css" type="text/css" media="print" />
   <!--[if IE]>
   <link rel="stylesheet" href="../_static/blueprint/ie.css" type="text/css" media="screen, projection" />
   <![endif]-->
-  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+   <link rel="stylesheet" href="../_static/bootstrap.min.css" type="text/css" />
   <link rel="stylesheet" href="../_static/offcanvas.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   <script type="text/javascript">
     var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.0-beta1',
+        VERSION:     '1.0',
         COLLAPSE_MODINDEX: false,
         FILE_SUFFIX: '.html'
     };
   </script>
-      <link rel="top" title="GeoGig 1.0-beta1 User Manual" href="../index.html" />
+      <link rel="top" title="GeoGig 1.0 User Manual" href="../index.html" />
       <link rel="up" title="Other ways to interact with GeoGig" href="index.html" />
       <link rel="prev" title="Web-Api Documentation" href="web-api.html" />
 </head>
@@ -66,7 +68,7 @@
       <div id="content">
       <div class="container">
         <div class="row row-offcanvas row-offcanvas-right">
-          <div class="col-md-8"> 
+          <div class="col-md-8">
             <div class="row pull-right">
              <div class="visible-sm visible-xs" id="menu-btn">
                 <button class="btn btn-blue btn-sm"type="button" data-toggle="offcanvas">
@@ -77,7 +79,7 @@
             </div>
 <ul id="breadcrumbs">
   
-  <li><a href="../index.html">GeoGig 1.0-beta1 User Manual</a> &raquo;</li>
+  <li><a href="../index.html">GeoGig 1.0 User Manual</a> &raquo;</li>
   <li><a href="index.html" accesskey="U">Other ways to interact with GeoGig</a> &raquo;</li>
   <li>Using GeoGig with OpenStreetMap data</li>
 </ul>
@@ -281,63 +283,52 @@ out meta;
 <li><tt class="docutils literal"><span class="pre">defaultFields</span></tt> is a list of default fields to be added from the original OSM feature, without transformation. It is an optional entry and can be ommitted.</li>
 </ul>
 <p>The following mapping will copy all ways to a feature type that only contains the geometry of the way:</p>
-<div class="highlight-python"><div class="highlight"><pre>  {&quot;rules&quot;:[
-    {
-&quot;name&quot;:&quot;all_ways&quot;,
-      &quot;filter&quot;:{},
-      &quot;fields&quot;:{
-        &quot;geom&quot;:{&quot;name&quot;:&quot;geom&quot;,&quot;type&quot;:&quot;LINESTRING&quot;}
-      }
-    }
-  ]}
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span><span class="s">&quot;rules&quot;</span><span class="p">:[</span>
+  <span class="p">{</span>
+   <span class="s">&quot;name&quot;</span><span class="p">:</span><span class="s">&quot;all_ways&quot;</span><span class="p">,</span>
+    <span class="s">&quot;filter&quot;</span><span class="p">:{},</span>
+    <span class="s">&quot;fields&quot;</span><span class="p">:{</span>
+      <span class="s">&quot;geom&quot;</span><span class="p">:{</span><span class="s">&quot;name&quot;</span><span class="p">:</span><span class="s">&quot;geom&quot;</span><span class="p">,</span><span class="s">&quot;type&quot;</span><span class="p">:</span><span class="s">&quot;LINESTRING&quot;</span><span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">]}</span>
 </pre></div>
 </div>
 <p>To get all the entities that have a given tag, independently of the tag value, use an empty list for the accepted values. For instance, to get all the nodes with the tag <tt class="docutils literal"><span class="pre">power</span></tt> (can be <tt class="docutils literal"><span class="pre">power=tower</span></tt>, <tt class="docutils literal"><span class="pre">power=pole</span></tt>, etc.), use the following mapping:</p>
-<div class="highlight-python"><div class="highlight"><pre>  {&quot;rules&quot;:[
-    {
-&quot;name&quot;:&quot;power&quot;,
-      &quot;filter&quot;:{
-        &quot;power&quot;:[]
-      },
-      &quot;fields&quot;:{
-        &quot;geom&quot;:{&quot;name&quot;:&quot;geom&quot;, &quot;type&quot;:&quot;POINT&quot;},
-        &quot;power&quot;:{&quot;name&quot;:&quot;powertype&quot;, &quot;type&quot;:&quot;STRING&quot;}
-      }
-    }
-  ]}
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span><span class="s">&quot;rules&quot;</span><span class="p">:[</span>
+  <span class="p">{</span>
+   <span class="s">&quot;name&quot;</span><span class="p">:</span><span class="s">&quot;power&quot;</span><span class="p">,</span>
+    <span class="s">&quot;filter&quot;</span><span class="p">:{</span>
+      <span class="s">&quot;power&quot;</span><span class="p">:[]</span>
+    <span class="p">},</span>
+    <span class="s">&quot;fields&quot;</span><span class="p">:{</span>
+      <span class="s">&quot;geom&quot;</span><span class="p">:{</span><span class="s">&quot;name&quot;</span><span class="p">:</span><span class="s">&quot;geom&quot;</span><span class="p">,</span> <span class="s">&quot;type&quot;</span><span class="p">:</span><span class="s">&quot;POINT&quot;</span><span class="p">},</span>
+      <span class="s">&quot;power&quot;</span><span class="p">:{</span><span class="s">&quot;name&quot;</span><span class="p">:</span><span class="s">&quot;powertype&quot;</span><span class="p">,</span> <span class="s">&quot;type&quot;</span><span class="p">:</span><span class="s">&quot;STRING&quot;</span><span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">]}</span>
 </pre></div>
 </div>
 <p>Any way/node that matches any of the supplied filters will pass through the rule. For instance, to get a subset of buildings and air terminals (a special case of building) use:</p>
 <p>You can make tags mandatory by adding them to the exclude section, with a <tt class="docutils literal"><span class="pre">null</span></tt> value. That will exclude all elements that do not have the tag, instead of the ones that have it or have a specific value for it.</p>
-<dl class="docutils">
-<dt>::</dt>
-<dd><dl class="first docutils">
-<dt>{&#8220;rules&#8221;:[</dt>
-<dd><dl class="first docutils">
-<dt>{</dt>
-<dd><p class="first">&#8220;name&#8221;:&#8221;namedhighways&#8221;,
-&#8220;filter&#8221;:{</p>
-<blockquote>
-<div>&#8220;highway&#8221;:[]</div></blockquote>
-<p>},
-&#8220;exclude&#8221;:{</p>
-<blockquote>
-<div>&#8220;name&#8221;:null</div></blockquote>
-<p>},
-&#8220;fields&#8221;:{</p>
-<blockquote>
-<div>&#8220;geom&#8221;:{&#8220;name&#8221;:&#8221;geom&#8221;,&#8221;type&#8221;:&#8221;POINT&#8221;}</div></blockquote>
-<p class="last">}</p>
-</dd>
-</dl>
-<p class="last">}</p>
-</dd>
-</dl>
-<p class="last">]}</p>
-</dd>
-</dl>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span><span class="s">&quot;rules&quot;</span><span class="p">:[</span>
+  <span class="p">{</span>
+        <span class="s">&quot;name&quot;</span><span class="p">:</span><span class="s">&quot;namedhighways&quot;</span><span class="p">,</span>
+        <span class="s">&quot;filter&quot;</span><span class="p">:{</span>
+                <span class="s">&quot;highway&quot;</span><span class="p">:[]</span>
+        <span class="p">},</span>
+        <span class="s">&quot;exclude&quot;</span><span class="p">:{</span>
+                <span class="s">&quot;name&quot;</span><span class="p">:</span><span class="n">null</span>
+        <span class="p">},</span>
+        <span class="s">&quot;fields&quot;</span><span class="p">:{</span>
+                <span class="s">&quot;geom&quot;</span><span class="p">:{</span><span class="s">&quot;name&quot;</span><span class="p">:</span><span class="s">&quot;geom&quot;</span><span class="p">,</span><span class="s">&quot;type&quot;</span><span class="p">:</span><span class="s">&quot;POINT&quot;</span><span class="p">}</span>
+        <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">]}</span>
+</pre></div>
+</div>
 <p>That mapping will match all highways, except those that do not have a name. Only the geometry is used and no tags are added to the mapped feature.</p>
-<div class="highlight-python"><div class="highlight"><pre>      {&quot;rules&quot;:[
+<div class="highlight-python"><div class="highlight"><pre>{&quot;rules&quot;:[
   {
     &quot;name&quot;:&quot;buildings&quot;,
     &quot;filter&quot;:{
@@ -372,7 +363,7 @@ out meta;
 <p>Each tree has only one geometry type, so the geometry type you choose to write out will act as an implicit filter: if you use a field of type <tt class="docutils literal"><span class="pre">POINT</span></tt>, only nodes will be read; if you use a field of type <tt class="docutils literal"><span class="pre">LINESTRING</span></tt> or <tt class="docutils literal"><span class="pre">POLYGON</span></tt>, only ways will be read. When you use a field of type <tt class="docutils literal"><span class="pre">POLYGON</span></tt> all ways will be read and automatically closed. In case you want to be more restrictive about how to create a polygon, you can use the <tt class="docutils literal"><span class="pre">filter</span></tt> entry to define the criteria for a way to be suitable for creating a polygon, such as, for instance, requiring the <tt class="docutils literal"><span class="pre">area=yes</span></tt> or <tt class="docutils literal"><span class="pre">building=yes</span></tt> tag/value pair.</p>
 <p>An additional <tt class="docutils literal"><span class="pre">geom```tag</span> <span class="pre">can</span> <span class="pre">be</span> <span class="pre">used</span> <span class="pre">with</span> <span class="pre">two</span> <span class="pre">possible</span> <span class="pre">values:</span> <span class="pre">``open</span></tt> and <tt class="docutils literal"><span class="pre">closed</span></tt>. Instead of looking for an OSM tag named <tt class="docutils literal"><span class="pre">geom</span></tt>, this will appply the filter to the geometry itself. If the value used is <tt class="docutils literal"><span class="pre">open</span></tt> then only open lines will be used to create the destination geometry (usually a line in this case). If <tt class="docutils literal"><span class="pre">closed</span></tt> is used, only those ways with the end point identical to the start point will be transformed, and the remaining ones ignored.</p>
 <p>Notice that, although only one of the above values can be used, it has to be put in a list, as it happens with other tag values in the <tt class="docutils literal"><span class="pre">filter</span></tt> entry. Here is an example that shows how to restrict the ways used to create polygons to just those that have a closed linestring.</p>
-<div class="highlight-python"><div class="highlight"><pre>      {&quot;rules&quot;:[
+<div class="highlight-python"><div class="highlight"><pre>{&quot;rules&quot;:[
   {
     &quot;name&quot;:&quot;buildings&quot;,
     &quot;filter&quot;:{
@@ -401,31 +392,23 @@ out meta;
 <li><tt class="docutils literal"><span class="pre">version</span></tt></li>
 </ul>
 <p>Here&#8217;s an example of using the <tt class="docutils literal"><span class="pre">defaultFields</span></tt> entry in the JSON definition. This mapping will add the fields containing the changeset and timestamp of each feature, copying the corresponding value in the original OSM feature, without any transformation.</p>
-<blockquote>
-<div><blockquote>
-<div><blockquote>
-<div>{&#8220;rules&#8221;:[</div></blockquote>
-<dl class="docutils">
-<dt>{</dt>
-<dd><p class="first">&#8220;name&#8221;:&#8221;buildings&#8221;,
-&#8220;filter&#8221;:{</p>
-<blockquote>
-<div>&#8220;building&#8221;:[&#8220;residential&#8221;,&#8221;house&#8221;,&#8221;garage&#8221;,&#8221;detached&#8221;,&#8221;terrace&#8221;,&#8221;apartments&#8221;],
-&#8220;aeroway&#8221;:[&#8220;terminal&#8221;]</div></blockquote>
-<p>},
-&#8220;fields&#8221;:{</p>
-<blockquote>
-<div>&#8220;geom&#8221;:{&#8220;name&#8221;:&#8221;way&#8221;,&#8221;type&#8221;:&#8221;POLYGON&#8221;},
-&#8220;building&#8221;:{&#8220;name&#8221;:&#8221;building&#8221;, &#8220;type&#8221;:&#8221;STRING&#8221;},
-&#8220;aeroway&#8221;:{&#8220;name&#8221;:&#8221;aeroway&#8221;, &#8220;type&#8221;:&#8221;STRING&#8221;}</div></blockquote>
-<p class="last">},
-&#8220;defaultFields&#8221;:[&#8220;timestamp&#8221;, &#8220;changeset&#8221;]</p>
-</dd>
-</dl>
-<p>}</p>
-</div></blockquote>
-<p>}</p>
-</div></blockquote>
+<div class="highlight-python"><div class="highlight"><pre>{&quot;rules&quot;:[
+  {
+    &quot;name&quot;:&quot;buildings&quot;,
+    &quot;filter&quot;:{
+      &quot;building&quot;:[&quot;residential&quot;,&quot;house&quot;,&quot;garage&quot;,&quot;detached&quot;,&quot;terrace&quot;,&quot;apartments&quot;],
+      &quot;aeroway&quot;:[&quot;terminal&quot;]
+    },
+    &quot;fields&quot;:{
+      &quot;geom&quot;:{&quot;name&quot;:&quot;way&quot;,&quot;type&quot;:&quot;POLYGON&quot;},
+      &quot;building&quot;:{&quot;name&quot;:&quot;building&quot;, &quot;type&quot;:&quot;STRING&quot;},
+      &quot;aeroway&quot;:{&quot;name&quot;:&quot;aeroway&quot;, &quot;type&quot;:&quot;STRING&quot;}
+    },
+    &quot;defaultFields&quot;:[&quot;timestamp&quot;, &quot;changeset&quot;]
+  }
+}
+</pre></div>
+</div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">[Explain this better and in more in detail]</p>
@@ -496,18 +479,18 @@ phone:5555986154
 </pre></div>
 </div>
 <p>Let&#8217;s say that you have run the <tt class="docutils literal"><span class="pre">export-pg</span></tt> command to export your nodes to a postGIS database, with the following mapping</p>
-<div class="highlight-python"><div class="highlight"><pre>  {&quot;rules&quot;:[
-    {
-&quot;name&quot;:&quot;firestations&quot;,
-      &quot;filter&quot;:{
-        &quot;amenity&quot;:[&quot;fire_station&quot;]
-      },
-      &quot;fields&quot;:{
-        &quot;geom&quot;:{&quot;name&quot;:&quot;geom&quot;, &quot;type&quot;:&quot;POINT&quot;},
-        &quot;name&quot;:&quot;{&quot;name&quot;:&quot;name&quot;, &quot;type&quot;:&quot;STRING&quot;}
-      }
+<div class="highlight-python"><div class="highlight"><pre>{&quot;rules&quot;:[
+  {
+   &quot;name&quot;:&quot;firestations&quot;,
+    &quot;filter&quot;:{
+      &quot;amenity&quot;:[&quot;fire_station&quot;]
+    },
+    &quot;fields&quot;:{
+      &quot;geom&quot;:{&quot;name&quot;:&quot;geom&quot;, &quot;type&quot;:&quot;POINT&quot;},
+      &quot;name&quot;:&quot;{&quot;name&quot;:&quot;name&quot;, &quot;type&quot;:&quot;STRING&quot;}
     }
-  ]}
+  }
+]}
 </pre></div>
 </div>
 <p>Basically, you are mapping all fire stations to a new feature type which just contains the station name and its location.</p>
@@ -542,7 +525,7 @@ phone:5555986154
 <p>Your OSM data should now be in your GeoGig repository, and a new commit should have been made.</p>
 <div class="highlight-python"><div class="highlight"><pre>$ geogig log
 Commit:  d972aa12d9fdf9ac4192fb81da131e77c3867acf
-Author:  volaya &lt;volaya@opengeo.org&gt;
+Author:  volaya &lt;volaya@boundlessgeo.com&gt;
 Date:    (4 minutes ago) 2013-06-03 14:37:21 +0300
 Subject: Updated OSM data
 </pre></div>
@@ -562,30 +545,30 @@ $ geogig commit -m &quot;Edited OSM data&quot;
 [...]
 $ geogig log
 Commit: a465736fdabc6d6b5a3289499bba695328a6b43c
-Author:  volaya &lt;volaya@opengeo.org&gt;
+Author:  volaya &lt;volaya@boundlessgeo.com&gt;
 Date:    (15 seconds ago) 2013-05-21 12:37:33 +0300
 Subject: Edited OSM data
 
 Commit:  58b84cee8f4817b96804324e83d10c31174da695
-Author:  volaya &lt;volaya@opengeo.org&gt;
+Author:  volaya &lt;volaya@boundlessgeo.com&gt;
 Date:    (3 minutes ago) 2013-05-21 12:34:30 +0300
 Subject: Update OSM to changeset 16215593
 </pre></div>
 </div>
 <p>Another way of editing your data is to export it using a mapping. Let&#8217;s see how to do it.</p>
 <p>Create a file named <tt class="docutils literal"><span class="pre">mapping.json</span></tt> in your GeoGig repository folder, with the following content:</p>
-<div class="highlight-python"><div class="highlight"><pre>  {&quot;rules&quot;:[
-    {
-&quot;name&quot;:&quot;power&quot;,
-      &quot;filter&quot;:{
-        &quot;power&quot;:[&quot;tower&quot;, &quot;pole&quot;]
-      },
-      &quot;fields&quot;:{
-        &quot;coord&quot;:{&quot;name&quot;:&quot;coord&quot;, &quot;type&quot;:&quot;POINT&quot;},
-        &quot;power&quot;:{&quot;name&quot;:&quot;power&quot;, &quot;type&quot;:&quot;STRING&quot;}
-      }
-    }
-  ]}
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span><span class="s">&quot;rules&quot;</span><span class="p">:[</span>
+  <span class="p">{</span>
+   <span class="s">&quot;name&quot;</span><span class="p">:</span><span class="s">&quot;power&quot;</span><span class="p">,</span>
+    <span class="s">&quot;filter&quot;</span><span class="p">:{</span>
+      <span class="s">&quot;power&quot;</span><span class="p">:[</span><span class="s">&quot;tower&quot;</span><span class="p">,</span> <span class="s">&quot;pole&quot;</span><span class="p">]</span>
+    <span class="p">},</span>
+    <span class="s">&quot;fields&quot;</span><span class="p">:{</span>
+      <span class="s">&quot;coord&quot;</span><span class="p">:{</span><span class="s">&quot;name&quot;</span><span class="p">:</span><span class="s">&quot;coord&quot;</span><span class="p">,</span> <span class="s">&quot;type&quot;</span><span class="p">:</span><span class="s">&quot;POINT&quot;</span><span class="p">},</span>
+      <span class="s">&quot;power&quot;</span><span class="p">:{</span><span class="s">&quot;name&quot;</span><span class="p">:</span><span class="s">&quot;power&quot;</span><span class="p">,</span> <span class="s">&quot;type&quot;</span><span class="p">:</span><span class="s">&quot;STRING&quot;</span><span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">]}</span>
 </pre></div>
 </div>
 <p>Now export the OSM data that you downloaded, using the above mapping.</p>
@@ -684,7 +667,7 @@ visible: true
         </form>
 
 
-        <div class="btn-group-vertical" id="docs_toc"> 
+        <div class="btn-group-vertical" id="docs_toc">
           <button type="button" class="btn btn-default"><a href="/docs/">User Manual</a></button>
           <button type="button" class="btn btn-default"><a href="/technical/">Technical Manual</a></button>
           <button type="button" class="btn btn-default"><a href="/manpages/">Man Pages</a></button>
